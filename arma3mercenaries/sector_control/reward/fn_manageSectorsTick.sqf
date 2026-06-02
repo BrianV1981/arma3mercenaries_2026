@@ -28,10 +28,12 @@ private _tickInterval = 10; // PFH interval
 {
     private _sectorData = _x;
     private _triggerName = _sectorData select 0;
-    private _rewardMultiplier = _sectorData select 1;
-    private _spawnProbability = _sectorData select 2;
+    
+    // Apply CBA Live Multipliers
+    private _rewardMultiplier = (_sectorData select 1) * A3M_Sector_GlobalRewardMult;
+    private _spawnProbability = (_sectorData select 2) * A3M_Sector_GlobalSpawnProb;
     private _sectorName = _sectorData select 3;
-    private _blockTime = _sectorData select 4;
+    private _blockTime = (_sectorData select 4) * A3M_Sector_GlobalBlockMult;
     private _rewardTime = _sectorData select 5;
     private _sectorIndex = _forEachIndex;
 
