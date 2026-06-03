@@ -26,8 +26,5 @@ _listCtrl2 lbAdd "Compiling Shots...";
 _listCtrl3 lbAdd "Auditing Wealth...";
 _listCtrl4 lbAdd "Calculating Distance...";
 
-// Trigger real-time compilation of the SQLite database
-"a3m_db_core" callExtension ["compile_leaderboard"];
-
 // Fetch leaderboard from server
 [player] remoteExecCall ["A3M_fnc_serverFetchLeaderboard", 2];
