@@ -355,28 +355,47 @@ addMissionEventHandler ["entityKilled", {
                     // diag_log format["%1 Sending Kill Marker RE: %2", _prefix, _params]; // Optional log
                     _params remoteExecCall ["A3M_fnc_serverCreateMarkerGlobal", 2];
                 };
-                // Trigger Death Marker Server Call
-                 if (_killedIsPlayer && _deathMarkerEnabled) then { // Also check if killed was a player
-                    private _deathMarkerSize = if (isNil "arma3mercenaries_deathMarkerSize") then { 0.5 } else { arma3mercenaries_deathMarkerSize };
-                    private _mrkName = format ["%1_LastDeath", _killedName];
-                    private _markerText = format ["%1(%2) killed by %3(%4) [%5|%6m]", _killedName, _factionNameKilled, _instigatorName, _factionNameKiller, _weaponDisplayNameForMarker, floor _distanceForMarker];
-                    private _params = [ _mrkName, _killedPos, "ICON", "mil_warning", "ColorRed", _deathMarkerSize, _deathMarkerSize, _markerText ];
-                     // diag_log format["%1 Sending Death Marker RE: %2", _prefix, _params]; // Optional log
-                    _params remoteExecCall ["A3M_fnc_serverCreateMarkerGlobal", 2];
-                 };
                  // Global Chat Notifications (Sent directly from client for simplicity)
                  if (_globalKillMarkerChat && _killMarkerEnabled) then { // Only if kill marker also enabled
                      private _chatMsg = format ["%1 %2 killed by %3 %4 with %5 from %6m", _factionNameKilled, _killedName, _factionNameKiller, _instigatorName, _weaponDisplayNameForMarker, floor _distanceForMarker];
-                     [_chatMsg] remoteExec ["systemChat", 0];
-                 };
-                 if (_globalDeathMarkerChat && _deathMarkerEnabled && _killedIsPlayer) then { // Only if death marker enabled and victim player
-                     private _chatMsg = format ["%1 %2 was killed by %3 %4 with %5 from %6m", _factionNameKilled, _killedName, _factionNameKiller, _instigatorName, _weaponDisplayNameForMarker, floor _distanceForMarker];
                      [_chatMsg] remoteExec ["systemChat", 0];
                  };
             };
         } catch { diag_log (_prefix + " ERROR MKR: " + str _exception); };
         // diag_log (_prefix + " Local Instigator END."); // Optional log
     }; // End local _instigator block
+
+    if (local _killed && _killedIsPlayer) then {
+        try {
+            private _deathMarkerEnabled = if (isNil "arma3mercenaries_deathMarkerEnabled") then { true } else { arma3mercenaries_deathMarkerEnabled };
+            private _globalDeathMarkerChat = if (isNil "arma3mercenaries_globalDeathMarker") then { false } else { arma3mercenaries_globalDeathMarker };
+            
+            if (_deathMarkerEnabled || _globalDeathMarkerChat) then {
+                private _sideKilled = getNumber (configFile >> "cfgVehicles" >> _killedType >> "side");
+                private _sideKiller = getNumber (configFile >> "cfgVehicles" >> _instigatorType >> "side");
+                private _distanceForMarker = _instigator distance2D _killed;
+                private _weaponForMarker = currentWeapon _instigator;
+                private _weaponDisplayNameForMarker = "Unknown";
+                if (_weaponForMarker != "") then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgWeapons" >> _weaponForMarker >> "displayName"); } catch {}; };
+                if (_killer != _instigator && {!isNull _killer} && {_killer isKindOf "LandVehicle" || _killer isKindOf "Air" || _killer isKindOf "Ship"}) then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
+                private _factionNameKilled = switch (_sideKilled) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
+                private _factionNameKiller = switch (_sideKiller) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
+                
+                if (_deathMarkerEnabled) then {
+                    private _deathMarkerSize = if (isNil "arma3mercenaries_deathMarkerSize") then { 0.5 } else { arma3mercenaries_deathMarkerSize };
+                    private _mrkName = format ["%1_LastDeath", _killedName];
+                    private _markerText = format ["%1(%2) killed by %3(%4) [%5|%6m]", _killedName, _factionNameKilled, _instigatorName, _factionNameKiller, _weaponDisplayNameForMarker, floor _distanceForMarker];
+                    private _params = [ _mrkName, _killedPos, "ICON", "mil_warning", "ColorRed", _deathMarkerSize, _deathMarkerSize, _markerText ];
+                    _params remoteExecCall ["A3M_fnc_serverCreateMarkerGlobal", 2];
+                };
+                
+                if (_globalDeathMarkerChat && _deathMarkerEnabled) then {
+                    private _chatMsg = format ["%1 %2 was killed by %3 %4 with %5 from %6m", _factionNameKilled, _killedName, _factionNameKiller, _instigatorName, _weaponDisplayNameForMarker, floor _distanceForMarker];
+                    [_chatMsg] remoteExec ["systemChat", 0];
+                };
+            };
+        } catch { diag_log ("[A3M CLI EH] ERROR DEATH MKR: " + str _exception); };
+    };
 
     // --- Trigger Server Reward Processing (Always if initial checks passed) ---
     try {
