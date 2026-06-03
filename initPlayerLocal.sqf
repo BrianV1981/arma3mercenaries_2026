@@ -51,6 +51,7 @@ private _actGrpAssemble = ["groupAssemble","Assemble Formations","",{execVM "arm
 
 
 // 4. Database Controls -> [Constellis Database]
+A3M_fnc_initMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\mercenaries\fn_initMercenary.sqf");
 A3M_fnc_openPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openPlayerCard.sqf");
 A3M_fnc_receiveProfileData = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_receiveProfileData.sqf");
 [] execVM "arma3mercenaries\player_profile\fn_initPedometer.sqf";
