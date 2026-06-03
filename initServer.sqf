@@ -28,6 +28,7 @@ A3M_fnc_dbGetSecure = {
     // Fetch data from DB
     private _extArray = "a3m_db_core" callExtension ["get", [_key]];
     private _rawString = _extArray select 0;
+    diag_log format ["[A3M DEBUG] RAW RUST STRING FOR %1: %2", _key, _rawString];
     
     // parseSimpleArray native safety check
     private _result = parseSimpleArray _rawString;
