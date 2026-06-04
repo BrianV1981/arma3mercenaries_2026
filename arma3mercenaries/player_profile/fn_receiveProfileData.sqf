@@ -59,6 +59,12 @@ _listCtrl1 lbAdd format ["Suicides: %1", _profile getOrDefault ["Suicides", 0]];
 _listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["Wallet Balance: %1 cr.", _wallet];
 _listCtrl1 lbAdd format ["Bank Balance: %1 cr.", _bank];
+
+private _playerBounty = _profile getOrDefault ["Bounty", 0];
+if (_playerBounty > 0) then {
+    _listCtrl1 lbAdd "";
+    _listCtrl1 lbAdd format ["*** BOUNTY ON HEAD: %1 cr. ***", _playerBounty];
+};
 _listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["Distance Walked: %1m", round _distWalk];
 _listCtrl1 lbAdd format ["Distance Driven: %1m", round _distDrive];

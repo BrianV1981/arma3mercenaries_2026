@@ -70,11 +70,24 @@ class A3M_PlayerProfileDialog {
             sizeEx = 1.5 * GUI_GRID_H;
         };
 
+        class BountyBoardButton: HG_RscButton {
+            idc = -1;
+            text = "BOUNTY BOARD";
+            x = 27 * GUI_GRID_W + GUI_GRID_X;
+            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            w = 9.5 * GUI_GRID_W;
+            h = 2 * GUI_GRID_H;
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openBountyBoard; };";
+            colorText[] = {1, 1, 1, 1};
+            colorBackground[] = {0.6, 0.3, 0.05, 1};
+            colorBackgroundActive[] = {0.8, 0.4, 0.1, 1};
+        };
+
         class LeaderboardButton: HG_RscButton {
             idc = -1;
             text = "GLOBAL LEADERBOARD";
             x = 27 * GUI_GRID_W + GUI_GRID_X;
-            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            y = 3.5 * GUI_GRID_H + GUI_GRID_Y;
             w = 9.5 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openLeaderboard; };";

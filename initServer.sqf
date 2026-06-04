@@ -104,6 +104,7 @@ A3M_fnc_initPlayerProfile = {
         _profile set ["Distance_Flown", 0];
         _profile set ["PlayTime_Minutes", 0];
         _profile set ["Revives_Given", 0];
+        _profile set ["Bounty", 0];  // Player Bounty Board - PvP hit amount
         // Use systemTime string representation for join date
         private _date = systemTime;
         private _month = if ((_date select 1) < 10) then {format["0%1", _date select 1]} else {str (_date select 1)};
@@ -336,6 +337,96 @@ execVM "scripts\HG_initServer.sqf";
 ///https://github.com/gruppe-adler/grad-persistence/wiki/saveMission
 [{[false, 3601] call grad_persistence_fnc_saveMission}, 21000, []] call CBA_fnc_addPerFrameHandler;
 
+
+
+// --- A3M PLAYER BOUNTY BOARD (Server Functions) ---
+// Place a bounty on a target player
+A3M_fnc_serverPlaceBounty = {
+    params ["_client", "_targetUID", "_amount"];
+    if (!isServer || isNull _client || _targetUID == "" || _amount <= 0) exitWith {
+        diag_log "[A3M BOUNTY] Invalid place bounty params";
+    };
+
+    private _clientUID = getPlayerUID _client;
+    if (_clientUID == _targetUID) exitWith {
+        ["Cannot place a bounty on yourself."] remoteExec ["systemChat", _client];
+    };
+
+    // Check if client has enough money
+    private _wallet = [_client, false] call grad_moneymenu_fnc_getFunds;
+    private _bank = [_client, true] call grad_moneymenu_fnc_getFunds;
+    if (_wallet + _bank < _amount) exitWith {
+        ["Insufficient funds to place bounty."] remoteExec ["systemChat", _client];
+    };
+
+    // Deduct money: try wallet first, then bank
+    if (_wallet >= _amount) then {
+        [_client, -_amount, true] call grad_moneymenu_fnc_addFunds;
+    } else {
+        private _remainder = _amount - _wallet;
+        if (_wallet > 0) then { [_client, -_wallet, true] call grad_moneymenu_fnc_addFunds; };
+        [_client, -_remainder, true] call grad_moneymenu_fnc_addFunds;
+    };
+
+    // Load target profile and add bounty
+    private _targetProfile = A3M_LiveProfiles getOrDefault [_targetUID, createHashMap];
+    if (count _targetProfile == 0) then {
+        // Try loading from DB
+        private _dbKey = "A3M_PROFILE_" + _targetUID;
+        _targetProfile = [_dbKey, createHashMap, true] call A3M_fnc_dbGetSecure;
+    };
+    if (count _targetProfile == 0) exitWith {
+        [_client, _amount, true] call grad_moneymenu_fnc_addFunds; // Refund
+        ["Target player not found in database."] remoteExec ["systemChat", _client];
+    };
+
+    private _currentBounty = _targetProfile getOrDefault ["Bounty", 0];
+    _targetProfile set ["Bounty", _currentBounty + _amount];
+    A3M_LiveProfiles set [_targetUID, _targetProfile];
+    ["A3M_PROFILE_" + _targetUID, _targetProfile] call A3M_fnc_dbSetSecure;
+
+    private _targetName = _targetProfile getOrDefault ["PlayerName", "Unknown"];
+    private _msg = format ["[BOUNTY BOARD] %1 placed a $%2 bounty on %3!", name _client, _amount, _targetName];
+    [_msg] remoteExec ["systemChat", 0];
+    diag_log format ["[A3M BOUNTY] %1 placed $%2 bounty on %3 (UID: %4)", _clientUID, _amount, _targetName, _targetUID];
+};
+
+// Fetch all players with active bounties for the Bounty Board UI
+A3M_fnc_serverFetchBountyTargets = {
+    params ["_client"];
+    if (!isServer || isNull _client) exitWith {};
+
+    private _bountyList = [];
+    {
+        private _uid = _x;
+        private _profile = _y;
+        private _bounty = _profile getOrDefault ["Bounty", 0];
+        if (_bounty > 0) then {
+            private _name = _profile getOrDefault ["PlayerName", "Unknown"];
+            private _isOnline = !isNull (_uid call BIS_fnc_getUnitByUID);
+            _bountyList pushBack [_uid, _name, _bounty, _isOnline];
+        };
+    } forEach A3M_LiveProfiles;
+
+    // Also check offline profiles in DB for any with bounties
+    // (Quick scan of known keys - in production this would be more efficient)
+    private _allPlayers = allPlayers;
+    {
+        private _uid = getPlayerUID _x;
+        if (!(_uid in A3M_LiveProfiles)) then {
+            private _dbKey = "A3M_PROFILE_" + _uid;
+            private _profile = [_dbKey, createHashMap, true] call A3M_fnc_dbGetSecure;
+            private _bounty = _profile getOrDefault ["Bounty", 0];
+            if (_bounty > 0) then {
+                private _name = _profile getOrDefault ["PlayerName", "Unknown"];
+                _bountyList pushBack [_uid, _name, _bounty, false];
+            };
+        };
+    } forEach _allPlayers;
+
+    [_bountyList] remoteExecCall ["A3M_fnc_receiveBountyData", _client];
+};
+// -------------------------------------------------------------
 
 // Initialize the new Sector Control State Machine
 [] call A3M_fnc_initSectorControl;
