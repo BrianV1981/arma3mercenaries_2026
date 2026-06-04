@@ -2,7 +2,7 @@
     A3M_fnc_requestCombatSupport
     Author: A.I.M. Exoskeleton
 */
-params ["_scriptId", "_durationSecs"];
+params ["_scriptId", "_durationSecs", ["_buyer", objNull], ["_price", 0]];
 
 if (_scriptId == "") exitWith { diag_log "A3M_fnc_requestCombatSupport: Empty ID."; };
 
@@ -60,18 +60,44 @@ if (isNil "A3M_CombatSupportConfig") then {
     ];
 };
 
+
+if (isNil "A3M_ActiveCombatSupports") then {
+    A3M_ActiveCombatSupports = createHashMap;
+};
+
+// State Lock Check
+if (A3M_ActiveCombatSupports getOrDefault [_scriptId, false]) exitWith {
+    if (!isNull _buyer && _price > 0) then {
+        [_buyer, _price] call grad_moneymenu_fnc_addFunds;
+        ["Request Denied: This specific combat support is currently deployed and unavailable."] remoteExec ["systemChat", _buyer];
+    } else {
+        diag_log format ["A3M_fnc_requestCombatSupport: Rejected %1 (Already Active) - No refund possible.", _scriptId];
+    };
+};
+
+// Apply Lock
+A3M_ActiveCombatSupports set [_scriptId, true];
+
 private _config = A3M_CombatSupportConfig getOrDefault [_scriptId, []];
-if (count _config == 0) exitWith { diag_log format ["A3M_fnc_requestCombatSupport: Invalid ID %1", _scriptId]; };
+if (count _config == 0) exitWith { 
+    A3M_ActiveCombatSupports set [_scriptId, false];
+    if (!isNull _buyer && _price > 0) then { [_buyer, _price] call grad_moneymenu_fnc_addFunds; };
+    diag_log format ["A3M_fnc_requestCombatSupport: Invalid ID %1", _scriptId]; 
+};
 
 _config params ["_classname", "_side", "_type", "_callsign", "_marker", "_dir"];
 private _safePos = getMarkerPos _marker;
-if (_safePos isEqualTo [0,0,0]) exitWith { diag_log format ["A3M_fnc_requestCombatSupport: Invalid marker %1", _marker]; };
+if (_safePos isEqualTo [0,0,0]) exitWith { 
+    A3M_ActiveCombatSupports set [_scriptId, false];
+    if (!isNull _buyer && _price > 0) then { [_buyer, _price] call grad_moneymenu_fnc_addFunds; };
+    diag_log format ["A3M_fnc_requestCombatSupport: Invalid marker %1", _marker]; 
+};
 
 [_side, _type, _callsign] call ALiVE_fnc_combatSupportRemove;
 
 [
     {
-        params ["_side", "_type", "_callsign", "_safePos", "_dir", "_classname", "_durationSecs"];
+        params ["_side", "_type", "_callsign", "_safePos", "_dir", "_classname", "_durationSecs", "_scriptId"];
         
         private _supportData = [];
         if (_type == "ARTY") then {
@@ -114,14 +140,16 @@ if (_safePos isEqualTo [0,0,0]) exitWith { diag_log format ["A3M_fnc_requestComb
         
         [
             {
-                params ["_side", "_type", "_callsign"];
+                params ["_side", "_type", "_callsign", "_scriptId"];
                 [_side, _type, _callsign] call ALiVE_fnc_combatSupportRemove;
+                A3M_ActiveCombatSupports set [_scriptId, false];
+                [format ["%1 has left the AO.", _callsign]] remoteExec ["systemChat", 0];
             },
-            [_side, _type, _callsign],
+            [_side, _type, _callsign, _scriptId],
             _durationSecs
         ] call CBA_fnc_waitAndExecute;
     },
-    [_side, _type, _callsign, _safePos, _dir, _classname, _durationSecs],
+    [_side, _type, _callsign, _safePos, _dir, _classname, _durationSecs, _scriptId],
     2
 ] call CBA_fnc_waitAndExecute;
 
