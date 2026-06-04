@@ -11,91 +11,91 @@ class aliveStore_1 {
             description = "Purchasing this will give you 60 minutes of access to a RAH-66 Comanchie combat support helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS1.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS1', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Heli_Light_01_dynamicLoadout_F {
             displayName = "AH-6 Little Bird Combat Support (60 Minutes)";
             description = "Purchasing this will give you 60 minutes of access to a AH-6 Little Bird combat support helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS8.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS8', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Plane_CAS_01_F {
             displayName = "ALiVE A-10D Thunderbolt II Combat Support (60 Minutes)";
             description = "This A-10D Thunderbolt II combat support jet can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS2.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS2', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Plane_Fighter_01_F {
             displayName = "ALiVE F/A-181 Black Wasp II Combat Support (60 Minutes)";
             description = "This F/A-181 Black Wasp II combat support jet can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS3.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS3', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Plane_Fighter_01_Stealth_F {
             displayName = "ALiVE F/A-181 Black Wasp II (Stealth) Combat Support (60 Minutes)";
             description = "This F/A-181 Black Wasp II (Stealth) combat support jet can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS4.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS4', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_T_VTOL_01_armed_F {
             displayName = "V-44 X Blackfish C (60 Minutes)";
             description = "This V-44 X Blackfish combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS15.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS15', 3600, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MBT_01_mlrs_F {
             displayName = "ALiVE Seara Combat Support (60 Minutes)";
             description = "This Seara combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\ARTY2.sqf'}";
+            code = "if (player == (_this select 0)) then { ['ARTY2', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MBT_01_arty_F {
             displayName = "ALiVE Sholef Combat Support (60 Minutes)";
             description = "This Sholef combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\ARTY1.sqf'}";
+            code = "if (player == (_this select 0)) then { ['ARTY1', 3600, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_MRAP_01_hmg_F {
             displayName = "M-ATV (HMG) C (60 Minutes)";
             description = "This M-ATV (HMG) C combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS11.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS11', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_MRAP_01_gmg_F {
             displayName = "M-ATV (GMG) C (60 Minutes)";
             description = "This M-ATV (GMG) C combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS12.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS12', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_APC_Wheeled_01_cannon_F {
             displayName = "Badger IFV C (60 Minutes)";
             description = "This Badger IFV C combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS9.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS9', 3600, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_APC_Tracked_01_AA_F {
             displayName = "Bardelas (AA) C (60 Minutes)";
             description = "This Bardelas (AA) C combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS13.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS13', 3600, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_MBT_01_TUSK_F {
             displayName = "Merkava MK IV LIC C (60 Minutes)";
             description = "This Merkava MK IV LIC C combat support vehicle can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS10.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS10', 3600, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
     };
     
@@ -109,119 +109,119 @@ class aliveStore_1 {
             description = "This M-ATV Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 15000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT15.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT15', 7200, player, 15000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Truck_01_transport_F {
             displayName = "ALiVE HEMTT Transport (120 Minutes)";
             description = "This HEMTT Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 20000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT6.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT6', 7200, player, 20000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Truck_01_medical_F {
             displayName = "ALiVE HEMTT Medical (120 Minutes)";
             description = "This HEMTT Medical can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT14.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT14', 7200, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Truck_01_fuel_F {
             displayName = "ALiVE HEMTT Fuel (120 Minutes)";
             description = "This HEMTT Fuel can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 30000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT11.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT11', 7200, player, 30000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Truck_01_Repair_F {
             displayName = "ALiVE HEMTT Repair (120 Minutes)";
             description = "This HEMTT Repair can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT12.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT12', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Truck_01_ammo_F {
             displayName = "ALiVE HEMTT Ammo (120 Minutes)";
             description = "This HEMTT Ammo can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT13.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT13', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MRAP_01_hmg_F {
             displayName = "ALiVE M-ATV (HMG) (120 Minutes)";
             description = "This M-ATV (HMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT16.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT16', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MRAP_01_gmg_F {
             displayName = "ALiVE M-ATV (GMG) (120 Minutes)";
             description = "This M-ATV (GMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT17.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT17', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_APC_Tracked_01_rcws_F {
             displayName = "ALiVE Namer Transport (120 Minutes)";
             description = "This Namer Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT8.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT8', 7200, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_APC_Wheeled_01_cannon_F {
             displayName = "ALiVE Badger IFV Transport (120 Minutes)";
             description = "This Badger IFV transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT9.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT9', 7200, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_APC_Tracked_01_AA_F {
             displayName = "ALiVE Bardelas (AA) (120 Minutes)";
             description = "This Bardelas (AA) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT18.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT18', 7200, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MBT_01_TUSK_F {
             displayName = "ALiVE Merkava MK IV LIC Transport (120 Minutes)";
             description = "This Merkava MK IV LIC transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 100000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT10.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT10', 7200, player, 100000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Heli_Light_01_F {
             displayName = "ALiVE MH-9 Hummingbird Transport (120 Minutes)";
             description = "Purchasing this will give you 120 minutes of access to a MH-9 Hummingbird transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT3.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT3', 7200, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Heli_Transport_01_F {
             displayName = "ALiVE UH-80 Ghost Hawk Transport (120 Minutes)";
             description = "Purchasing this will give you 120 minutes of access to a UH-80 Ghost Hawk transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 35000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT1.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT1', 7200, player, 35000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_Heli_Transport_03_F {
             displayName = "ALiVE CH-67 Huron Transport (120 Minutes)";
             description = "Purchasing this will give you 120 minutes of access to a CH-67 Huron transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT2.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT2', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_T_VTOL_01_infantry_F {
             displayName = "V-44 X Blackfish I (60 Minutes)";
             description = "This V-44 X Blackfish Infantry transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT29.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT29', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class B_T_VTOL_01_vehicle_F {
             displayName = "V-44 X Blackfish V (60 Minutes)";
             description = "This V-44 X Blackfish Vehicle transport helicoptor can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT30.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT30', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
     };
     
@@ -235,35 +235,35 @@ class aliveStore_1 {
             description = "Purchasing this will give you 60 minutes of access to a AW159 Wildcat (CAS) combat support helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS5.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS5', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Plane_Fighter_03_dynamicLoadout_F {
             displayName = "ALiVE L-159 ALCA Combat Support (60 Minutes)";
             description = "This L-159 ALCA combat support jet can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS6.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS6', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Plane_Fighter_04_F {
             displayName = "ALiVE JAS 39 Gripen Combat Support (60 Minutes)";
             description = "This JAS 39 Gripen combat support jet can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS7.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS7', 3600, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_MRL_F {
             displayName = "ALiVE KamAZ MRL (60 Minutes)";
             description = "This KamAZ MRL combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\ARTY3.sqf'}";
+            code = "if (player == (_this select 0)) then { ['ARTY3', 3600, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
 		class I_MBT_03_cannon_F {
             displayName = "Leopard 2SG C (60 Minutes)";
             description = "This Leopard 2SG C combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 100000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\CAS14.sqf'}";
+            code = "if (player == (_this select 0)) then { ['CAS14', 3600, player, 100000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
     };
     
@@ -277,91 +277,91 @@ class aliveStore_1 {
             description = "This Fennek Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 15000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT24.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT24', 7200, player, 15000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_transport_F {
             displayName = "ALiVE KamAZ Transport (120 Minutes)";
             description = "This KamAZ Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 20000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT7.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT7', 7200, player, 20000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_medical_F {
             displayName = "ALiVE KamAZ Medical (120 Minutes)";
             description = "This KamAZ Medical can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT23.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT23', 7200, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_fuel_F {
             displayName = "ALiVE KamAZ Fuel (120 Minutes)";
             description = "This KamAZ Fuel can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 30000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT22.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT22', 7200, player, 30000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_box_F {
             displayName = "ALiVE KamAZ Repair (120 Minutes)";
             description = "This KamAZ Repair can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT21.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT21', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Truck_02_ammo_F {
             displayName = "ALiVE KamAZ Ammo (120 Minutes)";
             description = "This KamAZ Ammo can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT20.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT20', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_MRAP_03_hmg_F {
             displayName = "ALiVE Fennek (HMG) (120 Minutes)";
             description = "This Fennek (HMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT25.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT25', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_MRAP_03_gmg_F {
             displayName = "ALiVE Fennek (GMG) (120 Minutes)";
             description = "This Fennek (GMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT26.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT26', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_APC_Wheeled_03_cannon_F {
             displayName = "ALiVE Pandur II Transport (120 Minutes)";
             description = "This Pandur II Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT27.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT27', 7200, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_APC_tracked_03_cannon_F {
             displayName = "ALiVE FV510 Warrior Transport (120 Minutes)";
             description = "This FV510 Warrior Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 75000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT28.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT28', 7200, player, 75000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class B_MBT_01_TUSK_F {
             displayName = "ALiVE Leopard 2SG (120 Minutes)";
             description = "This Leopard 2SG can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 100000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT19.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT19', 7200, player, 100000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Heli_light_03_unarmed_F {
             displayName = "ALiVE AW159 Wildcat (Unarmed) Transport (120 Minutes)";
             description = "Purchasing this will give you 120 minutes of access to a AW159 Wildcat (Unarmed) transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 25000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT4.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT4', 7200, player, 25000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
         class I_Heli_Transport_02_F {
             displayName = "ALiVE W101 Merlin Transport (120 Minutes)";
             description = "Purchasing this will give you 120 minutes of access to a W101 Merlin transport helicoptor, that can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support.";
             price = 50000;
             stock = 100;
-            code = "if (player == (_this select 0)) then {execVM 'arma3mercenaries\combat_support\TRANSPORT5.sqf'}";
+            code = "if (player == (_this select 0)) then { ['TRANSPORT5', 7200, player, 50000] remoteExecCall ['A3M_fnc_requestCombatSupport', 2] };";
         };
     };	
 };
