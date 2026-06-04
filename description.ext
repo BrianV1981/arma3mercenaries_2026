@@ -4,7 +4,7 @@ class Header
 	minPlayers = 1;
 	maxPlayers = 30;
 };
-OnLoadName = "arma3mercenaries Bv8.66";
+OnLoadName = "arma3mercenaries Bv8.66_fix_issue_11_52831";
 onLoadMission = "Constellis is a trusted and experienced provider of security services in high-risk environments, remote areas and emerging markets in support of land-based, aviation, maritime and cyber operations.";
 loadScreen = "pictures\arma3mercenaries_v1.paa";
 author="BrianV1981";
@@ -54,6 +54,8 @@ class CfgFunctions {
     #include "vcom\cfgFunctions.hpp"
     #include "arma3mercenaries\sector_control\cfgFunctions.hpp"
     #include "functions\looter_cfgFunctions.hpp"
+    #include "arma3mercenaries\interrogations\cfgFunctions.hpp"
+    #include "arma3mercenaries\tasks\cfgFunctions.hpp"
 }; // <-- The single closing brace for the entire CfgFunctions block
 
 /////////////////////////////////////GRAD FORTS AND HG///////////////////////////////////////////////////

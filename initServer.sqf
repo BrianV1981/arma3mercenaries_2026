@@ -339,29 +339,13 @@ execVM "scripts\HG_initServer.sqf";
 
 // Initialize the new Sector Control State Machine
 [] call A3M_fnc_initSectorControl;
-nul = [] execVM "arma3mercenaries\interrogations\interrogationTaskLocations.sqf";
+// Initialize Interrogation Map Tasks
+[] call A3M_fnc_initInterrogationTasks;
 
 
 
 
-///arma3mercenaries HVT Task Tracking
-
-// --- Initialize the global tracking array directly ---
-if (isServer) then { // Good practice to wrap server-only init logic
-    if (isNil "server_activeHvtTasks") then {
-        server_activeHvtTasks = [];
-        diag_log "SERVER: Initialized server_activeHvtTasks array.";
-    };
-
-    // --- Start the HVT tracker loop using spawn ---
-    [] spawn {
-        // Check if server again inside spawn just to be safe if code is moved later
-        if (!isServer) exitWith {};
-        // Execute the tracker script in this spawned thread
-        [] execVM "arma3mercenaries\tasks\HVT_1\HVTTaskTracker.sqf";
-
-    };
-    diag_log "SERVER: HVT Task Tracker script spawned.";
-};
+// Initialize the new Task State Manager
+[] call A3M_fnc_initTaskManager;
 
 HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops

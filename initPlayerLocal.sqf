@@ -184,3 +184,35 @@ private _staticLockAction = ["A3M_ToggleStaticLock", "Lock / Unlock Weapon", "",
     (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) || (getPlayerUID player in (_ownerArray select 3)) }
 }] call ace_interact_menu_fnc_createAction;
 ["StaticWeapon", 0, ["ACE_MainActions"], _staticLockAction, true] call ace_interact_menu_fnc_addActionToClass;
+
+// (ACE Interrogation Bindings Removed - Migrated to Server JIP addAction)
+
+// -------------------------------------------------------------------------
+// --- A3M INTERROGATION ACE ACTIONS ---
+// -------------------------------------------------------------------------
+private _actInterrogate = [
+    "A3M_Interrogate_Action",          
+    "Begin Interrogation",             
+    "",                                
+    { 
+        systemChat "[A3M] ACE Action 'Begin Interrogation' clicked!";
+        if (isNil "A3M_fnc_interrogateTarget") then { systemChat "[A3M] ERROR: A3M_fnc_interrogateTarget is undefined!"; };
+        _this spawn A3M_fnc_interrogateTarget; 
+    }, 
+    { 
+        side player in [west, independent] && 
+        { ((vehicleVarName _target) in ["interrogation_bodybag_1", "interrogation_bodybag_2", "interrogation_bodybag_3"]) || (_target getVariable ["isInterrogationTarget", false]) }
+    },    
+    {},                                
+    ["CIVILIAN"],                             
+    [],                           
+    5                                  
+] call ace_interact_menu_fnc_createAction;
+
+// Bind globally to the classnames of the objects you tested. 
+// The condition block above ensures it only shows up on the specific named ones.
+["Land_Bodybag_01_black_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
+["Land_Bodybag_01_blue_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
+["Land_Bodybag_01_white_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
+["Land_CampingTable_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
+["Land_WoodenTable_large_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;

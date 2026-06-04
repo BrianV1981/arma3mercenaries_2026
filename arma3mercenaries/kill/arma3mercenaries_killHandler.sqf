@@ -167,6 +167,37 @@ A3M_fnc_serverHandleReward = {
              if (_walletAmount > 0 && !isNull _killed) then { [_killed, _walletAmount, false] call grad_moneymenu_fnc_addFunds; };
         };
 
+        // --- A3M HVT TASK RESOLUTION ---
+        if (!isNil "A3M_ActiveTasks") then {
+            private _isHVT = false;
+            private _taskIdFound = "";
+            {
+                private _taskId = _x;
+                private _taskData = _y; // [HVT Object, Task Type]
+                if ((_taskData select 0) == _killed) exitWith {
+                    _isHVT = true;
+                    _taskIdFound = _taskId;
+                };
+            } forEach A3M_ActiveTasks;
+
+            if (_isHVT) then {
+                diag_log format ["[A3M TASK MANAGER] HVT %1 killed by %2. Resolving task %3", _killedName, _instigatorName, _taskIdFound];
+                [_taskIdFound, "SUCCEEDED"] call BIS_fnc_taskSetState;
+                
+                // Reward all players of the completing side (if a player killed them)
+                if (_instigatorIsPlayer) then {
+                    private _taskCompletingSide = side _instigator;
+                    {
+                        if (side _x == _taskCompletingSide) then {
+                            _x addScore 1000;
+                            [_x, 500000] call grad_moneymenu_fnc_addFunds;
+                            ["<t color='#FFFFFF' size='1.0'>Target neutralized. Good kill. Collect your pay.</t>", -1, -1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
+                        };
+                    } forEach allPlayers;
+                };
+            };
+        };
+
         // --- A3M DEEP STAT TRACKING (Phase 2) ---
         if (!isNil "A3M_LiveProfiles") then {
             private _killedUID = if (_killedIsPlayer) then { getPlayerUID _killed } else { "" };
