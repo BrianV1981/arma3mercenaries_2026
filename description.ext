@@ -53,6 +53,7 @@ class CfgFunctions {
     #include "HG\Functions\HG_Functions.h"           
     #include "vcom\cfgFunctions.hpp"
     #include "arma3mercenaries\sector_control\cfgFunctions.hpp"
+    #include "arma3mercenaries\combat_support\cfgFunctions.hpp"
     #include "functions\looter_cfgFunctions.hpp"
 }; // <-- The single closing brace for the entire CfgFunctions block
 
