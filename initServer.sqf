@@ -348,4 +348,21 @@ execVM "scripts\HG_initServer.sqf";
 // Initialize the new Task State Manager
 [] call A3M_fnc_initTaskManager;
 
+// -------------------------------------------------------------------------
+// --- ACE3 Trenches to GRAD Fortifications/Persistence Bridge ---
+// -------------------------------------------------------------------------
+["ace_trenches_finished", {
+    params ["_unit", "_trench"];
+
+    // 1. Assign GRAD Ownership to the player who dug it
+    // This allows GRAD Fortifications to manage it, and GRAD Persistence to save it to the SQLite DB.
+    _trench setVariable ["grad_fortifications_fortOwner", _unit, true];
+
+    // 2. Prevent the trench from taking collision damage (Standard GRAD behavior)
+    _trench allowDamage false;
+
+    diag_log format ["[A3M] ACE Trench %1 dug by %2. Tagged for GRAD Fortifications and Persistence.", typeOf _trench, name _unit];
+
+}] call CBA_fnc_addEventHandler;
+
 HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
