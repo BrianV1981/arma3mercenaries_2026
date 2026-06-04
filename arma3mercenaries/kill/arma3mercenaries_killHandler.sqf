@@ -269,7 +269,35 @@ A3M_fnc_serverHandleReward = {
                 };
             };
         };
-        // ----------------------------------------
+            };
+
+            // --- A3M BOUNTY RESOLUTION (Player Bounty Board) ---
+            if (_killedIsPlayer && _instigatorIsPlayer && !_isSuicide) then {
+                private _killedBountyProfile = A3M_LiveProfiles getOrDefault [_killedUID, createHashMap];
+                if (count _killedBountyProfile > 0) then {
+                    private _bountyAmount = _killedBountyProfile getOrDefault ["Bounty", 0];
+                    private _sameGroup = (group _instigator == group _killed);
+
+                    if (_bountyAmount > 0 && !_sameGroup) then {
+                        // Award bounty to killer
+                        [_instigator, _bountyAmount, false] call grad_moneymenu_fnc_addFunds;
+
+                        // Reset victim's bounty
+                        _killedBountyProfile set ["Bounty", 0];
+                        A3M_LiveProfiles set [_killedUID, _killedBountyProfile];
+                        ["A3M_PROFILE_" + _killedUID, _killedBountyProfile] call A3M_fnc_dbSetSecure;
+
+                        // Global notification
+                        private _bountyMsg = format ["[BOUNTY CLAIMED] Operator %1 has collected the $%2 bounty on %3!", _instigatorName, _bountyAmount, _killedName];
+                        [_bountyMsg] remoteExec ["systemChat", 0];
+
+                        diag_log format ["[A3M BOUNTY] %1 collected $%2 bounty on %3 (UID: %4)", _instigatorUID, _bountyAmount, _killedUID];
+                    };
+                };
+            };
+            // -------------------------------------------------
+        };
+        // ----------------------------------------        // ----------------------------------------
 
     } catch {
         diag_log ("[A3M SRV REWARD] ERROR: " + str _exception);
