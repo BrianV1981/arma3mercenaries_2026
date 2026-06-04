@@ -64,17 +64,24 @@ if (_safePos isEqualTo [0,0,0]) exitWith { diag_log format ["A3M_fnc_requestComb
     {
         params ["_side", "_type", "_callsign", "_safePos", "_dir", "_classname", "_durationSecs"];
         
+        private _supportData = [
+            _safePos,
+            _dir,
+            _classname,
+            _callsign,
+            "(group (_this select 0)) setVariable ['Vcm_Disable',true]; (group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];",
+            "0"
+        ];
+        
+        if (_type == "TRANSPORT") then {
+            _supportData pushBack true;
+            _supportData pushBack 0;
+        };
+
         // Add new
         [
             _type,
-            [
-                _safePos,
-                _dir,
-                _classname,
-                _callsign,
-                "",
-                "(group (_this select 0)) setVariable ['Vcm_Disable',true]; (group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];"
-            ]
+            _supportData
         ] call ALiVE_fnc_combatSupportAdd;
         
         // Schedule removal
@@ -91,4 +98,4 @@ if (_safePos isEqualTo [0,0,0]) exitWith { diag_log format ["A3M_fnc_requestComb
     2 // 2 seconds delay to allow removal to process
 ] call CBA_fnc_waitAndExecute;
 
-systemChat format ["%1 requested. It will arrive shortly.", _callsign];
+[format ["%1 requested. It will arrive shortly.", _callsign]] remoteExec ["systemChat", 0];
