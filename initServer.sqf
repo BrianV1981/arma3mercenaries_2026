@@ -335,7 +335,8 @@ execVM "scripts\HG_initServer.sqf";
 21601 call ALiVE_fnc_AutoSave_PNS;
 
 ///https://github.com/gruppe-adler/grad-persistence/wiki/saveMission
-[{[false, 3601] call grad_persistence_fnc_saveMission}, 21000, []] call CBA_fnc_addPerFrameHandler;
+// Industry Standard: Save mission states silently every 10 minutes (600 seconds)
+[{[false, 1] call grad_persistence_fnc_saveMission}, 600, []] call CBA_fnc_addPerFrameHandler;
 
 
 
