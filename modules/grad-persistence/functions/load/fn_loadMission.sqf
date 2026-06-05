@@ -34,5 +34,9 @@ if (isClass (missionConfigFile >> "CfgGradPersistence" >> "customVariables")) th
     [] call FUNC(loadVariables);
 };
 
+// --- A.I.M. Server Loaded Lock ---
+// Signals to the 10-minute auto-save loop that the world has fully populated from SQLite.
+missionNamespace setVariable ["A3M_ServerLoaded", true, true];
+
 INFO("mission loaded");
-"grad-persistence: mission loaded" remoteExec ["systemChat",0,false];
+"grad-persistence: SQLite mission loaded" remoteExec ["systemChat",0,false];

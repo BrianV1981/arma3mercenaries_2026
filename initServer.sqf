@@ -336,7 +336,16 @@ execVM "scripts\HG_initServer.sqf";
 
 ///https://github.com/gruppe-adler/grad-persistence/wiki/saveMission
 // Industry Standard: Save mission states silently every 10 minutes (600 seconds)
-[{[false, 1] call grad_persistence_fnc_saveMission}, 600, []] call CBA_fnc_addPerFrameHandler;
+[{
+    if (missionNamespace getVariable ["A3M_ServerLoaded", false]) then {
+        // [showWarning, waitTimeBeforeExecute]
+        // We wait 30 seconds to ensure any last-minute spawning queues are fully realized
+        [false, 30] call grad_persistence_fnc_saveMission;
+        diag_log "[A3M AUTOSAVE] 10-minute world state save successfully queued.";
+    } else {
+        diag_log "[A3M AUTOSAVE WARNING] Auto-save skipped: Server has not fully loaded world data yet.";
+    };
+}, 600, []] call CBA_fnc_addPerFrameHandler;
 
 
 
