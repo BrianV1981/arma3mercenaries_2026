@@ -4,7 +4,7 @@ class Header
 	minPlayers = 1;
 	maxPlayers = 30;
 };
-OnLoadName = "arma3mercenaries Bv8.69";
+OnLoadName = "arma3mercenaries Bv8.70";
 onLoadMission = "Constellis is a trusted and experienced provider of security services in high-risk environments, remote areas and emerging markets in support of land-based, aviation, maritime and cyber operations.";
 loadScreen = "pictures\arma3mercenaries_v1.paa";
 author="BrianV1981";
@@ -40,6 +40,7 @@ minPlayerDistance = 0;
 #include "HG\UI\HG_DialogsMaster.h"
 #include "arma3mercenaries\player_profile\a3m_playerCard_dialog.hpp"
 #include "arma3mercenaries\leaderboard\a3m_leaderboard_dialog.hpp"
+#include "arma3mercenaries\bounty\a3m_bountyBoard_dialog.hpp"
 
 ///https://github.com/Ghosto27/LootToVehicle/tree/master
 ///ace area loot start
@@ -57,6 +58,7 @@ class CfgFunctions {
     #include "functions\looter_cfgFunctions.hpp"
     #include "arma3mercenaries\interrogations\cfgFunctions.hpp"
     #include "arma3mercenaries\tasks\cfgFunctions.hpp"
+    #include "arma3mercenaries\bounty\cfgFunctions.hpp"
 }; // <-- The single closing brace for the entire CfgFunctions block
 
 /////////////////////////////////////GRAD FORTS AND HG///////////////////////////////////////////////////
