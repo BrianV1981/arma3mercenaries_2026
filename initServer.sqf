@@ -335,17 +335,17 @@ execVM "scripts\HG_initServer.sqf";
 21601 call ALiVE_fnc_AutoSave_PNS;
 
 ///https://github.com/gruppe-adler/grad-persistence/wiki/saveMission
-// Industry Standard: Save mission states silently every 10 minutes (600 seconds)
+// Save mission states silently every 30 minutes (1800 seconds) based on operator preference
 [{
     if (missionNamespace getVariable ["A3M_ServerLoaded", false]) then {
         // [showWarning, waitTimeBeforeExecute]
         // We wait 30 seconds to ensure any last-minute spawning queues are fully realized
         [false, 30] call grad_persistence_fnc_saveMission;
-        diag_log "[A3M AUTOSAVE] 10-minute world state save successfully queued.";
+        diag_log "[A3M AUTOSAVE] 30-minute world state save successfully queued.";
     } else {
         diag_log "[A3M AUTOSAVE WARNING] Auto-save skipped: Server has not fully loaded world data yet.";
     };
-}, 600, []] call CBA_fnc_addPerFrameHandler;
+}, 1800, []] call CBA_fnc_addPerFrameHandler;
 
 
 
@@ -371,10 +371,10 @@ A3M_fnc_serverPlaceBounty = {
 
     // Deduct money: try wallet first, then bank
     if (_wallet >= _amount) then {
-        [_client, -_amount, true] call grad_moneymenu_fnc_addFunds;
+        [_client, -_amount, false] call grad_moneymenu_fnc_addFunds;
     } else {
         private _remainder = _amount - _wallet;
-        if (_wallet > 0) then { [_client, -_wallet, true] call grad_moneymenu_fnc_addFunds; };
+        if (_wallet > 0) then { [_client, -_wallet, false] call grad_moneymenu_fnc_addFunds; };
         [_client, -_remainder, true] call grad_moneymenu_fnc_addFunds;
     };
 
