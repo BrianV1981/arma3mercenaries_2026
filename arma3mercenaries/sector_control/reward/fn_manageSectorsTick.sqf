@@ -25,6 +25,17 @@ if (isNil "A3M_SectorConfig") then {
 
 private _tickInterval = 10; // PFH interval
 
+private _dateArr = systemTimeUTC;
+private _y = (_dateArr select 0) - 2026; if (_y < 0) then { _y = 0; };
+private _daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+if ((_y + 2026) % 4 == 0) then { _daysInMonths set [2, 29]; };
+private _days = _y * 365;
+for "_i" from 2026 to (_y + 2025) do { if (_i % 4 == 0) then { _days = _days + 1; }; };
+for "_i" from 1 to ((_dateArr select 1) - 1) do { _days = _days + (_daysInMonths select _i); };
+_days = _days + ((_dateArr select 2) - 1);
+private _epochNow = (_days * 86400) + ((_dateArr select 3) * 3600) + ((_dateArr select 4) * 60) + (_dateArr select 5);
+
+
 {
     private _sectorData = _x;
     private _triggerName = _sectorData select 0;
@@ -60,6 +71,23 @@ private _tickInterval = 10; // PFH interval
         // Retrieve persistent profile and current active state
         private _profile = A3M_LiveProfiles getOrDefault [_uid, createHashMap];
         
+        // If state is not loaded yet for this session, check SQLite for persistent blocks
+        if !(_stateKey in A3M_SectorControlState) then {
+            private _savedBlockEnd = _profile getOrDefault [format["BlockEnd_%1", _sectorName], 0];
+            if (_savedBlockEnd > 0) then {
+                if (_epochNow < _savedBlockEnd) then {
+                    // Persistent Block is still active! Convert to local server uptime.
+                    private _remainingSecs = _savedBlockEnd - _epochNow;
+                    A3M_SectorControlState set [_stateKey, [0, 0, diag_tickTime + _remainingSecs, 0]];
+                } else {
+                    // Block naturally expired while offline. Clear from SQLite.
+                    _profile set [format["BlockEnd_%1", _sectorName], 0];
+                    ["A3M_PROFILE_" + _uid, _profile] call A3M_fnc_dbSetSecure;
+                    A3M_SectorControlState set [_stateKey, [0, 0, 0, 0]];
+                };
+            };
+        };
+
         // State Array: [TimeTally, RewardsGiven, BlockEndTime, OutsideTally]
         private _playerState = A3M_SectorControlState getOrDefault [_stateKey, [0, 0, 0, 0]];
         
@@ -138,7 +166,7 @@ private _tickInterval = 10; // PFH interval
                         private _blockMsg = format ["Good job securing %1! Payments halted for %2 minutes.", _sectorName, _blockTime / 60];
                         [_blockMsg, -1, -1, 10, 1, 0, _payoutHintID] remoteExec ["BIS_fnc_dynamicText", _player];
                         // Save to SQLite
-                        _profile set [format["BlockEnd_%1", _sectorName], 1]; // Flagged for offline tracking
+                        _profile set [format["BlockEnd_%1", _sectorName], _epochNow + _blockTime]; // Flagged for offline tracking
                         ["A3M_PROFILE_" + _uid, _profile] call A3M_fnc_dbSetSecure;
                     };
                 };
@@ -176,7 +204,7 @@ private _tickInterval = 10; // PFH interval
                         ["", 0, 0, 0, 0, 0, _warningHintID] remoteExec ["BIS_fnc_dynamicText", _player]; // clear warnings
                         
                         // Save to SQLite
-                        _profile set [format["BlockEnd_%1", _sectorName], 1]; // Flagged for offline tracking
+                        _profile set [format["BlockEnd_%1", _sectorName], _epochNow + _blockTime]; // Flagged for offline tracking
                         ["A3M_PROFILE_" + _uid, _profile] call A3M_fnc_dbSetSecure;
                     };
                 };
