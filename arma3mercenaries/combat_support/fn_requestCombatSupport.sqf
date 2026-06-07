@@ -125,7 +125,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                 _dir,
                 _classname,
                 _callsign,
-                "(group (_this select 0)) setVariable ['Vcm_Disable',true]; (group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];",
+                "",
                 "0"
             ];
             

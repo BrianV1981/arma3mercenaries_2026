@@ -137,7 +137,6 @@ private _tickInterval = 10; // PFH interval
                         
                         private _blockMsg = format ["Good job securing %1! Payments halted for %2 minutes.", _sectorName, _blockTime / 60];
                         [_blockMsg, -1, -1, 10, 1, 0, _payoutHintID] remoteExec ["BIS_fnc_dynamicText", _player];
-                        
                         // Save to SQLite
                         _profile set [format["BlockEnd_%1", _sectorName], 1]; // Flagged for offline tracking
                         ["A3M_PROFILE_" + _uid, _profile] call A3M_fnc_dbSetSecure;

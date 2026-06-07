@@ -136,14 +136,9 @@ private _radioAction = ["A3M_Radio", "A3M Radio", "", {
 
 // 6. Mobile Respawn (Specific Classes only)
 private _respawnAction = ["A3M_SetRespawn", "Set Mobile Respawn", "", {
-    // Generate unique ID based on netId to prevent overwriting
-    private _id = netId _target;
-    private _westRespawn = format ["respawn_west_%1", _id];
-    private _indepRespawn = format ["respawn_guerrila_%1", _id];
-
-    // Assign respawn points to the vehicle globally
-    [_target, _westRespawn] remoteExec ["BIS_fnc_addRespawnPosition", 0, true];
-    [_target, _indepRespawn] remoteExec ["BIS_fnc_addRespawnPosition", 0, true];
+    // Assign respawn points to the vehicle globally using the correct signature
+    [[west, _target], BIS_fnc_addRespawnPosition] remoteExec ["call", 0, true];
+    [[independent, _target], BIS_fnc_addRespawnPosition] remoteExec ["call", 0, true];
 
     // Mark as having a respawn so the ACE action hides itself
     _target setVariable ["A3M_HasRespawn", true, true];

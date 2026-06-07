@@ -418,21 +418,10 @@ A3M_fnc_serverFetchBountyTargets = {
         };
     } forEach A3M_LiveProfiles;
 
-    // Also check offline profiles in DB for any with bounties
-    // (Quick scan of known keys - in production this would be more efficient)
-    private _allPlayers = allPlayers;
-    {
-        private _uid = getPlayerUID _x;
-        if (!(_uid in A3M_LiveProfiles)) then {
-            private _dbKey = "A3M_PROFILE_" + _uid;
-            private _profile = [_dbKey, createHashMap, true] call A3M_fnc_dbGetSecure;
-            private _bounty = _profile getOrDefault ["Bounty", 0];
-            if (_bounty > 0) then {
-                private _name = _profile getOrDefault ["PlayerName", "Unknown"];
-                _bountyList pushBack [_uid, _name, _bounty, false];
-            };
-        };
-    } forEach _allPlayers;
+    // Offline player bounty scanning is disabled. 
+    // The current SQLite Key-Value bridge does not support querying for all UIDs where Bounty > 0.
+    // Until the bridge supports complex SQL queries, the board only displays bounties for players 
+    // who have logged in during this server restart cycle (cached in A3M_LiveProfiles).
 
     [_bountyList] remoteExecCall ["A3M_fnc_receiveBountyData", _client];
 };

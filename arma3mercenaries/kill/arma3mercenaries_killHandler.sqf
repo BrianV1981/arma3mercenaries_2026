@@ -269,7 +269,7 @@ A3M_fnc_serverHandleReward = {
                 };
             };
         };
-            };
+            // Removed extra brace
 
             // --- A3M BOUNTY RESOLUTION (Player Bounty Board) ---
             if (_killedIsPlayer && _instigatorIsPlayer && !_isSuicide) then {
@@ -296,7 +296,7 @@ A3M_fnc_serverHandleReward = {
                 };
             };
             // -------------------------------------------------
-        };
+        // Removed extra brace
         // ----------------------------------------        // ----------------------------------------
 
     } catch {
