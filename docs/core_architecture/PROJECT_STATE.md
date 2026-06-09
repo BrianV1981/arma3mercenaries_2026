@@ -3,7 +3,7 @@
 ## 1. Directory Architecture
 
 **The Project Workspace (Mission Editing):**
-*   **Location:** `/home/brian-vasquez/aim-arma/projects/`
+*   **Location:** `/home/brian-vasquez/aim-a3m/`
 *   **Mission Repo:** `arma3mercenaries_2026.Altis` (Tracked via Git. Default branch is `main`).
 *   **Rust Extension Repo:** `a3m-sqlite-bridge` (Tracked via Git. Holds the Golden Binary).
 *   **Rule:** NEVER edit files directly inside the active server directory. Always edit in a Git Worktree, pack to a `.pbo`, and push to the server.

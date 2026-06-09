@@ -15,7 +15,7 @@ The overarching goal of the `arma3mercenaries_2026` codebase is **Optimization a
 You MUST respect the strict boundary between the Development Workspace and the Live Production Server.
 
 ### A. The Development Workspace (Where we write code)
-**Path:** `/home/brian-vasquez/aim-arma/projects/`
+**Path:** `/home/brian-vasquez/aim-a3m/`
 This is your sandbox. All Git repositories and development scripts live here.
 *   **Mission Repo:** `arma3mercenaries_2026.Altis/` (The main Arma 3 codebase).
     *   *Mandate:* **NEVER edit the `main` branch directly.** Use Git Worktrees for all edits (e.g., `git worktree add ../fix-issue-10.Altis -b fix/issue-10`).
