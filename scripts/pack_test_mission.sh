@@ -1,20 +1,11 @@
 #!/bin/bash
 
-# A.I.M. Automated Mission Packer (Cache-Busting Edition)
-
-################################################################################
-# WARNING: DO NOT USE THIS SCRIPT FOR TEST BUILDS!
-# 
-# THIS IS THE PRODUCTION PACKER. IF YOU RUN THIS FROM THE MAIN BRANCH, IT WILL 
-# PERMANENTLY BUMP THE MAJOR VERSION OF THE MISSION (e.g. v892.Altis).
-# 
-# IF YOU ARE PACKING A BUILD TO TEST A BUG OR FEATURE, YOU MUST USE:
-# ./scripts/pack_test_mission.sh
-################################################################################
+# A.I.M. Automated Mission Packer (TEST BUILD EDITION)
+# This script forcefully creates a timestamped test build and will NEVER bump the production version.
 
 if [ -z "$1" ]; then
-    echo "Usage: ./pack_mission.sh <path_to_mission_folder>"
-    echo "Example: ./pack_mission.sh /home/brian-vasquez/aim-arma/projects/arma3mercenaries_2026.Altis"
+    echo "Usage: ./pack_test_mission.sh <path_to_mission_folder>"
+    echo "Example: ./pack_test_mission.sh /home/brian-vasquez/aim-a3m/arma3mercenaries_2026.Altis"
     exit 1
 fi
 
@@ -32,26 +23,14 @@ if [ -z "$major" ] || [ -z "$minor" ]; then
     minor="000"
 fi
 
-# Get the current git branch name
-cd "$MISSION_DIR" || exit
-branch_name=$(git branch --show-current | tr '/' '-' | tr '_' '-')
-cd - > /dev/null
-
 # Generate timestamp (YYYYMMDD-HHMM)
 timestamp=$(date +"%Y%m%d-%H%M")
 
-# 2. Create the versioned staging folder
-if [ "$branch_name" == "main" ]; then
-    # On main, we keep it clean
-    STAGING_NAME="2026_arma3mercenaries_v${major}${minor}.Altis"
-else
-    # On test branches, we append the branch and timestamp
-    STAGING_NAME="2026_arma3mercenaries_v${major}${minor}-${branch_name}-${timestamp}.Altis"
-fi
-
+# 2. Create the versioned staging folder (ALWAYS FORCED AS A TEST BUILD)
+STAGING_NAME="2026_arma3mercenaries_v${major}${minor}-TESTBUILD-${timestamp}.Altis"
 STAGING_DIR="/tmp/$STAGING_NAME"
 
-echo "Staging $STAGING_NAME..."
+echo "Staging TEST BUILD $STAGING_NAME..."
 rm -rf "$STAGING_DIR"
 cp -r "$MISSION_DIR" "$STAGING_DIR"
 
@@ -63,7 +42,6 @@ OUTPUT_PBO="/home/brian-vasquez/arma3server/mpmissions/${STAGING_NAME}.pbo"
 
 if [ -f "$OUTPUT_PBO" ]; then
     echo "[ERROR] A PBO with the name ${STAGING_NAME}.pbo already exists in the mpmissions folder!"
-    echo "Gracefully aborting pack process to prevent overwriting an existing build..."
     rm -rf "$STAGING_DIR"
     exit 1
 fi
