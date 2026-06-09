@@ -113,4 +113,7 @@ If you need instructions on how to use specific, complex tools, do not guess. Yo
 - **To Read:** The project's synthesized lore and architecture live in the `memory-wiki/` folder. Always start by reading `memory-wiki/index.md`.
 - **To Write:** DO NOT manually edit the wiki pages. If you learn a new "Eureka" moment or have a new document to add, write the raw text file into `memory-wiki/_ingest/` and execute `python3 .aim_core/aim_cli.py wiki process` to hand it off to the Subconscious Daemon.
 
-
+## 12. PBO PACKING & TIMESTAMP VERSIONING PROTOCOL
+You are **STRICTLY FORBIDDEN** from packing a `.pbo` from the root `main` branch directory unless you are executing a final, official production release.
+- **The Issue:** The `pack_mission.sh` script detects if you are on `main`. If you are, it bumps the major production version (e.g., `v892.Altis`). If you are on an active dev branch, it appends a timestamp (e.g., `v892-fix-issue-44-timestamp.Altis`).
+- **The Protocol:** When the Operator asks you to pack a PBO for testing, you MUST execute `pack_mission.sh` from *within* the isolated `workspace/issue-<id>` directory. Do NOT run it from the root directory. This ensures the Operator's dedicated server receives a timestamped test build rather than an accidental major version bump.
