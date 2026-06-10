@@ -1,0 +1,45 @@
+// ====================================================================================
+// A3M MASTER LAPTOP / VENDOR INIT SCRIPT
+// Copy and paste whichever lines you want into the object's init box in the Eden Editor.
+// ====================================================================================
+
+// ------------------------------------------------------------------------------------
+// 1. GRAD SHOPS (Requires cargo container and vehicle spawn pad)
+// Format: [this, "storeClass", cargo_object, spawn_pad, "ACE Action Title", "Menu Title"]
+// ------------------------------------------------------------------------------------
+
+// Weapons & Gear
+[this, "weaponStore", container_1, aHelipad_1, "Weapons For Sale", "CIA Arms Dealer"] call grad_lbm_fnc_addInteraction; 
+[this, "itemStore", container_1, aHelipad_1, "Military Supplies For Sale", "Military Surplus Store"] call grad_lbm_fnc_addInteraction; 
+[this, "customStore_1", container_1, aHelipad_1, "Predefined and Custom Loadouts", "Constellis Quick Loadouts"] call grad_lbm_fnc_addInteraction;
+
+// Vehicles
+[this, "vehicleStore_1", container_1, aHelipad_1, "Vehicles For Sale", "CIA Vehicle Lot"] call grad_lbm_fnc_addInteraction; 
+
+// Base Building & Support
+[this, "fortificationStore_1", container_1, aHelipad_1, "Fortification and Logistical Supplies Menu", "Fortification and Logistical Supplies"] call grad_lbm_fnc_addInteraction; 
+[this, "aliveStore_1", container_1, aHelipad_1, "Combat Support Menu", "ALiVE Combat Support"] call grad_lbm_fnc_addInteraction; 
+
+// Special Operations
+[this, "mercenaryStore_1", container_1, aHelipad_1, "Private Security Services Contractors For Hire", "Constellis Holdings, Inc."] call grad_lbm_fnc_addInteraction; 
+[this, "haloStore_1", container_1, aHelipad_1, "High-altitude Military Parachuting", "Special Activities Center (SAC)"] call grad_lbm_fnc_addInteraction; 
+[this, "bugStore_1", container_1, aHelipad_1, "It's Bugged!", "BETA Tester Store"] call grad_lbm_fnc_addInteraction;
+
+
+// ------------------------------------------------------------------------------------
+// 2. A3M & HG SHOPS (Global Variables)
+// ------------------------------------------------------------------------------------
+
+// --- A3M Constellis Core (Uses boolean TRUE) ---
+this setVariable ["A3M_isBlackMarket", true, true];     // A3M Black Market (Dual Payment System)
+this setVariable ["A3M_isBarracks", true, true];        // A3M Virtual Barracks Kiosk
+this setVariable ["A3M_isATM", true, true];             // HG ATM Access (Doesn't spawn objects)
+
+// --- HG Stores (Uses STRING to map to your HG_Config.h shops and spawn points) ---
+// Example: If you create a new shop in HG_Config called "HG_VIP_Garage", you just paste it here!
+this setVariable ["A3M_isGarage", "HG_DefaultGarage", true];          // HG Garage
+this setVariable ["A3M_isDealer", "HG_DefaultDealer", true];          // HG Vehicle Dealer
+this setVariable ["A3M_isVehiclesShop", "HG_DefaultShop", true];      // HG Vehicle Shop
+this setVariable ["A3M_isTrader", "HG_DefaultTrader", true];          // HG Trader
+this setVariable ["A3M_isGearShop", "HG_DefaultShop", true];          // HG Gear Shop
+this setVariable ["A3M_isItemsShop", "HG_DefaultShop", true];         // HG Items Shop
