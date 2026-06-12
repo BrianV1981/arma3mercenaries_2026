@@ -242,3 +242,19 @@ class grad_lbm_RscListNBox
 		color[] = {1,1,1,1};
 	};
 };
+
+class grad_lbm_RscEdit {
+	access = 0;
+	type = 2;
+	style = 0;
+	colorBackground[] = {0,0,0,0};
+	colorText[] = {1,1,1,1};
+	colorDisabled[] = {1,1,1,0.25};
+	colorSelection[] = {1,1,1,0.25};
+	font = "RobotoCondensed";
+	sizeEx = 0.04;
+	autocomplete = "";
+	text = "";
+	size = 0.2;
+	shadow = 0;
+};
