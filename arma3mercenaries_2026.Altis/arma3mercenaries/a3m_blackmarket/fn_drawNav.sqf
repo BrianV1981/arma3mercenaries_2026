@@ -7,13 +7,13 @@ params ["_display", "_activeID"];
 
 // 1. Define all 7 Stores
 private _allButtons = [
-    ["weaponStore", "CIA ARMS DEALER", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'weaponStore', '', player] call grad_lbm_fnc_loadBuymenu; }; }],
-    ["itemStore", "MILITARY SURPLUS", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'itemStore', '', player] call grad_lbm_fnc_loadBuymenu; }; }],
-    ["armory", "ARMORY", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [false] spawn A3M_fnc_openBlackMarket; }; }],
-    ["vehicles", "CIA VEHICLE LOT", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; }; }],
-    ["fortificationStore_1", "BASE BUILDING", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }; }],
-    ["aliveStore_1", "COMBAT SUPPORT", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }; }],
-    ["mercenaryStore_1", "CONTRACTORS", { [] spawn { waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])}; uiSleep 0.2; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }; }]
+    ["weaponStore", "CIA ARMS DEALER", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'weaponStore', '', player] call grad_lbm_fnc_loadBuymenu; }],
+    ["itemStore", "MILITARY SURPLUS", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'itemStore', '', player] call grad_lbm_fnc_loadBuymenu; }],
+    ["armory", "ARMORY", { [false] spawn A3M_fnc_openBlackMarket; }],
+    ["vehicles", "CIA VEHICLE LOT", { ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; }],
+    ["fortificationStore_1", "BASE BUILDING", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }],
+    ["aliveStore_1", "COMBAT SUPPORT", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }],
+    ["mercenaryStore_1", "CONTRACTORS", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }]
 ];
 
 // 2. Filter out the active store
@@ -52,9 +52,16 @@ for "_i" from 0 to 5 do {
     _btn ctrlAddEventHandler ["ButtonClick", {
         params ["_ctrl"];
         private _display = ctrlParent _ctrl;
-        _display closeDisplay 2; 
         private _code = _ctrl getVariable "A3M_NavCode";
-        call _code;
+        
+        // Ensure the current display fully unloads its cameras and assets BEFORE opening the new one
+        _display closeDisplay 2; 
+        [_display, _code] spawn {
+            params ["_display", "_code"];
+            waitUntil {isNull _display};
+            uiSleep 0.25; 
+            call _code;
+        };
     }];
     
     _btn ctrlCommit 0;
