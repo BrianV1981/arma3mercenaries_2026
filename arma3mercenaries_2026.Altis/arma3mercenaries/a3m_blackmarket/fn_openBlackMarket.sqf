@@ -99,9 +99,23 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     private _display = uiNamespace getVariable ["ace_arsenal_display", displayNull];
 
     // Nav Tabs Group (Top - Absolute Coordinates)
+    private _btnWeapons = _display ctrlCreate ["RscButtonMenu", 9002];
+    _btnWeapons ctrlSetPosition [0.02 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnWeapons ctrlSetText "CIA ARMS DEALER";
+    _btnWeapons ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
+    _btnWeapons ctrlAddEventHandler ["ButtonClick", {
+        (ctrlParent (_this select 0)) closeDisplay 2;
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
+            uiSleep 0.5; 
+            [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'weaponStoreMenu_1', '', player] call grad_lbm_fnc_loadBuymenu; 
+        };
+    }];
+    _btnWeapons ctrlCommit 0;
+
     private _btnArmory = _display ctrlCreate ["RscButtonMenu", 9003];
-    _btnArmory ctrlSetPosition [0.10 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.15 * safeZoneW, 0.04 * safeZoneH];
-    _btnArmory ctrlSetText "ARMORY";
+    _btnArmory ctrlSetPosition [0.14 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnArmory ctrlSetText "MILITARY SURPLUS";
     _btnArmory ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnArmory ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
@@ -114,8 +128,8 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     _btnArmory ctrlCommit 0;
 
     private _btnVehicles = _display ctrlCreate ["RscButtonMenu", 9004];
-    _btnVehicles ctrlSetPosition [0.26 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.15 * safeZoneW, 0.04 * safeZoneH];
-    _btnVehicles ctrlSetText "MOTORPOOL";
+    _btnVehicles ctrlSetPosition [0.26 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnVehicles ctrlSetText "CIA VEHICLE LOT";
     _btnVehicles ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnVehicles ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
@@ -128,7 +142,7 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     _btnVehicles ctrlCommit 0;
 
     private _btnForts = _display ctrlCreate ["RscButtonMenu", 9005];
-    _btnForts ctrlSetPosition [0.42 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.15 * safeZoneW, 0.04 * safeZoneH];
+    _btnForts ctrlSetPosition [0.02 * safeZoneW + safeZoneX, 0.06 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
     _btnForts ctrlSetText "BASE BUILDING";
     _btnForts ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnForts ctrlAddEventHandler ["ButtonClick", {
@@ -142,8 +156,8 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     _btnForts ctrlCommit 0;
 
     private _btnSupport = _display ctrlCreate ["RscButtonMenu", 9006];
-    _btnSupport ctrlSetPosition [0.58 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.15 * safeZoneW, 0.04 * safeZoneH];
-    _btnSupport ctrlSetText "SUPPORT";
+    _btnSupport ctrlSetPosition [0.14 * safeZoneW + safeZoneX, 0.06 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnSupport ctrlSetText "COMBAT SUPPORT";
     _btnSupport ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnSupport ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
@@ -156,7 +170,7 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     _btnSupport ctrlCommit 0;
 
     private _btnMercs = _display ctrlCreate ["RscButtonMenu", 9007];
-    _btnMercs ctrlSetPosition [0.74 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.15 * safeZoneW, 0.04 * safeZoneH];
+    _btnMercs ctrlSetPosition [0.26 * safeZoneW + safeZoneX, 0.06 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
     _btnMercs ctrlSetText "CONTRACTORS";
     _btnMercs ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnMercs ctrlAddEventHandler ["ButtonClick", {
