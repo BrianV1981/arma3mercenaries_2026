@@ -25,7 +25,7 @@ params[["_price",0]];  // Removed _discount from params
 } forEach HG_GEAR_PREVIEW;
 
 // Check if the player has enough funds using Grad Money
-private _currentFunds = player call grad_lbm_fnc_getCurrentFunds;
+private _currentFunds = [player, false] call grad_lbm_fnc_getFunds;
 if (_currentFunds < _price) then
 {
     // Show message if the player doesn't have enough funds
@@ -36,7 +36,7 @@ if (_currentFunds < _price) then
     // Subtract the total price from the player's funds using Grad Money
     if(_price > 0) then
     {
-        [player, -_price] call grad_moneymenu_fnc_addFunds;
+        [player, -_price] call grad_lbm_fnc_addFunds;
     };
 
     // If HG_CRATE_ENABLED is true, fill the player's box with the purchased items

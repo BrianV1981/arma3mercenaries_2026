@@ -58,7 +58,7 @@ switch(_mode) do
 				if(_price > 0) then
 				{
 				    // Subtract the price from the player's Grad Money account
-				    [player, -_price] call grad_moneymenu_fnc_addFunds;
+				    [player, -_price] call grad_lbm_fnc_addFunds;
 				};
 				hint format[(localize "STR_HG_ITEM_BOUGHT"),_qty,_displayName,if(_price <= 0) then {(localize "STR_HG_DLG_FREE")} else {([_price,true] call HG_fnc_currencyToText)}];
 			    HG_ITEMS_BOUGHT = true;
