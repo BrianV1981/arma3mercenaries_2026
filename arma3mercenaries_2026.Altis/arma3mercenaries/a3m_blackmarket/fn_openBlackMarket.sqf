@@ -48,37 +48,19 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                         if (isClass _itemClass) then {
                             private _itemCondStr = getText (_itemClass >> "condition");
                             if (_itemCondStr == "") then { _itemCondStr = "true"; };
-                            
                             if (call compile _itemCondStr) then {
                                 private _className = configName _itemClass;
                                 private _price = getNumber (_itemClass >> "price");
                                 
                                 if (_price > 0) then {
-                                    A3M_Armory_GradPrices set [_className, _price];
-                                    
-                                    // Categorize for Arsenal Whitelisting
-                                    private _details = _className call BIS_fnc_itemType;
-                                    private _cat = _details select 0;
+                                    A3M_Armory_GradPrices set [toLower _className, _price];
+                                        
+                                        // Categorize for Arsenal Whitelisting
+                                        private _details = _className call BIS_fnc_itemType;
+                                        private _cat = _details select 0;
                                     private _type = _details select 1;
                                     
-                                    if (_cat == "Weapon") then { 
-                                        _whitelistWeapons pushBackUnique _className; 
-                                        // 1. Base Weapon Fallback
-                                        private _baseWep = [_className] call BIS_fnc_baseWeapon;
-                                        if (_baseWep != _className && {!(A3M_Armory_GradPrices hasKey _baseWep)}) then {
-                                            A3M_Armory_GradPrices set [_baseWep, _price];
-                                            _whitelistWeapons pushBackUnique _baseWep;
-                                        };
-                                        // 2. Default Magazine Fallback (BI Arsenal auto-adds this)
-                                        private _mags = getArray (configFile >> "CfgWeapons" >> _baseWep >> "magazines");
-                                        if (count _mags > 0) then {
-                                            private _defaultMag = _mags select 0;
-                                            if (!(A3M_Armory_GradPrices hasKey _defaultMag)) then {
-                                                A3M_Armory_GradPrices set [_defaultMag, 50]; // Fallback flat price
-                                                _whitelistMagazines pushBackUnique _defaultMag;
-                                            };
-                                        };
-                                    };
+                                    if (_cat == "Weapon") then { _whitelistWeapons pushBackUnique _className; };
                                     if (_cat == "Magazine") then { _whitelistMagazines pushBackUnique _className; };
                                     if (_type == "Backpack") then { _whitelistBackpacks pushBackUnique _className; } else {
                                         if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBackUnique _className; };
@@ -168,7 +150,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
             
             {
                 if (!(_x in _oldWeapons) && _x != "") then { 
-                    private _p = A3M_Armory_GradPrices getOrDefault [_x, 0];
+                    private _p = A3M_Armory_GradPrices getOrDefault [toLower _x, 0];
                     if (_p == 0) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _x]; 
                         _contraband = true;
@@ -179,7 +161,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
             
             {
                 if (!(_x in _oldItems) && _x != "") then { 
-                    private _p = A3M_Armory_GradPrices getOrDefault [_x, 0];
+                    private _p = A3M_Armory_GradPrices getOrDefault [toLower _x, 0];
                     if (_p == 0) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _x]; 
                         _contraband = true;
@@ -277,11 +259,11 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     private _totalCost = 0;
     
     {
-        if (!(_x in _oldWeapons)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [_x, 0]); };
+        if (!(_x in _oldWeapons)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [toLower _x, 0]); };
     } forEach _newWeapons;
     
     {
-        if (!(_x in _oldItems)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [_x, 0]); };
+        if (!(_x in _oldItems)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [toLower _x, 0]); };
     } forEach _newItems;
     
     // Check funds
