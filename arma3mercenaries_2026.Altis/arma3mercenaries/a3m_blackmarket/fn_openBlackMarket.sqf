@@ -113,9 +113,23 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     }];
     _btnWeapons ctrlCommit 0;
 
+    private _btnItemStore = _display ctrlCreate ["RscButtonMenu", 9009];
+    _btnItemStore ctrlSetPosition [0.14 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnItemStore ctrlSetText "MILITARY SURPLUS";
+    _btnItemStore ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
+    _btnItemStore ctrlAddEventHandler ["ButtonClick", {
+        (ctrlParent (_this select 0)) closeDisplay 2;
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
+            uiSleep 0.5; 
+            [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'itemStore', '', player] call grad_lbm_fnc_loadBuymenu; 
+        };
+    }];
+    _btnItemStore ctrlCommit 0;
+
     private _btnArmory = _display ctrlCreate ["RscButtonMenu", 9003];
-    _btnArmory ctrlSetPosition [0.14 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
-    _btnArmory ctrlSetText "MILITARY SURPLUS";
+    _btnArmory ctrlSetPosition [0.26 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnArmory ctrlSetText "ARMORY";
     _btnArmory ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnArmory ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
@@ -128,7 +142,7 @@ private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems 
     _btnArmory ctrlCommit 0;
 
     private _btnVehicles = _display ctrlCreate ["RscButtonMenu", 9004];
-    _btnVehicles ctrlSetPosition [0.26 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
+    _btnVehicles ctrlSetPosition [0.38 * safeZoneW + safeZoneX, 0.02 * safeZoneH + safeZoneY, 0.11 * safeZoneW, 0.03 * safeZoneH];
     _btnVehicles ctrlSetText "CIA VEHICLE LOT";
     _btnVehicles ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnVehicles ctrlAddEventHandler ["ButtonClick", {
