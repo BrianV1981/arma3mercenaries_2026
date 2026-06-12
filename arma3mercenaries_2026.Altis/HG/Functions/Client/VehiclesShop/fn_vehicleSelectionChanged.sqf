@@ -36,24 +36,7 @@ if(_vehicle != (localize "STR_HG_NONE")) then
 	    _x ctrlEnable true;
 	} forEach [HG_VEHICLES_TG,HG_VEHICLES_BUY,HG_VEHICLES_COLORS];
 	
-    // Dynamically search CfgGradBuymenu for the custom A3M vehicle description
-    private _customDesc = "";
-    private _cfgBuymenu = missionConfigFile >> "CfgGradBuymenu";
-    for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
-        private _storeClass = _cfgBuymenu select _i;
-        if (isClass _storeClass) then {
-            for "_j" from 0 to ((count _storeClass) - 1) do {
-                private _categoryClass = _storeClass select _j;
-                if (isClass _categoryClass) then {
-                    if (isClass (_categoryClass >> _vehicle)) then {
-                        private _desc = getText (_categoryClass >> _vehicle >> "description");
-                        if (_desc != "") then { _customDesc = _desc; };
-                    };
-                };
-            };
-        };
-    };
-    if (_customDesc == "") then { _customDesc = "No description available in the Quartermaster network."; };
+    private _customDesc = if (!isNil "A3M_HG_CurrentVehicleDescriptions") then { A3M_HG_CurrentVehicleDescriptions select _index } else { "No description available in the Quartermaster network." };
 
     // Update the UI with vehicle details
     HG_VEHICLES_TEXT ctrlSetStructuredText parseText format

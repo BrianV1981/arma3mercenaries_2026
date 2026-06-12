@@ -17,6 +17,8 @@ _spawnPoints = getArray(getMissionConfig "CfgClient" >> "HG_VehiclesShopCfg" >> 
     lbClear _x;
 } forEach [HG_VEHICLES_LIST,HG_VEHICLES_COLORS,HG_VEHICLES_SP];
 
+A3M_HG_CurrentVehicleDescriptions = [];
+
 {
     _exists = isClass(configFile >> "CfgVehicles" >> (_x select 0));
 	_condition = call compile (_x select 2);
@@ -27,6 +29,9 @@ _spawnPoints = getArray(getMissionConfig "CfgClient" >> "HG_VehiclesShopCfg" >> 
         HG_VEHICLES_LIST lbSetData[_ind,(_x select 0)];
         HG_VEHICLES_LIST lbSetValue[_ind,(_x select 1)];
 	    HG_VEHICLES_LIST lbSetTooltip[_ind,_vName];
+        
+        private _desc = if (count _x > 3) then { _x select 3 } else { "No description available in the Quartermaster network." };
+        A3M_HG_CurrentVehicleDescriptions pushBack _desc;
 	};
 } forEach _shopContent;
 

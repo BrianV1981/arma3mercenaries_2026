@@ -272,12 +272,6 @@
                 price = 475000;
                 stock = 20;
             };
-			class B_T_APC_Tracked_01_CRV_F {
-                displayName = "Nemmera (Repair, Rearm, Refuel, & Mobile Respawn) (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Nemmera is designed to serve purely as a support vehicle. Nearby friendly vehicles can be repaired, rearmed and refuelled by the Nemmera.";
-                price = 575000;
-                stock = 20;
-            };
 		};
 		class Cvehicles {
             kindOf = "Vehicles";
@@ -465,13 +459,6 @@
                 stock = 20;
 				
             };
-			class B_T_APC_Wheeled_01_cannon_F {
-                displayName = "Badger IFV (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Badger IFV is an 8x8 infantry fighting vehicle designed as a medium-lift personnel carrier for expeditionary warfare. It can operate across a variety of environments ranging from land to sea, and can even be para-dropped from the air. (Seating Capacity: 11)";
-                price = 520000;
-                stock = 20;
-				
-            };
 			class B_AFV_Wheeled_01_cannon_F {
                 displayName = "Rooikat 120 (Sand)";
                 description = "The Rooikat 120 is the latest wheeled tank destroyer in NATO armored forces, designed for easy transportation to crisis regions. Its lightweight 120mm main cannon can use all conventional rounds including MARUK ATGMs, which increase its effective range to 8 km. The vehicle's secondary weapon is the .338 magnum SPMG coaxial machinegun. The price paid for the Rhino's great mobility and firepower is its light armor and low supplies of ammo and fuel. (Seating Capacity: 3)";
@@ -479,38 +466,10 @@
                 stock = 20;
 				
             };
-			class B_T_AFV_Wheeled_01_cannon_F {
-                displayName = "Rooikat 120 (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Rooikat 120 is the latest wheeled tank destroyer in NATO armored forces, designed for easy transportation to crisis regions. Its lightweight 120mm main cannon can use all conventional rounds including MARUK ATGMs, which increase its effective range to 8 km. The vehicle's secondary weapon is the .338 magnum SPMG coaxial machinegun. The price paid for the Rhino's great mobility and firepower is its light armor and low supplies of ammo and fuel. (Seating Capacity: 3)";
-                price = 550000;
-                stock = 20;
-				
-            };		
-			class B_AFV_Wheeled_01_up_cannon_F {
-                displayName = "Rooikat 120 UP (Sand)";
-                description = "The Rooikat 120 is the latest wheeled tank destroyer in NATO armored forces, designed for easy transportation to crisis regions. Its lightweight 120mm main cannon can use all conventional rounds including MARUK ATGMs, which increase its effective range to 8 km. The vehicle's secondary weapon is the .338 magnum SPMG coaxial machinegun. The price paid for the Rhino's great mobility and firepower is its light armor and low supplies of ammo and fuel. The 'UP' version is equipped with a remotely operated 12.7mm HMG and improved protection, provided by a cage and reactive armor. However, with this setup, it's too bulky to fit into many transport vehicles, including the Blackfish VTOL. (Seating Capacity: 3)";
-                price = 475000;
-                stock = 20;
-				
-            };
-			class B_T_AFV_Wheeled_01_up_cannon_F {
-                displayName = "Rooikat 120 UP (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Rooikat 120 is the latest wheeled tank destroyer in NATO armored forces, designed for easy transportation to crisis regions. Its lightweight 120mm main cannon can use all conventional rounds including MARUK ATGMs, which increase its effective range to 8 km. The vehicle's secondary weapon is the .338 magnum SPMG coaxial machinegun. The price paid for the Rhino's great mobility and firepower is its light armor and low supplies of ammo and fuel. The 'UP' version is equipped with a remotely operated 12.7mm HMG and improved protection, provided by a cage and reactive armor. However, with this setup, it's too bulky to fit into many transport vehicles, including the Blackfish VTOL. (Seating Capacity: 3)";
-                price = 575000;
-                stock = 20;
-				
-            };
 			class B_APC_Tracked_01_rcws_F {
                 displayName = "Namer (Sand)";
                 description = "The Namer is a heavily-armoured troop carrier that is designed to be modular. Its chassis can be modified in order to be adapted for use in other roles, though its primary purpose remains transporting troops into or out of combat. (Seating Capacity: 11)";
                 price = 440000;
-                stock = 20;
-				
-            };
-			class B_T_APC_Tracked_01_rcws_F {
-                displayName = "Namer (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Namer is a heavily-armoured troop carrier that is designed to be modular. Its chassis can be modified in order to be adapted for use in other roles, though its primary purpose remains transporting troops into or out of combat. (Seating Capacity: 11)";
-                price = 540000;
                 stock = 20;
 				
             };
@@ -542,12 +501,6 @@
                 stock = 20;
 				
             };
-			class B_T_APC_Tracked_01_AA_F {
-                displayName = "Bardelas (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***Primarily used to defend against aerial threats, the Bardelas is fitted with a turret armed with dual 35 mm cannons and four surface-to-air missiles that can be fired in a rapid succession once an aerial target is locked onto. (Seating Capacity: 3)";
-                price = 600000;
-                stock = 20;		
-			};
 	};
         class HAvehicles {
             kindOf = "Vehicles";
@@ -575,13 +528,6 @@
                 stock = 20;
 				
             };
-			class B_T_MBT_01_cannon_F {
-                displayName = "Merkava MK IV M (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Merkava MK IV M is a main battle tank that uses a drive train consisting of six road wheels, one rear idler wheel, one front drive sprocket and three return rollers per side.The turret is triangular and narrow in shape, large but low, and is mounted rearwards onto the chassis, a layout commonly found on SPGs. (Seating Capacity: 9)";
-                price = 700000;
-                stock = 20;
-				
-            };
 			class O_MBT_04_cannon_F {
                 displayName = "T-14 Armata (Hex)";
                 description = "A licensed variant of the original Russian design operated by the elite of CSAT armored forces. The tank is equipped with a high velocity, high-accuracy 125mm cannon, a 7.62mm coaxial machinegun, and a 12.7mm HMG in a remote turret. The crew is located in an armored capsule in the hull, improving survivability and eliminating one of the weaknesses of older tank designs. The disadvantage is its technical complexity and cost, resulting in low production numbers. (Seating Capacity: 3)";
@@ -593,20 +539,6 @@
                 displayName = "Merkava MK IV LIC (Sand)";
                 description = "The Merkava MK IV LIC is the urban purpose variant of the M2A1 Slammer. Compared to the basic version, it features heavier armor with reinforced rear of the tank and a remote-controlled turret fitted with 12.7 mm heavy machine gun. (Seating Capacity: 9)";
                 price = 650000;
-                stock = 20;
-				
-            };
-			class B_T_MBT_01_TUSK_F {
-                displayName = "Merkava MK IV LIC (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***The Merkava MK IV LIC is the urban purpose variant of the M2A1 Slammer. Compared to the basic version, it features heavier armor with reinforced rear of the tank and a remote-controlled turret fitted with 12.7 mm heavy machine gun. (Seating Capacity: 9)";
-                price = 750000;
-                stock = 20;
-				
-            };	
-			class O_MBT_04_command_F {
-                displayName = "T-14K Armata (Hex)";
-                description = "A licensed variant of the original Russian design operated by the elite of CSAT armored forces. The tank is equipped with a high velocity, high-accuracy 125mm cannon, a 7.62mm coaxial machinegun, and a 12.7mm HMG in a remote turret. The crew is located in an armored capsule in the hull, improving survivability and eliminating one of the weaknesses of older tank designs. The disadvantage is its technical complexity and cost, resulting in low production numbers. Two main variants are currently in use - the standard T-140 and the T-140K, a 'commander' variant which exchanges the HMG for a 30mm autocannon. In addition, it also provides additional radios and sensors for platoon and company leaders. (Seating Capacity: 3)";
-                price = 675000;
                 stock = 20;
 				
             };
@@ -630,13 +562,6 @@
                 stock = 20;
 				
             };
-			class B_T_MBT_01_mlrs_F {
-                displayName = "Seara (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***Sharing the same chassis as its MBT parent, the Seara is essentially a mobile rocket battery on treads. It can accurately deliver high-explosive rockets with a dispersion of less than 100 m on targets more than 11 km away in a single salvo. (Seating Capacity: 3)";
-                price = 700000;
-                stock = 20;
-				
-            };
 			class B_MBT_01_arty_F {
                 displayName = "Sholef (Sand)";
                 description = "Fitted with a 155 mm howitzer cannon as its primary weapon, the Scorcher is a powerful gun-based fire support vehicle that can launch a mixture of high-explosive, smoke, cluster, and even precision guided shells on targets at extreme distances. (Seating Capacity: 3)";
@@ -644,41 +569,10 @@
                 stock = 20;
 				
             };
-            class B_T_MBT_01_arty_F {
-                displayName = "Sholef (Military Green)";
-                description = "***ATTENTION***THIS VEHICLE CAN BE SOLD BACK AT FULL PRICE***Fitted with a 155 mm howitzer cannon as its primary weapon, the Scorcher is a powerful gun-based fire support vehicle that can launch a mixture of high-explosive, smoke, cluster, and even precision guided shells on targets at extreme distances. (Seating Capacity: 3)";
-                price = 800000;
-                stock = 20;
-				
-            };			
-	};	
-        class Avehicles {
-            kindOf = "Vehicles";
-            displayName = "Fixed-Wing and VTOL Aircraft";
-            //items of this category:
-			
-            class B_T_VTOL_01_infantry_F {
-                displayName = "V-44 X Blackfish (Mobile Respawn )(Unarmed)";
-                description = "This is a V-44 X Blackfish (Infantry Transport) is a multi-mission tiltrotor aircraft that uses one three-bladed proprotor, turboprop engines fitted on the end of each wing, The V-44X Blackfish’s third-generation tilt-rotor VTOL (Vertical Take-Off and Landing) technology provides unparalleled maneuverability with its unique ability to perform pylon turns or merely hover in place. (Slingload: No) (Slingloadable: No)";
-                price = 400000;
-                stock = 20;
-            };
-			class B_T_VTOL_01_infantry_olive_F {
-                displayName = "V-44 X Blackfish (Mobile Respawn )(Unarmed)(Olive)";
-                description = "This is a V-44 X Blackfish (Infantry Transport) is a multi-mission tiltrotor aircraft that uses one three-bladed proprotor, turboprop engines fitted on the end of each wing, The V-44X Blackfish’s third-generation tilt-rotor VTOL (Vertical Take-Off and Landing) technology provides unparalleled maneuverability with its unique ability to perform pylon turns or merely hover in place. (Slingload: No) (Slingloadable: No)";
-                price = 500000;
-                stock = 20;
-            };
             class B_T_VTOL_01_armed_F {
                 displayName = "V-44 X Blackfish (Mobile Respawn )(Armed)";
                 description = "The Blackfish is a multi-mission tiltrotor aircraft that uses one three-bladed proprotor, turboprop engines fitted on the end of each wing, The V-44X Blackfish’s third-generation tilt-rotor VTOL (Vertical Take-Off and Landing) technology provides unparalleled maneuverability with its unique ability to perform pylon turns or merely hover in place, Armed variant of the Blackfish. Has two gunners who remotely operate its weapon systems through control panels in front of their seats.. (Slingload: No) (Slingloadable: No)";
                 price = 420000;
-                stock = 20;
-            };
-			class B_T_VTOL_01_armed_olive_F {
-                displayName = "V-44 X Blackfish (Mobile Respawn )(Armed)(Olive)";
-                description = "The Blackfish is a multi-mission tiltrotor aircraft that uses one three-bladed proprotor, turboprop engines fitted on the end of each wing, The V-44X Blackfish’s third-generation tilt-rotor VTOL (Vertical Take-Off and Landing) technology provides unparalleled maneuverability with its unique ability to perform pylon turns or merely hover in place, Armed variant of the Blackfish. Has two gunners who remotely operate its weapon systems through control panels in front of their seats.. (Slingload: No) (Slingloadable: No)";
-                price = 520000;
                 stock = 20;
             };
 			class I_C_Plane_Civil_01_F {
@@ -810,13 +704,6 @@
                 displayName = "UH-80 Ghost Hawk";
                 description = "The Ghost Hawk is a five-bladed, twin engine, rotary-wing stealth helicopter designed for slingloading cargo and to transport troops into battle. (Slingload: Yes, up to 4000 kg) (Slingloadable: No)";
                 price = 350000;
-                stock = 50;
-				
-            };
-			class B_Heli_Transport_01_camo_F {
-                displayName = "UH-80 Ghost Hawk (Camo)";
-                description = "The Ghost Hawk is a five-bladed, twin engine, rotary-wing stealth helicopter designed for slingloading cargo and to transport troops into battle. (Slingload: Yes, up to 4000 kg) (Slingloadable: No)";
-                price = 450000;
                 stock = 50;
 				
             };
