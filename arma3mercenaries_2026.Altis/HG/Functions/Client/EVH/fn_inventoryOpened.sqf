@@ -9,12 +9,18 @@ if((_targetContainer isKindOf "LandVehicle") OR (_targetContainer isKindOf "Ship
 {
 	if((locked _targetContainer) isEqualTo 2) then
 	{
-		private _ownerUID = (_targetContainer getVariable "HG_Owner") select 0;
-		if((getPlayerUID player) != _ownerUID) then
-		{
-			_handled = true;
-			hint (localize "STR_HG_CANNOT_OPEN_INVENTORY");
-		};
+        private _ownerData = _targetContainer getVariable ["HG_Owner", []];
+        if (count _ownerData > 0) then {
+		    private _originalOwnerUID = _ownerData select 0;
+            private _sharedOwners = _ownerData select 3;
+            private _myUID = getPlayerUID player;
+
+		    if (_myUID != _originalOwnerUID && {!(_myUID in _sharedOwners)}) then
+		    {
+			    _handled = true;
+			    hint (localize "STR_HG_CANNOT_OPEN_INVENTORY");
+		    };
+        };
 	};
 };
 
