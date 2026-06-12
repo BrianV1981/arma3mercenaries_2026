@@ -61,6 +61,9 @@ When you buy an AI Mercenary, they are physically flown in via VTOL drop and par
 <font color='#ffaa00'>THE VIRTUAL BARRACKS</font><br/>
 Access the Virtual Barracks via terminals to manage your active squad. You can 'Stow' an active mercenary to safely store them in the database (they must be alive and within 50 meters). You can also 'Deploy' offline mercenaries directly to your position.<br/><br/>
 
+<font color='#ffaa00'>SQUAD MANAGEMENT (P KEY)</font><br/>
+Press the <t color='#ffff00'>'P'</t> key to open your Player Dossier, and click the 'My Squad' button. From this custom UI, you can manage your group functions, track your active AI squad members, and monitor their status in the field.<br/><br/>
+
 <font color='#ffaa00'>SERVER RESTARTS AND MOBILIZATION</font><br/>
 When the server restarts, any AI squad members that were actively deployed with you will spawn back in safely handcuffed and set to captive. This is a fail-safe to prevent them from dying while the server loads. Simply approach them and use your ACE Interaction menu to 'Mobilize' them and return them to combat readiness!
 "
@@ -71,11 +74,33 @@ player createDiaryRecord ["a3m_field_manual", ["Vehicle Operations and Garage",
 <font color='#ffaa00'>CLAIMING AND LOCKING</font><br/>
 Use your ACE Interaction menu on any vehicle or static weapon to 'Claim' it. Once claimed, you can Lock/Unlock it and give keys to other players. Only the owner or key-holders can access the inventory or driver seat.<br/><br/>
 
+<font color='#ffaa00'>VEHICLE FLIP</font><br/>
+If your vehicle rolls over, you can flip it back onto its wheels using your ACE Interaction menu. <t color='#ff0000'>Note:</t> You must unlock the vehicle first before the system will allow you to flip it.<br/><br/>
+
+<font color='#ffaa00'>MOBILE RESPAWNS</font><br/>
+Heavy transport vehicles, medical trucks, and certain helicopters have a specialized ACE Action to 'Set Mobile Respawn'. Triggering this turns the vehicle into a permanent respawn point for your faction.<br/><br/>
+
+<font color='#ffaa00'>CUSTOM A3M RADIO</font><br/>
+When near or inside any vehicle, you can use the ACE Interaction menu to open the custom <t color='#00aaff'>A3M Radio</t>. This jukebox system allows you to broadcast custom tunes directly from the vehicle.<br/><br/>
+
 <font color='#ffaa00'>VIRTUAL GARAGE</font><br/>
 Drive your vehicle to a designated Garage zone (marked on map) to safely store it. Storing a vehicle saves its exact damage state, fuel, and entire physical inventory securely in the database.<br/><br/>
 
 <font color='#ffaa00'>OPEN WORLD PERSISTENCE</font><br/>
 Any player-owned vehicle left out on the battlefield is persistent! When the server restarts, your claimed vehicles and static weapons will load exactly where you left them.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["Drones and Aerial Payloads", 
+"
+<font color='#ffaa00'>ATTACHING EXPLOSIVES</font><br/>
+Any standard AR-2 Darter UAV can be weaponized. Using your ACE Interaction menu on a drone, you can attach explosives directly from your inventory. The drone supports Satchel Charges, Demo Charges (C4), Hand Grenades, 40mm HE Shells, and ACE_M14 Incendiary Grenades.<br/><br/>
+
+<font color='#ffaa00'>BOMBER MODE</font><br/>
+While piloting the UAV, use your scroll wheel to select <t color='#ff0000'>[DROP PAYLOAD]</t>. This will instantly drop a massive, live-armed ballistic equivalent of your explosive (e.g. C4 drops a heavy rocket explosion, Satchels drop a massive GBU, and M14s simulate a White Phosphorus artillery blast) straight down. It detonates instantly on impact.<br/><br/>
+
+<font color='#ffaa00'>KAMIKAZE (FPV) MODE</font><br/>
+Alternatively, once a payload is attached, pilots can select <t color='#ff8c00'>[ARM KAMIKAZE MODE]</t> from their scroll wheel. This locks the payload to the drone. The exact millisecond the drone crashes into a target, hits a wall, or is shot out of the sky, the massive payload will detonate instantly. An emergency <t color='#ffa500'>[DETONATE KAMIKAZE]</t> action is also provided for manual mid-airbursts.
 "
 ]];
 
