@@ -36,6 +36,25 @@ if(_vehicle != (localize "STR_HG_NONE")) then
 	    _x ctrlEnable true;
 	} forEach [HG_VEHICLES_TG,HG_VEHICLES_BUY,HG_VEHICLES_COLORS];
 	
+    // Dynamically search CfgGradBuymenu for the custom A3M vehicle description
+    private _customDesc = "";
+    private _cfgBuymenu = missionConfigFile >> "CfgGradBuymenu";
+    for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
+        private _storeClass = _cfgBuymenu select _i;
+        if (isClass _storeClass) then {
+            for "_j" from 0 to ((count _storeClass) - 1) do {
+                private _categoryClass = _storeClass select _j;
+                if (isClass _categoryClass) then {
+                    if (isClass (_categoryClass >> _vehicle)) then {
+                        private _desc = getText (_categoryClass >> _vehicle >> "description");
+                        if (_desc != "") then { _customDesc = _desc; };
+                    };
+                };
+            };
+        };
+    };
+    if (_customDesc == "") then { _customDesc = "No description available in the Quartermaster network."; };
+
     // Update the UI with vehicle details
     HG_VEHICLES_TEXT ctrlSetStructuredText parseText format
     [
@@ -46,14 +65,16 @@ if(_vehicle != (localize "STR_HG_NONE")) then
 	    "<t align='center' size='1'>"+ (localize "STR_HG_DLG_VS_SEATS")+ "</t><br/>"+
 	    "<t align='center' size='1'>"+ (localize "STR_HG_DLG_VS_ENGINE")+ "</t><br/>"+
 	    "<t align='center' size='1'>"+ (localize "STR_HG_DLG_VS_FUEL_MAX")+ "</t><br/>"+
-	    "<t align='center' size='1'>"+ (localize "STR_HG_DLG_VS_PRICE_TAG")+ "</t>",
+	    "<t align='center' size='1'>"+ (localize "STR_HG_DLG_VS_PRICE_TAG")+ "</t><br/><br/>"+
+        "<t align='center' size='0.9' color='#A0A0A0'>%8</t>",
 	    getText(configFile >> "CfgVehicles" >> _vehicle >> "picture"),
 	    getNumber(configFile >> "CfgVehicles" >> _vehicle >> "maxSpeed"),
 	    getNumber(configFile >> "CfgVehicles" >> _vehicle >> "armor"),
 	    ([_vehicle,true] call BIS_fnc_crewCount),
 	    getNumber(configFile >> "CfgVehicles" >> _vehicle >> "enginePower"),
 	    getNumber(configFile >> "CfgVehicles" >> _vehicle >> "fuelCapacity"),
-	    if(_price <= 0) then {(localize "STR_HG_DLG_FREE")} else {[_price,true] call HG_fnc_currencyToText}
+	    if(_price <= 0) then {(localize "STR_HG_DLG_FREE")} else {[_price,true] call HG_fnc_currencyToText},
+        _customDesc
     ];
 
     // Create a preview vehicle and position it correctly

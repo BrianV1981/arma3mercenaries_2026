@@ -85,7 +85,7 @@ class HG_VehiclesShop
 			x = 0.799062 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
-			h = 0.495 * safeZoneH;
+			h = 0.60 * safeZoneH;
 		};
 		
 		class TextWhiteLine: HG_RscPicture
@@ -102,11 +102,11 @@ class HG_VehiclesShop
 		class VehicleText: HG_RscStructuredText
 		{
 			idc = HG_VEHICLES_TEXT_IDC;
-			colorBackground[] = {0,0,0,0.5};
+			colorBackground[] = {0.1, 0.1, 0.1, 0.8};
 			x = 0.804219 * safeZoneW + safeZoneX;
 			y = 0.302 * safeZoneH + safeZoneY;
 			w = 0.185625 * safeZoneW;
-			h = 0.374 * safeZoneH;
+			h = 0.48 * safeZoneH;
 		};
 	};
 	
@@ -139,7 +139,7 @@ class HG_VehiclesShop
 			idc = HG_VEHICLES_COLORS_IDC;
 			onLBSelChanged = "_this call HG_fnc_vehicleColor";
 		  	x = 0.804219 * safezoneW + safezoneX;
-			y = 0.687 * safezoneH + safezoneY;
+			y = 0.80 * safezoneH + safezoneY;
 			w = 0.185625 * safezoneW;
 			h = 0.022 * safezoneH;
 		};
@@ -173,22 +173,22 @@ class HG_VehiclesShop
 			text = "PURCHASE VEHICLE";
 			onButtonClick = "[] call HG_fnc_buyVehicle";
 			x = 0.36 * safeZoneW + safeZoneX;
-			y = 0.8 * safeZoneH + safeZoneY;
+			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
 			h = 0.04 * safeZoneH;
-            colorBackground[] = {0, 0.5, 0, 1}; // Green
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8}; // A3M Green
 		};
 		
 		class MyCashButton: HG_RscButton
 		{
 			idc = HG_VEHICLES_MC_IDC;
-			text = "CHECK BALANCE";
-			onButtonClick = "hintSilent parseText format['<t align=""center""><t size=""1.2"" color=""#FFFFFF"">BANK:</t> <t size=""1.2"" color=""#00FF00"">$%1</t><br/><t size=""1.2"" color=""#FFFFFF"">WALLET:</t> <t size=""1.2"" color=""#00FF00"">$%2</t></t>', [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber, [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber];";
+			text = "OPEN ATM";
+			onButtonClick = "[objNull, ""ATM_TRANSFER""] call grad_moneymenu_fnc_loadMenu;";
 			x = 0.47 * safeZoneW + safeZoneX;
-			y = 0.8 * safeZoneH + safeZoneY;
+			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
 			h = 0.04 * safeZoneH;
-            colorBackground[] = {0, 0.3, 0.6, 1}; // Blue
+            colorBackground[] = {0.1, 0.1, 0.1, 0.8}; // GRAD Grey
 		};
 		
 		class ExitButton: HG_RscButton
@@ -196,10 +196,10 @@ class HG_VehiclesShop
 			text = "EXIT TERMINAL";
 			onButtonClick = "closeDialog 0";
 			x = 0.58 * safeZoneW + safeZoneX;
-			y = 0.8 * safeZoneH + safeZoneY;
+			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
 			h = 0.04 * safeZoneH;
-            colorBackground[] = {0.8, 0, 0, 1}; // Red
+            colorBackground[] = {0.8, 0, 0, 0.8}; // A3M Red
 		};
 	};
 };
