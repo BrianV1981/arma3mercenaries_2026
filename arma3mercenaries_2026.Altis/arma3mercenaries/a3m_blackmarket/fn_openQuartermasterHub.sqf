@@ -6,7 +6,7 @@
 params ["_target", "_caller"];
 
 // Read which modules this laptop is authorized to show.
-private _modules = _target getVariable ["A3M_Hub_Modules", ["ARMORY", "VEHICLES", "FORTIFICATIONS", "SUPPORT", "CONTRACTORS"]];
+private _modules = _target getVariable ["A3M_Hub_Modules", ["ARMORY", "VEHICLES", "FORTIFICATIONS", "SUPPORT", "CONTRACTORS", "ARMS_DEALER", "SURPLUS"]];
 
 createDialog "A3M_QuartermasterHub";
 waitUntil {!isNull (findDisplay 9005)};
@@ -20,6 +20,8 @@ private _btnVehicles = _display displayCtrl 1602;
 private _btnFortifications = _display displayCtrl 1603;
 private _btnSupport = _display displayCtrl 1604;
 private _btnMercs = _display displayCtrl 1605;
+private _btnArmsDealer = _display displayCtrl 1606;
+private _btnSurplus = _display displayCtrl 1607;
 
 // Hide everything initially
 _btnArmory ctrlShow false;
@@ -27,6 +29,8 @@ _btnVehicles ctrlShow false;
 _btnFortifications ctrlShow false;
 _btnSupport ctrlShow false;
 _btnMercs ctrlShow false;
+_btnArmsDealer ctrlShow false;
+_btnSurplus ctrlShow false;
 
 // -------------------------------------------------------------
 // Inject Routing Actions
@@ -50,6 +54,14 @@ _btnSupport buttonSetAction format ["closeDialog 0; [missionNamespace getVariabl
 // Contractors uses GRAD
 private _gradMercs = _target getVariable ["A3M_Hub_GradMercs", "mercenaryStore_1"];
 _btnMercs buttonSetAction format ["closeDialog 0; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, '%1', '', player] call grad_lbm_fnc_loadBuymenu;", _gradMercs];
+
+// CIA Arms Dealer uses GRAD
+private _gradArms = _target getVariable ["A3M_Hub_GradArms", "weaponStore"];
+_btnArmsDealer buttonSetAction format ["closeDialog 0; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, '%1', '', player] call grad_lbm_fnc_loadBuymenu;", _gradArms];
+
+// Military Surplus uses GRAD
+private _gradSurplus = _target getVariable ["A3M_Hub_GradSurplus", "itemStore"];
+_btnSurplus buttonSetAction format ["closeDialog 0; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, '%1', '', player] call grad_lbm_fnc_loadBuymenu;", _gradSurplus];
 
 // -------------------------------------------------------------
 // Layout Engine (Stack buttons dynamically)
@@ -90,4 +102,19 @@ if ("CONTRACTORS" in _modules) then {
     _btnMercs ctrlShow true;
     _btnMercs ctrlSetPosition [0.4 * safezoneW + safezoneX, _currentY * safezoneH + safezoneY, 0.2 * safezoneW, 0.05 * safezoneH];
     _btnMercs ctrlCommit 0;
+    _currentY = _currentY + _spacingY;
+};
+
+if ("ARMS_DEALER" in _modules) then {
+    _btnArmsDealer ctrlShow true;
+    _btnArmsDealer ctrlSetPosition [0.4 * safezoneW + safezoneX, _currentY * safezoneH + safezoneY, 0.2 * safezoneW, 0.05 * safezoneH];
+    _btnArmsDealer ctrlCommit 0;
+    _currentY = _currentY + _spacingY;
+};
+
+if ("SURPLUS" in _modules) then {
+    _btnSurplus ctrlShow true;
+    _btnSurplus ctrlSetPosition [0.4 * safezoneW + safezoneX, _currentY * safezoneH + safezoneY, 0.2 * safezoneW, 0.05 * safezoneH];
+    _btnSurplus ctrlCommit 0;
+    _currentY = _currentY + _spacingY;
 };

@@ -9,7 +9,7 @@ class A3M_QuartermasterHub {
             x = 0.35 * safezoneW + safezoneX;
             y = 0.3 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;
-            h = 0.45 * safezoneH;
+            h = 0.58 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 0.95};
         };
         class HeaderBackground: HG_RscText {
@@ -91,6 +91,24 @@ class A3M_QuartermasterHub {
             w = 0.2 * safezoneW;
             h = 0.05 * safezoneH;
             // action injected via script
+        };
+
+        class BtnArmsDealer: HG_RscButton {
+            idc = 1606;
+            text = "CIA ARMS DEALER";
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.73 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.05 * safezoneH;
+        };
+
+        class BtnSurplus: HG_RscButton {
+            idc = 1607;
+            text = "MILITARY SURPLUS";
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.80 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.05 * safezoneH;
         };
     };
 };
