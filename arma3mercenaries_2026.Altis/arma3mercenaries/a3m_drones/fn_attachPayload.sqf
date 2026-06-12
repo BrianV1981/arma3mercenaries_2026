@@ -48,5 +48,20 @@ private _actionID = _target addAction [
 ];
 _target setVariable ["A3M_Payload_ActionID", _actionID, true];
 
+private _kamikazeActionID = _target addAction [
+    "<t color='#FF8C00'>[ARM KAMIKAZE MODE]</t>",
+    {
+        params ["_drone", "_caller", "_actionId", "_arguments"];
+        [_drone, _caller] call A3M_fnc_armKamikaze;
+    },
+    nil,
+    5,
+    false,
+    true,
+    "",
+    "driver _target == _this || gunner _target == _this"
+];
+_target setVariable ["A3M_Kamikaze_ActionID", _kamikazeActionID, true];
+
 private _name = getText (configFile >> "CfgMagazines" >> _payloadClass >> "displayName");
 systemChat format ["%1 Attached! Use scroll wheel to drop it while flying.", _name];

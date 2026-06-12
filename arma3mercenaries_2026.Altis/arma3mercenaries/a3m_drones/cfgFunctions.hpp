@@ -5,5 +5,6 @@ class A3M_Drones {
         class initDrones { postInit = 1; };
         class attachPayload {};
         class dropPayload {};
+        class armKamikaze {};
     };
 };
