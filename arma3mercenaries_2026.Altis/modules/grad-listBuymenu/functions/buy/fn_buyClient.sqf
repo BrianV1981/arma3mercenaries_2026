@@ -52,5 +52,16 @@ if (missionNamespace getVariable ["grad_lbm_currentAccount",player] isEqualType 
     [] call grad_lbm_fnc_updateFunds;
 };
 
+// A3M Green Indicator Marker
+[player, _displayName] spawn {
+    params ["_target", "_displayName"];
+    private _endTime = time + 15;
+    waitUntil {
+        if (isNull _target) exitWith {true};
+        drawIcon3D ["a3\ui_f\data\gui\Rsc\RscDisplayIntel\azimuth_ca.paa", [0,1,0,1], (getPosATL _target) vectorAdd [0,0,2.5], 1, 1, 180, format ["%1 BOUGHT", _displayName], 1, 0.04, "PuristaMedium", "center", true];
+        (time > _endTime)
+    };
+};
+
 // Fire to Server with player as the target cargospace
 [_baseConfigName, _categoryConfigName, _itemConfigName, player, _price, player, missionNamespace getVariable ["grad_lbm_currentAccount",player]] remoteExec ["grad_lbm_fnc_buyServer", 2, false];

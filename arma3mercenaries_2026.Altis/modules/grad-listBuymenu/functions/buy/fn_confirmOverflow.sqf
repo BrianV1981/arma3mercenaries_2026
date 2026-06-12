@@ -50,4 +50,15 @@ for "_i" from 1 to _amount do {
     [_baseConfigName, _categoryConfigName, _itemConfigName, player, _price, _targetCargoSpace, missionNamespace getVariable ["grad_lbm_currentAccount",player]] remoteExec ["grad_lbm_fnc_buyServer", 2, false];
 };
 
+private _displayName = [(missionConfigFile >> "CfgGradBuymenu" >> _baseConfigName >> _categoryConfigName >> _itemConfigName >> "displayName"), "text", "Item"] call CBA_fnc_getConfigEntry;
+[_targetCargoSpace, _displayName, _amount] spawn {
+    params ["_target", "_displayName", "_amount"];
+    private _endTime = time + 15;
+    waitUntil {
+        if (isNull _target) exitWith {true};
+        drawIcon3D ["a3\ui_f\data\gui\Rsc\RscDisplayIntel\azimuth_ca.paa", [0,1,0,1], (getPosATL _target) vectorAdd [0,0,2.5], 1, 1, 180, format ["%1x %2 BOUGHT HERE", _amount, _displayName], 1, 0.04, "PuristaMedium", "center", true];
+        (time > _endTime)
+    };
+};
+
 closeDialog 0;
