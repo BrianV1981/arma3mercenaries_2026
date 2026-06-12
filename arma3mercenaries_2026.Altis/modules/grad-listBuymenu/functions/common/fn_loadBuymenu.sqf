@@ -29,6 +29,9 @@ createDialog "grad_lbm";
 _dialog = findDisplay grad_lbm_DIALOG;
 _dialog setVariable ["grad_lbm_currentBaseConfig", _baseConfigName];
 
+// Inject dynamic Quartermaster UI
+[_dialog, _baseConfigName] call A3M_fnc_drawNav;
+
 //update titlebar
 _titleCtrl = _dialog displayCtrl grad_lbm_TITLE;
 _titleCtrl ctrlSetText toUpper _title;

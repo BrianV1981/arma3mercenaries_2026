@@ -112,63 +112,6 @@ class HG_VehiclesShop
 	
 	class Controls
 	{
-		class NavWeapons: HG_RscButton
-		{
-			idc = -1;
-			text = "CIA ARMS DEALER";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'weaponStoreMenu_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
-			x = 0.02 * safeZoneW + safeZoneX; y = 0.02 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavItemStore: HG_RscButton
-		{
-			idc = -1;
-			text = "MILITARY SURPLUS";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'itemStore', '', player] call grad_lbm_fnc_loadBuymenu; };";
-			x = 0.14 * safeZoneW + safeZoneX; y = 0.02 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavArmory: HG_RscButton
-		{
-			idc = -1;
-			text = "ARMORY";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [false] spawn A3M_fnc_openBlackMarket; };";
-			x = 0.26 * safeZoneW + safeZoneX; y = 0.02 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavVehicles: HG_RscButton
-		{
-			idc = -1;
-			text = "CIA VEHICLE LOT";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; };";
-			x = 0.38 * safeZoneW + safeZoneX; y = 0.02 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavFortifications: HG_RscButton
-		{
-			idc = -1;
-			text = "BASE BUILDING";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
-			x = 0.02 * safeZoneW + safeZoneX; y = 0.06 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavSupport: HG_RscButton
-		{
-			idc = -1;
-			text = "COMBAT SUPPORT";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
-			x = 0.14 * safeZoneW + safeZoneX; y = 0.06 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-		class NavMercenaries: HG_RscButton
-		{
-			idc = -1;
-			text = "CONTRACTORS";
-			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
-			x = 0.26 * safeZoneW + safeZoneX; y = 0.06 * safeZoneH + safeZoneY; w = 0.11 * safeZoneW; h = 0.03 * safeZoneH;
-			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
-		};
-
 		class VehicleSwitch: HG_RscXListBox
 		{
 			idc = HG_VEHICLES_SWITCH_IDC;
