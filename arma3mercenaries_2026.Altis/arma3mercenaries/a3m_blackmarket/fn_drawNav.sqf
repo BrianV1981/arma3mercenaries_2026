@@ -37,7 +37,7 @@ for "_i" from 0 to 5 do {
     private _code = _data select 2;
     private _xPos = _startX + (_i * (_buttonWidth + _spacing));
     
-    private _btn = _display ctrlCreate ["RscButtonMenu", 9100 + _i];
+    private _btn = _display ctrlCreate ["HG_RscButton", 9100 + _i];
     _btn ctrlSetPosition [_xPos, _startY, _buttonWidth, _buttonHeight];
     _btn ctrlSetText _text;
     _btn ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
