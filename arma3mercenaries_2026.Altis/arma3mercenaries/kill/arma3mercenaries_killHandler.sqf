@@ -214,7 +214,8 @@ A3M_fnc_serverHandleReward = {
                         if (side _x == _taskCompletingSide) then {
                             _x addScore 1000;
                             [_x, 500000] call grad_moneymenu_fnc_addFunds;
-                            ["<t color='#FFFFFF' size='1.0'>Target neutralized. Good kill. Collect your pay.</t>", -1, -1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
+                            [250, 0] remoteExecCall ["HG_fnc_addOrSubXP", _x, false];
+                            ["<t color='#FFFFFF' size='1.0'>Target neutralized. Good kill. Collect your pay. (+250 XP)</t>", -1, -1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
                         };
                     } forEach allPlayers;
                 };
@@ -267,6 +268,7 @@ A3M_fnc_serverHandleReward = {
                             _profile set ["CivilianKills", (_profile getOrDefault ["CivilianKills", 0]) + 1];
                         } else {
                             _profile set ["Kills_Total", (_profile getOrDefault ["Kills_Total", 0]) + 1];
+                            [15, 0] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
                             
                             // Last 10 Kills
                             private _lastKills = _profile getOrDefault ["Last_10_Kills", []];

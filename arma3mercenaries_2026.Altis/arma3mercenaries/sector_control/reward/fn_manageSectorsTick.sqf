@@ -149,8 +149,9 @@ private _epochNow = (_days * 86400) + ((_dateArr select 3) * 3600) + ((_dateArr 
                     private _reward = _rewardBase * _rewardMultiplier;
                     
                     [_player, _reward] remoteExecCall ["grad_moneymenu_fnc_addFunds", _player];
+                    [50, 0] remoteExecCall ["HG_fnc_addOrSubXP", _player, false];
                     
-                    private _msg = format ["<t color='#FFFFFF' size='0.5'>Player: %1<br/>Sector: %2<br/>Payment: %3 Cr</t>", name _player, _sectorName, _reward];
+                    private _msg = format ["<t color='#FFFFFF' size='0.5'>Player: %1<br/>Sector: %2<br/>Payment: %3 Cr (+50 XP)</t>", name _player, _sectorName, _reward];
                     [_msg, 1.0, 0.4, 10, 1, 0, _payoutHintID] remoteExec ["BIS_fnc_dynamicText", _player];
 
                     // Request AI Spawn (Decoupled to prevent stutter)
