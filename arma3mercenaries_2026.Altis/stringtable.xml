@@ -875,7 +875,7 @@
 			    <Chinesesimp>可用载具</Chinesesimp>
 		    </Key>
 		    <Key ID="STR_HG_DLG_VS_TITLE_TEXT">
-		        <Original>Vehicle Infos</Original>
+		        <Original>Vehicle Info</Original>
 			    <Spanish>Informacion del Vehiculo</Spanish>
 				<French>Infos du véhicule</French>
 			    <Chinese>载具信息</Chinese>

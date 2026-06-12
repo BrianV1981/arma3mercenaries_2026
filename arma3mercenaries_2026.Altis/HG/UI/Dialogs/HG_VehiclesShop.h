@@ -40,7 +40,7 @@ class HG_VehiclesShop
 			x = 0.005 * safeZoneW + safeZoneX;
 			y = 0.291 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
-			h = 0.462 * safeZoneH;
+			h = 0.547 * safeZoneH;
 		};
 		
 		class ListBackgroundFrame: HG_RscFrame
@@ -48,7 +48,7 @@ class HG_VehiclesShop
 			x = 0.005 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
-			h = 0.495 * safeZoneH;
+			h = 0.58 * safeZoneH;
 		};
 		
 		class ListWhiteLine: HG_RscPicture
@@ -77,7 +77,7 @@ class HG_VehiclesShop
 			x = 0.799062 * safeZoneW + safeZoneX;
 			y = 0.291 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
-			h = 0.462 * safeZoneH;
+			h = 0.547 * safeZoneH;
 		};
 		
 		class TextBackgroundFrame: HG_RscFrame
@@ -85,7 +85,7 @@ class HG_VehiclesShop
 			x = 0.799062 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
-			h = 0.60 * safeZoneH;
+			h = 0.58 * safeZoneH;
 		};
 		
 		class TextWhiteLine: HG_RscPicture
@@ -106,7 +106,7 @@ class HG_VehiclesShop
 			x = 0.804219 * safeZoneW + safeZoneX;
 			y = 0.302 * safeZoneH + safeZoneY;
 			w = 0.185625 * safeZoneW;
-			h = 0.48 * safeZoneH;
+			h = 0.45 * safeZoneH;
 		};
 	};
 	
@@ -131,7 +131,7 @@ class HG_VehiclesShop
 			x = 0.0101562 * safeZoneW + safeZoneX;
 			y = 0.335 * safeZoneH + safeZoneY;
 			w = 0.185625 * safeZoneW;
-			h = 0.407 * safeZoneH;
+			h = 0.49 * safeZoneH;
 		};
 		
 		class ColorsList: HG_RscCombo
@@ -161,7 +161,7 @@ class HG_VehiclesShop
 			text = "BUY TO GARAGE";
 			onButtonClick = "[] call HG_fnc_buyToGarage";
 			x = 0.25 * safeZoneW + safeZoneX;
-			y = 0.8 * safeZoneH + safeZoneY;
+			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
 			h = 0.04 * safeZoneH;
             colorBackground[] = {0.8, 0.4, 0, 1}; // Orange
@@ -182,8 +182,8 @@ class HG_VehiclesShop
 		class MyCashButton: HG_RscButton
 		{
 			idc = HG_VEHICLES_MC_IDC;
-			text = "OPEN ATM";
-			onButtonClick = "[objNull, ""ATM_TRANSFER""] call grad_moneymenu_fnc_loadMenu;";
+			text = "CHECK ACCOUNT";
+			onButtonClick = "hintSilent parseText format['<t align=""center""><t size=""1.2"" color=""#FFFFFF"">BANK:</t> <t size=""1.2"" color=""#00FF00"">$%1</t><br/><t size=""1.2"" color=""#FFFFFF"">WALLET:</t> <t size=""1.2"" color=""#00FF00"">$%2</t></t>', [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber, [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber];";
 			x = 0.47 * safeZoneW + safeZoneX;
 			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
