@@ -52,7 +52,10 @@ _listCtrl lnbAddRow [format ["My Inventory %1", _pSpaceStr]];
         if (_kindOf == "FORTIFICATION") then {
             if (!isNil "grad_fortifications_fnc_getVehicleInventorySize") then {
                 private _maxSize = _x getVariable ["grad_fortifications_inventorySize", [_x] call grad_fortifications_fnc_getVehicleInventorySize];
-                _spaceStr = format ["(Fort Max: %1)", _maxSize];
+                private _currentCargo = _x getVariable ["grad_fortifications_inventoryCargo", 0];
+                private _loadPct = 0;
+                if (_maxSize > 0) then { _loadPct = round ((_currentCargo / _maxSize) * 100); };
+                _spaceStr = format ["(Fort: %1%2 Full)", _loadPct, "%"];
             };
         } else {
             private _loadPct = round ((load _x) * 100);

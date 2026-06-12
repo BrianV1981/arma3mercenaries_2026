@@ -64,8 +64,6 @@ switch (_type) do {
     case ("FORTIFICATION"): {
         if (!isNil "grad_fortifications_fnc_addFort") then {
             [_vehiclespawn, _itemConfigName] call grad_fortifications_fnc_addFort;
-            [[_buyer,_itemConfigName],_code] remoteExec ["grad_lbm_fnc_callCodeClient",0,false];
-            "Your purchase is in the destination's fortification cargo." remoteExec ["systemChat",_buyer,false];
         } else {
             [_buyer,_account,_price,"GRAD Fortifications not installed! You got your money back."] remoteExec ["grad_lbm_fnc_reimburse",0,false];
         };
