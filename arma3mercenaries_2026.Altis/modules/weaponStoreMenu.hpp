@@ -224,6 +224,7 @@
         class Aweapons {
             displayName = "Assault Rifles";
             kindOf = "Weapons";
+            condition = "(rank player) in ['CORPORAL','SERGEANT','LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:
 			
             class arifle_SDAR_F {
@@ -636,6 +637,7 @@
         class Mweapons {
             displayName = "Marksman Rifles";
             kindOf = "Weapons";
+            condition = "(rank player) in ['SERGEANT','LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:
 			
 			class arifle_MXM_F {
@@ -824,6 +826,7 @@
         class MGweapons {
             displayName = "Machine Guns";
             kindOf = "Weapons";
+            condition = "(rank player) in ['SERGEANT','LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:
 			
             class MMG_01_hex_F {
@@ -865,6 +868,7 @@
         class LMGweapons {
             displayName = "Light Machine Guns";
             kindOf = "Weapons";
+            condition = "(rank player) in ['SERGEANT','LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:
 			
             class arifle_SPAR_02_blk_F {
@@ -983,6 +987,7 @@
         class SRweapons {
             displayName = "Sniper Rifles";
             kindOf = "Weapons";
+            condition = "(rank player) in ['LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:
 			
 			class srifle_LRR_F {
@@ -1031,6 +1036,7 @@
         class Lweapons {
             displayName = "Missile and Rocket Launchers";
             kindOf = "Weapons";
+            condition = "(rank player) in ['LIEUTENANT','CAPTAIN','MAJOR','COLONEL']";
             //items of this category:			
 	
 		    class launch_RPG7_F {

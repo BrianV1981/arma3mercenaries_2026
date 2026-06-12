@@ -163,7 +163,8 @@ private _epochNow = (_days * 86400) + ((_dateArr select 3) * 3600) + ((_dateArr 
                         _blockEndTime = diag_tickTime + _blockTime;
                         _rewardsGiven = 0; 
                         
-                        private _blockMsg = format ["Good job securing %1! Payments halted for %2 minutes.", _sectorName, _blockTime / 60];
+                        [250, 0] remoteExecCall ["HG_fnc_addOrSubXP", _player, false];
+                        private _blockMsg = format ["Good job securing %1! +250 XP. Payments halted for %2 minutes.", _sectorName, _blockTime / 60];
                         [_blockMsg, -1, -1, 10, 1, 0, _payoutHintID] remoteExec ["BIS_fnc_dynamicText", _player];
                         // Save to SQLite
                         _profile set [format["BlockEnd_%1", _sectorName], _epochNow + _blockTime]; // Flagged for offline tracking

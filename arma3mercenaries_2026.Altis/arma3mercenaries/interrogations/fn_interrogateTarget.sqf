@@ -144,6 +144,8 @@ private _startMsg = format [selectRandom _interrogationStartMessages, _newCaptur
 
             // Award Funds to the interrogator
             [_interrogator, round _reward] remoteExec ["grad_lbm_fnc_addFunds", _interrogator];
+            [50, 0] remoteExecCall ["HG_fnc_addOrSubXP", _interrogator, false];
+            "Intel Extracted: +50 XP" remoteExec ["systemChat", _interrogator, false];
 
             // Show custom completion text
             private _finalMsg = format [_msgTpl, "", _sideText, round _reward, _factionText];

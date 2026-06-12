@@ -269,9 +269,10 @@ _HVT addEventHandler ["Killed", {
         if (side group _x == _taskCompletingSide) then {
             _x addScore 1000;
             [_x, 500000] call grad_moneymenu_fnc_addFunds;
+            [500, 0] remoteExecCall ["HG_fnc_addOrSubXP", _x, false];
             
             // Send dynamicText notification
-            private _message = "HVT Eliminated. Bounty Transferred.";
+            private _message = "HVT Eliminated. Bounty Transferred. +500 XP";
             private _textParams = [
                 format ["<t color='#FFFFFF' size='1.0'>%1</t>", _message],
                 -1, -1, 10, 1, 0, 799
