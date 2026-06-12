@@ -15,8 +15,14 @@ params["_mode","_price","_qty"];
 
 disableSerialization;
 
-// Get the selected item's price and current quantity
-_price = HG_ITEMS_ITEM_LIST lbValue (lbCurSel HG_ITEMS_ITEM_LIST);
+private _selectedItemData = HG_ITEMS_ITEM_LIST lbData (lbCurSel HG_ITEMS_ITEM_LIST);
+private _shopType = HG_ITEMS_ITEM_SWITCH lbData (lbCurSel HG_ITEMS_ITEM_SWITCH);
+_shopType = _shopType splitString "/";
+private _shopItems = getArray(getMissionConfig "CfgClient" >> "HG_ItemsShopCfg" >> (_shopType select 0) >> (_shopType select 1) >> "items");
+_price = 0;
+{
+    if ((_x select 0) isEqualTo _selectedItemData) exitWith { _price = _x select 1; };
+} forEach _shopItems;
 _qty = parseNumber(ctrlText HG_ITEMS_AMOUNT);
 
 switch(_mode) do

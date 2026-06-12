@@ -16,12 +16,20 @@ if(_item != (localize "STR_HG_NONE")) then
 {
     private["_price","_itemClass","_itemType","_cat","_itemPicture","_itemDescription"];
 	
-    _price = _ctrl lbValue _index;
     _itemClass = [_item] call HG_fnc_getConfig;
     _itemType = [_item] call BIS_fnc_itemType;
     _cat = _itemType select 0;
     _itemPicture = getText(configFile >> _itemClass >> _item >> "Picture");
     _itemDescription = getText(configFile >> _itemClass >> _item >> "descriptionShort");
+
+    // Bypass lbValue bug by fetching price directly from config
+    private _shopType = HG_ITEMS_ITEM_SWITCH lbData (lbCurSel HG_ITEMS_ITEM_SWITCH);
+    _shopType = _shopType splitString "/";
+    private _shopItems = getArray(getMissionConfig "CfgClient" >> "HG_ItemsShopCfg" >> (_shopType select 0) >> (_shopType select 1) >> "items");
+    _price = 0;
+    {
+        if ((_x select 0) isEqualTo _item) exitWith { _price = _x select 1; };
+    } forEach _shopItems;
 
     if(_cat in ["Magazine","Mine","Item"]) then
     {
