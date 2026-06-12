@@ -1,0 +1,49 @@
+/*  A3M Overflow Interceptor UI
+*   Spawns dialog to let player pick where an item goes.
+*/
+disableSerialization;
+params ["_purchaseData"];
+
+uiNamespace setVariable ["A3M_LBM_PendingPurchase", _purchaseData];
+
+createDialog "A3M_OverflowDialog";
+private _dialog = findDisplay 9010;
+private _listCtrl = _dialog displayCtrl 9011;
+
+lnbClear _listCtrl;
+
+private _nearbyRaw = nearestObjects [player, ["Car", "Tank", "Air", "Ship", "ReammoBox_F"], 25];
+private _nearby = [];
+private _index = 0;
+private _kindOf = _purchaseData select 4;
+
+{
+    if (alive _x && _x != player) then {
+        private _name = getText (configFile >> "CfgVehicles" >> typeOf _x >> "displayName");
+        private _dist = round (player distance _x);
+        
+        private _spaceStr = "";
+        if (_kindOf == "FORTIFICATION") then {
+            if (!isNil "grad_fortifications_fnc_getVehicleInventorySize") then {
+                private _maxSize = _x getVariable ["grad_fortifications_inventorySize", [_x] call grad_fortifications_fnc_getVehicleInventorySize];
+                _spaceStr = format ["(Fort Max: %1)", _maxSize];
+            };
+        } else {
+            private _loadPct = round ((load _x) * 100);
+            _spaceStr = format ["[%1%2 Full]", _loadPct, "%"];
+        };
+        
+        _listCtrl lnbAddRow [format ["%1 - %2m %3", _name, _dist, _spaceStr]];
+        _nearby pushBack _x;
+        _index = _index + 1;
+    };
+} forEach _nearbyRaw;
+
+uiNamespace setVariable ["A3M_LBM_NearbyContainers", _nearby];
+
+if (count _nearby == 0) exitWith {
+    closeDialog 0;
+    systemChat "Inventory full and no vehicles nearby. Transaction cancelled.";
+};
+
+_listCtrl lnbSetCurSelRow 0;

@@ -1,0 +1,259 @@
+#include "..\HG_IDCS.h"
+/*
+    HG_VehiclesShop.h
+    Author - HoverGuy
+    GitHub - https://github.com/Ppgtjmad/SimpleShops
+	Steam - https://steamcommunity.com/id/HoverGuy/
+    Enhanced by - BrianV1981
+
+    Changes:
+    - Integrated Grad Money system into the "MyCashButton" to correctly display the player's current funds.
+    - Replaced the use of `HG_Cash` variable with the `grad_moneymenu_fnc_getFunds` function.
+    - Ensured compatibility with the Grad Money system for accurate and up-to-date currency information.
+    - The button now retrieves the player's funds using the Grad Money system and displays it in the same consistent format as before using `HG_fnc_currencyToText`.
+*/
+
+
+class HG_VehiclesShop
+{
+    idd = HG_VEHICLES_SHOP_IDD;
+	enableSimulation = true;
+	name = "HG_VehiclesShop";
+	onUnload = "_this call HG_fnc_dialogOnUnloadVehicles";
+	
+	class ControlsBackground
+	{
+		class ListHeader: HG_RscText
+		{
+			style = "0x02";
+			text = "$STR_HG_DLG_VS_TITLE_LIST";
+			colorBackground[] = {0.4,0.4,0.4,1};
+			x = 0.005 * safeZoneW + safeZoneX;
+			y = 0.258 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.033 * safeZoneH;
+		};
+		
+		class ListBackground: HG_RscText
+		{
+			colorBackground[] = {0,0,0,0.5};
+			x = 0.005 * safeZoneW + safeZoneX;
+			y = 0.291 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.462 * safeZoneH;
+		};
+		
+		class ListBackgroundFrame: HG_RscFrame
+		{
+			x = 0.005 * safeZoneW + safeZoneX;
+			y = 0.258 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.495 * safeZoneH;
+		};
+		
+		class ListWhiteLine: HG_RscPicture
+		{
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.005 * safeZoneW + safeZoneX;
+			y = 0.291 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.0022 * safeZoneH;
+		};
+		
+		class TextHeader: HG_RscText
+		{
+			style = "0x02";
+			text = "$STR_HG_DLG_VS_TITLE_TEXT";
+			colorBackground[] = {0.4,0.4,0.4,1};
+			x = 0.799062 * safeZoneW + safeZoneX;
+			y = 0.258 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.033 * safeZoneH;
+		};
+		
+		class TextBackground: HG_RscText
+		{
+			colorBackground[] = {0,0,0,0.5};
+			x = 0.799062 * safeZoneW + safeZoneX;
+			y = 0.291 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.462 * safeZoneH;
+		};
+		
+		class TextBackgroundFrame: HG_RscFrame
+		{
+			x = 0.799062 * safeZoneW + safeZoneX;
+			y = 0.258 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.495 * safeZoneH;
+		};
+		
+		class TextWhiteLine: HG_RscPicture
+		{
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.799062 * safeZoneW + safeZoneX;
+			y = 0.291 * safeZoneH + safeZoneY;
+			w = 0.195937 * safeZoneW;
+			h = 0.0022 * safeZoneH;
+		};
+		
+		// --- TOP ACTION BAR & HG ICONS REMOVED FOR A3M OVERHAUL ---
+		
+		class VehicleText: HG_RscStructuredText
+		{
+			idc = HG_VEHICLES_TEXT_IDC;
+			colorBackground[] = {0,0,0,0.5};
+			x = 0.804219 * safeZoneW + safeZoneX;
+			y = 0.302 * safeZoneH + safeZoneY;
+			w = 0.185625 * safeZoneW;
+			h = 0.374 * safeZoneH;
+		};
+	};
+	
+	class Controls
+	{
+		class NavArmory: HG_RscButton
+		{
+			idc = -1;
+			text = "ARMORY";
+			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [false] spawn A3M_fnc_openBlackMarket; };";
+			x = 0.10 * safeZoneW + safeZoneX;
+			y = 0.02 * safeZoneH + safeZoneY;
+			w = 0.15 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+		};
+		class NavVehicles: HG_RscButton
+		{
+			idc = -1;
+			text = "MOTORPOOL";
+			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; };";
+			x = 0.26 * safeZoneW + safeZoneX;
+			y = 0.02 * safeZoneH + safeZoneY;
+			w = 0.15 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+		};
+		class NavFortifications: HG_RscButton
+		{
+			idc = -1;
+			text = "BASE BUILDING";
+			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
+			x = 0.42 * safeZoneW + safeZoneX;
+			y = 0.02 * safeZoneH + safeZoneY;
+			w = 0.15 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+		};
+		class NavSupport: HG_RscButton
+		{
+			idc = -1;
+			text = "SUPPORT";
+			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
+			x = 0.58 * safeZoneW + safeZoneX;
+			y = 0.02 * safeZoneH + safeZoneY;
+			w = 0.15 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+		};
+		class NavMercenaries: HG_RscButton
+		{
+			idc = -1;
+			text = "CONTRACTORS";
+			onButtonClick = "closeDialog 0; [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };";
+			x = 0.74 * safeZoneW + safeZoneX;
+			y = 0.02 * safeZoneH + safeZoneY;
+			w = 0.15 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+		};
+
+		class VehicleSwitch: HG_RscXListBox
+		{
+			idc = HG_VEHICLES_SWITCH_IDC;
+			onLBSelChanged = "_this call HG_fnc_xVehicleSelectionChanged";
+			x = 0.0101562 * safeZoneW + safeZoneX;
+			y = 0.302 * safeZoneH + safeZoneY;
+			w = 0.185625 * safeZoneW;
+			h = 0.022 * safeZoneH;
+		};
+		
+		class VehicleList: HG_RscListBox
+		{
+			idc = HG_VEHICLES_LIST_IDC;
+			style = "0x02 + 16";
+			rowHeight = "1 * ((((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+			onLBSelChanged = "_this call HG_fnc_vehicleSelectionChanged";
+			x = 0.0101562 * safeZoneW + safeZoneX;
+			y = 0.335 * safeZoneH + safeZoneY;
+			w = 0.185625 * safeZoneW;
+			h = 0.407 * safeZoneH;
+		};
+		
+		class ColorsList: HG_RscCombo
+		{
+			idc = HG_VEHICLES_COLORS_IDC;
+			onLBSelChanged = "_this call HG_fnc_vehicleColor";
+		  	x = 0.804219 * safezoneW + safezoneX;
+			y = 0.687 * safezoneH + safezoneY;
+			w = 0.185625 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		
+		class SpawnPointsList: HG_RscCombo
+		{
+			idc = HG_VEHICLES_SP_IDC;
+			x = 0.804219 * safeZoneW + safeZoneX;
+			y = 0.72 * safeZoneH + safeZoneY;
+			w = 0.185625 * safeZoneW;
+			h = 0.022 * safeZoneH;
+		};
+		
+		class ToGarageButton: HG_RscButton
+		{
+			idc = HG_VEHICLES_TG_IDC;
+			text = "BUY TO GARAGE";
+			onButtonClick = "[] call HG_fnc_buyToGarage";
+			x = 0.25 * safeZoneW + safeZoneX;
+			y = 0.8 * safeZoneH + safeZoneY;
+			w = 0.1 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.8, 0.4, 0, 1}; // Orange
+		};
+		
+		class BuyButton: HG_RscButton
+		{
+			idc = HG_VEHICLES_BUY_IDC;
+			text = "PURCHASE VEHICLE";
+			onButtonClick = "[] call HG_fnc_buyVehicle";
+			x = 0.36 * safeZoneW + safeZoneX;
+			y = 0.8 * safeZoneH + safeZoneY;
+			w = 0.1 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0, 0.5, 0, 1}; // Green
+		};
+		
+		class MyCashButton: HG_RscButton
+		{
+			idc = HG_VEHICLES_MC_IDC;
+			text = "CHECK BALANCE";
+			onButtonClick = "hintSilent parseText format['<t align=""center""><t size=""1.2"" color=""#FFFFFF"">BANK:</t> <t size=""1.2"" color=""#00FF00"">$%1</t><br/><t size=""1.2"" color=""#FFFFFF"">WALLET:</t> <t size=""1.2"" color=""#00FF00"">$%2</t></t>', [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber, [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber];";
+			x = 0.47 * safeZoneW + safeZoneX;
+			y = 0.8 * safeZoneH + safeZoneY;
+			w = 0.1 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0, 0.3, 0.6, 1}; // Blue
+		};
+		
+		class ExitButton: HG_RscButton
+		{
+			text = "EXIT TERMINAL";
+			onButtonClick = "closeDialog 0";
+			x = 0.58 * safeZoneW + safeZoneX;
+			y = 0.8 * safeZoneH + safeZoneY;
+			w = 0.1 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.8, 0, 0, 1}; // Red
+		};
+	};
+};

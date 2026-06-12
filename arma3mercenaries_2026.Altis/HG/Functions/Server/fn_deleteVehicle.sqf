@@ -1,0 +1,47 @@
+/*
+    Author - HoverGuy
+    GitHub - https://github.com/Ppgtjmad/SimpleShops
+	Steam - https://steamcommunity.com/id/HoverGuy/
+*/
+params["_unit","_plate",["_grg",""]];
+
+if(!HG_SAVING_EXTDB) then
+{
+    private["_garage","_index"];
+	
+    _garage = [format["HG_Garage_%1",(getPlayerUID _unit)],[]] call A3M_fnc_dbGet;
+    _index = [_plate,_garage] call HG_fnc_findIndex;
+    _garage deleteAt _index;
+	
+    [format["HG_Garage_%1",(getPlayerUID _unit)],_garage] call A3M_fnc_dbSet;
+	
+    if((getNumber(getMissionConfig "CfgClient" >> "enableVehicleInventorySave")) isEqualTo 1) then
+    {
+	    [format["HG_Inventory_%1_%2",(getPlayerUID _unit),_plate], ""] call A3M_fnc_dbSet;
+    };
+	
+    
+} else {
+    private _query = if(HG_SAVING_PROTOCOL isEqualTo "SQL") then
+	{
+	    format["DELETE FROM HG_Vehicles WHERE PID = '%1' AND Plate = '%2'",(getPlayerUID _unit),_plate]
+	} else {
+	    format["HG_vehicleDelete:%1:%2",(getPlayerUID _unit),_plate];
+	};
+	
+	[1,_query] call HG_fnc_asyncCall;
+	
+	if(_grg != "") then
+	{
+	    sleep 1;
+
+        [_unit,_grg] call HG_fnc_requestGarage;
+	};
+};
+
+if(_grg != "") then
+{
+    (localize "STR_HG_GRG_VEHICLE_DELETED") remoteExecCall ["hint",(owner _unit),false];
+};
+	
+true;
