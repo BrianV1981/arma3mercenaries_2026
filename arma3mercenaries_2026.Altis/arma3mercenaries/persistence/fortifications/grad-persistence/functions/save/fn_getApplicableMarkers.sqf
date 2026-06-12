@@ -22,7 +22,9 @@ if (_markerSaveSetting in [1,3]) then {
 };
 
 if (_markerSaveSetting in [1,2]) then {
-    _applicableMarkers select {
+    _applicableMarkers = _applicableMarkers select {
         ([_x] call FUNC(getMarkerChannel)) in [-1,0]
     };
 };
+
+_applicableMarkers
