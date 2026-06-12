@@ -105,7 +105,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnArmory ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnArmory ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
-        [] spawn { uiSleep 0.1; [false] spawn A3M_fnc_openBlackMarket; };
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            uiSleep 0.5; 
+            [false] spawn A3M_fnc_openBlackMarket; 
+        };
     }];
     _btnArmory ctrlCommit 0;
 
@@ -115,7 +119,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnVehicles ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnVehicles ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
-        [] spawn { uiSleep 0.1; ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; };
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            uiSleep 0.5; 
+            ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; 
+        };
     }];
     _btnVehicles ctrlCommit 0;
 
@@ -125,7 +133,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnForts ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnForts ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
-        [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            uiSleep 0.5; 
+            [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
+        };
     }];
     _btnForts ctrlCommit 0;
 
@@ -135,7 +147,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnSupport ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnSupport ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
-        [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            uiSleep 0.5; 
+            [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
+        };
     }];
     _btnSupport ctrlCommit 0;
 
@@ -145,7 +161,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnMercs ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btnMercs ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
-        [] spawn { uiSleep 0.1; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; };
+        [] spawn { 
+            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            uiSleep 0.5; 
+            [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
+        };
     }];
     _btnMercs ctrlCommit 0;
 
