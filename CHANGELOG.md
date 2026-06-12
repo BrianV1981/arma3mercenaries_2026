@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.69.25] - 2026-06-12
+- Fix: Correct double curly brace syntax error
+
+
 ## [v1.69.24] - 2026-06-12
 - Fix: Correct fortifications check and implement dynamic quantity routing
 
