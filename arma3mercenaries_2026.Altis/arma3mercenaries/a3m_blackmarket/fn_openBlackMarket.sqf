@@ -39,42 +39,34 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
         for "_j" from 0 to ((count _storeClass) - 1) do {
             private _categoryClass = _storeClass select _j;
             if (isClass _categoryClass) then {
-                private _catConditionStr = getText (_categoryClass >> "condition");
-                private _catAllowed = true;
-                if (_catConditionStr != "") then { _catAllowed = call compile _catConditionStr; };
-                
-                if (_catAllowed) then {
-                    for "_k" from 0 to ((count _categoryClass) - 1) do {
-                        private _itemClass = _categoryClass select _k;
-                        if (isClass _itemClass) then {
-                            private _className = configName _itemClass;
-                            private _price = getNumber (_itemClass >> "price");
+                for "_k" from 0 to ((count _categoryClass) - 1) do {
+                    private _itemClass = _categoryClass select _k;
+                    if (isClass _itemClass) then {
+                        private _className = configName _itemClass;
+                        private _price = getNumber (_itemClass >> "price");
+                        
+                        if (_price > 0) then {
+                            A3M_Armory_GradPrices set [_className, _price];
                             
-                            private _itemConditionStr = getText (_itemClass >> "condition");
-                            private _itemAllowed = true;
-                            if (_itemConditionStr != "") then { _itemAllowed = call compile _itemConditionStr; };
+                            // Categorize for Arsenal Whitelisting
+                            private _details = _className call BIS_fnc_itemType;
+                            private _cat = _details select 0;
+                            private _type = _details select 1;
                             
-                            if (_price > 0 && _itemAllowed) then {
-                                A3M_Armory_GradPrices set [_className, _price];
-                                
-                                // Categorize for Arsenal Whitelisting
-                                private _details = _className call BIS_fnc_itemType;
-                                private _cat = _details select 0;
-                                private _type = _details select 1;
-                                
-                                if (_cat == "Weapon") then { _whitelistWeapons pushBack _className; };
-                                if (_cat == "Magazine") then { _whitelistMagazines pushBack _className; };
-                                if (_type == "Backpack") then { _whitelistBackpacks pushBack _className; } else {
-                                    if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBack _className; };
-                                };
+                            if (_cat == "Weapon") then { _whitelistWeapons pushBack _className; };
+                            if (_cat == "Magazine") then { _whitelistMagazines pushBack _className; };
+                            if (_type == "Backpack") then { _whitelistBackpacks pushBack _className; } else {
+                                if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBack _className; };
                             };
                         };
                     };
                 };
+            };
         };
     };
 };
 
+// -------------------------------------------------------------------------
 // 3. Create Virtual Ammo Box & Open Arsenal
 // -------------------------------------------------------------------------
 if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
@@ -109,9 +101,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     // Nav Tabs Group (Dynamic Injection)
     [_display, "armory"] call A3M_fnc_drawNav;
 
-    // -------------------------------------------------------------------------
-    // 5. Add Custom "CALCULATE" & "PURCHASE" Overlays
-    // -------------------------------------------------------------------------
+    // Calculate Button Group (Bottom Center)
     private _calcGroup = _display ctrlCreate ["RscControlsGroupNoScrollbars", 9002];
     private _groupWidth = 0.15 * safeZoneW;
     private _groupHeight = 0.04 * safeZoneH;
