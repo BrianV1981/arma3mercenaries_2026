@@ -130,7 +130,7 @@ The server runs on a custom SQLite backend. Your exact physical inventory, your 
 <font color='#ffaa00'>ACE MEDICAL AND SURVIVAL</font><br/>
 A3M uses full ACE Medical integration. Furthermore, your body's physical state is completely persistent. Your exact Health, Hunger, and Thirst levels are saved to the database. You must actively manage your nutrition and hydration, or you will starve across server restarts!<br/><br/>
 
-<font color='#ffaa00'>YOUR WALLET & FORTIFICATIONS DROP ON DEATH</font><br/>
+<font color='#ffaa00'>YOUR WALLET &amp; FORTIFICATIONS DROP ON DEATH</font><br/>
 Any loose cash (Cr) carried in your inventory, <t color='#ff0000'>AS WELL AS your entire physical fortification inventory</t>, is dropped physically on your corpse when you die. Always deposit your money into an ATM, and build your fortifications before pushing into dangerous areas!<br/><br/>
 
 <font color='#ffaa00'>2-HOUR GEAR RECOVERY</font><br/>
@@ -179,7 +179,7 @@ Keep doing interrogations until you uncover an HVT mission. These targets carry 
 <font color='#ffaa00'>3. PUSH TO FORT MAGA</font><br/>
 With your newfound wealth, recruit a squad and head to <t color='#ffff00'>Fort MAGA</t>. Defend this sector, build it up, and use it as your primary staging area to push into other hostile sectors across the island.<br/><br/>
 
-<font color='#ffaa00'>4. LOGISTICS & BASE BUILDING ARE CENTRAL</font><br/>
+<font color='#ffaa00'>4. LOGISTICS &amp; BASE BUILDING ARE CENTRAL</font><br/>
 You cannot win this war with just infantry. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!
 "
 ]];
