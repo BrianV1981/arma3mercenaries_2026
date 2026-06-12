@@ -6,10 +6,11 @@ private _payloadClass = "";
 // Hierarchy of explosives (chooses the biggest one first if player has multiple)
 if ("SatchelCharge_Remote_Mag" in _mags) then { _payloadClass = "SatchelCharge_Remote_Mag"; } else {
 if ("DemoCharge_Remote_Mag" in _mags) then { _payloadClass = "DemoCharge_Remote_Mag"; } else {
+if ("ACE_M14" in _mags) then { _payloadClass = "ACE_M14"; } else {
 if ("HandGrenade" in _mags) then { _payloadClass = "HandGrenade"; } else {
 if ("MiniGrenade" in _mags) then { _payloadClass = "MiniGrenade"; } else {
 if ("1Rnd_HE_Grenade_shell" in _mags) then { _payloadClass = "1Rnd_HE_Grenade_shell"; };
-};};};};
+};};};};};
 
 if (_payloadClass == "") exitWith { systemChat "No suitable explosive found."; };
 

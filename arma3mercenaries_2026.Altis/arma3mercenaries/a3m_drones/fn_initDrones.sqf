@@ -19,6 +19,7 @@ private _action = [
         {
             ("DemoCharge_Remote_Mag" in (magazines player)) ||
             ("SatchelCharge_Remote_Mag" in (magazines player)) ||
+            ("ACE_M14" in (magazines player)) ||
             ("MiniGrenade" in (magazines player)) ||
             ("HandGrenade" in (magazines player)) ||
             ("1Rnd_HE_Grenade_shell" in (magazines player))
