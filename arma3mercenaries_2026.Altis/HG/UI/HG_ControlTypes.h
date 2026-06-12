@@ -129,6 +129,10 @@ class HG_RscButton
 	style = 2;
 	text = "";
 	shadow = 2;
+    x = 0;
+    y = 0;
+    w = 0;
+    h = 0;
 	font = "RobotoCondensed";
 	sizeEx = "(			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	colorText[] = {1,1,1,1.0};

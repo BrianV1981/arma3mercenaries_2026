@@ -86,7 +86,13 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 
 private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems + _whitelistBackpacks;
 _allAllowed pushBackUnique "ItemMap"; // Guarantee it never crashes ACE Arsenal
-[A3M_ArmoryBox, true, false] call ace_arsenal_fnc_removeVirtualItems; // Clear it first
+
+// If the box already has virtual items, clear them first so we don't duplicate/bloat
+if (!isNil {A3M_ArmoryBox getVariable "ace_arsenal_virtualItems"}) then {
+    [A3M_ArmoryBox, true, false] call ace_arsenal_fnc_removeVirtualItems; 
+};
+
+// Initialize and populate
 [A3M_ArmoryBox, _allAllowed, false] call ace_arsenal_fnc_initBox;
 
 // Open the ACE Arsenal locally
