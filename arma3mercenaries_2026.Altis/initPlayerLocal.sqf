@@ -5,8 +5,8 @@ execVM "arma3mercenaries\jukebox\arma3mercenaries_playRandomTracks.sqf";
 execVM "arma3mercenaries\jukebox\ambientRadioChatter.sqf";
 
 execVM "scripts\HG_initPlayerLocal.sqf";
-execVM "arma3mercenaries\tutorials\quickTutorial.sqf";
 execVM "scripts\wearAllUniforms.sqf";
+execVM "arma3mercenaries\briefing\initBriefing.sqf";
 
 // player traits
 player setUnitTrait ["UAVHacker",true];
@@ -65,6 +65,8 @@ A3M_fnc_initMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenarie
 A3M_fnc_initSupplyDrop = compileFinal (preprocessFileLineNumbers "arma3mercenaries\supply_drops\fn_initSupplyDrop.sqf");
 
 A3M_fnc_openPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openPlayerCard.sqf");
+A3M_fnc_openSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openSquadDossier.sqf");
+A3M_fnc_openFieldManual = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openFieldManual.sqf");
 A3M_fnc_receiveProfileData = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_receiveProfileData.sqf");
 [] execVM "arma3mercenaries\player_profile\fn_initPedometer.sqf";
 
@@ -352,6 +354,26 @@ private _actInterrogate = [
 ["Land_Bodybag_01_white_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
 ["Land_CampingTable_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
 ["Land_WoodenTable_large_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
+
+// -------------------------------------------------------------------------
+// --- A3M PLAYER DOSSIER HOTKEY ---
+// -------------------------------------------------------------------------
+[] spawn {
+    waitUntil { !isNull findDisplay 46 };
+    (findDisplay 46) displayAddEventHandler ["KeyDown", {
+        params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
+        // DIK Code 25 is 'P'. Ensure no modifiers are pressed to prevent conflicts with combinations.
+        if (_key == 25 && !_shift && !_ctrl && !_alt) then {
+            if (isNull (findDisplay 7020) && isNull (findDisplay 7030)) then {
+                [] call A3M_fnc_openPlayerCard;
+            };
+            // Return true to consume the keypress and override default 'P' (Scoreboard) behavior
+            true
+        } else {
+            false
+        };
+    }];
+};
 
 // -------------------------------------------------------------------------
 // --- A3M CORPSE LOOTING (GRAD-FORTIFICATIONS) ---

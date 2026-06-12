@@ -64,10 +64,23 @@ class A3M_PlayerProfileDialog {
             text = "A3M PLAYER CARD"; 
             x = 1.5 * GUI_GRID_W + GUI_GRID_X;
             y = 2 * GUI_GRID_H + GUI_GRID_Y;
-            w = 15 * GUI_GRID_W;
+            w = 12.5 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
             colorText[] = {0, 0, 0, 1}; // Black text on orange
             sizeEx = 1.5 * GUI_GRID_H;
+        };
+
+        class PlayerGuidesButton: HG_RscButton {
+            idc = -1;
+            text = "PLAYER GUIDES";
+            x = 14.5 * GUI_GRID_W + GUI_GRID_X;
+            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            w = 7 * GUI_GRID_W;
+            h = 2 * GUI_GRID_H;
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; createDialog 'A3M_FieldManualDialog'; };";
+            colorText[] = {1, 1, 1, 1};
+            colorBackground[] = {0.2, 0.4, 0.6, 1}; // Distinct blue button
+            colorBackgroundActive[] = {0.3, 0.6, 0.8, 1};
         };
 
         class SquadDossierButton: HG_RscButton {
