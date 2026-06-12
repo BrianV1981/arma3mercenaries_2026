@@ -37,6 +37,7 @@
                 description = "The P07 is a polymer framed, double-action semi-automatic handgun chambered to fire the 9×21 mm round, It can load from either 16- or 30-round magazines (the latter shared by the PDW2000 submachine gun), and is able to reach a fire rate of up to 500 rounds per minute with a muzzle velocity of 410 m/s. The P07 does not support being fitted with any optical sights but can have a sound suppressor mnounted onto its muzzle.";
                 price = 500;
                 stock = 1000;                
+                condition = "side player == west";
                 code = player setAmmo [primaryWeapon player, 1000000]; //full mag with default ammo count  
             };			
 			class hgun_Rook40_F {
@@ -44,6 +45,7 @@
                 description = "The Rook-40 is a double-action semi-automatic handgun chambered to fire the 9×21 mm round, It can load from either 16 or 30 round magazines (the latter also shared by SMGs such as the PDW2000) and is able to attain a rate of fire of up to 600 rounds per minute, with a muzzle velocity of 450 m/s. The Rook-40 does not support any being fitted with any accessories but can have attachments mounted onto its muzzle.";
                 price = 550;
                 stock = 1000;                
+                condition = "side player == east";
                 code = player setAmmo [primaryWeapon player, 1000000]; //full mag with default ammo count  
             };			
 			class hgun_ACPC2_F {

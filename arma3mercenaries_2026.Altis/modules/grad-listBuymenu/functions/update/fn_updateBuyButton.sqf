@@ -3,11 +3,17 @@
 */
 
 #include "..\..\dialog\defines.hpp"
-params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_price"];
+params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_price", ["_isLocked", false]];
 disableSerialization;
 
 _dialog = findDisplay grad_lbm_DIALOG;
 _buyCtrl = _dialog displayCtrl grad_lbm_BUYBUTTON;
+
+//locked by condition
+if (_isLocked) exitWith {
+    _buyCtrl ctrlEnable false;
+    _buyCtrl ctrlSetText "LOCKED";
+};
 
 //no permission
 _permissionLevel = [_baseConfigName,_categoryConfigName,_itemConfigName] call grad_lbm_fnc_getItemPermissionLevel;

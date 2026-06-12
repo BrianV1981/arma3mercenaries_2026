@@ -42,7 +42,19 @@ class grad_lbm {
             idc = grad_lbm_MYFUNDS;
             text = "MY FUNDS";
             sizeEx = 0.04 * TEXT_SCALE;
-            style = ST_RIGHT;
+            style = 0x01; // ST_RIGHT
+
+            x = grad_lbm_BG_X;
+            y = grad_lbm_TopBar_Y;
+            w = grad_lbm_BG_W;
+            h = grad_lbm_Item_H;
+        };
+
+        class XPBar: grad_lbm_RscText {
+            idc = grad_lbm_XPBAR;
+            text = "RANK: ??? | XP: 0 / 0";
+            sizeEx = 0.04 * TEXT_SCALE;
+            style = 0x02; // ST_CENTER
 
             x = grad_lbm_BG_X;
             y = grad_lbm_TopBar_Y;
