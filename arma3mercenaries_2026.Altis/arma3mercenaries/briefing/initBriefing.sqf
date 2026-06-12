@@ -130,8 +130,8 @@ The server runs on a custom SQLite backend. Your exact physical inventory, your 
 <font color='#ffaa00'>ACE MEDICAL AND SURVIVAL</font><br/>
 A3M uses full ACE Medical integration. Furthermore, your body's physical state is completely persistent. Your exact Health, Hunger, and Thirst levels are saved to the database. You must actively manage your nutrition and hydration, or you will starve across server restarts!<br/><br/>
 
-<font color='#ffaa00'>YOUR WALLET DROPS ON DEATH</font><br/>
-Any loose cash (Cr) carried in your inventory is dropped physically on your corpse when you die. Always deposit your money into an ATM!<br/><br/>
+<font color='#ffaa00'>YOUR WALLET & FORTIFICATIONS DROP ON DEATH</font><br/>
+Any loose cash (Cr) carried in your inventory, <t color='#ff0000'>AS WELL AS your entire physical fortification inventory</t>, is dropped physically on your corpse when you die. Always deposit your money into an ATM, and build your fortifications before pushing into dangerous areas!<br/><br/>
 
 <font color='#ffaa00'>2-HOUR GEAR RECOVERY</font><br/>
 When you die, a red marker appears on the map. Your corpse and gear will remain in the world for exactly 2 HOURS. If you do not recover your items before the timer expires, they are lost permanently.
@@ -170,17 +170,17 @@ Got a grudge? Place a financial bounty on another player's head using the Player
 
 player createDiaryRecord ["a3m_field_manual", ["The Core Gameplay Loop", 
 "
-<font color='#ffaa00'>1. THE STARTER SECTOR</font><br/>
-You will deploy into the world with a default set of Squad Leader gear. Your first objective is to head to <t color='#ffff00'>Fort MAGA</t>. This is the primary starter sector and the best staging area to hold and run your initial operations from.<br/><br/>
+<font color='#ffaa00'>1. INTERROGATE FOR SEED MONEY</font><br/>
+You will deploy with a default set of Squad Leader gear. Your very first objective is to detain civilians and escort them to an Interrogation Point. Process them to earn cash.<br/><br/>
 
-<font color='#ffaa00'>2. COMMANDEER GEAR</font><br/>
-Keep your eyes peeled. While you start with basic gear, there are multiple ways to commandeer powerful weapons, armor, and supplies scattered around or held by hostiles.<br/><br/>
+<font color='#ffaa00'>2. HIGH VALUE TARGETS (HVTs)</font><br/>
+Keep doing interrogations until you uncover an HVT mission. These targets carry massive amounts of cash. Once you have a large bankroll from interrogations and HVTs, you will be strong enough to begin your military campaign.<br/><br/>
 
-<font color='#ffaa00'>3. INTERROGATE FOR CASH</font><br/>
-To generate your initial money, you must detain civilians and escort them to an Interrogation Point. Process them to earn cash and potentially uncover massive HVT missions.<br/><br/>
+<font color='#ffaa00'>3. PUSH TO FORT MAGA</font><br/>
+With your newfound wealth, recruit a squad and head to <t color='#ffff00'>Fort MAGA</t>. Defend this sector, build it up, and use it as your primary staging area to push into other hostile sectors across the island.<br/><br/>
 
-<font color='#ffaa00'>4. EXPAND AND PROFIT</font><br/>
-Once you have seed money, buy a vehicle, recruit AI mercenaries, build a Forward Operating Base using the logistics system, and push deeper into enemy territory where the sector payouts multiply! Beware of IEDs, VBIEDs, and hostile locals!
+<font color='#ffaa00'>4. LOGISTICS & BASE BUILDING ARE CENTRAL</font><br/>
+You cannot win this war with just infantry. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!
 "
 ]];
 
