@@ -11,6 +11,16 @@ player createDiarySubject ["a3m_field_manual", "A3M Field Manual"];
 // Note: createDiaryRecord is LIFO (Last In, First Out). 
 // The last one created appears at the TOP of the list.
 
+player createDiaryRecord ["a3m_field_manual", ["The Dynamic ALiVE War", 
+"
+<font color='#ffaa00'>A LIVING, BREATHING BATTLEFIELD</font><br/>
+The entire war raging across the island is completely dynamic. The only hand-placed units on the map are the player characters! Every other hostile, civilian, vehicle, and military patrol is dynamically generated and commanded by the ALiVE Military Commander engine.<br/><br/>
+
+<font color='#ffaa00'>SECTOR CONTROL</font><br/>
+The frontlines naturally shift as NATO and OPFOR clash. All Sector Control scripts and military objectives are entirely handled by ALiVE, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
+"
+]];
+
 player createDiaryRecord ["a3m_field_manual", ["Combat Support (ALiVE)", 
 "
 <font color='#ffaa00'>THE ALiVE NETWORK</font><br/>
@@ -87,6 +97,22 @@ The roads and towns are rigged. You must constantly scan for:<br/>
 "
 ]];
 
+player createDiaryRecord ["a3m_field_manual", ["Death and Persistence", 
+"
+<font color='#ffaa00'>ABSOLUTE PERSISTENCE</font><br/>
+The server runs on a custom SQLite backend. Your exact physical inventory, your active AI squad, their individual loadouts, your garage, and all world-placed fortifications/vehicles are saved continuously.<br/><br/>
+
+<font color='#ffaa00'>ACE MEDICAL AND SURVIVAL</font><br/>
+A3M uses full ACE Medical integration. Furthermore, your body's physical state is completely persistent. Your exact Health, Hunger, and Thirst levels are saved to the database. You must actively manage your nutrition and hydration, or you will starve across server restarts!<br/><br/>
+
+<font color='#ffaa00'>YOUR WALLET DROPS ON DEATH</font><br/>
+Any loose cash (Cr) carried in your inventory is dropped physically on your corpse when you die. Always deposit your money into an ATM!<br/><br/>
+
+<font color='#ffaa00'>2-HOUR GEAR RECOVERY</font><br/>
+When you die, a red marker appears on the map. Your corpse and gear will remain in the world for exactly 2 HOURS. If you do not recover your items before the timer expires, they are lost permanently.
+"
+]];
+
 player createDiaryRecord ["a3m_field_manual", ["The Economy and Alternative Income",  
 "
 <font color='#ffaa00'>BANK VS. WALLET</font><br/>
@@ -95,7 +121,7 @@ You have two separate balances: Cash (Wallet) and Bank. Cash is used for transac
 <font color='#ffaa00'>ALTERNATIVE MONEY MAKERS</font><br/>
 Don't just rely on interrogations! There are many ways to build your empire:<br/>
 • <t color='#ffffff'>Vehicle Salvaging:</t> Find destroyed vehicle wrecks and use a toolkit to salvage them for massive resource payouts.<br/>
-• <t color='#ffffff'>Looting & Fencing:</t> Strip weapons and gear from dead enemies. You can sell these commandeered weapons to the Black Market fence for pure profit.<br/>
+• <t color='#ffffff'>Looting and Fencing:</t> Strip weapons and gear from dead enemies. You can sell these commandeered weapons to the Black Market fence for pure profit.<br/>
 • <t color='#ffffff'>Sector Control:</t> The deeper you push into enemy territory, the higher the payouts. Capture and hold sectors to earn massive payouts every 10 seconds.<br/><br/>
 
 <font color='#ffaa00'>PENALTIES AND FINES</font><br/>

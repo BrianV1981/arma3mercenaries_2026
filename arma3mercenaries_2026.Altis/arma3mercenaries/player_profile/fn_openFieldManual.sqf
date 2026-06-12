@@ -26,11 +26,12 @@ private _text = "
 <t size='0.9'>• <t color='#ffffff'>FACTIONS:</t> Syndikat (allied w/ NATO) and FIA (allied w/ CSAT) operate across the island. The local population is highly hostile!</t><br/>
 <t size='0.9'>• <t color='#ffffff'>EXPLOSIVES:</t> Stay alert for IEDs on roads, rigged VBIEDs, and suicide bombers rushing your position!</t><br/><br/>
 
-<t size='1.2' color='#ff5555'>Death and Persistence</t><br/>
-<t size='0.9'>• <t color='#ffffff'>YOUR WALLET:</t> Cash in your inventory is <t color='#ff0000'>dropped on death</t>. Always deposit it in an ATM!</t><br/>
-<t size='0.9'>• <t color='#ffffff'>PERSISTENCE:</t> Player stats, bank, vehicles (in garage), and placed fortifications are fully persistent across server restarts.</t><br/><br/>
+<t size='1.2' color='#ff5555'>Death, Survival, and Persistence</t><br/>
+<t size='0.9'>• <t color='#ffffff'>PERSISTENCE:</t> Player stats, bank, vehicles (in garage), and placed fortifications are fully persistent across server restarts.</t><br/>
+<t size='0.9'>• <t color='#ffffff'>ACE SURVIVAL:</t> Your Health, Hunger, and Thirst levels are persistent! You must eat and drink to survive.</t><br/>
+<t size='0.9'>• <t color='#ffffff'>YOUR WALLET:</t> Cash in your inventory is <t color='#ff0000'>dropped on death</t>. Always deposit it in an ATM!</t><br/><br/>
 
-<t align='center' size='1.0' color='#aaaaaa'>For a highly detailed breakdown of the Base Building, ALiVE Support, Garages, and Economy systems, please open your Map Screen (Press 'M') and view the 'A3M Field Manual' tabs in the top left corner.</t>
+<t align='center' size='1.0' color='#aaaaaa'>The entire war is commanded dynamically by the ALiVE engine. Open your Map Screen (Press 'M') and view the 'A3M Field Manual' for highly detailed guides on Base Building, Economies, and more.</t>
 ";
 
 _content ctrlSetStructuredText parseText _text;
