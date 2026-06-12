@@ -84,28 +84,19 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     A3M_ArmoryBox allowDamage false;
 };
 
-// Reset Cargo
-[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualWeaponCargo;
-[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualMagazineCargo;
-[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualItemCargo;
-[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualBackpackCargo;
+private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems + _whitelistBackpacks;
+[A3M_ArmoryBox, _allAllowed, true] call ace_arsenal_fnc_initBox;
 
-// Apply Whitelist
-[A3M_ArmoryBox, _whitelistWeapons] call BIS_fnc_addVirtualWeaponCargo;
-[A3M_ArmoryBox, _whitelistMagazines] call BIS_fnc_addVirtualMagazineCargo;
-[A3M_ArmoryBox, _whitelistItems] call BIS_fnc_addVirtualItemCargo;
-[A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
-
-// Open the Arsenal locally
-["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
+// Open the ACE Arsenal locally
+[A3M_ArmoryBox, player] call ace_arsenal_fnc_openBox;
 
 // -------------------------------------------------------------------------
 // 4. Inject Custom UI (Calculate & Purchase)
 // -------------------------------------------------------------------------
 [] spawn {
     disableSerialization;
-    waitUntil {!isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
-    private _display = uiNamespace getVariable ["RscDisplayArsenal", displayNull];
+    waitUntil {!isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
+    private _display = uiNamespace getVariable ["ace_arsenal_display", displayNull];
 
     // Nav Tabs Group (Top - Absolute Coordinates)
     private _btnArmory = _display ctrlCreate ["RscButtonMenu", 9003];
@@ -115,7 +106,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnArmory ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
         [] spawn { 
-            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
             uiSleep 0.5; 
             [false] spawn A3M_fnc_openBlackMarket; 
         };
@@ -129,7 +120,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnVehicles ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
         [] spawn { 
-            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
             uiSleep 0.5; 
             ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; 
         };
@@ -143,7 +134,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnForts ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
         [] spawn { 
-            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
             uiSleep 0.5; 
             [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
         };
@@ -157,7 +148,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnSupport ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
         [] spawn { 
-            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
             uiSleep 0.5; 
             [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
         };
@@ -171,7 +162,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     _btnMercs ctrlAddEventHandler ["ButtonClick", {
         (ctrlParent (_this select 0)) closeDisplay 2;
         [] spawn { 
-            waitUntil {isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+            waitUntil {isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
             uiSleep 0.5; 
             [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; 
         };
@@ -292,8 +283,11 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 // -------------------------------------------------------------------------
 // 5. The Exit Trapdoor (Failsafe & Transaction Finalization)
 // -------------------------------------------------------------------------
-[missionNamespace, "arsenalClosed", {
-    [missionNamespace, "arsenalClosed", _thisScript] call BIS_fnc_removeScriptedEventHandler;
+if (!isNil "A3M_ACE_Arsenal_EH_ID") then {
+    ["ace_arsenal_displayClosed", A3M_ACE_Arsenal_EH_ID] call CBA_fnc_removeEventHandler;
+};
+
+A3M_ACE_Arsenal_EH_ID = ["ace_arsenal_displayClosed", {
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];
     private _oldLoadout = player getVariable ["A3M_Armory_OldLoadout", []];
@@ -341,4 +335,4 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
         [_msg, -1, 0.8, 5, 0.5, 0, 789] call BIS_fnc_dynamicText;
     };
     
-}] call BIS_fnc_addScriptedEventHandler;
+}] call CBA_fnc_addEventHandler;
