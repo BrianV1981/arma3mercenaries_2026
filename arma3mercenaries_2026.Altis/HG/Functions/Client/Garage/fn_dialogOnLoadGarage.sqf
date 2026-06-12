@@ -25,7 +25,9 @@ lbClear HG_GARAGE_SP;
 
 {
     _ind = HG_GARAGE_SP lbAdd (_x select 0);
-	HG_GARAGE_SP lbSetValue [_ind,_forEachIndex];
+    if (_ind != -1) then {
+	    HG_GARAGE_SP lbSetValue [_ind,_forEachIndex];
+    };
 } forEach HG_SPAWN_POINTS;
 
 HG_GARAGE_SP lbSetCurSel 0;

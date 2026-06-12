@@ -32,7 +32,9 @@ _spawnPoints = getArray(getMissionConfig "CfgClient" >> "HG_VehiclesShopCfg" >> 
 
 {
     _ind = HG_VEHICLES_SP lbAdd (_x select 0);
-	HG_VEHICLES_SP lbSetValue[_ind,_forEachIndex];
+    if (_ind != -1) then {
+	    HG_VEHICLES_SP lbSetValue[_ind,_forEachIndex];
+    };
 } forEach _spawnPoints;
 
 if((lbSize HG_VEHICLES_LIST) isEqualTo 0) then
