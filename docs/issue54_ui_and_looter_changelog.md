@@ -30,3 +30,6 @@ The PBO currently loaded onto the live server (`v893-TESTBUILD-20260612-1135.Alt
 **Next Immediate Priorities:**
 1. Proceed with the implementation of the **Faction Menu System** / XP Progression UI.
 2. Address the **Barracks QoL Improvements** (Renaming and Discharging AI mercenaries).
+
+## JIP / Dedicated Server Note (ACE Arsenal Reversion)
+**NOTE:** The attempt to migrate the Armory from native BI Arsenal to ACE Arsenal proved unstable in a live Dedicated Server (JIP) environment. ACE's strict interaction/initialization framework (combined with UI display tracking and distance checks) continually threw natively blocked interaction hooks (e.g. `STR_HG_CANNOT_OPEN_INVENTORY` via the engine's internal checks) when players attempted to open the Arsenal via the laptop script. We have fully rolled the Black Market back to **BI Arsenal** (`v893-TESTBUILD-20260612-1234.Altis.pbo`), preserving the 7-button A3M custom layout and dynamic calculation UI overlay while completely eliminating the ACE framework conflicts.
