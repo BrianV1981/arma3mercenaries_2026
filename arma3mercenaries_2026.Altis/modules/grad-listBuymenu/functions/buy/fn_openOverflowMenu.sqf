@@ -13,9 +13,15 @@ private _listCtrl = _dialog displayCtrl 9011;
 lnbClear _listCtrl;
 
 private _nearbyRaw = nearestObjects [player, ["Car", "Tank", "Air", "Ship", "ReammoBox_F"], 25];
-private _nearby = [];
+private _nearby = [player];
 private _index = 0;
 private _kindOf = _purchaseData select 4;
+
+private _pSpaceStr = "";
+if (_kindOf != "FORTIFICATION") then {
+    _pSpaceStr = format ["[%1%2 Full]", round ((load player) * 100), "%"];
+};
+_listCtrl lnbAddRow [format ["My Inventory %1", _pSpaceStr]];
 
 {
     if (alive _x && _x != player) then {
@@ -40,10 +46,5 @@ private _kindOf = _purchaseData select 4;
 } forEach _nearbyRaw;
 
 uiNamespace setVariable ["A3M_LBM_NearbyContainers", _nearby];
-
-if (count _nearby == 0) exitWith {
-    closeDialog 0;
-    systemChat "Inventory full and no vehicles nearby. Transaction cancelled.";
-};
 
 _listCtrl lnbSetCurSelRow 0;
