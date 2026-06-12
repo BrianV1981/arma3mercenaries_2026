@@ -1,5 +1,21 @@
 # Changelog
 
+## [v1.69.24] - 2026-06-12
+- Fix: Correct fortifications check and implement dynamic quantity routing
+
+
+## [v1.69.23] - 2026-06-12
+- Fix: Remove Drop on Ground fallback from Overflow Menu
+
+
+## [v1.69.22] - 2026-06-12
+- Fix: Remove Drop on Ground option from Overflow menu
+
+
+## [v1.69.21] - 2026-06-11
+- Fix: Finalizing Persistence, Salvage, and Garage integration
+
+
 ## [v1.69.20] - 2026-06-07
 - Fix: AI cash bug and naked loading issue
 

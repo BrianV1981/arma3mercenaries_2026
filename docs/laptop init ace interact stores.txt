@@ -1,6 +1,26 @@
-// ====================================================================================
-// A3M MASTER LAPTOP / VENDOR INIT SCRIPT
-// Copy and paste whichever lines you want into the object's init box in the Eden Editor.
+// ========================================================================
+A3M GLOBAL VARIABLES (DYNAMIC STRING CLASSES)
+========================================================================
+Instead of running complex scripts, simply put these in the laptop/object INIT box:
+
+--- 1. THE QUARTERMASTER HUB (NEW UNIVERSAL UI) ---
+The Quartermaster Hub replaces all the scattered ACE actions below with ONE clean menu.
+By default, placing this variable will show ALL 5 buttons (Armory, Motorpool, Base Building, Support, Contractors):
+
+this setVariable ["A3M_isQuartermaster", true, true];
+
+To make a modular laptop that only shows specific departments, pass an array:
+this setVariable ["A3M_isQuartermaster", true, true];
+this setVariable ["A3M_Hub_Modules", ["ARMORY", "VEHICLES"], true];
+
+To route the Hub buttons to specific sub-stores across the map, define them like this:
+this setVariable ["A3M_Hub_HGShop", "HG_VIPGarage", true]; // Routes "Motorpool" button
+this setVariable ["A3M_Hub_GradFort", "Fortifications", true]; // Routes "Base Building" button
+this setVariable ["A3M_Hub_GradSupp", "Support", true]; // Routes "Combat Support" button
+this setVariable ["A3M_Hub_GradMercs", "Mercenaries", true]; // Routes "Contractors" button
+
+--- 2. STANDALONE HG & A3M SHOPS ---
+(Use these if you want a laptop to bypass the Hub and ONLY have a specific ACE action)
 // ====================================================================================
 
 // ------------------------------------------------------------------------------------
@@ -35,11 +55,15 @@ this setVariable ["A3M_isBlackMarket", true, true];     // A3M Black Market (Dua
 this setVariable ["A3M_isBarracks", true, true];        // A3M Virtual Barracks Kiosk
 this setVariable ["A3M_isATM", true, true];             // HG ATM Access (Doesn't spawn objects)
 
-// --- HG Stores (Uses STRING to map to your HG_Config.h shops and spawn points) ---
-// Example: If you create a new shop in HG_Config called "HG_VIP_Garage", you just paste it here!
-this setVariable ["A3M_isGarage", "HG_DefaultGarage", true];          // HG Garage
-this setVariable ["A3M_isDealer", "HG_DefaultDealer", true];          // HG Vehicle Dealer
+// --- HG MARKERLESS VEHICLES & GARAGES ---
+// A3M Overhaul: HG Vehicle Shops and Garages NO LONGER REQUIRE MAP MARKERS! 
+// They dynamically spawn vehicles directly relative to the PLAYER using collision-safe math.
+// By default, vehicles spawn exactly 15 meters in front of the player's current position and heading.
 this setVariable ["A3M_isVehiclesShop", "HG_DefaultShop", true];      // HG Vehicle Shop
+this setVariable ["A3M_isGarage", "HG_DefaultGarage", true];          // HG Garage
+
+// --- HG Regular Stores (Uses STRING to map to your HG_Config.h shops) ---
+this setVariable ["A3M_isDealer", "HG_DefaultDealer", true];          // HG Vehicle Dealer
 this setVariable ["A3M_isTrader", "HG_DefaultTrader", true];          // HG Trader
 this setVariable ["A3M_isGearShop", "HG_DefaultShop", true];          // HG Gear Shop
 this setVariable ["A3M_isItemsShop", "HG_DefaultShop", true];         // HG Items Shop

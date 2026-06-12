@@ -18,6 +18,7 @@
 ### OPERATOR PROFILE
 - **Callsign:** Vasquez
 - **Steam UID:** `76561197997216797`
+- **Steam Username:** `beyaco` (Used for SteamCMD Workshop downloads instead of anonymous)
 *(Note: When the Operator asks to verify their loadout, inventory, or stats in the `a3m_database.sqlite`, always cross-reference this exact UID.)*
 
 > **HARD MANDATE: STOP AND ASK RATHER THAN THRASH**
