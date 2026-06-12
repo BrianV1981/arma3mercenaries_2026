@@ -219,8 +219,15 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 // -------------------------------------------------------------------------
 // 5. The Exit Trapdoor (Failsafe & Transaction Finalization)
 // -------------------------------------------------------------------------
-[missionNamespace, "arsenalClosed", {
-    [missionNamespace, "arsenalClosed", _thisScript] call BIS_fnc_removeScriptedEventHandler;
+if (!isNil "A3M_Armory_EH_ID") then {
+    [missionNamespace, "arsenalClosed", A3M_Armory_EH_ID] call BIS_fnc_removeScriptedEventHandler;
+};
+
+A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
+    if (!isNil "A3M_Armory_EH_ID") then {
+        [missionNamespace, "arsenalClosed", A3M_Armory_EH_ID] call BIS_fnc_removeScriptedEventHandler;
+        A3M_Armory_EH_ID = nil;
+    };
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];
     private _oldLoadout = player getVariable ["A3M_Armory_OldLoadout", []];
