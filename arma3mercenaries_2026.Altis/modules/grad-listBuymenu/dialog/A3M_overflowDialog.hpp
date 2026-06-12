@@ -12,12 +12,13 @@ class A3M_OverflowDialog {
             colorBackground[] = {0.1, 0.1, 0.1, 0.95};
         };
         class Title: grad_lbm_RscText {
-            text = "INVENTORY FULL - SELECT OVERFLOW DESTINATION";
+            idc = 9015;
+            text = "SELECT DESTINATION";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;
             h = 0.04 * safezoneH;
-            colorBackground[] = {0.8, 0.2, 0.2, 0.9}; // Red header
+            colorBackground[] = {0.2, 0.4, 0.8, 0.9};
         };
     };
     
@@ -47,6 +48,15 @@ class A3M_OverflowDialog {
             w = 0.06 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 1};
+        };
+        class ItemWeightText: grad_lbm_RscText {
+            idc = 9016;
+            text = "WEIGHT: --";
+            x = 0.52 * safezoneW + safezoneX;
+            y = 0.58 * safezoneH + safezoneY;
+            w = 0.12 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0,0,0,0};
         };
         class ConfirmBtn: grad_lbm_RscButton {
             idc = 9012;

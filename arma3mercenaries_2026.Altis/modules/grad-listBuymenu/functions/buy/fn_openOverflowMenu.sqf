@@ -12,6 +12,26 @@ private _listCtrl = _dialog displayCtrl 9011;
 
 lnbClear _listCtrl;
 
+private _itemConfigName = _purchaseData select 2;
+private _kindOf = _purchaseData select 4;
+
+private _titleCtrl = _dialog displayCtrl 9015;
+private _weightCtrl = _dialog displayCtrl 9016;
+
+if (_kindOf == "FORTIFICATION") then {
+    _titleCtrl ctrlSetText "SELECT DESTINATION (FORTIFICATIONS)";
+    private _size = 0;
+    if (!isNil "grad_fortifications_fnc_getObjectSize") then {
+        _size = [_itemConfigName] call grad_fortifications_fnc_getObjectSize;
+    };
+    _weightCtrl ctrlSetText format ["SIZE: %1", _size];
+} else {
+    _titleCtrl ctrlSetText "SELECT DESTINATION (REGULAR INVENTORY)";
+    private _mass = getNumber (configFile >> "CfgWeapons" >> _itemConfigName >> "ItemInfo" >> "mass");
+    if (_mass == 0) then { _mass = getNumber (configFile >> "CfgMagazines" >> _itemConfigName >> "mass"); };
+    if (_mass == 0) then { _mass = getNumber (configFile >> "CfgVehicles" >> _itemConfigName >> "mass"); };
+    _weightCtrl ctrlSetText format ["WEIGHT: %1", _mass];
+};
 private _nearbyRaw = nearestObjects [player, ["Car", "Tank", "Air", "Ship", "ReammoBox_F"], 25];
 private _nearby = [player];
 private _index = 0;
