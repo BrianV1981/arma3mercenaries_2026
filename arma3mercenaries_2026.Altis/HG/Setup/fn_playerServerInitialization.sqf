@@ -77,8 +77,10 @@ if(HG_SAVING_EXTDB) then
 	_cash = _result select 0;
 	_bank = _result select 1;
 } else {
-    _cash = profileNamespace getVariable format["HG_Cash_%1",_uid];
-	_bank = profileNamespace getVariable format["HG_Bank_%1",_uid];
+    _cash = [format["HG_Cash_%1",_uid], -1, false] call A3M_fnc_dbGetSecure;
+	_bank = [format["HG_Bank_%1",_uid], -1, false] call A3M_fnc_dbGetSecure;
+	if (_cash isEqualTo -1) then { _cash = nil; };
+	if (_bank isEqualTo -1) then { _bank = nil; };
 };
 
 if((isNil "_cash") OR (isNil "_bank") OR {_cash isEqualTo -1} OR {_bank isEqualTo -1}) then
@@ -88,9 +90,8 @@ if((isNil "_cash") OR (isNil "_bank") OR {_cash isEqualTo -1} OR {_bank isEqualT
 	
 	if(!HG_SAVING_EXTDB) then
 	{
-	    profileNamespace setVariable [format["HG_Cash_%1",_uid],_cash];
-		profileNamespace setVariable [format["HG_Bank_%1",_uid],_bank];
-		saveProfileNamespace;
+	    [format["HG_Cash_%1",_uid], _cash] call A3M_fnc_dbSetSecure;
+		[format["HG_Bank_%1",_uid], _bank] call A3M_fnc_dbSetSecure;
 	} else {
 	    if((getNumber(getMissionConfig "CfgClient" >> "resetSavedMoney")) isEqualTo 1) then
 	    {
@@ -117,13 +118,12 @@ if((getNumber(getMissionConfig "CfgClient" >> "enableXP")) isEqualTo 1) then
 	{
 	    _xp = _result select 2;
 	} else {
-	    _xp = profileNamespace getVariable format["HG_XP_%1",_uid];
+	    _xp = [format["HG_XP_%1",_uid], nil, false] call A3M_fnc_dbGetSecure;
 		
 		if(isNil "_xp") then
 	    {
 		    _xp = [(rank _player),0];
-	        profileNamespace setVariable [format["HG_XP_%1",_uid],_xp];
-		    saveProfileNamespace;
+	        [format["HG_XP_%1",_uid], _xp] call A3M_fnc_dbSetSecure;
 	    }
 	};
 	
@@ -139,13 +139,12 @@ if((getNumber(getMissionConfig "CfgClient" >> "enableKillCount")) isEqualTo 1) t
 	{
 	    _kc = _result select 3;
 	} else {
-	    _kc = profileNamespace getVariable format["HG_Kills_%1",_uid];
+	    _kc = [format["HG_Kills_%1",_uid], nil, false] call A3M_fnc_dbGetSecure;
 		
 		if(isNil "_kc") then
 	    {
 		    _kc = 0;
-	        profileNamespace setVariable [format["HG_Kills_%1",_uid],_kc];
-		    saveProfileNamespace;
+	        [format["HG_Kills_%1",_uid], _kc] call A3M_fnc_dbSetSecure;
 	    };
 	};
 	

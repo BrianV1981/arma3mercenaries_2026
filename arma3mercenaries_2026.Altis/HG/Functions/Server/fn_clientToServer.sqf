@@ -19,8 +19,8 @@ if(!HG_SAVING_EXTDB) then
 		[format["HG_Bank_%1",_uid],_val]
 	] select _mode;
     
-	profileNamespace setVariable _var;
-	saveProfileNamespace;
+	// A3M Custom Database Hook
+	[_var select 0, _var select 1] call A3M_fnc_dbSetSecure;
 } else {
     private _query = if(HG_SAVING_PROTOCOL isEqualTo "SQL") then
 	{ 
