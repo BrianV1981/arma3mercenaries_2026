@@ -103,6 +103,13 @@
                 stock = 1000;                
                 code = player setAmmo [primaryWeapon player, 1000000]; //full mag with default ammo count  
             };		
+			class SMG_02_F {
+                displayName = "Standard Sting 9 mm Submachine Gun (Base)";
+                description = "The Sting is a selective-fire, blowback-operated submachine gun that is chambered to fire the the 9×21 mm round. It loads from 30-round translucent box magazines, and can attain a fire rate of up to 1,100 rounds per minute with a muzzle velocity of 370 m/s. The Sting can fit accessories onto its top and side rails and can also mount muzzle attachments.";
+                price = 4000;
+                stock = 1000;                
+                code = player setAmmo [primaryWeapon player, 1000000]; //full mag with default ammo count  
+            };		
 			class SMG_01_F {
                 displayName = "Vermin SMG .45 ACP";
                 description = "The Vermin is a personal defence weapon that uses a delayed blowback, closed bolt operation and is chambered to fire the .45 ACP round, It loads from 30-round box magazines and can achieve an impressive fire rate of up to 1,200 rounds per minute, with a muzzle velocity of 280 m/s. The Vermin can be fitted with optical sights on its top rail, and can also mount attachments onto its muzzle. Although it does not have a side rail to attach laser pointers, it can fit a custom-designed flashlight in the notch located just above the end of the barrel.";
@@ -1255,6 +1262,24 @@
 			class 30Rnd_9x21_Red_Mag {
                 displayName = "9 mm 30Rnd Reload Tracer (Red) Mag";
                 description = "Caliber: 9x21 mm Tracers (Red) Rounds: 30 Used in: PDW2000, P07, Rook-40.";
+                price = 40;
+                stock = 10000;                
+            };
+			class 30Rnd_9x21_Mag {
+                displayName = "9 mm 30Rnd Reload Mag";
+                description = "Caliber: 9x21 mm Rounds: 30 Used in: PDW2000, P07, Rook-40.";
+                price = 40;
+                stock = 10000;                
+            };
+			class 16Rnd_9x21_Mag {
+                displayName = "9 mm 16Rnd Reload Mag";
+                description = "Caliber: 9x21 mm Rounds: 16 Used in: PDW2000, P07, ROOK-40";
+                price = 20;
+                stock = 10000;                
+            };
+			class 30Rnd_9x21_Mag_SMG_02 {
+                displayName = "9 mm 30Rnd Reload Mag";
+                description = "Caliber: 9x21 mm Rounds: 30 Used in: Sting, Protector.";
                 price = 40;
                 stock = 10000;                
             };
