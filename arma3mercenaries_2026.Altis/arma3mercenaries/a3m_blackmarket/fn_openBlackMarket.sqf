@@ -12,14 +12,28 @@ disableSerialization;
 // 1. Snapshot Original Gear
 // -------------------------------------------------------------------------
 private _oldLoadout = getUnitLoadout player;
-private _oldWeapons = weapons player;
-private _oldItems = items player + assignedItems player + [headgear player, goggles player, vest player, uniform player, backpack player];
+
+// Helper to get ALL gear into a flat array
+private _fnc_getAllGear = {
+    private _gear = [];
+    _gear append (weapons player);
+    _gear append (items player);
+    _gear append (magazines player);
+    _gear append (assignedItems player);
+    _gear append (primaryWeaponItems player);
+    _gear append (secondaryWeaponItems player);
+    _gear append (handgunItems player);
+    _gear append [headgear player, goggles player, vest player, uniform player, backpack player];
+    _gear = _gear - [""];
+    _gear
+};
+
+private _oldGear = call _fnc_getAllGear;
 
 // Store temporarily
 player setVariable ["A3M_Armory_UseBank", _useBank];
 player setVariable ["A3M_Armory_OldLoadout", _oldLoadout];
-player setVariable ["A3M_Armory_OldWeapons", _oldWeapons];
-player setVariable ["A3M_Armory_OldItems", _oldItems];
+player setVariable ["A3M_Armory_OldGear", _oldGear];
 
 // -------------------------------------------------------------------------
 // 2. Parse CfgGradBuymenu & Build Whitelists
@@ -55,9 +69,9 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                                 if (_price > 0) then {
                                     A3M_Armory_GradPrices set [toLower _className, _price];
                                         
-                                        // Categorize for Arsenal Whitelisting
-                                        private _details = _className call BIS_fnc_itemType;
-                                        private _cat = _details select 0;
+                                    // Categorize for Arsenal Whitelisting
+                                    private _details = _className call BIS_fnc_itemType;
+                                    private _cat = _details select 0;
                                     private _type = _details select 1;
                                     
                                     if (_cat == "Weapon") then { _whitelistWeapons pushBackUnique _className; };
@@ -139,36 +153,55 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
         
         // Run the math function
         private _fnc_calculateDiff = {
-            private _oldWeapons = player getVariable ["A3M_Armory_OldWeapons", []];
-            private _oldItems = player getVariable ["A3M_Armory_OldItems", []];
+            private _oldGear = player getVariable ["A3M_Armory_OldGear", []];
             
-            private _newWeapons = weapons player;
-            private _newItems = items player + assignedItems player + [headgear player, goggles player, vest player, uniform player, backpack player];
+            // Helper to get ALL gear into a flat array
+            private _fnc_getAllGear = {
+                private _gear = [];
+                _gear append (weapons player);
+                _gear append (items player);
+                _gear append (magazines player);
+                _gear append (assignedItems player);
+                _gear append (primaryWeaponItems player);
+                _gear append (secondaryWeaponItems player);
+                _gear append (handgunItems player);
+                _gear append [headgear player, goggles player, vest player, uniform player, backpack player];
+                _gear = _gear - [""];
+                _gear
+            };
+            
+            private _newGear = call _fnc_getAllGear;
+            
+            private _oldCounts = createHashMap;
+            {
+                private _k = toLower _x;
+                _oldCounts set [_k, (_oldCounts getOrDefault [_k, 0]) + 1];
+            } forEach _oldGear;
+            
+            private _newCounts = createHashMap;
+            {
+                private _k = toLower _x;
+                _newCounts set [_k, (_newCounts getOrDefault [_k, 0]) + 1];
+            } forEach _newGear;
             
             private _totalCost = 0;
             private _contraband = false;
             
             {
-                if (!(_x in _oldWeapons) && _x != "") then { 
-                    private _p = A3M_Armory_GradPrices getOrDefault [toLower _x, 0];
+                private _item = _x;
+                private _newQty = _y;
+                private _oldQty = _oldCounts getOrDefault [_item, 0];
+                
+                if (_newQty > _oldQty) then {
+                    private _diff = _newQty - _oldQty;
+                    private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
                     if (_p == 0) then { 
-                        systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _x]; 
+                        systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _item]; 
                         _contraband = true;
                     };
-                    _totalCost = _totalCost + _p; 
+                    _totalCost = _totalCost + (_p * _diff); 
                 };
-            } forEach _newWeapons;
-            
-            {
-                if (!(_x in _oldItems) && _x != "") then { 
-                    private _p = A3M_Armory_GradPrices getOrDefault [toLower _x, 0];
-                    if (_p == 0) then { 
-                        systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _x]; 
-                        _contraband = true;
-                    };
-                    _totalCost = _totalCost + _p; 
-                };
-            } forEach _newItems;
+            } forEach _newCounts;
             
             if (_contraband) exitWith { -2 }; // Return -2 to signify contraband error
             _totalCost
@@ -251,20 +284,50 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     
     // Proceed with Final Payment
     private _useBank = player getVariable ["A3M_Armory_UseBank", false];
-    private _oldWeapons = player getVariable ["A3M_Armory_OldWeapons", []];
-    private _oldItems = player getVariable ["A3M_Armory_OldItems", []];
+    private _oldGear = player getVariable ["A3M_Armory_OldGear", []];
     
-    private _newWeapons = weapons player;
-    private _newItems = items player + assignedItems player + [headgear player, goggles player, vest player, uniform player, backpack player];
+    // Helper to get ALL gear into a flat array
+    private _fnc_getAllGear = {
+        private _gear = [];
+        _gear append (weapons player);
+        _gear append (items player);
+        _gear append (magazines player);
+        _gear append (assignedItems player);
+        _gear append (primaryWeaponItems player);
+        _gear append (secondaryWeaponItems player);
+        _gear append (handgunItems player);
+        _gear append [headgear player, goggles player, vest player, uniform player, backpack player];
+        _gear = _gear - [""];
+        _gear
+    };
+    
+    private _newGear = call _fnc_getAllGear;
+    
+    private _oldCounts = createHashMap;
+    {
+        private _k = toLower _x;
+        _oldCounts set [_k, (_oldCounts getOrDefault [_k, 0]) + 1];
+    } forEach _oldGear;
+    
+    private _newCounts = createHashMap;
+    {
+        private _k = toLower _x;
+        _newCounts set [_k, (_newCounts getOrDefault [_k, 0]) + 1];
+    } forEach _newGear;
+    
     private _totalCost = 0;
     
     {
-        if (!(_x in _oldWeapons)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [toLower _x, 0]); };
-    } forEach _newWeapons;
-    
-    {
-        if (!(_x in _oldItems)) then { _totalCost = _totalCost + (A3M_Armory_GradPrices getOrDefault [toLower _x, 0]); };
-    } forEach _newItems;
+        private _item = _x;
+        private _newQty = _y;
+        private _oldQty = _oldCounts getOrDefault [_item, 0];
+        
+        if (_newQty > _oldQty) then {
+            private _diff = _newQty - _oldQty;
+            private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
+            _totalCost = _totalCost + (_p * _diff); 
+        };
+    } forEach _newCounts;
     
     // Check funds
     private _availableFunds = [player, _useBank] call GRAD_moneymenu_fnc_getFunds;
