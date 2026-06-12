@@ -144,6 +144,7 @@ class HG_VehiclesShop
 			h = 0.022 * safezoneH;
 		};
 		
+		/*
 		class SpawnPointsList: HG_RscCombo
 		{
 			idc = HG_VEHICLES_SP_IDC;
@@ -152,6 +153,7 @@ class HG_VehiclesShop
 			w = 0.185625 * safeZoneW;
 			h = 0.022 * safeZoneH;
 		};
+		*/
 		
 		class ToGarageButton: HG_RscButton
 		{
