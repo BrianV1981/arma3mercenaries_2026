@@ -22,12 +22,13 @@ private _buttonsToDraw = [];
     if ((_x select 0) != _activeID) then { _buttonsToDraw pushBack _x; };
 } forEach _allButtons;
 
-// 3. Mathematical Centering for exactly 6 buttons
-private _buttonWidth = 0.11 * safeZoneW;
+// 3. Mathematical Centering for a 2x3 Grid
+private _buttonWidth = 0.12 * safeZoneW;
 private _buttonHeight = 0.03 * safeZoneH;
-private _spacing = 0.01 * safeZoneW;
-private _totalWidth = (6 * _buttonWidth) + (5 * _spacing);
-private _startX = safeZoneX + ((safeZoneW - _totalWidth) / 2); // Perfectly centered
+private _spacingX = 0.01 * safeZoneW;
+private _spacingY = 0.005 * safeZoneH;
+private _totalWidth = (3 * _buttonWidth) + (2 * _spacingX);
+private _startX = safeZoneX + ((safeZoneW - _totalWidth) / 2); // Perfectly centered horizontally
 private _startY = 0.02 * safeZoneH + safeZoneY;
 
 // 4. Inject
@@ -35,10 +36,15 @@ for "_i" from 0 to 5 do {
     private _data = _buttonsToDraw select _i;
     private _text = _data select 1;
     private _code = _data select 2;
-    private _xPos = _startX + (_i * (_buttonWidth + _spacing));
+    
+    private _row = floor (_i / 3);
+    private _col = _i % 3;
+    
+    private _xPos = _startX + (_col * (_buttonWidth + _spacingX));
+    private _yPos = _startY + (_row * (_buttonHeight + _spacingY));
     
     private _btn = _display ctrlCreate ["HG_RscButton", 9100 + _i];
-    _btn ctrlSetPosition [_xPos, _startY, _buttonWidth, _buttonHeight];
+    _btn ctrlSetPosition [_xPos, _yPos, _buttonWidth, _buttonHeight];
     _btn ctrlSetText _text;
     _btn ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8];
     _btn setVariable ["A3M_NavCode", _code];

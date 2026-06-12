@@ -77,31 +77,34 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
 
 // 3. Create Virtual Ammo Box & Open Arsenal
 // -------------------------------------------------------------------------
-// Instead of creating a hidden virtual box (which ACE heavily conflicts with due to collision/distance issues),
-// we will natively attach the ACE Arsenal directly to the Quartermaster laptop the player is using.
-private _armoryHost = missionNamespace getVariable ["A3M_HG_CurrentLaptop", player];
-
-private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems + _whitelistBackpacks;
-_allAllowed pushBackUnique "ItemMap"; // Guarantee it never crashes ACE Arsenal
-
-// If the host already has virtual items, clear them first so we don't duplicate/bloat
-if (!isNil {_armoryHost getVariable "ace_arsenal_virtualItems"}) then {
-    [_armoryHost, true, false] call ace_arsenal_fnc_removeVirtualItems; 
+if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
+    A3M_ArmoryBox = "Box_NATO_Wps_F" createVehicleLocal [0,0,0];
+    A3M_ArmoryBox hideObject true;
+    A3M_ArmoryBox allowDamage false;
 };
 
-// Initialize and populate
-[_armoryHost, _allAllowed, false] call ace_arsenal_fnc_initBox;
+// Reset Cargo
+[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualWeaponCargo;
+[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualMagazineCargo;
+[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualItemCargo;
+[A3M_ArmoryBox, ["%ALL"]] call BIS_fnc_removeVirtualBackpackCargo;
 
-// Open the ACE Arsenal locally
-[_armoryHost, player] call ace_arsenal_fnc_openBox;
+// Apply Whitelist
+[A3M_ArmoryBox, _whitelistWeapons] call BIS_fnc_addVirtualWeaponCargo;
+[A3M_ArmoryBox, _whitelistMagazines] call BIS_fnc_addVirtualMagazineCargo;
+[A3M_ArmoryBox, _whitelistItems] call BIS_fnc_addVirtualItemCargo;
+[A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
+
+// Open the Arsenal locally
+["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
 
 // -------------------------------------------------------------------------
 // 4. Inject Custom UI (Calculate & Purchase)
 // -------------------------------------------------------------------------
 [] spawn {
     disableSerialization;
-    waitUntil {!isNull (uiNamespace getVariable ["ace_arsenal_display", displayNull])};
-    private _display = uiNamespace getVariable ["ace_arsenal_display", displayNull];
+    waitUntil {!isNull (uiNamespace getVariable ["RscDisplayArsenal", displayNull])};
+    private _display = uiNamespace getVariable ["RscDisplayArsenal", displayNull];
 
     // Nav Tabs Group (Dynamic Injection)
     [_display, "armory"] call A3M_fnc_drawNav;
@@ -110,12 +113,16 @@ if (!isNil {_armoryHost getVariable "ace_arsenal_virtualItems"}) then {
     // 5. Add Custom "CALCULATE" & "PURCHASE" Overlays
     // -------------------------------------------------------------------------
     private _calcGroup = _display ctrlCreate ["RscControlsGroupNoScrollbars", 9002];
-    _calcGroup ctrlSetPosition [0.01 * safeZoneW + safeZoneX, 0.85 * safeZoneH + safeZoneY, 0.2 * safeZoneW, 0.1];
+    private _groupWidth = 0.15 * safeZoneW;
+    private _groupHeight = 0.04 * safeZoneH;
+    private _groupX = safeZoneX + ((safeZoneW - _groupWidth) / 2); // Centered horizontally
+    private _groupY = safeZoneY + safeZoneH - (_groupHeight + (0.02 * safeZoneH)); // Anchored to bottom middle
+    _calcGroup ctrlSetPosition [_groupX, _groupY, _groupWidth, _groupHeight];
     _calcGroup ctrlCommit 0;
     
     // The "Calculate Cost" Button
-    private _btnCalc = _display ctrlCreate ["RscButtonMenu", 9008, _calcGroup];
-    _btnCalc ctrlSetPosition [0, 0, 0.15 * safeZoneW, 0.05 * safeZoneH];
+    private _btnCalc = _display ctrlCreate ["HG_RscButton", 9008, _calcGroup];
+    _btnCalc ctrlSetPosition [0, 0, _groupWidth, _groupHeight];
     _btnCalc ctrlSetText "CALCULATE COST";
     _btnCalc ctrlSetBackgroundColor [0.13, 0.54, 0.21, 0.8]; // Green
     _btnCalc ctrlCommit 0;
@@ -222,11 +229,8 @@ if (!isNil {_armoryHost getVariable "ace_arsenal_virtualItems"}) then {
 // -------------------------------------------------------------------------
 // 5. The Exit Trapdoor (Failsafe & Transaction Finalization)
 // -------------------------------------------------------------------------
-if (!isNil "A3M_ACE_Arsenal_EH_ID") then {
-    ["ace_arsenal_displayClosed", A3M_ACE_Arsenal_EH_ID] call CBA_fnc_removeEventHandler;
-};
-
-A3M_ACE_Arsenal_EH_ID = ["ace_arsenal_displayClosed", {
+[missionNamespace, "arsenalClosed", {
+    [missionNamespace, "arsenalClosed", _thisScript] call BIS_fnc_removeScriptedEventHandler;
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];
     private _oldLoadout = player getVariable ["A3M_Armory_OldLoadout", []];
@@ -274,4 +278,4 @@ A3M_ACE_Arsenal_EH_ID = ["ace_arsenal_displayClosed", {
         [_msg, -1, 0.8, 5, 0.5, 0, 789] call BIS_fnc_dynamicText;
     };
     
-}] call CBA_fnc_addEventHandler;
+}] call BIS_fnc_addScriptedEventHandler;
