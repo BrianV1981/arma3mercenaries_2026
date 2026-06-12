@@ -22,7 +22,7 @@ private _text = "
 <t size='0.9'>• <t color='#ffffff'>BOUNTIES:</t> Got a grudge? Place a financial bounty on another player's head via the Player Dossier (P).</t><br/>
 <t size='0.9'>• <t color='#ffffff'>INTERROGATIONS:</t> Capture specific enemies alive (use non-lethal methods) and deliver them to Enhanced Interrogation sites for massive payouts.</t><br/><br/>
 
-<t size='1.2' color='#ff5555'>Death & Persistence</t><br/>
+<t size='1.2' color='#ff5555'>Death and Persistence</t><br/>
 <t size='0.9'>• <t color='#ffffff'>YOUR WALLET:</t> Cash in your inventory is <t color='#ff0000'>dropped on death</t>. Always deposit it in an ATM!</t><br/>
 <t size='0.9'>• <t color='#ffffff'>YOUR GEAR:</t> You have exactly <t color='#ffff00'>2 HOURS</t> to recover your gear from your corpse marker.</t><br/>
 <t size='0.9'>• <t color='#ffffff'>PERSISTENCE:</t> Player stats, cash, bank, vehicles (in garage), and placed fortifications are fully persistent across server restarts.</t><br/><br/>

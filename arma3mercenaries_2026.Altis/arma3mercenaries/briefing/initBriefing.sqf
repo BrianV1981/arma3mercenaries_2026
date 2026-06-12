@@ -19,14 +19,14 @@ Push into enemy territory. Capture and hold sectors to earn massive payouts ever
 <font color='#ffaa00'>PLAYER BOUNTIES</font><br/>
 Got a grudge? Place a financial bounty on another player's head using the Player Dossier (Press 'P'). Whoever kills them claims the cash instantly.<br/><br/>
 
-<font color='#ffaa00'>INTERROGATIONS & HVTs</font><br/>
+<font color='#ffaa00'>INTERROGATIONS AND HVTs</font><br/>
 High Value Targets (HVTs) are randomly generated across the map. You can also trigger missions by capturing specific enemies alive (use non-lethal methods) and delivering them to Enhanced Interrogation sites for massive payouts and intel.
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Vehicle Operations & Garage", 
+player createDiaryRecord ["a3m_field_manual", ["Vehicle Operations and Garage", 
 "
-<font color='#ffaa00'>CLAIMING & LOCKING</font><br/>
+<font color='#ffaa00'>CLAIMING AND LOCKING</font><br/>
 Use your ACE Interaction menu on any vehicle or static weapon to 'Claim' it. Once claimed, you can Lock/Unlock it and give keys to other players. Only the owner or key-holders can access the inventory or driver seat.<br/><br/>
 
 <font color='#ffaa00'>VIRTUAL GARAGE</font><br/>
@@ -37,7 +37,7 @@ Any player-owned vehicle left out on the battlefield is persistent! When the ser
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["AI Mercenaries & Barracks", 
+player createDiaryRecord ["a3m_field_manual", ["AI Mercenaries and Barracks", 
 "
 <font color='#ffaa00'>PURCHASING RECRUITS</font><br/>
 When you buy an AI Mercenary, they are physically flown in via VTOL drop and parachute down to your location. They are instantly registered to your persistent database profile.<br/><br/>
@@ -45,17 +45,17 @@ When you buy an AI Mercenary, they are physically flown in via VTOL drop and par
 <font color='#ffaa00'>THE VIRTUAL BARRACKS</font><br/>
 Access the Virtual Barracks via terminals to manage your active squad. You can 'Stow' an active mercenary to safely store them in the database (they must be alive and within 50 meters). You can also 'Deploy' offline mercenaries directly to your position.<br/><br/>
 
-<font color='#ffaa00'>SERVER REstarts & MOBILIZATION</font><br/>
+<font color='#ffaa00'>SERVER RESTARTS AND MOBILIZATION</font><br/>
 When the server restarts, any AI squad members that were actively deployed with you will spawn back in safely handcuffed and set to captive. This is a fail-safe to prevent them from dying while the server loads. Simply approach them and use your ACE Interaction menu to 'Mobilize' them and return them to combat readiness!
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Logistics & Base Building", 
+player createDiaryRecord ["a3m_field_manual", ["Logistics and Base Building", 
 "
-<font color='#ffaa00'>GRAD FORTIFICATIONS & ACE CARGO</font><br/>
+<font color='#ffaa00'>GRAD FORTIFICATIONS AND ACE CARGO</font><br/>
 A3M uses a highly robust logistics system. You can purchase fortifications, sandbags, bunkers, and static weapons and transport them to the frontlines using ACE Cargo in your vehicles.<br/><br/>
 
-<font color='#ffaa00'>PLAYER OUTPOSTS & FOBs</font><br/>
+<font color='#ffaa00'>PLAYER OUTPOSTS AND FOBs</font><br/>
 Any fortifications you build and place in the world are strictly persistent. They will survive server restarts. You can construct massive custom Forward Operating Bases (FOBs) anywhere on the map.<br/><br/>
 
 <font color='#ffaa00'>STORAGE CONTAINERS</font><br/>
@@ -63,7 +63,7 @@ You can purchase and place physical storage crates. These containers are fully p
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Death & Persistence", 
+player createDiaryRecord ["a3m_field_manual", ["Death and Persistence", 
 "
 <font color='#ffaa00'>ABSOLUTE PERSISTENCE</font><br/>
 The server runs on a custom SQLite backend. Player stats, your exact physical inventory, your active AI squad, their individual loadouts, your garage, and all world-placed fortifications/vehicles are saved continuously.<br/><br/>
@@ -76,7 +76,7 @@ When you die, a red marker appears on the map. Your corpse and gear will remain 
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["The Economy & Banking", 
+player createDiaryRecord ["a3m_field_manual", ["The Economy and Banking", 
 "
 <font color='#ffaa00'>BANK VS. WALLET</font><br/>
 You have two separate balances: Cash (Wallet) and Bank. Cash is used for physical transactions in the field and is dropped on death. Bank funds are safely secured. Use ATMs marked on the map to deposit your cash.<br/><br/>
@@ -84,7 +84,7 @@ You have two separate balances: Cash (Wallet) and Bank. Cash is used for physica
 <font color='#ffaa00'>KILL REWARDS</font><br/>
 Standard faction kills instantly deposit randomized cash drops into your wallet. You can also search enemy corpses for bonus intel and loose cash.<br/><br/>
 
-<font color='#ffaa00'>PENALTIES & FINES</font><br/>
+<font color='#ffaa00'>PENALTIES AND FINES</font><br/>
 Watch your fire! Friendly Fire incidents will instantly dock your bank account (e.g. -$10,000) and transfer those funds directly to the victim as compensation. Civilian casualties also incur heavy financial fines.
 "
 ]];
