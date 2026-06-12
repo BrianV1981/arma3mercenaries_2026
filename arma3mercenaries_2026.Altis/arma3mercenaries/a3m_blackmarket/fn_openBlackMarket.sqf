@@ -61,10 +61,27 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                                     private _cat = _details select 0;
                                     private _type = _details select 1;
                                     
-                                    if (_cat == "Weapon") then { _whitelistWeapons pushBack _className; };
-                                    if (_cat == "Magazine") then { _whitelistMagazines pushBack _className; };
-                                    if (_type == "Backpack") then { _whitelistBackpacks pushBack _className; } else {
-                                        if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBack _className; };
+                                    if (_cat == "Weapon") then { 
+                                        _whitelistWeapons pushBackUnique _className; 
+                                        // 1. Base Weapon Fallback
+                                        private _baseWep = [_className] call BIS_fnc_baseWeapon;
+                                        if (_baseWep != _className && {!(A3M_Armory_GradPrices hasKey _baseWep)}) then {
+                                            A3M_Armory_GradPrices set [_baseWep, _price];
+                                            _whitelistWeapons pushBackUnique _baseWep;
+                                        };
+                                        // 2. Default Magazine Fallback (BI Arsenal auto-adds this)
+                                        private _mags = getArray (configFile >> "CfgWeapons" >> _baseWep >> "magazines");
+                                        if (count _mags > 0) then {
+                                            private _defaultMag = _mags select 0;
+                                            if (!(A3M_Armory_GradPrices hasKey _defaultMag)) then {
+                                                A3M_Armory_GradPrices set [_defaultMag, 50]; // Fallback flat price
+                                                _whitelistMagazines pushBackUnique _defaultMag;
+                                            };
+                                        };
+                                    };
+                                    if (_cat == "Magazine") then { _whitelistMagazines pushBackUnique _className; };
+                                    if (_type == "Backpack") then { _whitelistBackpacks pushBackUnique _className; } else {
+                                        if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBackUnique _className; };
                                     };
                                 };
                             };
