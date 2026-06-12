@@ -75,31 +75,25 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
     };
 };
 
-// -------------------------------------------------------------------------
 // 3. Create Virtual Ammo Box & Open Arsenal
 // -------------------------------------------------------------------------
-if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
-    A3M_ArmoryBox = "Box_NATO_Wps_F" createVehicleLocal (getPosATL player);
-    A3M_ArmoryBox hideObject true;
-    A3M_ArmoryBox allowDamage false;
-};
-
-// Guarantee the box is near the player to pass ACE Arsenal's hardcoded distance check
-A3M_ArmoryBox setPosATL (getPosATL player);
+// Instead of creating a hidden virtual box (which ACE heavily conflicts with due to collision/distance issues),
+// we will natively attach the ACE Arsenal directly to the Quartermaster laptop the player is using.
+private _armoryHost = missionNamespace getVariable ["A3M_HG_CurrentLaptop", player];
 
 private _allAllowed = _whitelistWeapons + _whitelistMagazines + _whitelistItems + _whitelistBackpacks;
 _allAllowed pushBackUnique "ItemMap"; // Guarantee it never crashes ACE Arsenal
 
-// If the box already has virtual items, clear them first so we don't duplicate/bloat
-if (!isNil {A3M_ArmoryBox getVariable "ace_arsenal_virtualItems"}) then {
-    [A3M_ArmoryBox, true, false] call ace_arsenal_fnc_removeVirtualItems; 
+// If the host already has virtual items, clear them first so we don't duplicate/bloat
+if (!isNil {_armoryHost getVariable "ace_arsenal_virtualItems"}) then {
+    [_armoryHost, true, false] call ace_arsenal_fnc_removeVirtualItems; 
 };
 
 // Initialize and populate
-[A3M_ArmoryBox, _allAllowed, false] call ace_arsenal_fnc_initBox;
+[_armoryHost, _allAllowed, false] call ace_arsenal_fnc_initBox;
 
 // Open the ACE Arsenal locally
-[A3M_ArmoryBox, player] call ace_arsenal_fnc_openBox;
+[_armoryHost, player] call ace_arsenal_fnc_openBox;
 
 // -------------------------------------------------------------------------
 // 4. Inject Custom UI (Calculate & Purchase)

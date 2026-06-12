@@ -37,8 +37,8 @@ createDialog "HG_VehiclesShop";
 // Inject dynamic Quartermaster UI
 [] spawn {
     disableSerialization;
-    waitUntil {!isNull (findDisplay 49100)};
-    [(findDisplay 49100), "vehicles"] call A3M_fnc_drawNav;
+    waitUntil {!isNull (findDisplay 6000)};
+    [(findDisplay 6000), "vehicles"] call A3M_fnc_drawNav;
 };
 
 // Initialize preview objects and arrays
