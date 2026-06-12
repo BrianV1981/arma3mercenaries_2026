@@ -1,5 +1,35 @@
 import re, glob, os, sys
 
+"""
+sync_prices.py
+
+A.I.M. Configuration Synchronizer Tool
+
+PURPOSE:
+This script synchronizes vehicle attributes (prices and descriptions) from the master 
+GRAD store definitions (e.g. CfgGradBuymenu -> vehicleStoreMenu_1.hpp) directly into 
+the HoverGuy (HG) Vehicle Shop UI configurations (HG_VehiclesShopCfg.h).
+
+HOW IT WORKS:
+1. It crawls the master `/modules/*.hpp` directory for Arma 3 `class` definitions.
+2. It extracts the `price` and `description` string for each vehicle classname.
+3. It opens `HG_VehiclesShopCfg.h` and uses Regex to inject these updated values directly 
+   into the C++ arrays used by the HG Shop.
+
+ARRAY ARCHITECTURE:
+Standard HG arrays are formatted as: {"Classname", Price, "ConditionToBuy"}
+This script natively injects a 4th parameter: {"Classname", Price, "ConditionToBuy", "Description"}
+
+SQF INTEGRATION:
+The injected 4th parameter ("Description") is read in-game by:
+`HG/Functions/Client/VehiclesShop/fn_xVehicleSelectionChanged.sqf`
+It safely strips the 4th string out and saves it to a global array (`A3M_HG_CurrentVehicleDescriptions`), 
+which is then displayed beautifully on the vehicle info panel by `fn_vehicleSelectionChanged.sqf`.
+
+Running this script guarantees that the HG UI natively reflects the true economy 
+and lore descriptions set in the master Quartermaster database without in-game lag.
+"""
+
 workspace_dir = os.path.dirname(os.path.abspath(__file__))
 # Check if running in a workspace branch
 if "workspace/issue-54" in os.getcwd():
