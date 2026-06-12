@@ -106,7 +106,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
     private _groupWidth = 0.15 * safeZoneW;
     private _groupHeight = 0.04 * safeZoneH;
     private _groupX = safeZoneX + ((safeZoneW - _groupWidth) / 2); // Centered horizontally
-    private _groupY = safeZoneY + safeZoneH - (_groupHeight + (0.02 * safeZoneH)); // Anchored to bottom middle
+    private _groupY = safeZoneY + safeZoneH - (_groupHeight + (0.06 * safeZoneH)); // Moved up by approx 1 button height
     _calcGroup ctrlSetPosition [_groupX, _groupY, _groupWidth, _groupHeight];
     _calcGroup ctrlCommit 0;
     
