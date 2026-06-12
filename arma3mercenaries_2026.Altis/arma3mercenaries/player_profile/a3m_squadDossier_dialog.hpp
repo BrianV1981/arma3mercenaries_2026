@@ -59,7 +59,7 @@ class A3M_SquadDossierDialog {
             w = 0.02 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0, 0, 1};
-            action = "closeDialog 0;";
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7040)}; [] call A3M_fnc_openPlayerCard; };";
         };
 
         // Active List

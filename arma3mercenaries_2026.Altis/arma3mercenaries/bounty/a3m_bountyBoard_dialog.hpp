@@ -51,7 +51,7 @@ class A3M_BountyBoardDialog {
             y = 1 * GUI_GRID_H + GUI_GRID_Y;
             w = 2 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
-            action = "closeDialog 0;";
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7030)}; [] call A3M_fnc_openPlayerCard; };";
             colorText[] = {1, 1, 1, 1};
             colorBackground[] = {0.8, 0.1, 0.1, 1};
             colorBackgroundActive[] = {1, 0.2, 0.2, 1};

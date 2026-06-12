@@ -79,8 +79,8 @@ class A3M_PlayerProfileDialog {
             h = 0.75 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openSquadDossier; };";
             colorText[] = {1, 1, 1, 1};
-            colorBackground[] = {0.4, 0.4, 0.4, 1};
-            colorBackgroundActive[] = {0.6, 0.6, 0.6, 1};
+            colorBackground[] = {0.2, 0.4, 0.2, 1};
+            colorBackgroundActive[] = {0.3, 0.6, 0.3, 1};
         };
 
         class PlayerGuidesButton: HG_RscButton {
@@ -92,8 +92,8 @@ class A3M_PlayerProfileDialog {
             h = 0.75 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openFieldManual; };";
             colorText[] = {1, 1, 1, 1};
-            colorBackground[] = {0.4, 0.4, 0.4, 1};
-            colorBackgroundActive[] = {0.6, 0.6, 0.6, 1};
+            colorBackground[] = {0.2, 0.4, 0.6, 1};
+            colorBackgroundActive[] = {0.3, 0.6, 0.8, 1};
         };
 
         class LeaderboardButton: HG_RscButton {
@@ -105,8 +105,8 @@ class A3M_PlayerProfileDialog {
             h = 0.75 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openLeaderboard; };";
             colorText[] = {1, 1, 1, 1};
-            colorBackground[] = {0.4, 0.4, 0.4, 1};
-            colorBackgroundActive[] = {0.6, 0.6, 0.6, 1};
+            colorBackground[] = {0.2, 0.2, 0.2, 1};
+            colorBackgroundActive[] = {0.4, 0.4, 0.4, 1};
         };
 
         class BountyBoardButton: HG_RscButton {
@@ -118,8 +118,8 @@ class A3M_PlayerProfileDialog {
             h = 0.75 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openBountyBoard; };";
             colorText[] = {1, 1, 1, 1};
-            colorBackground[] = {0.4, 0.4, 0.4, 1};
-            colorBackgroundActive[] = {0.6, 0.6, 0.6, 1};
+            colorBackground[] = {0.6, 0.3, 0.05, 1};
+            colorBackgroundActive[] = {0.8, 0.4, 0.1, 1};
         };
 
         class CloseButton: HG_RscButton {
