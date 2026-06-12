@@ -22,6 +22,10 @@ private _text = "
 <t size='0.9'>• <t color='#ffffff'>COMBAT SUPPORT:</t> Use the ALiVE CS terminals to purchase shared faction assets (CAS, Transport, Artillery) to dominate the battlefield.</t><br/>
 <t size='0.9'>• <t color='#ffffff'>4-LAYER INVENTORY:</t> Manage your Player Inventory, Vehicle Inventory, ACE Cargo, and Fortification Inventory to build massive FOBs (Bunkers, Walls, Mortars).</t><br/><br/>
 
+<t size='1.2' color='#55aaff'>Asymmetric Threats</t><br/>
+<t size='0.9'>• <t color='#ffffff'>FACTIONS:</t> Syndikat (allied w/ NATO) and FIA (allied w/ CSAT) operate across the island. The local population is highly hostile!</t><br/>
+<t size='0.9'>• <t color='#ffffff'>EXPLOSIVES:</t> Stay alert for IEDs on roads, rigged VBIEDs, and suicide bombers rushing your position!</t><br/><br/>
+
 <t size='1.2' color='#ff5555'>Death and Persistence</t><br/>
 <t size='0.9'>• <t color='#ffffff'>YOUR WALLET:</t> Cash in your inventory is <t color='#ff0000'>dropped on death</t>. Always deposit it in an ATM!</t><br/>
 <t size='0.9'>• <t color='#ffffff'>PERSISTENCE:</t> Player stats, bank, vehicles (in garage), and placed fortifications are fully persistent across server restarts.</t><br/><br/>

@@ -69,7 +69,25 @@ Any player-owned vehicle left out on the battlefield is persistent! When the ser
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["The Economy and Alternative Income", 
+player createDiaryRecord ["a3m_field_manual", ["Asymmetric Threats and Factions", 
+"
+<font color='#ffaa00'>THE INSURGENCY</font><br/>
+This is not just a conventional war. There are two embedded asymmetric factions operating across the island:<br/>
+• <t color='#ffffff'>Syndikat:</t> A local cartel allied with NATO forces.<br/>
+• <t color='#ffffff'>FIA:</t> A rebel paramilitary force allied with CSAT/OPFOR.<br/><br/>
+
+<font color='#ffaa00'>THE LOCAL POPULATION</font><br/>
+Do not expect a warm welcome. The local civilian population is generally hostile to PMC presence. Be extremely careful when operating in populated areas.<br/><br/>
+
+<font color='#ffaa00'>HIDDEN THREATS</font><br/>
+The roads and towns are rigged. You must constantly scan for:<br/>
+• <t color='#ffffff'>IEDs:</t> Improvised Explosive Devices hidden in trash, rubble, or along main supply routes.<br/>
+• <t color='#ffffff'>VBIEDs:</t> Vehicle-Borne IEDs. Any abandoned civilian vehicle could be a trap.<br/>
+• <t color='#ffffff'>Suicide Bombers:</t> Hostile locals who will rush your position and detonate. Shoot to kill if a civilian charges you!
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["The Economy and Alternative Income",  
 "
 <font color='#ffaa00'>BANK VS. WALLET</font><br/>
 You have two separate balances: Cash (Wallet) and Bank. Cash is used for transactions in the field and is dropped on death. Bank funds are safely secured. Use ATMs to deposit your cash!<br/><br/>
@@ -110,8 +128,8 @@ Keep your eyes peeled. While you start with basic gear, there are multiple ways 
 <font color='#ffaa00'>3. INTERROGATE FOR CASH</font><br/>
 To generate your initial money, you must detain civilians and escort them to an Interrogation Point. Process them to earn cash and potentially uncover massive HVT missions.<br/><br/>
 
-<font color='#ffaa00'>4. EXPAND & PROFIT</font><br/>
-Once you have seed money, buy a vehicle, recruit AI mercenaries, build a Forward Operating Base using the logistics system, and push deeper into enemy territory where the sector payouts multiply!
+<font color='#ffaa00'>4. EXPAND AND PROFIT</font><br/>
+Once you have seed money, buy a vehicle, recruit AI mercenaries, build a Forward Operating Base using the logistics system, and push deeper into enemy territory where the sector payouts multiply! Beware of IEDs, VBIEDs, and hostile locals!
 "
 ]];
 
@@ -119,6 +137,9 @@ player createDiaryRecord ["a3m_field_manual", ["Welcome",
 "
 Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
 This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
+
+<font color='#00aaff'>USING YOUR MAP:</font> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
+
 Please read through the tabs below to understand how to survive and thrive as a contractor.<br/><br/>
 You can also press the <font color='#00aaff'>'P'</font> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.
 "
