@@ -74,6 +74,7 @@ class HG_DefaultShop
     {
         displayName = "Combat Vehicles";
         vehicles[] =
+        {
             {"I_C_Offroad_02_LMG_F", 20000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
             {"B_G_Offroad_01_armed_F", 20000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
             {"I_C_Offroad_02_AT_F", 30000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
