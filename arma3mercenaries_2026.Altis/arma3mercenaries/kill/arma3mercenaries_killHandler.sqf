@@ -212,6 +212,17 @@ A3M_fnc_serverHandleReward = {
                 
                 // Reward all players of the completing side (if a player killed them)
                 if (_instigatorIsPlayer) then {
+                    // Log the assassination to the killer's personal dossier
+                    private _killerUID = getPlayerUID _instigator;
+                    if (_killerUID != "") then {
+                        private _killerProfile = A3M_LiveProfiles getOrDefault [_killerUID, createHashMap];
+                        if (count _killerProfile > 0) then {
+                            _killerProfile set ["HVT_Takedowns", (_killerProfile getOrDefault ["HVT_Takedowns", 0]) + 1];
+                            A3M_LiveProfiles set [_killerUID, _killerProfile];
+                            ["A3M_PROFILE_" + _killerUID, _killerProfile] call A3M_fnc_dbSetSecure;
+                        };
+                    };
+                    
                     private _taskCompletingSide = side _instigator;
                     {
                         if (side _x == _taskCompletingSide) then {
@@ -273,6 +284,11 @@ A3M_fnc_serverHandleReward = {
                         } else {
                             _profile set ["Kills_Total", (_profile getOrDefault ["Kills_Total", 0]) + 1];
                             [15, 0] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
+                            
+                            // Weapon Tracking
+                            private _weaponStats = _profile getOrDefault ["Weapon_Kills", createHashMap];
+                            _weaponStats set [_weaponDisplayName, (_weaponStats getOrDefault [_weaponDisplayName, 0]) + 1];
+                            _profile set ["Weapon_Kills", _weaponStats];
                             
                             // Last 10 Kills
                             private _lastKills = _profile getOrDefault ["Last_10_Kills", []];

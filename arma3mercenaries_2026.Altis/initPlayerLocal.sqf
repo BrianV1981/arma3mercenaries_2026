@@ -523,3 +523,29 @@ private _actLootForts = [
 // This prevents AI from generating any text or audio callouts globally.
 enableSentences true;
 enableRadio true;
+
+// -------------------------------------------------------------------------
+// --- A3M DEEP STAT TRACKING: ACE Medical Revives ("The Lifesaver") ---
+// -------------------------------------------------------------------------
+["ace_medical_treatment_onTreatment", {
+    params ["_caller", "_target", "_selectionName", "_className", "_itemUser", "_usedItem"];
+    
+    if (_caller != player) exitWith {}; // Only track local player actions
+    if (_caller == _target) exitWith {}; // Exclude self-treatment
+    
+    // Only track major interventions on unconscious/cardiac arrest patients
+    private _isUnconscious = _target getVariable ["ACE_isUnconscious", false];
+    private _inArrest = _target getVariable ["ace_medical_inCardiacArrest", false];
+    
+    if (_isUnconscious || _inArrest) then {
+        if (_className in ["Epinephrine", "CPR", "BloodIV", "BloodIV_500", "BloodIV_250", "PlasmaIV", "SalineIV", "PersonalAidKit", "SurgicalKit"]) then {
+            private _targetName = name _target;
+            if (!isPlayer _target) then {
+                private _cfgName = getText(configFile >> "CfgVehicles" >> typeOf _target >> "displayName");
+                if (_targetName == "" || _targetName == "Error: No unit") then { _targetName = _cfgName; };
+            };
+            
+            [player, _targetName, _className] remoteExecCall ["A3M_fnc_serverLogRevive", 2];
+        };
+    };
+}] call CBA_fnc_addEventHandler;

@@ -74,9 +74,27 @@ _listCtrl1 lbAdd format ["Total Deaths: %1", _deaths];
 _listCtrl1 lbAdd format ["Team Kills: %1", _profile getOrDefault ["TeamKills", 0]];
 _listCtrl1 lbAdd format ["Civilian Casualties: %1", _profile getOrDefault ["CivilianKills", 0]];
 _listCtrl1 lbAdd format ["Suicides: %1", _profile getOrDefault ["Suicides", 0]];
+
+// Calculate Signature Weapon
+private _weaponStats = _profile getOrDefault ["Weapon_Kills", createHashMap];
+private _favWeapon = "None";
+private _maxWepKills = 0;
+{
+    if (_y > _maxWepKills) then {
+        _favWeapon = _x;
+        _maxWepKills = _y;
+    };
+} forEach _weaponStats;
+
+_listCtrl1 lbAdd "";
+_listCtrl1 lbAdd format ["Signature Weapon: %1 (%2 kills)", _favWeapon, _maxWepKills];
+_listCtrl1 lbAdd format ["HVT Assassinations: %1", _profile getOrDefault ["HVT_Takedowns", 0]];
+_listCtrl1 lbAdd format ["Medical Revives: %1", _profile getOrDefault ["Medical_Revives_Performed", 0]];
+_listCtrl1 lbAdd format ["Mercenaries Contracted: %1", _profile getOrDefault ["Mercenaries_Contracted", 0]];
 _listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["Wallet Balance: %1 cr.", _wallet];
 _listCtrl1 lbAdd format ["Bank Balance: %1 cr.", _bank];
+_listCtrl1 lbAdd format ["Total Lifetime Spent: %1 cr.", _profile getOrDefault ["Total_Capital_Spent", 0]];
 
 private _playerBounty = _profile getOrDefault ["Bounty", 0];
 if (_playerBounty > 0) then {
@@ -130,4 +148,11 @@ _listCtrl3 lbAdd "--- BLACK MARKET LEDGER ---";
 private _lastPurchases = _profile getOrDefault ["Last_10_Purchases", []];
 if (count _lastPurchases == 0) then { _listCtrl3 lbAdd "No purchases recorded yet."; } else {
     { _x params ["_time", "_item", "_price"]; _listCtrl3 lbAdd format ["Bought %1 (-%2 cr)", _item, _price]; } forEach _lastPurchases;
+};
+
+_listCtrl3 lbAdd "";
+_listCtrl3 lbAdd "--- MEDICAL HERO LEDGER ---";
+private _lastSaved = _profile getOrDefault ["Last_100_Saved", []];
+if (count _lastSaved == 0) then { _listCtrl3 lbAdd "No major interventions recorded."; } else {
+    { _x params ["_time", "_patient", "_treatment"]; _listCtrl3 lbAdd format ["Saved %1 [%2]", _patient, _treatment]; } forEach _lastSaved;
 };
