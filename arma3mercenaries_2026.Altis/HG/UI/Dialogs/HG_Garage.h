@@ -47,23 +47,36 @@ class HG_Garage
 			style = "0x02";
 			shadow = 0;
 			x = 0.391719 * safeZoneW + safeZoneX;
-			y = 0.346 * safeZoneH + safeZoneY;
+			y = 0.396 * safeZoneH + safeZoneY;
 			w = 0.216563 * safeZoneW;
-			h = 0.319 * safezoneH;
+			h = 0.269 * safezoneH;
 		};
 	};
 	
 	class Controls
 	{
+		class ParkBtn: HG_RscButton
+		{
+			idc = -1;
+			text = "PARK NEAREST VEHICLE";
+			tooltip = "Stores the nearest owned vehicle back into the garage";
+			onButtonClick = "['HG_DefaultGarage'] spawn HG_fnc_storeVehicleClient; closeDialog 0;";
+			x = 0.391719 * safeZoneW + safeZoneX;
+			y = 0.346 * safeZoneH + safeZoneY;
+			w = 0.216563 * safeZoneW;
+			h = 0.04 * safeZoneH;
+            colorBackground[] = {0.8, 0.4, 0, 1}; // Orange
+		};
+
 		class List: HG_RscListBox
 		{
 			idc = HG_GARAGE_LIST_IDC;
 			style = "0x02 + 16";
 			rowHeight = "1 * ((((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			x = 0.391719 * safeZoneW + safeZoneX;
-			y = 0.346 * safeZoneH + safeZoneY;
+			y = 0.396 * safeZoneH + safeZoneY;
 			w = 0.216563 * safeZoneW;
-			h = 0.319 * safezoneH;
+			h = 0.269 * safezoneH;
 		};
 		
 		/*
