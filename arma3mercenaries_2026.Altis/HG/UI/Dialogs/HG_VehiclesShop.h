@@ -27,7 +27,7 @@ class HG_VehiclesShop
 		{
 			style = "0x02";
 			text = "$STR_HG_DLG_VS_TITLE_LIST";
-			colorBackground[] = {0.4,0.4,0.4,1};
+			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
 			x = 0.005 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
@@ -64,7 +64,7 @@ class HG_VehiclesShop
 		{
 			style = "0x02";
 			text = "$STR_HG_DLG_VS_TITLE_TEXT";
-			colorBackground[] = {0.4,0.4,0.4,1};
+			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
 			x = 0.799062 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;

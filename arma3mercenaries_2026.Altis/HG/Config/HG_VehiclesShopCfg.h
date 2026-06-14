@@ -207,7 +207,7 @@ class HG_DefaultShop
 
     class NDunits
     {
-        displayName = "NDunits";
+        displayName = "UAVs and UGVs (NATO)";
         vehicles[] =
         {
             {"B_UavTerminal", 10000, "true", "Use this Terminal to connect to NATO drones."},
@@ -231,7 +231,7 @@ class HG_DefaultShop
 
     class IDunits
     {
-        displayName = "IDunits";
+        displayName = "UAVs and UGVs (Independent)";
         vehicles[] =
         {
             {"I_UavTerminal", 10000, "true", "Use this Terminal to connect to INDEPENDANT drones."},
