@@ -74,7 +74,6 @@ class HG_DefaultShop
     {
         displayName = "Combat Vehicles";
         vehicles[] =
-        {
             {"I_C_Offroad_02_LMG_F", 20000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
             {"B_G_Offroad_01_armed_F", 20000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
             {"I_C_Offroad_02_AT_F", 30000, "true", "	The 4x4 pickup by Jeep is a perfect choice for farmers and hunters. The durable chassis and powerful engine has been designed to withstand anything from the cratered highways of Central Europe to the rugged terrain of the Mediterranean. (Slingload: No) (Slingloadable: Yes)"},
@@ -85,15 +84,15 @@ class HG_DefaultShop
             {"B_LSV_01_armed_F", 175000, "true", "Primarily designed for use by special operations units, the Polaris DAGOR is a lightweight, air transportable, highly mobile platform that can be configured for a variety of missions. (Slingload: No) (Slingloadable: Yes)"},
             {"O_T_LSV_02_AT_F", 190000, "true", "An agile, lightly protected vehicle for 5-6 soldiers – depending on the configuration. The LSV Mk. II offers safe and fast operating speeds with superior levels of mobility and maneuverability. It is highly adaptable to severe, rugged and restrictive terrains while providing off-road, cross-country mobility under all types of weather conditions. (Slingload: No) (Slingloadable: Yes)"},
             {"B_T_LSV_01_AT_F", 190000, "true", "Primarily designed for use by special operations units, the Polaris DAGOR is a lightweight, air transportable, highly mobile platform that can be configured for a variety of missions. (Slingload: No) (Slingloadable: Yes)"},
-            {"B_MRAP_01_F", 15000, "true", "This M-ATV Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
+            {"B_MRAP_01_F", 190000, "true", "The M-ATV is a four-wheel drive, all-terrain, MRAP-type vehicle. Primarily intended for use in counter-insurgency operations, it is multi-role and can act as both a troop carrier and supply vehicle if needed. (Slingload: No) (Slingloadable: Yes)"},
             {"O_MRAP_02_F", 190000, "true", "The Karatel is a four-wheel drive MRAP-type vehicle that can fulfil many roles ranging from serving as a V.I.P. transport, escort vehicle, light troop transport, to reconnaissance. All in a well-protected and compact package. (Slingload: No) (Slingloadable: Yes)"},
-            {"I_MRAP_03_F", 15000, "true", "This Fennek Transport can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
-            {"B_MRAP_01_hmg_F", 50000, "true", "This M-ATV (HMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
+            {"I_MRAP_03_F", 190000, "true", "The Fennek is a four-wheel drive armed reconnaissance vehicle. Though its primary mission is observation, it can act as both a light troop transport and scout vehicle as well. (Slingload: No) (Slingloadable: Yes)"},
+            {"B_MRAP_01_hmg_F", 225000, "true", "The M-ATV is a four-wheel drive, all-terrain, MRAP-type vehicle. Primarily intended for use in counter-insurgency operations, it is multi-role and can act as both a troop carrier and supply vehicle if needed. (Slingload: No) (Slingloadable: Yes)"},
             {"O_MRAP_02_hmg_F", 225000, "true", "The Karatel is a four-wheel drive MRAP-type vehicle that can fulfil many roles ranging from serving as a V.I.P. transport, escort vehicle, light troop transport, to reconnaissance. All in a well-protected and compact package. (Slingload: No) (Slingloadable: Yes)"},
-            {"I_MRAP_03_hmg_F", 50000, "true", "This Fennek (HMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
-            {"B_MRAP_01_gmg_F", 50000, "true", "This M-ATV (GMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
+            {"I_MRAP_03_hmg_F", 225000, "true", "The Fennek is a four-wheel drive armed reconnaissance vehicle. Though its primary mission is observation, it can act as both a light troop transport and scout vehicle as well. (Slingload: No) (Slingloadable: Yes)"},
+            {"B_MRAP_01_gmg_F", 250000, "true", "The M-ATV is a four-wheel drive, all-terrain, MRAP-type vehicle. Primarily intended for use in counter-insurgency operations, it is multi-role and can act as both a troop carrier and supply vehicle if needed. (Slingload: No) (Slingloadable: Yes)"},
             {"O_MRAP_02_gmg_F", 250000, "true", "The Karatel is a four-wheel drive MRAP-type vehicle that can fulfil many roles ranging from serving as a V.I.P. transport, escort vehicle, light troop transport, to reconnaissance. All in a well-protected and compact package. (Slingload: No) (Slingloadable: Yes)"},
-            {"I_MRAP_03_gmg_F", 50000, "true", "This Fennek (GMG) can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."}
+            {"I_MRAP_03_gmg_F", 250000, "true", "The Fennek is a four-wheel drive armed reconnaissance vehicle. Though its primary mission is observation, it can act as both a light troop transport and scout vehicle as well. (Slingload: No) (Slingloadable: Yes)"}
         };
         spawnPoints[] =
         {
