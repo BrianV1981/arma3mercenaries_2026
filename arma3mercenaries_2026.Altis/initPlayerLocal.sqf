@@ -126,18 +126,26 @@ A3M_fnc_stowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenarie
 // 5. Survival Operations -> [Camp]
 private _actSetCamp = [
     "A3M_SetCamp",
-    "Set Camp (Skip 6 Hours)",
+    "Set Camp (Advance Time)",
     "",
     {
-        titleText ["Setting Camp... Restoring Fatigue & Advancing Time.", "BLACK", 2];
-        player setFatigue 0;
-        [6] remoteExecCall ["skipTime", 2];
+        private _skipHours = missionNamespace getVariable ["A3M_Camping_SkipHours", 6];
+        private _restoreFatigue = missionNamespace getVariable ["A3M_Camping_RestoreFatigue", true];
+        
+        private _titleMsg = format ["Setting Camp... Advancing %1 Hours.", _skipHours];
+        if (_restoreFatigue) then { _titleMsg = _titleMsg + " Restoring Fatigue."; };
+        
+        titleText [_titleMsg, "BLACK", 2];
+        
+        if (_restoreFatigue) then { player setFatigue 0; };
+        [_skipHours] remoteExecCall ["skipTime", 2];
+        
         [] spawn {
             sleep 3;
             titleFadeOut 2;
         };
     },
-    {true}
+    { missionNamespace getVariable ["A3M_Camping_Enabled", true] }
 ] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions"], _actSetCamp] call ace_interact_menu_fnc_addActionToObject;
 

@@ -6,6 +6,57 @@
 if (!hasInterface) exitWith {};
 
 // --- Helper Functions ---
+if (isNil "A3M_fnc_serverSatelliteSweep") then {
+    A3M_fnc_serverSatelliteSweep = {
+        params ["_taskId", "_client", "_cost"];
+        
+        // Find the HVT object
+        private _hvtTarget = objNull;
+        if (!isNil "A3M_ActiveTasks") then {
+            private _taskData = A3M_ActiveTasks getOrDefault [_taskId, []];
+            if (count _taskData > 0) then {
+                _hvtTarget = _taskData select 0;
+            };
+        };
+        
+        if (isNull _hvtTarget || !alive _hvtTarget) exitWith {
+            private _msg = "<t align='left'><t size='0.8' color='#FF0000'>SWEEP FAILED</t><br/><t size='0.6' color='#FFFFFF'>Target signal lost or KIA.</t></t>";
+            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] remoteExec ["BIS_fnc_dynamicText", _client];
+        };
+        
+        // Get the actual exact position from the server where the object is guaranteed to be known
+        private _exactPos = getPosATL _hvtTarget;
+        
+        // Update the task destination to the exact position for everyone
+        [_taskId, _exactPos] remoteExec ["BIS_fnc_taskSetDestination", 0, "JIP_id_" + _taskId];
+        
+        // Deduct Funds from the specific client
+        [_client, -_cost, true] remoteExec ["grad_moneymenu_fnc_addFunds", _client];
+        
+        // Tell the client to start the visual drone feed
+        [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
+    };
+};
+
+if (isNil "A3M_fnc_clientSatelliteFeed") then {
+    A3M_fnc_clientSatelliteFeed = {
+        params ["_exactPos", "_taskId"];
+        private _gridPos = mapGridPosition _exactPos;
+        private _overlayText = format ["SIGINT DETECTED\nTARGET: HVT\nGRID: %1", _gridPos];
+        
+        // Execute BI Drone Feed
+        [_exactPos, _overlayText, 500, 500, 75, 1, [], 0, true] spawn BIS_fnc_establishingShot;
+        
+        // Wait for it to finish or be skipped
+        [] spawn {
+            waitUntil {sleep 1; !(missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false])};
+            // A3M Acknowledgment
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Target acquired.<br/>Map has been marked with the HVT's location.</t></t>";
+            [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+    };
+};
+
 if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
     A3M_fnc_onHVTTrackerSelChanged = {
         params ["_control", "_selectedIndex"];
@@ -15,6 +66,10 @@ if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
 
 if (isNil "A3M_fnc_buySatelliteSweep") then {
     A3M_fnc_buySatelliteSweep = {
+        if (!missionNamespace getVariable ["A3M_HVT_Satellite_Enabled", true]) exitWith {
+            hint "Satellite sweeps are currently disabled.";
+        };
+
         private _display = findDisplay 9020;
         if (isNull _display) exitWith {};
         private _listbox = _display displayCtrl 9021;
@@ -27,7 +82,7 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
         private _taskId = _listbox lbData _selectedIndex;
         if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
         
-        private _cost = 25000;
+        private _cost = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 25000];
         private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
         
         if (_playerFunds < _cost) exitWith {
@@ -35,47 +90,13 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
             [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         };
         
-        // Find the HVT object globally
-        private _hvtTarget = objNull;
-        if (!isNil "A3M_ActiveTasks") then {
-            private _taskData = A3M_ActiveTasks getOrDefault [_taskId, []];
-            if (count _taskData > 0) then {
-                _hvtTarget = _taskData select 0;
-            };
-        };
-        
-        if (isNull _hvtTarget || !alive _hvtTarget) exitWith {
-            private _msg = "<t align='left'><t size='0.8' color='#FF0000'>SWEEP FAILED</t><br/><t size='0.6' color='#FFFFFF'>Target signal lost or KIA.</t></t>";
-            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-            closeDialog 0;
-        };
-        
         closeDialog 0; // Close the menu before initiating feed
         
-        // Deduct Funds
-        [player, -_cost, true] call grad_moneymenu_fnc_addFunds;
         private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Re-tasking orbital asset...<br/>-$%1</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
         [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         
-        // Launch BI Satellite Feed
-        [_hvtTarget, _taskId] spawn {
-            params ["_hvtTarget", "_taskId"];
-            private _gridPos = mapGridPosition (getPosATL _hvtTarget);
-            private _overlayText = format ["SIGINT DETECTED\nTARGET: HVT\nGRID: %1", _gridPos];
-            
-            // Execute BI Drone Feed
-            [_hvtTarget, _overlayText, 500, 500, 75, 1, [], 0, true] spawn BIS_fnc_establishingShot;
-            
-            // Wait for it to finish or be skipped
-            waitUntil {sleep 1; !(missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false])};
-            
-            // Reassign the task destination directly to the HVT's current position
-            [_taskId, getPosATL _hvtTarget] remoteExec ["BIS_fnc_taskSetDestination", 2];
-            
-            // A3M Acknowledgment
-            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Target acquired.<br/>Map has been marked with the HVT's location.</t></t>";
-            [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-        };
+        // Delegate to server to get the exact position, since the client may not know the object if it's out of network range
+        [_taskId, player, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
     };
 };
 
@@ -95,7 +116,7 @@ if (!isNil "A3M_ActiveTasks") then {
         private _taskData = _y;
         _taskData params ["_hvtObj", "_taskType"];
         
-        if (_taskType == "HVT" && !isNull _hvtObj && alive _hvtObj) then {
+        if (_taskType == "HVT") then {
             _activeHVTsFound = true;
             
             // Extract the title of the task
@@ -115,5 +136,7 @@ if (!_activeHVTsFound) then {
 };
 
 // Set dynamic cost text UI
+// Set dynamic cost text UI
+private _costAmount = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 25000];
 private _costText = _display displayCtrl 9026;
-_costText ctrlSetText format ["COST: $%1", [25000, 1, 0, true] call CBA_fnc_formatNumber];
+_costText ctrlSetText format ["COST: $%1", [_costAmount, 1, 0, true] call CBA_fnc_formatNumber];

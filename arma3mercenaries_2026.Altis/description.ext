@@ -205,6 +205,7 @@ class Extended_PreInit_EventHandlers {
 	VCM_CBASettings = call compile preprocessFileLineNumbers "Vcom\Functions\VCM_Functions\fn_CBASettings.sqf";
 	A3M_SectorControl_CBASettings = call compile preprocessFileLineNumbers "arma3mercenaries\sector_control\XEH_preInit.sqf";
 	A3M_Salvage_CBASettings = call compile preprocessFileLineNumbers "arma3mercenaries\salvage\XEH_preInit.sqf";
+	A3M_Core_CBASettings = call compile preprocessFileLineNumbers "arma3mercenaries\XEH_preInit.sqf";
 };
 
 
