@@ -379,7 +379,31 @@ addMissionEventHandler ["entityKilled", {
     if (isNull _instigator) then { _instigator = _killer };
 
     // --- Exit Checks ---
-    if (isNull _instigator || isNull _killed || !(_killed isKindOf "CAManBase")) exitWith {};
+    if (isNull _instigator || isNull _killed) exitWith {};
+
+    // --- A3M Critical Infrastructure Penalty ---
+    if ((_killed isKindOf "Building" || _killed isKindOf "Ruins") && isPlayer _instigator) then {
+        private _lowerType = toLower (typeOf _killed);
+        private _isInfra = false;
+        private _infraName = "";
+        
+        if (_lowerType find "fuelstation" >= 0 || _lowerType find "fs_roof" >= 0 || _lowerType find "fs_feed" >= 0) then { _isInfra = true; _infraName = "a Fuel Station"; };
+        if (_lowerType find "hospital" >= 0) then { _isInfra = true; _infraName = "a Medical Facility"; };
+        if (_lowerType find "transformer" >= 0 || _lowerType find "power" >= 0 || _lowerType find "solar" >= 0) then { _isInfra = true; _infraName = "the Power Grid"; };
+        if (_lowerType find "ttower" >= 0 || _lowerType find "radar" >= 0 || _lowerType find "communication" >= 0) then { _isInfra = true; _infraName = "a Communications Tower"; };
+        
+        if (_isInfra) then {
+            if (isServer) then {
+                [_instigator, -50000, true] call grad_moneymenu_fnc_addFunds;
+                [1000, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
+                private _msg = format["<t align='center'><t font='RobotoCondensedBold' size='1.8' color='#FF0000'>WAR CRIME DETECTED</t><br/><t font='PuristaMedium' size='1.2' color='#FFFFFF'>Destruction of %1.<br/>-$50,000 | -1,000 XP</t></t>", _infraName];
+                [_msg, -1, 0.2, 8, 1, 0, 790] remoteExec ["BIS_fnc_dynamicText", _instigator];
+            };
+        };
+    };
+
+    if (!(_killed isKindOf "CAManBase")) exitWith {}; // Exit here so vehicle/building kills don't trigger the infantry killfeed
+
     private _killedPos = getPosATL _killed; // Need position early for markers
     if (count _killedPos == 0) exitWith {};
 
