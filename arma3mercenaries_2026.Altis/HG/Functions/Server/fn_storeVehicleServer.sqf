@@ -17,7 +17,8 @@ if(!HG_SAVING_EXTDB) then
     if(_mode isEqualTo 0) then
     {
         // Add new vehicle to the array. (3 = Status: 0 is Inactive/Garaged, 1 is Active/Out)
-        _garage pushBack [(typeOf _vehicle),_plate,_color,0]; // Explicitly use typeOf to avoid storing object
+        private _class = if((typeName _vehicle) isEqualTo "STRING") then {_vehicle} else {typeOf _vehicle};
+        _garage pushBack [_class,_plate,_color,0];
     } else {
         // Find existing vehicle by license plate
         private _index = [_plate,_garage] call HG_fnc_findIndex;

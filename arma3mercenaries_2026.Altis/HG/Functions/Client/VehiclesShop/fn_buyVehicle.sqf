@@ -75,7 +75,7 @@ if(_playerFunds >= _price) then
 
     // 2. If no valid marker was found, fallback to player-relative dynamic math
     if ((typeName _spawnPosition) isEqualTo "ARRAY" && {_spawnPosition isEqualTo []}) then {
-        private _distance = 15;
+        private _distance = 50;
         private _direction = 0; 
         private _heading = getDir player;
 
@@ -83,7 +83,7 @@ if(_playerFunds >= _price) then
         
         private _safePos = [];
         for "_i" from 1 to 50 do {
-            _safePos = _mathPos findEmptyPosition [0, 15 + 5*_i, _classname];
+            _safePos = _mathPos findEmptyPosition [0, 20 + 5*_i, _classname];
             if !(_safePos isEqualTo []) exitWith {};
         };
         
@@ -91,7 +91,7 @@ if(_playerFunds >= _price) then
             _spawnPosition = _safePos;
             _spawnPosition pushBack _heading; // Server reads [X, Y, Z, Heading]
         } else {
-            _spawnPosition = (getPos player) findEmptyPosition [5, 50, _classname];
+            _spawnPosition = (getPos player) findEmptyPosition [50, 150, _classname];
         };
         
         if (_spawnPosition isEqualTo []) exitWith {
@@ -122,7 +122,7 @@ if(_playerFunds >= _price) then
     [_classname, _spawnPosition] spawn {
         params ["_classname", "_spawnPosition"];
         private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
-        private _endTime = time + 30;
+        private _endTime = time + 90;
         
         // Custom 3D Marker rendering loop (mimicking GRAD)
         waitUntil {
