@@ -10,7 +10,10 @@ params [
     ["_itemsArray", [], [[]]]
 ];
 
-if (!isServer) exitWith { diag_log "[A3M DEBUG] A3M_fnc_initSupplyDrop skipped on client."; };
+if (!isServer) exitWith { 
+    diag_log "[A3M DEBUG] Forwarding A3M_fnc_initSupplyDrop to Server.";
+    _this remoteExec ["A3M_fnc_initSupplyDrop", 2];
+};
 
 if (isNull _buyer) then { _buyer = player; };
 if (isNull _buyer) exitWith {};
