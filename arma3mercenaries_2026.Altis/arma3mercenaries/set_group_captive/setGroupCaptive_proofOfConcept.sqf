@@ -12,6 +12,12 @@
 
 {
     if (!isPlayer _x) then {
+        // Force dismount from vehicles or static turrets
+        if (vehicle _x != _x) then {
+            unassignVehicle _x;
+            moveOut _x;
+        };
+
         // Apply ACE handcuffs (visual + behavioral)
         [_x, true] call ACE_captives_fnc_setHandcuffed;
 
@@ -21,4 +27,6 @@
     };
 } forEach units group player;
 
-systemChat format ["[A3M] %1 mercenaries standing down.", {!isPlayer _x} count units group player];
+private _count = {!isPlayer _x} count units group player;
+private _a3mMsg = format ["<t align='left'><t size='0.8' color='#FFaa00'>SQUAD STAND DOWN</t><br/><t size='0.6' color='#FFFFFF'>%1 mercenaries dismounted and secured.</t></t>", _count];
+[_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
