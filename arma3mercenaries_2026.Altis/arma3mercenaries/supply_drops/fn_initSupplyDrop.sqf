@@ -11,8 +11,9 @@ params [
 ];
 
 if (!isServer) exitWith { 
-    diag_log "[A3M DEBUG] Forwarding A3M_fnc_initSupplyDrop to Server.";
-    _this remoteExec ["A3M_fnc_initSupplyDrop", 2];
+    // grad-listBuymenu executes custom code globally. 
+    // We only want the server's instance to spawn the drop.
+    diag_log "[A3M DEBUG] Aborting local A3M_fnc_initSupplyDrop (Server will handle this natively).";
 };
 
 if (isNull _buyer) then { _buyer = player; };
