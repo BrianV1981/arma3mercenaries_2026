@@ -123,7 +123,11 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         // Populate Items
         {
             _x params ["_class", "_count"];
-            _cargo addItemCargoGlobal [_class, _count];
+            if (isClass (configFile >> "CfgVehicles" >> _class)) then {
+                _cargo addBackpackCargoGlobal [_class, _count];
+            } else {
+                _cargo addItemCargoGlobal [_class, _count];
+            };
         } forEach _itemsArray;
 
         // Add visual markers
