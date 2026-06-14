@@ -38,7 +38,13 @@ private _catDB = ["A3M_ConstellisDB", "[Constellis Database]", "", {}, {true}] c
 [player, "supplyDropStore_1", container_2, aHelipad_2, "Supply Drops", "Emergency Supply Drops", {true}, [0,0,0], 3, ["ACE_SelfActions", "A3M_LogisticsStore"]] call grad_lbm_fnc_addInteraction;
 
 
-// 3. Squad Controls -> [Squad Command]
+// 3. A3M HVT Satellite Tracker -> [Support & Logistics]
+private _actLocateHVT = ["A3M_LocateHVT", "Locate HVT (Satellite Uplink)", "", {
+    [] execVM "arma3mercenaries\tasks\fn_openHVTTrackerMenu.sqf";
+}, {true}] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions", "A3M_LogisticsStore"], _actLocateHVT] call ace_interact_menu_fnc_addActionToObject;
+
+// 4. Squad Controls -> [Squad Command]
 [] execVM "arma3mercenaries\set_group_captive\groupRejoin.sqf";
 
 private _actGrpRecall = ["groupTeleport","Recall Squad","",{execVM "arma3mercenaries\group_teleport\groupTeleport.sqf"},{true}] call ace_interact_menu_fnc_createAction;
