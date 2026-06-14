@@ -13,17 +13,17 @@
 #define grad_lbm_BUYBUTTON      3003
 
 //DIMENSIONS AND POSITIONS =====================================================
-#define grad_lbm_textSize       (0.04 * TEXT_SCALE)
+#define grad_lbm_textSize       (0.045 * TEXT_SCALE)
 
-#define grad_lbm_Item_H         (0.025 * Y_SCALE)
-#define grad_lbm_Item_W         (0.025 * X_SCALE)
-#define grad_lbm_ItemSpace_Y    (0.0025 * SZ_SCALE)
+#define grad_lbm_Item_H         (0.035 * Y_SCALE)
+#define grad_lbm_Item_W         (0.035 * X_SCALE)
+#define grad_lbm_ItemSpace_Y    (0.003 * SZ_SCALE)
 
 #define grad_lbm_Padding_Y      (0.5 * grad_lbm_Item_H)
 #define grad_lbm_Padding_X      (0.5 * grad_lbm_Item_W)
 
-#define grad_lbm_Column_W       (0.26 * X_SCALE)
-#define grad_lbm_Column_H       (0.4 * Y_SCALE)
+#define grad_lbm_Column_W       (0.31 * X_SCALE)
+#define grad_lbm_Column_H       (0.65 * Y_SCALE)
 
 #define grad_lbm_Column1_X      (grad_lbm_BG_X + grad_lbm_Padding_X)
 #define grad_lbm_Column2_X      (grad_lbm_Column1_X + grad_lbm_Column_W + grad_lbm_Padding_X)
