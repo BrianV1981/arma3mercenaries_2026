@@ -50,6 +50,24 @@
                 stock = 9999;
 				code = ["Box_IND_WpsSpecial_F", _this select 0, [], [["Titan_AA",20]], []] spawn A3M_fnc_initSupplyDrop;
             };
+
+			class Box_NATO_AmmoVeh_F_HMG {
+                displayName = "NATO HMG Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Mk30 HMG .50 (Raised) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 85000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_NATO_AmmoVeh_F", _this select 0, [["B_HMG_01_high_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_IND_AmmoVeh_F_HMG {
+                displayName = "INDEP HMG Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x M2 HMG .50 (Raised) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 65000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_HMG_02_high_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
 			
 			class B_CargoNet_01_ammo_F {
                 displayName = "Titan Suppply Drop";
