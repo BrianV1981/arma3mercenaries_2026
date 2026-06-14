@@ -260,5 +260,6 @@ _HVT setVariable ["taskID", _taskID];
 // Register to Task Manager
 if (!isNil "A3M_ActiveTasks") then {
     A3M_ActiveTasks set [_taskID, [_HVT, "HVT"]];
+    publicVariable "A3M_ActiveTasks";
     diag_log format ["[A3M TASK MANAGER] Registered HVT Task: %1", _taskID];
 };

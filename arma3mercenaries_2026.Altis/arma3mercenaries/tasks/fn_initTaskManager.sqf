@@ -38,9 +38,13 @@ if (isNil "A3M_ActiveTasks") then {
     } forEach A3M_ActiveTasks;
     
     // Cleanup Phase
-    {
-        A3M_ActiveTasks deleteAt _x;
-        diag_log format ["[A3M TASK MANAGER] Cleaned up task %1.", _x];
-    } forEach _tasksToRemove;
+    if (count _tasksToRemove > 0) then {
+        {
+            A3M_ActiveTasks deleteAt _x;
+            diag_log format ["[A3M TASK MANAGER] Cleaned up task %1.", _x];
+        } forEach _tasksToRemove;
+        
+        publicVariable "A3M_ActiveTasks";
+    };
     
 }, 1800, []] call CBA_fnc_addPerFrameHandler;
