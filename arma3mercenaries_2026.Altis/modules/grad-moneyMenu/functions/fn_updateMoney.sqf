@@ -23,5 +23,5 @@ switch (true) do {
     };
 };
 
-_text = format ["%1 Cr", _money];
+_text = format ["$%1", [_money, 1, 0, true] call CBA_fnc_formatNumber];
 _myMoney ctrlSetText _text;
