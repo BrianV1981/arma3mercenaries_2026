@@ -25,7 +25,10 @@ A3M_HG_CurrentVehicleDescriptions = [];
 	if(_exists AND _condition) then
 	{
 	    _vName = getText(configFile >> "CfgVehicles" >> (_x select 0) >> "displayName");
-        _ind = HG_VEHICLES_LIST lbAdd _vName;
+        private _price = _x select 1;
+        private _priceStr = if (_price <= 0) then { localize "STR_HG_DLG_FREE" } else { [_price, true] call HG_fnc_currencyToText };
+        private _displayNameWithPrice = format["[%1] %2", _priceStr, _vName];
+        _ind = HG_VEHICLES_LIST lbAdd _displayNameWithPrice;
         HG_VEHICLES_LIST lbSetData[_ind,(_x select 0)];
         HG_VEHICLES_LIST lbSetValue[_ind,(_x select 1)];
 	    HG_VEHICLES_LIST lbSetTooltip[_ind,_vName];
