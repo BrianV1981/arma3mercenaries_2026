@@ -4,7 +4,7 @@ class A3M_TicketMenu {
     enableSimulation = true;
 
     class controlsBackground {
-        class MainBackground: RscText {
+        class MainBackground: HG_RscText {
             idc = -1;
             x = 0.3 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
@@ -12,7 +12,7 @@ class A3M_TicketMenu {
             h = 0.5 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 0.9};
         };
-        class HeaderBackground: RscText {
+        class HeaderBackground: HG_RscText {
             idc = -1;
             x = 0.3 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
@@ -20,7 +20,7 @@ class A3M_TicketMenu {
             h = 0.05 * safezoneH;
             colorBackground[] = {1, 0.5, 0, 0.8}; // A3M Orange
         };
-        class HeaderText: RscText {
+        class HeaderText: HG_RscText {
             idc = -1;
             text = "A3M TICKETING & BUG REPORT SYSTEM";
             x = 0.31 * safezoneW + safezoneX;
@@ -31,7 +31,7 @@ class A3M_TicketMenu {
             font = "RobotoCondensedBold";
             sizeEx = 0.045;
         };
-        class TitleLabel: RscText {
+        class TitleLabel: HG_RscText {
             idc = -1;
             text = "TICKET TITLE (Short Summary):";
             x = 0.31 * safezoneW + safezoneX;
@@ -41,7 +41,7 @@ class A3M_TicketMenu {
             font = "RobotoCondensed";
             sizeEx = 0.035;
         };
-        class DescLabel: RscText {
+        class DescLabel: HG_RscText {
             idc = -1;
             text = "DETAILED DESCRIPTION:";
             x = 0.31 * safezoneW + safezoneX;
@@ -51,7 +51,7 @@ class A3M_TicketMenu {
             font = "RobotoCondensed";
             sizeEx = 0.035;
         };
-        class InfoLabel: RscText {
+        class InfoLabel: HG_RscText {
             idc = -1;
             text = "Tickets are pushed securely to the remote GitHub issue tracker.";
             x = 0.31 * safezoneW + safezoneX;
@@ -65,7 +65,7 @@ class A3M_TicketMenu {
     };
 
     class controls {
-        class TitleEdit: RscEdit {
+        class TitleEdit: HG_RscEdit {
             idc = 7701;
             x = 0.31 * safezoneW + safezoneX;
             y = 0.36 * safezoneH + safezoneY;
@@ -74,7 +74,7 @@ class A3M_TicketMenu {
             colorBackground[] = {0, 0, 0, 0.8};
             text = "";
         };
-        class DescEdit: RscEdit {
+        class DescEdit: HG_RscEdit {
             idc = 7702;
             style = 16; // ST_MULTI
             x = 0.31 * safezoneW + safezoneX;
@@ -85,7 +85,7 @@ class A3M_TicketMenu {
             text = "";
             lineSpacing = 1;
         };
-        class SubmitButton: RscButton {
+        class SubmitButton: HG_RscButton {
             idc = 7703;
             text = "SUBMIT TICKET";
             x = 0.52 * safezoneW + safezoneX;
@@ -95,7 +95,7 @@ class A3M_TicketMenu {
             colorBackground[] = {0.2, 0.6, 0.2, 1};
             action = "[] call A3M_fnc_submitTicket;";
         };
-        class CancelButton: RscButton {
+        class CancelButton: HG_RscButton {
             idc = 7704;
             text = "CANCEL";
             x = 0.31 * safezoneW + safezoneX;
