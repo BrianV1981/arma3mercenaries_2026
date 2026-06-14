@@ -36,6 +36,14 @@ if(_playerFunds >= _price) then
     private["_classname", "_color", "_spawnPosition", "_targetLaptop", "_distance", "_direction", "_heading"];
 
     _classname = HG_VEHICLES_LIST lbData (lbCurSel HG_VEHICLES_LIST);
+    
+    // Check if the item is sold out globally
+    private _shortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+    if (_classname in _shortages) exitWith {
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OUT OF STOCK</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>This vehicle is currently sold out on the Black Market.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    };
+    
     _color = HG_VEHICLES_COLORS lbData (lbCurSel HG_VEHICLES_COLORS);
     
     // -------------------------------------------------------------
@@ -75,7 +83,7 @@ if(_playerFunds >= _price) then
 
     // 2. If no valid marker was found, fallback to player-relative dynamic math
     if ((typeName _spawnPosition) isEqualTo "ARRAY" && {_spawnPosition isEqualTo []}) then {
-        private _distance = 15;
+        private _distance = 50;
         private _direction = 0; 
         private _heading = getDir player;
 
@@ -83,7 +91,7 @@ if(_playerFunds >= _price) then
         
         private _safePos = [];
         for "_i" from 1 to 50 do {
-            _safePos = _mathPos findEmptyPosition [0, 15 + 5*_i, _classname];
+            _safePos = _mathPos findEmptyPosition [0, 20 + 5*_i, _classname];
             if !(_safePos isEqualTo []) exitWith {};
         };
         
@@ -91,7 +99,7 @@ if(_playerFunds >= _price) then
             _spawnPosition = _safePos;
             _spawnPosition pushBack _heading; // Server reads [X, Y, Z, Heading]
         } else {
-            _spawnPosition = (getPos player) findEmptyPosition [5, 50, _classname];
+            _spawnPosition = (getPos player) findEmptyPosition [50, 150, _classname];
         };
         
         if (_spawnPosition isEqualTo []) exitWith {
@@ -106,10 +114,15 @@ if(_playerFunds >= _price) then
 
     // Close the dialog and spawn the vehicle
     closeDialog 0;
-    hint format[(localize "STR_HG_VEHICLE_BOUGHT"), (getText(configFile >> "CfgVehicles" >> _classname >> "displayName")), [_price, true] call HG_fnc_currencyToText];
+    
+    private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
+    hint format[(localize "STR_HG_VEHICLE_BOUGHT"), _displayName, [_price, true] call HG_fnc_currencyToText];
     
     // Spawn the vehicle on the server using our raw XYZ array instead of a marker string
     [0, player, _classname, _spawnPosition, nil, _color] remoteExecCall ["HG_fnc_spawnVehicle", 2, false];
+    
+    // Log transaction to A3M Player Dossier
+    [player, _displayName, _price] remoteExecCall ["A3M_fnc_serverLogTransaction", 2];
 
     // Trigger the 3D GRAD Position Marker so the player knows exactly where the vehicle spawned
     // GRAD vehicleMarker expects: [buyer, vehicle, baseConfig, categoryConfig, itemConfig]
@@ -122,7 +135,7 @@ if(_playerFunds >= _price) then
     [_classname, _spawnPosition] spawn {
         params ["_classname", "_spawnPosition"];
         private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
-        private _endTime = time + 30;
+        private _endTime = time + 90;
         
         // Custom 3D Marker rendering loop (mimicking GRAD)
         waitUntil {

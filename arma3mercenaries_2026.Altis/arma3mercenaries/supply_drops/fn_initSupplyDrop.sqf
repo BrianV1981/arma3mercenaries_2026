@@ -10,7 +10,10 @@ params [
     ["_itemsArray", [], [[]]]
 ];
 
-if (!isServer) exitWith { diag_log "[A3M DEBUG] A3M_fnc_initSupplyDrop skipped on client."; };
+if (!isServer) exitWith { 
+    diag_log "[A3M DEBUG] Forwarding A3M_fnc_initSupplyDrop to Server.";
+    _this remoteExec ["A3M_fnc_initSupplyDrop", 2];
+};
 
 if (isNull _buyer) then { _buyer = player; };
 if (isNull _buyer) exitWith {};
@@ -29,6 +32,17 @@ if (isNil "A3M_MercenaryDeliveryConfig") then {
 
 private _sideConfig = A3M_MercenaryDeliveryConfig getOrDefault [_side, ["B_T_VTOL_01_armed_F", "B_HeliPilot_F", "B_crew_F"]];
 _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
+
+// --- A3M DEEP STAT TRACKING: Supply Drops (#64) ---
+private _buyerUID = getPlayerUID _buyer;
+if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
+    private _profile = A3M_LiveProfiles getOrDefault [_buyerUID, createHashMap];
+    if (count _profile > 0) then {
+        _profile set ["Supply_Drops_Called", (_profile getOrDefault ["Supply_Drops_Called", 0]) + 1];
+        A3M_LiveProfiles set [_buyerUID, _profile];
+        ["A3M_PROFILE_" + _buyerUID, _profile] call A3M_fnc_dbSetSecure;
+    };
+};
 
 [_cargoClass, _buyer, _side, _vtolClass, _pilotClass, _crewClass, _fortsArray, _magsArray, _itemsArray] spawn { 
     params ["_cargoClass", "_buyer", "_side", "_vtolClass", "_pilotClass", "_crewClass", "_fortsArray", "_magsArray", "_itemsArray"];
@@ -123,7 +137,11 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         // Populate Items
         {
             _x params ["_class", "_count"];
-            _cargo addItemCargoGlobal [_class, _count];
+            if (isClass (configFile >> "CfgVehicles" >> _class)) then {
+                _cargo addBackpackCargoGlobal [_class, _count];
+            } else {
+                _cargo addItemCargoGlobal [_class, _count];
+            };
         } forEach _itemsArray;
 
         // Add visual markers

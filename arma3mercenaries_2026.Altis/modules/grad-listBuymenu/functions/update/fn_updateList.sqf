@@ -12,7 +12,7 @@ _listCtrl = _dialog displayCtrl grad_lbm_ITEMLIST;
 (call compile (_categoryCtrl lbData _selIndex)) params ["_baseConfigName", "_categoryConfigName"];
 
 _allItems = "true" configClasses (missionConfigFile >> "CfgGradBuymenu" >> _baseConfigName >> _categoryConfigName);
-lnbClear _listCtrl;
+lbClear _listCtrl;
 _listIndex = 0;
 {
     _config = _x;
@@ -39,32 +39,47 @@ _listIndex = 0;
     _code = compile ([(_config >> "code"), "text", ""] call CBA_fnc_getConfigEntry);
     _picturePath = [(_config >> "picture"), "text", ""] call CBA_fnc_getConfigEntry;
 
-    _listCtrl lnbAddRow [format ["%1 Cr", _price], _displayName];
+    // --- A3M ECONOMY: Dynamic Daily Sales Check ---
+    private _activeSales = missionNamespace getVariable ["A3M_ActiveSales", createHashMap];
+    private _discountMultiplier = _activeSales getOrDefault [_itemConfigName, 1];
+    private _isOnSale = false;
+
+    if (_discountMultiplier < 1) then {
+        _price = round (_price * _discountMultiplier);
+        _isOnSale = true;
+    };
+    // ----------------------------------------------
+
+    private _listText = format ["[%1 Cr] %2", _price, _displayName];
+    if (_isOnSale) then {
+        _listText = format ["[%1 Cr] [SALE] %2", _price, _displayName];
+    };
+
+    _listIndex = _listCtrl lbAdd _listText;
 
     private _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
 
     if (_isLocked) then {
-        _listCtrl lnbSetColor [[_listIndex, 1], [0.8, 0.2, 0.2, 1]]; // Red text
-        _listCtrl lnbSetColor [[_listIndex, 0], [0.5, 0.5, 0.5, 1]]; // Grey price
+        _listCtrl lbSetColor [_listIndex, [0.8, 0.2, 0.2, 1]]; // Red text
     } else {
         if (_stock <= 0) then {
-            _listCtrl lnbSetColor [[_listIndex, 1], [1.0, 0.2, 0.2, 1]]; // Red text
-            _listCtrl lnbSetColor [[_listIndex, 0], [1.0, 0.2, 0.2, 1]]; // Red price
+            _listCtrl lbSetColor [_listIndex, [1.0, 0.2, 0.2, 1]]; // Bright Red
         } else {
-            if (_stock <= 5) then {
-                _listCtrl lnbSetColor [[_listIndex, 1], [1.0, 0.65, 0.0, 1]]; // Orange text
-                _listCtrl lnbSetColor [[_listIndex, 0], [1.0, 0.65, 0.0, 1]]; // Orange price
+            if (_stock <= 3) then {
+                _listCtrl lbSetColor [_listIndex, [1.0, 0.65, 0.0, 1]]; // Orange text
+            } else {
+                if (_isOnSale) then {
+                    _listCtrl lbSetColor [_listIndex, [0, 1, 0, 1]]; // Neon Green
+                };
             };
         };
     };
 
     _data = str [_baseConfigName, _categoryConfigName, _itemConfigName, _displayName, _price, _description, _code, _picturePath, _isLocked];
-    _listCtrl lnbSetData [[_listIndex,0], _data];
-
-    _listIndex = _listIndex + 1;
+    _listCtrl lbSetData [_listIndex, _data];
 } forEach _allItems;
 
-if (((lnbSize _listCtrl) select 0) > 0) then {_listCtrl lnbSetCurSelRow 0};
+if ((lbSize _listCtrl) > 0) then {_listCtrl lbSetCurSel 0};
 
 //save last category selection
 player setVariable ["grad_lbm_lastSelectedCategoryIndex", lbCurSel _categoryCtrl];

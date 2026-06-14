@@ -12,9 +12,9 @@ _listCtrl = _dialog displayCtrl grad_lbm_ITEMLIST;
 _pictureCtrl = _dialog displayCtrl grad_lbm_PICTURE;
 _modelCtrl = _dialog displayCtrl grad_lbm_3DMODEL;
 
-_selIndex = lnbCurSelRow _listCtrl;
+_selIndex = lbCurSel _listCtrl;
 
-(call compile (_listCtrl lnbData [_selIndex,0])) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath"];
+(call compile (_listCtrl lbData _selIndex)) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath"];
 
 _isVehicle = [_itemConfigName] call grad_lbm_fnc_isVehicle;
 
@@ -39,7 +39,7 @@ if (_isVehicle) then {
         _picturePath = [_itemConfigName] call grad_lbm_fnc_getPicturePath;
     };
     if (_picturePath == "") then {
-        _picturePath = (missionNamespace getVariable ["grad_lbm_moduleRoot", [] call grad_lbm_fnc_getModuleRoot]) + "\data\questionmark.paa";
+        _picturePath = "pictures\arma3mercenaries_v1.paa";
     };
     _pictureCtrl ctrlSetText _picturePath;
 

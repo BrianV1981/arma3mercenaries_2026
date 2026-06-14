@@ -4,7 +4,7 @@ class Header
 	minPlayers = 1;
 	maxPlayers = 30;
 };
-OnLoadName = "arma3mercenaries Bv8.93";
+OnLoadName = "arma3mercenaries Bv8.94";
 onLoadMission = "Constellis is a trusted and experienced provider of security services in high-risk environments, remote areas and emerging markets in support of land-based, aviation, maritime and cyber operations.";
 loadScreen = "pictures\arma3mercenaries_v1.paa";
 author="BrianV1981";
@@ -39,10 +39,12 @@ minPlayerDistance = 0;
 #include "modules\cfgPersistence.hpp"
 #include "HG\UI\HG_DialogsMaster.h"
 #include "arma3mercenaries\player_profile\a3m_playerCard_dialog.hpp"
+#include "arma3mercenaries\player_profile\a3m_fieldManual_dialog.hpp"
 #include "arma3mercenaries\player_profile\a3m_squadDossier_dialog.hpp"
 #include "arma3mercenaries\leaderboard\a3m_leaderboard_dialog.hpp"
 #include "arma3mercenaries\bounty\a3m_bountyBoard_dialog.hpp"
 #include "arma3mercenaries\a3m_blackmarket\ui\a3m_quartermasterHub_dialog.hpp"
+#include "arma3mercenaries\tasks\a3m_hvtTracker_dialog.hpp"
 
 ///https://github.com/Ghosto27/LootToVehicle/tree/master
 ///ace area loot start

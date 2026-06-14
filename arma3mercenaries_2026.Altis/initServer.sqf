@@ -203,6 +203,9 @@ A3M_fnc_initPlayerProfile = {
 };
 
 A3M_fnc_serverFetchSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverFetchSquadDossier.sqf");
+A3M_fnc_serverLogTransaction = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverLogTransaction.sqf");
+A3M_fnc_serverLogRevive = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverLogRevive.sqf");
+A3M_fnc_serverIncrementStat = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverIncrementStat.sqf");
 
 // Virtual Barracks Server Functions
 A3M_fnc_serverDeployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverDeployMercenary.sqf");
@@ -526,5 +529,8 @@ A3M_fnc_serverFetchBountyTargets = {
     diag_log format ["[A3M] ACE Trench %1 dug by %2. Tagged for GRAD Fortifications and Persistence.", typeOf _trench, name _unit];
 
 }] call CBA_fnc_addEventHandler;
+
+// --- A3M ECONOMY: Daily Server Sales Generator ---
+[] execVM "arma3mercenaries\economy\fn_generateSales.sqf";
 
 HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops

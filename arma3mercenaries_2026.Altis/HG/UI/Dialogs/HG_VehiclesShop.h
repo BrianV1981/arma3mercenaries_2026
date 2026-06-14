@@ -27,7 +27,7 @@ class HG_VehiclesShop
 		{
 			style = "0x02";
 			text = "$STR_HG_DLG_VS_TITLE_LIST";
-			colorBackground[] = {0.4,0.4,0.4,1};
+			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
 			x = 0.005 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
@@ -64,7 +64,7 @@ class HG_VehiclesShop
 		{
 			style = "0x02";
 			text = "$STR_HG_DLG_VS_TITLE_TEXT";
-			colorBackground[] = {0.4,0.4,0.4,1};
+			colorBackground[] = {0.13, 0.54, 0.21, 0.8};
 			x = 0.799062 * safeZoneW + safeZoneX;
 			y = 0.258 * safeZoneH + safeZoneY;
 			w = 0.195937 * safeZoneW;
@@ -183,7 +183,7 @@ class HG_VehiclesShop
 		{
 			idc = HG_VEHICLES_MC_IDC;
 			text = "CHECK ACCOUNT";
-			onButtonClick = "hintSilent parseText format['<t align=""center""><t size=""1.2"" color=""#FFFFFF"">BANK:</t> <t size=""1.2"" color=""#00FF00"">$%1</t><br/><t size=""1.2"" color=""#FFFFFF"">WALLET:</t> <t size=""1.2"" color=""#00FF00"">$%2</t></t>', [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber, [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber];";
+			onButtonClick = "private _b = [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber; private _w = [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber; private _m = format['<t align=""left""><t font=""RobotoCondensedBold"" size=""0.8"" color=""#00FF00"">A.I.M. BANKING NETWORK</t><br/><t font=""PuristaMedium"" size=""0.6"" color=""#FFFFFF"">BANK: $%1<br/>WALLET: $%2</t></t>', _b, _w]; [_m, 0.0, 0.1, 7, 1, 0, 799] spawn bis_fnc_dynamicText;";
 			x = 0.47 * safeZoneW + safeZoneX;
 			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;

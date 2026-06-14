@@ -11,7 +11,7 @@ private _allButtons = [
     ["itemStore", "MILITARY SURPLUS", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'itemStore', '', player] call grad_lbm_fnc_loadBuymenu; }],
     ["armory", "ARMORY", { [false] spawn A3M_fnc_openBlackMarket; }],
     ["vehicles", "CIA VEHICLE LOT", { ['HG_DefaultShop', missionNamespace getVariable ['A3M_HG_CurrentLaptop', player]] call HG_fnc_dialogOnLoadVehicles; }],
-    ["fortificationStore_1", "BASE BUILDING", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }],
+    ["fortificationStore_1", "FORTIFICATIONS & LOGISTICS", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'fortificationStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }],
     ["aliveStore_1", "COMBAT SUPPORT", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'aliveStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }],
     ["mercenaryStore_1", "CONTRACTORS", { [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, 'mercenaryStore_1', '', player] call grad_lbm_fnc_loadBuymenu; }]
 ];

@@ -106,6 +106,17 @@ if (isPlayer _buyer && !isNil "A3M_LiveProfiles") then {
             if (count _lastPurchases > 10) then { _lastPurchases resize 10; };
             _profile set ["Last_10_Purchases", _lastPurchases];
             
+            // Total Capital Spent
+            _profile set ["Total_Capital_Spent", (_profile getOrDefault ["Total_Capital_Spent", 0]) + _price];
+            
+            // Mercenaries Contracted
+            if (isClass (configFile >> "CfgVehicles" >> _itemConfigName)) then {
+                private _sim = getText(configFile >> "CfgVehicles" >> _itemConfigName >> "simulation");
+                if (toLower _sim == "soldier") then {
+                    _profile set ["Mercenaries_Contracted", (_profile getOrDefault ["Mercenaries_Contracted", 0]) + 1];
+                };
+            };
+            
             A3M_LiveProfiles set [_buyerUID, _profile];
             ["A3M_PROFILE_" + _buyerUID, _profile] call A3M_fnc_dbSetSecure;
             diag_log format ["[A3M LEDGER] UID %1 bought %2 for %3", _buyerUID, _displayName, _price];

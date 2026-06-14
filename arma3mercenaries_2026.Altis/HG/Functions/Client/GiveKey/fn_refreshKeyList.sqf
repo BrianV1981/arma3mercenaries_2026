@@ -15,8 +15,14 @@ _owners = (HG_CURSOR_OBJECT getVariable "HG_Owner") select 3;
 if((count _owners) != 0) then
 {
     {
-	    _ind = HG_GK_OWNERS_LIST lbAdd _x;
-	    HG_GK_OWNERS_LIST lbSetData [_ind,_x];
+        private _uid = _x;
+        private _playerName = "Offline Profile";
+        {
+            if (getPlayerUID _x == _uid) exitWith { _playerName = name _x; };
+        } forEach allPlayers;
+
+	    _ind = HG_GK_OWNERS_LIST lbAdd format ["%1 (%2)", _playerName, _uid];
+	    HG_GK_OWNERS_LIST lbSetData [_ind, _uid];
 	} forEach _owners;
 	
 	HG_GK_REMOVE_BTN ctrlEnable true;

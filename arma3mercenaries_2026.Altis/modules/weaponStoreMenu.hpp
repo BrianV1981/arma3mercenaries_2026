@@ -1343,10 +1343,22 @@
                 price = 65;
                 stock = 10000;                
             };
+			class 30Rnd_556x45_Stanag {
+                displayName = "5.56 mm 30rnd Standard Mag";
+                description = "Caliber: 5.56x45 mm STANAG Rounds: 30 Used in: TRG-20, TRG-21/EGLM, Mk20/C/EGLM, SDAR, SPAR-16/S.";
+                price = 75;
+                stock = 10000; 
+            };
 			class 30Rnd_556x45_Stanag_Tracer_Red {
                 displayName = "5.56 mm 30rnd Tracer (Red) Mag";
                 description = "Caliber: 5.56x45 mm STANAG Tracers (Red) Rounds: 30 Used in: TRG-20, TRG-21/EGLM, Mk20/C/EGLM, SDAR, SPAR-16/S.";
                 price = 100;
+                stock = 10000; 
+            };
+			class 150Rnd_556x45_Drum_Mag_F {
+                displayName = "5.56 mm 150Rnd Standard Drum Mag";
+                description = "Caliber: 5.56x45 mm Rounds: 150 Used in: SPAR-16/S.";
+                price = 350;
                 stock = 10000; 
             };
 			class 150Rnd_556x45_Drum_Mag_Tracer_F {
@@ -1355,10 +1367,22 @@
                 price = 500;
                 stock = 10000; 
             };			
+			class 200Rnd_556x45_Box_F {
+                displayName = "5.56 mm 200Rnd Standard Box";
+                description = "Caliber: 5.56x45 mm Rounds: 200 Used in: LIM-85.";
+                price = 500;
+                stock = 10000; 
+            };
 			class 200Rnd_556x45_Box_Tracer_Red_F {
                 displayName = "5.56 mm 200Rnd Tracer (Red) Box";
                 description = "Caliber: 5.56x45 mm Tracers (Red) Rounds: 200 Used in: LIM-85.";
                 price = 700;
+                stock = 10000; 
+            };
+			class 30Rnd_580x42_Mag_F {
+                displayName = "5.8 mm 30Rnd Standard Green Hex Mag";
+                description = "Caliber: 5.8x42 mm Rounds: 30 Used in: CAR-95, CAR-95-1, CAR-95 GL.";
+                price = 120;
                 stock = 10000; 
             };
 			class 30Rnd_580x42_Mag_Tracer_F {
@@ -1367,10 +1391,22 @@
                 price = 175;
                 stock = 10000; 
             };			
+			class 100Rnd_580x42_ghex_Mag_F {
+                displayName = "5.8 mm 100Rnd Standard Green Hex Mag";
+                description = "Caliber: 5.8x42 mm Rounds: 100 Used in: CAR-95, CAR-95-1, CAR-95 GL.";
+                price = 350;
+                stock = 10000; 
+            };
 			class 100Rnd_580x42_ghex_Mag_Tracer_F {
                 displayName = "5.8 mm 100Rnd Tracer (Green) Green Hex Mag";
                 description = "Caliber: 5.8x42 mm Tracers (Green) Rounds: 100 Used in: CAR-95, CAR-95-1, CAR-95 GL.";
                 price = 550;
+                stock = 10000; 
+            };
+			class 30Rnd_65x39_caseless_green {
+                displayName = "6.5 mm 30Rnd Caseless Mag (Green)";
+                description = "Caliber: 6.5x39 mm (Green) - Caseless Rounds: 30 Used in: Katiba, Type 115.";
+                price = 100;
                 stock = 10000; 
             };
 			class 30Rnd_65x39_caseless_green_mag_Tracer {
@@ -1379,10 +1415,22 @@
                 price = 150;
                 stock = 10000; 
             };			
+			class 30Rnd_65x39_caseless_black_mag {
+                displayName = "6.5 mm 30Rnd Standard Black Mag";
+                description = "Caliber: 6.5x39 mm STANAG Rounds: 30 Used in: MX/C/M/SW/3GL.";
+                price = 100;
+                stock = 10000;                
+            };
 			class 30Rnd_65x39_caseless_black_mag_Tracer {
                 displayName = "6.5 mm 30Rnd Tracer Black Mag (Red)";
                 description = "Caliber: 6.5x39 mm STANAG Tracers (Red) Rounds: 30 Used in: MX/C/M/SW/3GL.";
                 price = 150;
+                stock = 10000;                
+            };
+			class 30Rnd_65x39_caseless_mag {
+                displayName = "6.5 mm 30Rnd Standard Sand Mag";
+                description = "Caliber: 6.5x39 mm STANAG Rounds: 30 Used in: MX/C/M/SW/3GL.";
+                price = 100;
                 stock = 10000;                
             };
 			class 30Rnd_65x39_caseless_mag_Tracer {
@@ -1391,16 +1439,34 @@
                 price = 150;
                 stock = 10000;                
             };
+			class 30Rnd_65x39_caseless_khaki_mag {
+                displayName = "6.5 mm 30Rnd Standard Khaki Mag";
+                description = "Caliber: 6.5x39 mm STANAG Rounds: 30 Used in: MX/C/M/SW/3GL.";
+                price = 100;
+                stock = 10000;                
+            };
 			class 30Rnd_65x39_caseless_khaki_mag_Tracer {
                 displayName = "6.5 mm 30Rnd Tracer Khaki Mag (Red)";
                 description = "Caliber: 6.5x39 mm STANAG Tracers (Red) Rounds: 30 Used in: MX/C/M/SW/3GL.";
                 price = 150;
                 stock = 10000;                
             };			
+			class 100Rnd_65x39_caseless_black_mag {
+                displayName = "6.5 mm 100Rnd Standard Black Mag";
+                description = "Caliber: 6.5x39 mm Caseless Rounds: 100 Used in: MX/C/M/SW/3GL.";
+                price = 350;
+                stock = 10000;                
+            };
 			class 100Rnd_65x39_caseless_black_mag_tracer {
                 displayName = "6.5 mm 100Rnd Tracer Black Mag (Red)";
                 description = "Caliber: 6.5x39 mm Caseless Tracers (Red) Rounds: 100 Used in: MX/C/M/SW/3GL.";
                 price = 500;
+                stock = 10000;                
+            };
+			class 100Rnd_65x39_caseless_mag {
+                displayName = "6.5 mm 100Rnd Standard Sand Mag";
+                description = "Caliber: 6.5x39 mm Caseless Rounds: 100 Used in: MX/C/M/SW/3GL.";
+                price = 350;
                 stock = 10000;                
             };
 			class 100Rnd_65x39_caseless_mag_Tracer {
@@ -1445,16 +1511,34 @@
                 price = 225;
                 stock = 10000;                				
             };		
+			class 30Rnd_762x39_Mag_F {
+                displayName = "7.62 mm 30rnd AK12 Mag";
+                description = "Caliber: 7.62x51 mm Rounds: 30 Used in: AK-12, AK-12 GL, AKM.";
+                price = 175;
+                stock = 10000;                				
+            };
 			class 30Rnd_762x39_Mag_Tracer_Green_F {
                 displayName = "7.62 mm 30rnd AK12 Tracer (Green) Mag";
                 description = "Caliber: 7.62x51 mm Tracers (Green) Rounds: 30 Used in: AK-12, AK-12 GL, AKM.";
                 price = 225;
                 stock = 10000;                				
             };
+			class 30Rnd_762x39_AK12_Lush_Mag_F {
+                displayName = "7.62 mm 30rnd AK12 (Lush) Mag";
+                description = "Caliber: 7.62x51 mm Rounds: 30 Used in: AK-12, AK-12 GL, AKM.";
+                price = 175;
+                stock = 10000;                				
+            };
 			class 30Rnd_762x39_AK12_Lush_Mag_Tracer_F {
                 displayName = "7.62 mm 30rnd AK12 Tracer (Lush) Mag";
                 description = "Caliber: 7.62x51 mm Tracers (Green) Rounds: 30 Used in: AK-12, AK-12 GL, AKM.";
                 price = 225;
+                stock = 10000;                				
+            };
+			class 30Rnd_762x39_AK12_Arid_Mag_F {
+                displayName = "7.62 mm 30rnd AK12 (Arid) Mag";
+                description = "Caliber: 7.62x51 mm Rounds: 30 Used in: AK-12, AK-12 GL, AKM.";
+                price = 175;
                 stock = 10000;                				
             };
 			class 30Rnd_762x39_AK12_Arid_Mag_Tracer_F {
@@ -1469,16 +1553,34 @@
                 price = 580;
                 stock = 10000;                				
             };
+			class 75rnd_762x39_AK12_Lush_Mag_F {
+                displayName = "7.62 mm 75rnd AK12 Lush Mag";
+                description = "Caliber: 7.62x39 mm Rounds: 75 Used in: RPK-12, AK-12, AK-12 GL, AKM.";
+                price = 450;
+                stock = 10000;                				
+            };
 			class 75rnd_762x39_AK12_Lush_Mag_Tracer_F {
                 displayName = "7.62 mm 75rnd AK12 Tracer Lush Mag";
                 description = "Caliber: 7.62x39 mm Rounds: 75 Used in: RPK-12, AK-12, AK-12 GL, AKM.";
                 price = 580;
                 stock = 10000;                				
             };
+			class 75rnd_762x39_AK12_Arid_Mag_F {
+                displayName = "7.62 mm 75rnd AK12 Arid Mag";
+                description = "Caliber: 7.62x39 mm Rounds: 75 Used in: RPK-12, AK-12, AK-12 GL, AKM.";
+                price = 450;
+                stock = 10000;                				
+            };
 			class 75rnd_762x39_AK12_Arid_Mag_Tracer_F {
                 displayName = "7.62 mm 75rnd AK12 Tracer Arid Mag";
                 description = "Caliber: 7.62x39 mm Rounds: 75 Used in: RPK-12, AK-12, AK-12 GL, AKM.";
                 price = 580;
+                stock = 10000;                				
+            };
+			class 150Rnd_762x54_Box {
+                displayName = "7.62 mm 150Rnd Box";
+                description = "Caliber: 7.62x39 mm Rounds: 150 Used in: Zafir.";
+                price = 900;
                 stock = 10000;                				
             };
 			class 150Rnd_762x54_Box_Tracer {

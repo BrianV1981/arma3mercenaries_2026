@@ -61,8 +61,11 @@ if(_sel isEqualTo (localize "STR_HG_NONE")) then
 	
 	HG_GEAR_BUY ctrlEnable false;
 } else {
-    private "_val";
-	_val = _ctrl lbValue _index;
+    private _val = 0;
+	private _shopItems = getArray(getMissionConfig "CfgClient" >> "HG_GearShopCfg" >> HG_STRING_HANDLER >> _cat >> "content");
+	{
+	    if ((_x select 0) isEqualTo _sel) exitWith { _val = _x select 1; };
+	} forEach _shopItems;
 
 	switch(_cat) do
     {

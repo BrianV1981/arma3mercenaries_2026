@@ -95,11 +95,11 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
     _wp2 setWaypointSpeed "FULL";  
     _wp2 setWaypointBehaviour "COMBAT";  
 
-    [_group, _unitClass, _buyer] spawn {
-        params ["_group", "_unitClass", "_buyer"]; 
+    [_group, _unitClass, _buyer, _blackfish] spawn {
+        params ["_group", "_unitClass", "_buyer", "_blackfish"]; 
 
-        private _wp1Index = currentWaypoint _group; 
-        waitUntil { currentWaypoint _group > _wp1Index };
+        waitUntil { sleep 0.5; (_blackfish distance2D _buyer) < 250 || !alive _blackfish };
+        if (!alive _blackfish) exitWith {};
         
         playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];
 
@@ -114,7 +114,8 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
             // A3M Group Fix: We now use the raw UID instead of formatted string for grouping
             private _groupID = _playerUID;
 
-            private _unit = _group createUnit [_unitClass, position _parachute, [], 0, "FORM"];
+            private _mercGroup = createGroup [side _buyer, true];
+            private _unit = _mercGroup createUnit [_unitClass, position _parachute, [], 0, "FORM"];
             _unit moveInDriver _parachute;
 
             _unit setVariable ['arma3mercenaries_aiUnit', _aiUnitID, true];
@@ -160,11 +161,12 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         };
     };
 
-    sleep 30; 
+    waitUntil { sleep 1; (_blackfish distance2D _buyer) < 250 || !alive _blackfish };
+    sleep 5; 
     try { _blackfish animateDoor ['Door_1_source', 0]; } catch {};
     _blackfish allowDamage true; 
 
-    sleep 30;
+    sleep 60; // Give it plenty of time to fly away before deleting
 
     deleteVehicle _blackfish;
     {deleteVehicle _x} forEach units _group;  

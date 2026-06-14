@@ -23,11 +23,20 @@ if (_isBarracks) then {
     _btnStow ctrlShow false;
 };
 
+// --- STAT AGGREGATION ---
+private _totalKills = 0;
+private _totalCash = 0;
+private _totalActive = count _activeSquad;
+private _totalDead = count _graveyard;
+
 if (count _activeSquad == 0) then {
     _listActive lbAdd "No Active Mercenaries found.";
 } else {
     {
         _x params ["_mercID", "_name", "_class", "_kills", "_cash", "_joinDate", "_isDeployed"];
+        
+        _totalKills = _totalKills + _kills;
+        _totalCash = _totalCash + _cash;
         
         private _statusStr = if (_isDeployed) then { "[Deployed]" } else { "[In Barracks]" };
         
@@ -55,6 +64,8 @@ if (count _graveyard == 0) then {
     {
         _x params ["_mercID", "_name", "_class", "_kills", "_cash", "_causeOfDeath", "_joinDate", "_deathDate"];
         
+        _totalKills = _totalKills + _kills;
+        
         private _timeServedStr = "Unknown";
         if (count _joinDate >= 6 && count _deathDate >= 6) then {
             // Very simple days-served estimation
@@ -80,3 +91,11 @@ if (count _graveyard == 0) then {
         _listGraveyard lbSetColor [_index, [1, 0.4, 0.4, 1]];
     } forEach _graveyard;
 };
+
+// --- POPULATE STATS PANEL ---
+private _statsCtrl = _display displayCtrl 7046;
+private _statsHtml = format [
+    "<t align='center' size='0.8' font='PuristaMedium'><t color='#00FF00'>ROSTER:</t> %1/30 | <t color='#FF0000'>KIA:</t> %2 | <t color='#FFA500'>TOTAL KILLS:</t> %3 | <t color='#00FFFF'>TOTAL CASH:</t> $%4</t>",
+    _totalActive, _totalDead, _totalKills, [_totalCash, 1, 0, true] call CBA_fnc_formatNumber
+];
+_statsCtrl ctrlSetStructuredText parseText _statsHtml;

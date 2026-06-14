@@ -255,35 +255,11 @@ private _selectedDescription = selectRandom _taskDescriptions;
 
 // Add Killed Event Handler to handle Task Completion and Payout
 _HVT setVariable ["taskID", _taskID];
-_HVT addEventHandler ["Killed", {
-    params ["_unit", "_killer", "_instigator", "_useEffects"];
-
-    private _taskID = _unit getVariable ["taskID", ""];
-    if (_taskID != "") then {
-        [_taskID, "SUCCEEDED"] call BIS_fnc_taskSetState;
-    };
-
-    // Reward players on the completing side
-    private _taskCompletingSide = side group _killer;
-    {
-        if (side group _x == _taskCompletingSide) then {
-            _x addScore 1000;
-            [_x, 500000] call grad_moneymenu_fnc_addFunds;
-            [500, 0] remoteExecCall ["HG_fnc_addOrSubXP", _x, false];
-            
-            // Send dynamicText notification
-            private _message = "HVT Eliminated. Bounty Transferred. +500 XP";
-            private _textParams = [
-                format ["<t color='#FFFFFF' size='1.0'>%1</t>", _message],
-                -1, -1, 10, 1, 0, 799
-            ];
-            _textParams remoteExec ["BIS_fnc_dynamicText", _x];
-        };
-    } forEach allPlayers;
-}];
+// Event Handler logic migrated to arma3mercenaries_killHandler.sqf
 
 // Register to Task Manager
 if (!isNil "A3M_ActiveTasks") then {
     A3M_ActiveTasks set [_taskID, [_HVT, "HVT"]];
+    publicVariable "A3M_ActiveTasks";
     diag_log format ["[A3M TASK MANAGER] Registered HVT Task: %1", _taskID];
 };

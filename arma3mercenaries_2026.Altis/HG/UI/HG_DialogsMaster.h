@@ -11,6 +11,7 @@
 #include "Dialogs\HG_Garage.h"
 #include "Dialogs\HG_GearShop.h"
 #include "Dialogs\HG_GiveKey.h"
+#include "Dialogs\A3M_GiftVehicle.h"
 #include "Dialogs\HG_GiveMoney.h"
 #include "Dialogs\HG_ItemsShop.h"
 #include "Dialogs\HG_Trader.h"

@@ -15,8 +15,14 @@ params["_mode","_price","_qty"];
 
 disableSerialization;
 
-// Get the selected item's price and current quantity
-_price = HG_ITEMS_ITEM_LIST lbValue (lbCurSel HG_ITEMS_ITEM_LIST);
+private _selectedItemData = HG_ITEMS_ITEM_LIST lbData (lbCurSel HG_ITEMS_ITEM_LIST);
+private _shopType = HG_ITEMS_ITEM_SWITCH lbData (lbCurSel HG_ITEMS_ITEM_SWITCH);
+_shopType = _shopType splitString "/";
+private _shopItems = getArray(getMissionConfig "CfgClient" >> "HG_ItemsShopCfg" >> (_shopType select 0) >> (_shopType select 1) >> "items");
+_price = 0;
+{
+    if ((_x select 0) isEqualTo _selectedItemData) exitWith { _price = _x select 1; };
+} forEach _shopItems;
 _qty = parseNumber(ctrlText HG_ITEMS_AMOUNT);
 
 switch(_mode) do
@@ -41,6 +47,13 @@ switch(_mode) do
 	// Buy the selected item
 	case 2:
 	{
+	    private _selectedItemData = HG_ITEMS_ITEM_LIST lbData (lbCurSel HG_ITEMS_ITEM_LIST);
+        private _shortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+        if (_selectedItemData in _shortages) exitWith {
+            private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OUT OF STOCK</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>This item is currently sold out on the Black Market.</t></t>";
+            [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+        };
+
 	    _price = _price * _qty;
 		
 	    // Check if the player has enough money using Grad Money
@@ -58,7 +71,7 @@ switch(_mode) do
 				if(_price > 0) then
 				{
 				    // Subtract the price from the player's Grad Money account
-				    [player, -_price] call grad_moneymenu_fnc_addFunds;
+				    [player, -_price] call grad_lbm_fnc_addFunds;
 				};
 				hint format[(localize "STR_HG_ITEM_BOUGHT"),_qty,_displayName,if(_price <= 0) then {(localize "STR_HG_DLG_FREE")} else {([_price,true] call HG_fnc_currencyToText)}];
 			    HG_ITEMS_BOUGHT = true;

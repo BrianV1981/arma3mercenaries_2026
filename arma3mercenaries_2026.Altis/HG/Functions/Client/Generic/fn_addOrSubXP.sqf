@@ -22,7 +22,9 @@ if(_mode isEqualTo 1) then
 		if((rank player) != "PRIVATE") then
 		{
 		    private _newRank = (_ranks select (_rankIndex - 1));
-			hint format[(localize "STR_HG_DEMOTED"),_newRank,(rank player)];
+			private _demoMsg = format["<t align='center'><t font='RobotoCondensedBold' size='2.0' color='#FF0000'>DEMOTED</t><br/><t font='PuristaMedium' size='1.2' color='#FFFFFF'>You have been busted down to %1.</t></t>", _newRank];
+            [_demoMsg, -1, 0.3, 7, 1, 0, 788] spawn BIS_fnc_dynamicText;
+            playSound "A3M_RankDown";
 	        player setUnitRank _newRank;
 		};
 	};
@@ -34,7 +36,9 @@ if(_mode isEqualTo 1) then
 	{
 	    _newXp = 0;
 		private _newRank = (_ranks select (_rankIndex + 1));
-		hint format[(localize "STR_HG_PROMOTED"),_newRank,(rank player)];
+		private _promoMsg = format["<t align='center'><t font='RobotoCondensedBold' size='2.0' color='#00FF00'>PROMOTED</t><br/><t font='PuristaMedium' size='1.2' color='#FFFFFF'>Congratulations, you are now a %1!</t></t>", _newRank];
+        [_promoMsg, -1, 0.3, 7, 1, 0, 788] spawn BIS_fnc_dynamicText;
+        playSound "A3M_RankUp";
 		player setUnitRank _newRank;
 	};
 };

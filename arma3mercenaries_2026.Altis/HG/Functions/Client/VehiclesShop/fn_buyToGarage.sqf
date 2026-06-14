@@ -24,22 +24,33 @@ private _playerFunds = [player, false] call grad_lbm_fnc_getFunds;
 
 if (_playerFunds >= _price) then
 {
-    // Deduct the price from the player's Grad Money account
-    [player, -_price] call grad_lbm_fnc_addFunds;
-
     // Get the selected vehicle classname and color
     private ["_classname", "_color"];
     _classname = HG_VEHICLES_LIST lbData (lbCurSel HG_VEHICLES_LIST);
+    
+    // Check if the item is sold out globally
+    private _shortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+    if (_classname in _shortages) exitWith {
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OUT OF STOCK</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>This vehicle is currently sold out on the Black Market.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    };
+
+    // Deduct the price from the player's Grad Money account
+    [player, -_price] call grad_lbm_fnc_addFunds;
     _color = HG_VEHICLES_COLORS lbData (lbCurSel HG_VEHICLES_COLORS);
 
     // Close the dialog
     closeDialog 0;
 
     // Inform the player of the successful purchase
-    hint format[(localize "STR_HG_VEHICLE_BOUGHT_TO_GARAGE"), (getText(configFile >> "CfgVehicles" >> _classname >> "displayName")), [_price, true] call HG_fnc_currencyToText];
+    private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
+    hint format[(localize "STR_HG_VEHICLE_BOUGHT_TO_GARAGE"), _displayName, [_price, true] call HG_fnc_currencyToText];
 
     // Store the vehicle in the garage
     [0, player, _classname, nil, _color] remoteExecCall ["HG_fnc_storeVehicleServer", 2, false];
+    
+    // Log transaction to A3M Player Dossier
+    [player, format ["%1 (Garaged)", _displayName], _price] remoteExecCall ["A3M_fnc_serverLogTransaction", 2];
 }
 else
 {

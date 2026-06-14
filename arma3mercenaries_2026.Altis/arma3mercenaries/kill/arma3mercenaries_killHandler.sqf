@@ -75,10 +75,11 @@ A3M_fnc_serverHandleReward = {
         // ** A. Friendly Fire Penalty **
         if (_instigatorIsPlayer && _sideKiller == _sideKilled && _instigator != _killed && _friendlyFirePenalty > 0) then {
             [_instigator, -_friendlyFirePenalty, true] call grad_moneymenu_fnc_addFunds;
+            [250, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
             if (_silentHintsEnabled) then { // Use this setting to enable/disable dynamic text warnings too
                 private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>FRIENDLY FIRE!</t><br/>" +
-                    "<t size='0.45' align='center'>Killed %1 (%2). -%3 Bank</t>",
+                    "<t size='0.45' align='center'>Killed %1 (%2). -%3 Bank | -250 XP</t>",
                      _killedName, _factionNameKilled, _friendlyFirePenalty
                 ];
                  // diag_log format["[A3M SRV REWARD] Sending FF Penalty HUD to %1", _instigator]; // Optional log
@@ -103,10 +104,11 @@ A3M_fnc_serverHandleReward = {
         // ** C. Civilian Kill Penalty **
         if (_instigatorIsPlayer && _sideKilled == 3 && _civilianKillPenalty > 0) then {
             [_instigator, -_civilianKillPenalty, true] call grad_moneymenu_fnc_addFunds;
+            [100, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
             if (_silentHintsEnabled) then {
                  private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>CIVILIAN KILLED!</t><br/>" +
-                    "<t size='0.45' align='center'>%1. -%2 Bank</t>",
+                    "<t size='0.45' align='center'>%1. -%2 Bank | -100 XP</t>",
                      _killedName, _civilianKillPenalty
                  ];
                  // diag_log format["[A3M SRV REWARD] Sending CIV Penalty HUD to %1", _instigator]; // Optional log
@@ -132,10 +134,11 @@ A3M_fnc_serverHandleReward = {
         // ** F. Death Penalty **
         if (_killedIsPlayer && _sideKiller != _sideKilled && _deathPenalty > 0) then {
             [_killed, -_deathPenalty, true] call grad_moneymenu_fnc_addFunds;
+            [50, 1] remoteExecCall ["HG_fnc_addOrSubXP", _killed, false];
             if (_silentHintsEnabled) then {
                  private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>PENALTY</t><br/>" +
-                    "<t size='0.45' align='center'>You Died! -%1 Bank</t>",
+                    "<t size='0.45' align='center'>You Died! -%1 Bank | -50 XP</t>",
                      _deathPenalty
                  ];
                  // diag_log format["[A3M REWARDS SRV] Sending Death Penalty HUD to %1", _killed]; // Optional log
@@ -209,13 +212,25 @@ A3M_fnc_serverHandleReward = {
                 
                 // Reward all players of the completing side (if a player killed them)
                 if (_instigatorIsPlayer) then {
+                    // Log the assassination to the killer's personal dossier
+                    private _killerUID = getPlayerUID _instigator;
+                    if (_killerUID != "") then {
+                        private _killerProfile = A3M_LiveProfiles getOrDefault [_killerUID, createHashMap];
+                        if (count _killerProfile > 0) then {
+                            _killerProfile set ["HVT_Takedowns", (_killerProfile getOrDefault ["HVT_Takedowns", 0]) + 1];
+                            A3M_LiveProfiles set [_killerUID, _killerProfile];
+                            ["A3M_PROFILE_" + _killerUID, _killerProfile] call A3M_fnc_dbSetSecure;
+                        };
+                    };
+                    
                     private _taskCompletingSide = side _instigator;
                     {
                         if (side _x == _taskCompletingSide) then {
                             _x addScore 1000;
                             [_x, 500000] call grad_moneymenu_fnc_addFunds;
                             [250, 0] remoteExecCall ["HG_fnc_addOrSubXP", _x, false];
-                            ["<t color='#FFFFFF' size='1.0'>Target neutralized. Good kill. Collect your pay. (+250 XP)</t>", -1, -1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
+                            private _a3mMessage = "<t align='left'><t size='0.8' color='#00FF00'>HVT ELIMINATED</t><br/><t size='0.6' color='#FFFFFF'>Target neutralized. Good kill.<br/><br/>+$500,000<br/>+250 XP</t></t>";
+                            [_a3mMessage, 0.0, 0.1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
                         };
                     } forEach allPlayers;
                 };
@@ -269,6 +284,11 @@ A3M_fnc_serverHandleReward = {
                         } else {
                             _profile set ["Kills_Total", (_profile getOrDefault ["Kills_Total", 0]) + 1];
                             [15, 0] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
+                            
+                            // Weapon Tracking
+                            private _weaponStats = _profile getOrDefault ["Weapon_Kills", createHashMap];
+                            _weaponStats set [_weaponDisplayName, (_weaponStats getOrDefault [_weaponDisplayName, 0]) + 1];
+                            _profile set ["Weapon_Kills", _weaponStats];
                             
                             // Last 10 Kills
                             private _lastKills = _profile getOrDefault ["Last_10_Kills", []];
@@ -375,7 +395,36 @@ addMissionEventHandler ["entityKilled", {
     if (isNull _instigator) then { _instigator = _killer };
 
     // --- Exit Checks ---
-    if (isNull _instigator || isNull _killed || !(_killed isKindOf "CAManBase")) exitWith {};
+    if (isNull _instigator || isNull _killed) exitWith {};
+
+    // --- A3M Critical Infrastructure Penalty ---
+    if ((_killed isKindOf "Building" || _killed isKindOf "Ruins") && isPlayer _instigator) then {
+        private _lowerType = toLower (typeOf _killed);
+        private _isInfra = false;
+        private _infraName = "";
+        
+        if (_lowerType find "fuelstation" >= 0 || _lowerType find "fs_roof" >= 0 || _lowerType find "fs_feed" >= 0) then { _isInfra = true; _infraName = "a Fuel Station"; };
+        if (_lowerType find "hospital" >= 0) then { _isInfra = true; _infraName = "a Medical Facility"; };
+        if (_lowerType find "transformer" >= 0 || _lowerType find "power" >= 0 || _lowerType find "solar" >= 0) then { _isInfra = true; _infraName = "the Power Grid"; };
+        if (_lowerType find "ttower" >= 0 || _lowerType find "radar" >= 0 || _lowerType find "communication" >= 0) then { _isInfra = true; _infraName = "a Communications Tower"; };
+        
+        if (_isInfra) then {
+            if (isServer) then {
+                [_instigator, -50000, true] call grad_moneymenu_fnc_addFunds;
+                [1000, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
+                private _msg = format["<t align='center'><t font='RobotoCondensedBold' size='1.8' color='#FF0000'>WAR CRIME DETECTED</t><br/><t font='PuristaMedium' size='1.2' color='#FFFFFF'>Destruction of %1.<br/>-$50,000 | -1,000 XP</t></t>", _infraName];
+                [_msg, -1, 0.2, 8, 1, 0, 790] remoteExec ["BIS_fnc_dynamicText", _instigator];
+            };
+        };
+    };
+
+    // --- A3M DEEP STAT TRACKING: Vehicles Destroyed (#67) ---
+    if (isServer && {(_killed isKindOf "LandVehicle" || _killed isKindOf "Air" || _killed isKindOf "Ship")} && {isPlayer _instigator}) then {
+        [_instigator, "Vehicles_Destroyed"] call A3M_fnc_serverIncrementStat;
+    };
+
+    if (!(_killed isKindOf "CAManBase")) exitWith {}; // Exit here so vehicle/building kills don't trigger the infantry killfeed
+
     private _killedPos = getPosATL _killed; // Need position early for markers
     if (count _killedPos == 0) exitWith {};
 

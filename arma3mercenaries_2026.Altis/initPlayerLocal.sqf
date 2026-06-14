@@ -5,8 +5,8 @@ execVM "arma3mercenaries\jukebox\arma3mercenaries_playRandomTracks.sqf";
 execVM "arma3mercenaries\jukebox\ambientRadioChatter.sqf";
 
 execVM "scripts\HG_initPlayerLocal.sqf";
-execVM "arma3mercenaries\tutorials\quickTutorial.sqf";
 execVM "scripts\wearAllUniforms.sqf";
+execVM "arma3mercenaries\briefing\initBriefing.sqf";
 
 // player traits
 player setUnitTrait ["UAVHacker",true];
@@ -38,8 +38,17 @@ private _catDB = ["A3M_ConstellisDB", "[Constellis Database]", "", {}, {true}] c
 [player, "supplyDropStore_1", container_2, aHelipad_2, "Supply Drops", "Emergency Supply Drops", {true}, [0,0,0], 3, ["ACE_SelfActions", "A3M_LogisticsStore"]] call grad_lbm_fnc_addInteraction;
 
 
-// 3. Squad Controls -> [Squad Command]
+// 3. A3M HVT Satellite Tracker -> [Support & Logistics]
+private _actLocateHVT = ["A3M_LocateHVT", "Locate HVT (Satellite Uplink)", "", {
+    [] execVM "arma3mercenaries\tasks\fn_openHVTTrackerMenu.sqf";
+}, {true}] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions", "A3M_LogisticsStore"], _actLocateHVT] call ace_interact_menu_fnc_addActionToObject;
+
+// 4. Squad Controls -> [Squad Command]
 [] execVM "arma3mercenaries\set_group_captive\groupRejoin.sqf";
+
+private _actGrpReform = ["groupReform","Reform Squad (Reset AI)","",{execVM "arma3mercenaries\set_group_captive\squadReform.sqf"},{true}] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpReform] call ace_interact_menu_fnc_addActionToObject;
 
 private _actGrpRecall = ["groupTeleport","Recall Squad","",{execVM "arma3mercenaries\group_teleport\groupTeleport.sqf"},{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpRecall] call ace_interact_menu_fnc_addActionToObject;
@@ -65,6 +74,8 @@ A3M_fnc_initMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenarie
 A3M_fnc_initSupplyDrop = compileFinal (preprocessFileLineNumbers "arma3mercenaries\supply_drops\fn_initSupplyDrop.sqf");
 
 A3M_fnc_openPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openPlayerCard.sqf");
+A3M_fnc_openSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openSquadDossier.sqf");
+A3M_fnc_openFieldManual = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_openFieldManual.sqf");
 A3M_fnc_receiveProfileData = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_receiveProfileData.sqf");
 [] execVM "arma3mercenaries\player_profile\fn_initPedometer.sqf";
 
@@ -84,6 +95,24 @@ A3M_fnc_openTargetPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mer
 // Virtual Barracks Client Functions
 A3M_fnc_deployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_deployMercenary.sqf");
 A3M_fnc_stowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_stowMercenary.sqf");
+
+// 5. Survival Operations -> [Camp]
+private _actSetCamp = [
+    "A3M_SetCamp",
+    "Set Camp (Skip 6 Hours)",
+    "",
+    {
+        titleText ["Setting Camp... Restoring Fatigue & Advancing Time.", "BLACK", 2];
+        player setFatigue 0;
+        [6] remoteExecCall ["skipTime", 2];
+        [] spawn {
+            sleep 3;
+            titleFadeOut 2;
+        };
+    },
+    {true}
+] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions"], _actSetCamp] call ace_interact_menu_fnc_addActionToObject;
 
 // -------------------------------------------------------------------------
 // --- A3M GLOBAL VENDOR ACE ACTIONS (JIP & Respawn Proof) ---
@@ -244,6 +273,103 @@ private _keysAction = ["A3M_GiveKeys", "Give Keys", "", {
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 
+// ------------------------------------------
+// --- A3M CUSTOM VEHICLE OWNERSHIP LOGIC ---
+// ------------------------------------------
+A3M_fnc_dialogOnLoadGiftVehicle = {
+    params ["_vehicle"];
+    A3M_GIFT_VEHICLE = _vehicle;
+    createDialog "A3M_GiftVehicle";
+    
+    disableSerialization;
+    private _combo = (findDisplay 99800) displayCtrl 9980;
+    lbClear _combo;
+    A3M_GIFT_PLAYERS = [];
+    
+    // Get all players except headless clients and self
+    private _all = (allPlayers - entities "HeadlessClient_F" - [player]);
+    
+    if ((count _all) > 0) then {
+        {
+            private _ind = _combo lbAdd format["%1 - %2", name _x, getPlayerUID _x];
+            _combo lbSetData [_ind, getPlayerUID _x];
+            _combo lbSetValue [_ind, _forEachIndex];
+            A3M_GIFT_PLAYERS pushBack _x;
+        } forEach _all;
+        ((findDisplay 99800) displayCtrl 9981) ctrlEnable true;
+    } else {
+        _combo lbAdd "No players available";
+        ((findDisplay 99800) displayCtrl 9981) ctrlEnable false;
+    };
+    _combo lbSetCurSel 0;
+};
+
+A3M_fnc_giftVehicleConfirm = {
+    disableSerialization;
+    private _combo = (findDisplay 99800) displayCtrl 9980;
+    private _sel = lbCurSel _combo;
+    if (_sel == -1) exitWith {};
+    
+    private _targetPlayer = A3M_GIFT_PLAYERS select (_combo lbValue _sel);
+    private _targetName = name _targetPlayer;
+    private _targetUID = getPlayerUID _targetPlayer;
+    private _vehicle = A3M_GIFT_VEHICLE;
+    
+    closeDialog 0;
+    
+    [_vehicle, _targetPlayer, _targetName, _targetUID] spawn {
+        params ["_vehicle", "_targetPlayer", "_targetName", "_targetUID"];
+        private _msg = format ["Are you sure you want to give this vehicle away for free to %1?", _targetName];
+        private _result = [_msg, "Confirm Gift Vehicle", true, true] call BIS_fnc_guiMessage;
+        
+        if (_result) then {
+            // Transfer ownership completely
+            private _newOwnerArray = [_targetUID, _targetName, side _targetPlayer, [_targetUID]];
+            _vehicle setVariable ["HG_Owner", _newOwnerArray, true];
+            
+            // Notify giver
+            private _a3mMsg = format ["<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#00FF00'>VEHICLE GIFTED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>You gave the vehicle to %1.</t></t>", _targetName];
+            [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+            
+            // Notify receiver
+            private _recvMsg = format ["<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#00FF00'>GIFT RECEIVED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>%1 gifted you a vehicle.</t></t>", name player];
+            [_recvMsg, -1, 0.1, 5, 0.5, 0, 789] remoteExec ["BIS_fnc_dynamicText", _targetPlayer];
+        };
+    };
+};
+
+A3M_fnc_renounceOwnershipConfirm = {
+    params ["_target"];
+    private _result = ["Are you sure you want to completely renounce ownership of this vehicle? Anyone will be able to claim it.", "Confirm Renounce Ownership", true, true] call BIS_fnc_guiMessage;
+    if (_result) then {
+        _target setVariable ["HG_Owner", nil, true];
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OWNERSHIP RENOUNCED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>Vehicle is now unclaimed.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    };
+};
+
+// 3.5. Gift Vehicle
+private _giftVehicleAction = ["A3M_GiftVehicleAction", "Gift Vehicle", "", {
+    [_target] call A3M_fnc_dialogOnLoadGiftVehicle;
+}, {
+    private _ownerArray = _target getVariable ["HG_Owner", []];
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) }
+}] call ace_interact_menu_fnc_createAction;
+["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+
+// 3.6. Renounce Ownership
+private _renounceAction = ["A3M_RenounceOwnershipAction", "Renounce Ownership", "", {
+    [_target] spawn A3M_fnc_renounceOwnershipConfirm;
+}, {
+    private _ownerArray = _target getVariable ["HG_Owner", []];
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) }
+}] call ace_interact_menu_fnc_createAction;
+["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+
 // 4. Flip Vehicle (ACE Contextual)
 private _flipAction = ["A3M_FlipVehicle", "Flip Vehicle", "", {
     if (locked _target > 1) then {
@@ -354,6 +480,26 @@ private _actInterrogate = [
 ["Land_WoodenTable_large_F", 0, ["ACE_MainActions"], _actInterrogate, true] call ace_interact_menu_fnc_addActionToClass;
 
 // -------------------------------------------------------------------------
+// --- A3M PLAYER DOSSIER HOTKEY ---
+// -------------------------------------------------------------------------
+[] spawn {
+    waitUntil { !isNull findDisplay 46 };
+    (findDisplay 46) displayAddEventHandler ["KeyDown", {
+        params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
+        // DIK Code 25 is 'P'. Ensure no modifiers are pressed to prevent conflicts with combinations.
+        if (_key == 25 && !_shift && !_ctrl && !_alt) then {
+            if (isNull (findDisplay 7020) && isNull (findDisplay 7030)) then {
+                [] call A3M_fnc_openPlayerCard;
+            };
+            // Return true to consume the keypress and override default 'P' (Scoreboard) behavior
+            true
+        } else {
+            false
+        };
+    }];
+};
+
+// -------------------------------------------------------------------------
 // --- A3M CORPSE LOOTING (GRAD-FORTIFICATIONS) ---
 // -------------------------------------------------------------------------
 private _actLootForts = [
@@ -375,5 +521,42 @@ private _actLootForts = [
 // -------------------------------------------------------------------------
 // The absolute nuclear option: Completely disables the native Arma 3 radio protocol.
 // This prevents AI from generating any text or audio callouts globally.
-enableSentences false;
-enableRadio false;
+enableSentences true;
+enableRadio true;
+
+// -------------------------------------------------------------------------
+// --- A3M DEEP STAT TRACKING: Engineer Score (#65) ---
+// -------------------------------------------------------------------------
+["grad_fortifications_onPlace", {
+    params ["_unit", "_fortification", "_vehicle"];
+    if (_unit != player) exitWith {};
+    
+    // We send to server so we don't have to duplicate the dbSetSecure block on client
+    [player, "Engineer_Score_Total"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+}] call CBA_fnc_addEventHandler;
+
+// -------------------------------------------------------------------------
+// --- A3M DEEP STAT TRACKING: ACE Medical Revives ("The Lifesaver") ---
+// -------------------------------------------------------------------------
+["ace_medical_treatment_onTreatment", {
+    params ["_caller", "_target", "_selectionName", "_className", "_itemUser", "_usedItem"];
+    
+    if (_caller != player) exitWith {}; // Only track local player actions
+    if (_caller == _target) exitWith {}; // Exclude self-treatment
+    
+    // Only track major interventions on unconscious/cardiac arrest patients
+    private _isUnconscious = _target getVariable ["ACE_isUnconscious", false];
+    private _inArrest = _target getVariable ["ace_medical_inCardiacArrest", false];
+    
+    if (_isUnconscious || _inArrest) then {
+        if (_className in ["Epinephrine", "CPR", "BloodIV", "BloodIV_500", "BloodIV_250", "PlasmaIV", "SalineIV", "PersonalAidKit", "SurgicalKit"]) then {
+            private _targetName = name _target;
+            if (!isPlayer _target) then {
+                private _cfgName = getText(configFile >> "CfgVehicles" >> typeOf _target >> "displayName");
+                if (_targetName == "" || _targetName == "Error: No unit") then { _targetName = _cfgName; };
+            };
+            
+            [player, _targetName, _className] remoteExecCall ["A3M_fnc_serverLogRevive", 2];
+        };
+    };
+}] call CBA_fnc_addEventHandler;

@@ -59,7 +59,7 @@ class A3M_SquadDossierDialog {
             w = 0.02 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0, 0, 1};
-            action = "closeDialog 0;";
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7040)}; [] call A3M_fnc_openPlayerCard; };";
         };
 
         // Active List
@@ -106,6 +106,24 @@ class A3M_SquadDossierDialog {
             h = 0.65 * safezoneH;
             colorBackground[] = {0, 0, 0, 0.5};
             sizeEx = 0.035;
+        };
+
+        class StatsBackground: HG_RscText {
+            idc = -1;
+            x = 0.12 * safezoneW + safezoneX;
+            y = 0.86 * safezoneH + safezoneY;
+            w = 0.76 * safezoneW;
+            h = 0.03 * safezoneH;
+            colorBackground[] = {0.15, 0.15, 0.15, 1};
+        };
+
+        class StatsText: HG_RscStructuredText {
+            idc = 7046;
+            text = "<t align='center' size='1.1'>Loading Statistics...</t>";
+            x = 0.12 * safezoneW + safezoneX;
+            y = 0.865 * safezoneH + safezoneY;
+            w = 0.76 * safezoneW;
+            h = 0.03 * safezoneH;
         };
     };
 };

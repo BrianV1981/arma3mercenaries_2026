@@ -4,7 +4,7 @@ class grad_mm_RscBackground {
 	style = ST_HUD_BACKGROUND;
 	text = "";
 	colorText[] = {0, 0, 0, 0};
-	font = "PuristaMedium";
+	font = "RobotoCondensedBold";
 	sizeEx = 0.04 * TEXT_SCALE;
 	shadow = 0;
 	colorBackground[] = {0, 0, 0, 0.6};
@@ -17,7 +17,7 @@ class grad_mm_RscText {
 	style = ST_LEFT;
 	colorBackground[] = { 1 , 1 , 1 , 0 };
 	colorText[] = { 1 , 1 , 1 , 1 };
-	font = "PuristaMedium";
+	font = "RobotoCondensedBold";
 	sizeEx = 0.04 * TEXT_SCALE;
 	h = 0.25;
 	text = "";
@@ -30,7 +30,7 @@ class grad_mm_RscTextRight {
 	style = ST_RIGHT;
 	colorBackground[] = { 1 , 1 , 1 , 0 };
 	colorText[] = { 1 , 1 , 1 , 1 };
-	font = "PuristaMedium";
+	font = "RobotoCondensedBold";
 	sizeEx = 0.04 * TEXT_SCALE;
 	h = 0.25;
 	text = "";
@@ -46,7 +46,7 @@ class grad_mm_RscStructuredText {
     colorBackground[] = {0,0,0,0};
 	class Attributes
 	{
-		font = "PuristaMedium";
+		font = "RobotoCondensedBold";
 		color = "#ffffff";
 		align = "left";
 		shadow = 1;
@@ -63,7 +63,7 @@ class grad_mm_RscStructuredText {
 class grad_mm_RscStructuredTextRight: grad_mm_RscStructuredText {
 	style = ST_RIGHT;
     class Attributes: Attributes {
-        font = "PuristaMedium";
+        font = "RobotoCondensedBold";
         color = "#ffffff";
         align = "right";
         shadow = 1;
@@ -99,7 +99,7 @@ class grad_mm_RscButton {
     w = 0.055589;
     h = 0.039216;
     shadow = 0;
-    font = "PuristaMedium";
+    font = "RobotoCondensedBold";
     sizeEx = 0.04;
     offsetX = 0.003;
     offsetY = 0.003;
@@ -138,7 +138,7 @@ class grad_mm_RscCloseButton {
     w = 0.055589;
     h = 0.039216;
     shadow = 0;
-    font = "PuristaMedium";
+    font = "RobotoCondensedBold";
     sizeEx = 0.04;
     offsetX = 0.003;
     offsetY = 0.003;
@@ -168,7 +168,7 @@ class grad_mm_RscEdit {
 	autocomplete = "";
 	text = "";
 	size = 0.2;
-	font = "PuristaMedium";
+	font = "RobotoCondensedBold";
 	shadow = 0;
 	sizeEx = 0.04 * TEXT_SCALE;
 	canModify = 1;
@@ -189,7 +189,7 @@ class grad_mm_RscCombo {
 	type = CT_COMBO;
 	style = ST_CENTER;
 	sizeEx = 0.042;
-	font = puristaMedium;
+	font = "RobotoCondensedBold";
 	rowHeight = 0.04;
 	wholeHeight = 0.48;
 	maxHistoryDelay = 0;

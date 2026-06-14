@@ -45,7 +45,7 @@ class A3M_QuartermasterHub {
 
         class BtnArmory: HG_RscButton {
             idc = 1601;
-            text = "ARMORY & GEAR";
+            text = "ARMORY";
             x = 0.4 * safezoneW + safezoneX;
             y = 0.38 * safezoneH + safezoneY;
             w = 0.2 * safezoneW;
@@ -55,7 +55,7 @@ class A3M_QuartermasterHub {
 
         class BtnVehicles: HG_RscButton {
             idc = 1602;
-            text = "MOTORPOOL";
+            text = "CIA VEHICLE LOT";
             x = 0.4 * safezoneW + safezoneX;
             y = 0.45 * safezoneH + safezoneY;
             w = 0.2 * safezoneW;
@@ -65,7 +65,7 @@ class A3M_QuartermasterHub {
 
         class BtnFortifications: HG_RscButton {
             idc = 1603;
-            text = "BASE BUILDING";
+            text = "FORTIFICATIONS & LOGISTICS";
             x = 0.4 * safezoneW + safezoneX;
             y = 0.52 * safezoneH + safezoneY;
             w = 0.2 * safezoneW;
