@@ -39,10 +39,30 @@ _listIndex = 0;
     _code = compile ([(_config >> "code"), "text", ""] call CBA_fnc_getConfigEntry);
     _picturePath = [(_config >> "picture"), "text", ""] call CBA_fnc_getConfigEntry;
 
-    _listIndex = _listCtrl lbAdd (format ["[%1 Cr] %2", _price, _displayName]);
+    // --- A3M ECONOMY: Dynamic Daily Sales Check ---
+    private _activeSales = missionNamespace getVariable ["A3M_ActiveSales", createHashMap];
+    private _discountMultiplier = _activeSales getOrDefault [_itemConfigName, 1];
+    private _isOnSale = false;
+
+    if (_discountMultiplier < 1) then {
+        _price = round (_price * _discountMultiplier);
+        _isOnSale = true;
+    };
+    // ----------------------------------------------
+
+    private _listText = format ["[%1 Cr] %2", _price, _displayName];
+    if (_isOnSale) then {
+        _listText = format ["[%1 Cr] [SALE] %2", _price, _displayName];
+    };
+
+    _listIndex = _listCtrl lbAdd _listText;
 
     if (_isLocked) then {
         _listCtrl lbSetColor [_listIndex, [0.8, 0.2, 0.2, 1]]; // Red text
+    } else {
+        if (_isOnSale) then {
+            _listCtrl lbSetColor [_listIndex, [0, 1, 0, 1]]; // Neon Green
+        };
     };
 
     _data = str [_baseConfigName, _categoryConfigName, _itemConfigName, _displayName, _price, _description, _code, _picturePath, _isLocked];

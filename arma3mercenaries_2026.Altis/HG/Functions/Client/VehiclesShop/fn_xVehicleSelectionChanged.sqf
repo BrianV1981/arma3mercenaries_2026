@@ -26,11 +26,32 @@ A3M_HG_CurrentVehicleDescriptions = [];
 	{
 	    _vName = getText(configFile >> "CfgVehicles" >> (_x select 0) >> "displayName");
         private _price = _x select 1;
+        private _className = _x select 0;
+
+        // --- A3M ECONOMY: Dynamic Daily Sales Check ---
+        private _activeSales = missionNamespace getVariable ["A3M_ActiveSales", createHashMap];
+        private _discountMultiplier = _activeSales getOrDefault [_className, 1];
+        private _isOnSale = false;
+        if (_discountMultiplier < 1) then {
+            _price = round (_price * _discountMultiplier);
+            _isOnSale = true;
+        };
+        // ----------------------------------------------
+
         private _priceStr = if (_price <= 0) then { localize "STR_HG_DLG_FREE" } else { [_price, true] call HG_fnc_currencyToText };
         private _displayNameWithPrice = format["[%1] %2", _priceStr, _vName];
+        if (_isOnSale) then {
+            _displayNameWithPrice = format["[%1] [SALE] %2", _priceStr, _vName];
+        };
+
         _ind = HG_VEHICLES_LIST lbAdd _displayNameWithPrice;
-        HG_VEHICLES_LIST lbSetData[_ind,(_x select 0)];
-        HG_VEHICLES_LIST lbSetValue[_ind,(_x select 1)];
+        HG_VEHICLES_LIST lbSetData[_ind, _className];
+        HG_VEHICLES_LIST lbSetValue[_ind, _price]; // The Buy script natively extracts price from lbValue
+        
+        if (_isOnSale) then {
+            HG_VEHICLES_LIST lbSetColor [_ind, [0, 1, 0, 1]]; // Neon Green
+        };
+
 	    HG_VEHICLES_LIST lbSetTooltip[_ind,_vName];
         
         private _desc = if (count _x > 3) then { _x select 3 } else { "No description available in the Quartermaster network." };

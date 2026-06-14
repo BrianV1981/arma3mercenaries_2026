@@ -527,4 +527,7 @@ A3M_fnc_serverFetchBountyTargets = {
 
 }] call CBA_fnc_addEventHandler;
 
+// --- A3M ECONOMY: Daily Server Sales Generator ---
+[] execVM "arma3mercenaries\economy\fn_generateSales.sqf";
+
 HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
