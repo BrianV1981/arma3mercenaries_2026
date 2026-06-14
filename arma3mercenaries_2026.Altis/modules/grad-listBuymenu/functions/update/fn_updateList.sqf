@@ -41,9 +41,21 @@ _listIndex = 0;
 
     _listCtrl lnbAddRow [format ["%1 Cr", _price], _displayName];
 
+    private _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
+
     if (_isLocked) then {
         _listCtrl lnbSetColor [[_listIndex, 1], [0.8, 0.2, 0.2, 1]]; // Red text
         _listCtrl lnbSetColor [[_listIndex, 0], [0.5, 0.5, 0.5, 1]]; // Grey price
+    } else {
+        if (_stock <= 0) then {
+            _listCtrl lnbSetColor [[_listIndex, 1], [1.0, 0.2, 0.2, 1]]; // Red text
+            _listCtrl lnbSetColor [[_listIndex, 0], [1.0, 0.2, 0.2, 1]]; // Red price
+        } else {
+            if (_stock <= 5) then {
+                _listCtrl lnbSetColor [[_listIndex, 1], [1.0, 0.65, 0.0, 1]]; // Orange text
+                _listCtrl lnbSetColor [[_listIndex, 0], [1.0, 0.65, 0.0, 1]]; // Orange price
+            };
+        };
     };
 
     _data = str [_baseConfigName, _categoryConfigName, _itemConfigName, _displayName, _price, _description, _code, _picturePath, _isLocked];
