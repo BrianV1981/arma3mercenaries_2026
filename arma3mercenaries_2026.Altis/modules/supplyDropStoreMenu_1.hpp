@@ -51,32 +51,6 @@
 				code = ["Box_IND_WpsSpecial_F", _this select 0, [], [["Titan_AA",20]], []] spawn A3M_fnc_initSupplyDrop;
             };
 
-
-			
-			class B_CargoNet_01_ammo_F {
-                displayName = "Titan Suppply Drop";
-                description = "This is an emergency supply drop of Titan AA/AT launchers and missles.";
-                price = 300000;
-                amount = 1;
-                stock = 9999;
-				code = ["B_CargoNet_01_ammo_F", _this select 0, [], [["Titan_AT",40],["Titan_AA",40]], [["launch_B_Titan_short_F",5],["launch_B_Titan_F",5]]] spawn A3M_fnc_initSupplyDrop;
-            };
-			
-			class B_Slingload_01_Cargo_F {
-                displayName = "Advanced FOB Suppply Drop";
-                description = "This is an emergency supply drop of an advaced FOB.";
-                price = 500000;
-                amount = 1;
-                stock = 9999;
-				code = ["B_Slingload_01_Cargo_F", _this select 0, [["ACE_ConcertinaWireCoil",20],["Land_HBarrier_5_F",10],["Land_HBarrierWall6_F",10],["Land_HBarrierWall_corner_F",8],["Land_CncWall4_F",30],["Land_BagBunker_Small_F",4],["Land_BagBunker_Tower_F",2],["ACE_TacticalLadder",4],["Land_TentLamp_01_standing_F",20],["Flag_US_F",1],["Flag_POWMIA_F",1],["WaterPump_01_forest_F",1],["Land_WoodenCrate_01_F",2],["CargoNet_01_box_F",5],["ACE_medicalSupplyCrate",4],["Land_PaperBox_01_small_closed_brown_food_F",4],["Land_PaperBox_01_small_closed_brown_F",2],["ACE_Box_Chemlights",2],["Box_Wps_F",2],["Land_RoadBarrier_01_F",2],["Land_HelipadCircle_F",1],["Land_BagFence_Round_F",20],["Land_BagFence_Long_F",20],["Land_CzechHedgehog_01_new_F",20],["Land_RepairDepot_01_green_F",1],["B_Slingload_01_Medevac_F",1],["B_Slingload_01_Fuel_F",1],["B_Slingload_01_Ammo_F",1]], [], []] spawn A3M_fnc_initSupplyDrop;
-            };
-			
-		};
-
-		class turretDrops_1 {
-            displayname = "Emergency Turret Drops";
-            kindOf = "other";
-
 			class Box_NATO_AmmoVeh_F_HMG {
                 displayName = "NATO HMG Platoon Suppply Drop";
                 description = "This is an emergency supply drop of 4x Mk30 HMG .50 (Raised) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
@@ -166,5 +140,25 @@
                 stock = 9999;
 				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_Mortar_01_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
             };
+			
+			class B_CargoNet_01_ammo_F {
+                displayName = "Titan Suppply Drop";
+                description = "This is an emergency supply drop of Titan AA/AT launchers and missles.";
+                price = 300000;
+                amount = 1;
+                stock = 9999;
+				code = ["B_CargoNet_01_ammo_F", _this select 0, [], [["Titan_AT",40],["Titan_AA",40]], [["launch_B_Titan_short_F",5],["launch_B_Titan_F",5]]] spawn A3M_fnc_initSupplyDrop;
+            };
+			
+			class B_Slingload_01_Cargo_F {
+                displayName = "Advanced FOB Suppply Drop";
+                description = "This is an emergency supply drop of an advaced FOB.";
+                price = 500000;
+                amount = 1;
+                stock = 9999;
+				code = ["B_Slingload_01_Cargo_F", _this select 0, [["ACE_ConcertinaWireCoil",20],["Land_HBarrier_5_F",10],["Land_HBarrierWall6_F",10],["Land_HBarrierWall_corner_F",8],["Land_CncWall4_F",30],["Land_BagBunker_Small_F",4],["Land_BagBunker_Tower_F",2],["ACE_TacticalLadder",4],["Land_TentLamp_01_standing_F",20],["Flag_US_F",1],["Flag_POWMIA_F",1],["WaterPump_01_forest_F",1],["Land_WoodenCrate_01_F",2],["CargoNet_01_box_F",5],["ACE_medicalSupplyCrate",4],["Land_PaperBox_01_small_closed_brown_food_F",4],["Land_PaperBox_01_small_closed_brown_F",2],["ACE_Box_Chemlights",2],["Box_Wps_F",2],["Land_RoadBarrier_01_F",2],["Land_HelipadCircle_F",1],["Land_BagFence_Round_F",20],["Land_BagFence_Long_F",20],["Land_CzechHedgehog_01_new_F",20],["Land_RepairDepot_01_green_F",1],["B_Slingload_01_Medevac_F",1],["B_Slingload_01_Fuel_F",1],["B_Slingload_01_Ammo_F",1]], [], []] spawn A3M_fnc_initSupplyDrop;
+            };
+			
+			
 		};   
 	};
