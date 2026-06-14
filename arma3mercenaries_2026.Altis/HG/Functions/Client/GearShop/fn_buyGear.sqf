@@ -16,13 +16,25 @@
 
 params[["_price",0]];  // Removed _discount from params
 
-// Calculate the total price based on the selected gear
+// Calculate the total price based on the selected gear and check for out of stock items
+private _shortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+private _isShortage = false;
+
 {
     if((count _x) != 0) then
     {
+        if ((_x select 0) in _shortages) then {
+            _isShortage = true;
+        };
         _price = _price + (_x select 1);
     };
 } forEach HG_GEAR_PREVIEW;
+
+if (_isShortage) exitWith {
+    private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OUT OF STOCK</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>One or more of the items you selected is currently sold out on the Black Market.</t></t>";
+    [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    false
+};
 
 // Check if the player has enough funds using Grad Money
 private _currentFunds = [player, false] call grad_lbm_fnc_getFunds;

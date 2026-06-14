@@ -24,12 +24,19 @@ private _playerFunds = [player, false] call grad_lbm_fnc_getFunds;
 
 if (_playerFunds >= _price) then
 {
-    // Deduct the price from the player's Grad Money account
-    [player, -_price] call grad_lbm_fnc_addFunds;
-
     // Get the selected vehicle classname and color
     private ["_classname", "_color"];
     _classname = HG_VEHICLES_LIST lbData (lbCurSel HG_VEHICLES_LIST);
+    
+    // Check if the item is sold out globally
+    private _shortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+    if (_classname in _shortages) exitWith {
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OUT OF STOCK</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>This vehicle is currently sold out on the Black Market.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    };
+
+    // Deduct the price from the player's Grad Money account
+    [player, -_price] call grad_lbm_fnc_addFunds;
     _color = HG_VEHICLES_COLORS lbData (lbCurSel HG_VEHICLES_COLORS);
 
     // Close the dialog
