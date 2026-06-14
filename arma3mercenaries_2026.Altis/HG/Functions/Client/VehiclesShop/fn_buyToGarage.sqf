@@ -43,10 +43,14 @@ if (_playerFunds >= _price) then
     closeDialog 0;
 
     // Inform the player of the successful purchase
-    hint format[(localize "STR_HG_VEHICLE_BOUGHT_TO_GARAGE"), (getText(configFile >> "CfgVehicles" >> _classname >> "displayName")), [_price, true] call HG_fnc_currencyToText];
+    private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
+    hint format[(localize "STR_HG_VEHICLE_BOUGHT_TO_GARAGE"), _displayName, [_price, true] call HG_fnc_currencyToText];
 
     // Store the vehicle in the garage
     [0, player, _classname, nil, _color] remoteExecCall ["HG_fnc_storeVehicleServer", 2, false];
+    
+    // Log transaction to A3M Player Dossier
+    [player, format ["%1 (Garaged)", _displayName], _price] remoteExecCall ["A3M_fnc_serverLogTransaction", 2];
 }
 else
 {

@@ -203,6 +203,7 @@ A3M_fnc_initPlayerProfile = {
 };
 
 A3M_fnc_serverFetchSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverFetchSquadDossier.sqf");
+A3M_fnc_serverLogTransaction = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverLogTransaction.sqf");
 
 // Virtual Barracks Server Functions
 A3M_fnc_serverDeployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverDeployMercenary.sqf");

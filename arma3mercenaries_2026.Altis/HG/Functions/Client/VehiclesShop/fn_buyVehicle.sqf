@@ -114,10 +114,15 @@ if(_playerFunds >= _price) then
 
     // Close the dialog and spawn the vehicle
     closeDialog 0;
-    hint format[(localize "STR_HG_VEHICLE_BOUGHT"), (getText(configFile >> "CfgVehicles" >> _classname >> "displayName")), [_price, true] call HG_fnc_currencyToText];
+    
+    private _displayName = getText(configFile >> "CfgVehicles" >> _classname >> "displayName");
+    hint format[(localize "STR_HG_VEHICLE_BOUGHT"), _displayName, [_price, true] call HG_fnc_currencyToText];
     
     // Spawn the vehicle on the server using our raw XYZ array instead of a marker string
     [0, player, _classname, _spawnPosition, nil, _color] remoteExecCall ["HG_fnc_spawnVehicle", 2, false];
+    
+    // Log transaction to A3M Player Dossier
+    [player, _displayName, _price] remoteExecCall ["A3M_fnc_serverLogTransaction", 2];
 
     // Trigger the 3D GRAD Position Marker so the player knows exactly where the vehicle spawned
     // GRAD vehicleMarker expects: [buyer, vehicle, baseConfig, categoryConfig, itemConfig]
