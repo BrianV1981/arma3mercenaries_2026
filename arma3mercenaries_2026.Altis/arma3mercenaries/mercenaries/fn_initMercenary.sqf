@@ -92,18 +92,19 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
     _wp2 setWaypointSpeed "FULL";  
     _wp2 setWaypointBehaviour "COMBAT";  
 
-    [_vtolGroup, _unitClass, _buyer, _group] spawn {
-        params ["_vtolGroup", "_unitClass", "_buyer", "_group"]; 
+    // Wait until the plane is close to the player to drop
+    waitUntil { sleep 1; (_blackfish distance2D _playerPos) < 200 || !alive _blackfish };
 
-        private _wp1Index = currentWaypoint _vtolGroup; 
-        waitUntil { currentWaypoint _vtolGroup > _wp1Index };
-        
-        playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];
+    playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];
 
+    if (alive _blackfish) then {
         // Drop each unit in the bought group
         {
             private _unit = _x;
-            private _parachute = createVehicle ["Steerable_Parachute_F", (_buyer modelToWorld [0, 0, 50]), [], 0, "FLY"];
+            private _dropPos = getPosATL _blackfish;
+            _dropPos set [2, (_dropPos select 2) - 5]; // Drop slightly below plane
+            
+            private _parachute = createVehicle ["Steerable_Parachute_F", _dropPos, [], 0, "FLY"];
             
             if (!isNull _parachute) then {
                 _unit hideObjectGlobal false;
@@ -115,17 +116,14 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
                 
                 [_unit, _buyer] spawn {
                     params ["_unit", "_buyer"];
-                    waitUntil { isTouchingGround _unit || (getPos _unit select 2) < 1 };
+                    waitUntil { sleep 0.5; isTouchingGround _unit || (getPos _unit select 2) < 1 };
                     _unit allowDamage true;
                     [_unit] joinSilent (group _buyer);
                     
                     if (isServer) then {
                         private _aiUnitID = _unit getVariable ["arma3mercenaries_aiUnit", ""];
                         if (_aiUnitID != "") then {
-                            // Phase 3: The Death Tracker & Custom Name (Graveyard Support)
                             [_unit, _aiUnitID] call A3M_fnc_serverRegisterMercenary;
-                            
-                            // Phase 4: PMC Speech Overhaul (Apply Audio Event Handlers on the client)
                             [_unit] remoteExec ["A3M_fnc_applyChatterEHs", _buyer];
                         };
                     };
@@ -135,12 +133,13 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         } forEach (units _group);
     };
 
-    sleep 30; 
+    sleep 10; 
     try { _blackfish animateDoor ['Door_1_source', 0]; } catch {};
     _blackfish allowDamage true; 
 
-    sleep 30;
+    // Wait until the plane flies away before deleting it
+    waitUntil { sleep 5; (_blackfish distance2D _playerPos) > 1500 || !alive _blackfish };
 
     deleteVehicle _blackfish;
-    {deleteVehicle _x} forEach units _group;  
+    {deleteVehicle _x} forEach units _vtolGroup;  
 };
