@@ -18,8 +18,9 @@ private _json = format ["{""author"":""%1"",""uid"":""%2"",""title"":""%3"",""de
     _desc regexReplace ["\n|\r|\t|""", " "]
 ];
 
-// Write directly to an extDB3 dedicated log file (will create @extDB3/logs/A3M_Tickets.log)
-"extDB3" callExtension format["9:ADD_LOG:A3M_Tickets:%1", _json];
+// Write directly to the native Arma 3 .rpt/server_console.log file using diag_log
+// The Python script will scan the server log directory for this specific prefix
+diag_log format ["[A3M_TICKETS_EXPORT] %1", _json];
 
 diag_log format ["[A3M TICKETS] Received and logged ticket from %1: %2", _name, _title];
 
