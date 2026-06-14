@@ -69,6 +69,78 @@
 				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_HMG_02_high_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
             };
 			
+			class Box_NATO_AmmoVeh_F_GMG {
+                displayName = "NATO GMG Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Mk32 GMG 20mm (Raised) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 85000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_NATO_AmmoVeh_F", _this select 0, [["B_GMG_01_high_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_IND_AmmoVeh_F_GMG {
+                displayName = "INDEP GMG Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Mk32 GMG 20mm (Raised) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 85000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_GMG_01_high_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_NATO_AmmoVeh_F_AT {
+                displayName = "NATO Static AT Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Static Titan AT (Launcher) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 125000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_NATO_AmmoVeh_F", _this select 0, [["B_static_AT_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_IND_AmmoVeh_F_AT {
+                displayName = "INDEP Static AT Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Static Titan AT (Launcher) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 125000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_static_AT_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_NATO_AmmoVeh_F_AA {
+                displayName = "NATO Static AA Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Static Titan AA (Launcher) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 125000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_NATO_AmmoVeh_F", _this select 0, [["B_static_AA_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_IND_AmmoVeh_F_AA {
+                displayName = "INDEP Static AA Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Static Titan AA (Launcher) turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 125000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_static_AA_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_NATO_AmmoVeh_F_Mortar {
+                displayName = "NATO Mortar Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Mk6 Mortar turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 85000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_NATO_AmmoVeh_F", _this select 0, [["B_Mortar_01_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+
+			class Box_IND_AmmoVeh_F_Mortar {
+                displayName = "INDEP Mortar Platoon Suppply Drop";
+                description = "This is an emergency supply drop of 4x Mk6 Mortar turrets, 4 Entrenching Tools, and an infinite-resupply Vehicle Ammo Box container.";
+                price = 85000;
+                amount = 1;
+                stock = 9999;
+				code = ["Box_IND_AmmoVeh_F", _this select 0, [["I_Mortar_01_F", 4]], [], [["ACE_EntrenchingTool", 4]]] spawn A3M_fnc_initSupplyDrop;
+            };
+			
 			class B_CargoNet_01_ammo_F {
                 displayName = "Titan Suppply Drop";
                 description = "This is an emergency supply drop of Titan AA/AT launchers and missles.";

@@ -303,6 +303,14 @@ class CfgGradFortifications {
             canPackUp = 0;
         };
 		
+		class B_static_AT_F {
+            canPackUp = 0;
+        };
+		
+		class B_static_AA_F {
+            canPackUp = 0;
+        };
+		
 		class B_Mortar_01_F {
             canPackUp = 0;
         };
@@ -312,6 +320,22 @@ class CfgGradFortifications {
         };
 		
 		class I_HMG_02_high_F {
+            canPackUp = 0;
+        };
+		
+		class I_GMG_01_high_F {
+            canPackUp = 0;
+        };
+		
+		class I_static_AT_F {
+            canPackUp = 0;
+        };
+		
+		class I_static_AA_F {
+            canPackUp = 0;
+        };
+		
+		class I_Mortar_01_F {
             canPackUp = 0;
         };
 		
