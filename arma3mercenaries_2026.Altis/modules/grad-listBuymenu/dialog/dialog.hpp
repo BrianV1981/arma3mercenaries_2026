@@ -96,8 +96,8 @@ class grad_lbm {
             idc = grad_lbm_DESCRIPTION;
             text = "";
 
-            x = grad_lbm_Column2_X;
-            y = grad_lbm_BG_Y + grad_lbm_Padding_Y + grad_lbm_Picture_H + grad_lbm_ItemSpace_Y;
+            x = grad_lbm_Column3_X;
+            y = grad_lbm_BG_Y + grad_lbm_Padding_Y;
             w = grad_lbm_Column_W;
             h = grad_lbm_Description_H;
         };
