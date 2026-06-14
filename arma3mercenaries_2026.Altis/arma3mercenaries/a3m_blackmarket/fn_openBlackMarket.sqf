@@ -1,7 +1,30 @@
 /*
     A3M Quartermaster: Native Arsenal Hook (Phase 1)
     Author: A.I.M. / BrianV1981
-    Description: Parses GRAD Stores, whitelists the Native Arsenal, and injects a Calculate/Purchase UI.
+    
+    DESCRIPTION:
+    This script acts as a bridge between the Grad List Buymenu (grad-lbm) economy and the 
+    Native Arma 3 Virtual Arsenal. Instead of using a hardcoded whitelist, it dynamically 
+    generates the Arsenal's inventory on the fly.
+    
+    HOW THE WHITELIST WORKS:
+    1. The script scans `missionConfigFile >> "CfgGradBuymenu"` (which contains your 
+       Quartermaster configs like weaponStoreMenu.hpp, itemStoreMenu.hpp, etc.).
+    2. It loops through every configured item and checks if it has a price > 0.
+    3. It uses `BIS_fnc_itemType` to categorize valid items into Weapons, Magazines/Explosives, 
+       Backpacks, and Items/Attachments.
+    4. It creates an invisible Virtual Ammo Box (`A3M_ArmoryBox`), wipes it clean, and injects
+       only the dynamically generated arrays.
+    5. The Native Arsenal is then opened targeting that invisible box.
+    
+    Any item you add to a Grad Store config with a valid price will automatically appear 
+    in the Armory interface without requiring manual whitelist updates.
+    
+    CALCULATION ENGINE:
+    When the player clicks "CALCULATE COST", the script aggregates all gear on the player
+    (including scopes attached to weapons and magazines inside vests) and runs a frequency 
+    diff against their original loadout snapshot. The player is charged exactly for the net 
+    difference in items based on the Grad Store prices.
 */
 
 params [["_useBank", false]];
