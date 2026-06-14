@@ -397,5 +397,5 @@ private _actLootForts = [
 // -------------------------------------------------------------------------
 // The absolute nuclear option: Completely disables the native Arma 3 radio protocol.
 // This prevents AI from generating any text or audio callouts globally.
-enableSentences false;
-enableRadio false;
+enableSentences true;
+enableRadio true;
