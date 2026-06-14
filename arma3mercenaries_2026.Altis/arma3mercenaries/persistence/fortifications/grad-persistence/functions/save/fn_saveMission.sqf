@@ -49,5 +49,6 @@ if (_showWarning) then {
 
     [_allVariableClasses] call FUNC(saveVariables);
 
-    "grad-persistence: mission saved" remoteExec ["systemChat",0,false];
+    private _message = "<t align='left'><t size='0.8' color='#00FF00'>A3M PERSISTENCE</t><br/><t size='0.6' color='#FFFFFF'>Mission state saved successfully.</t></t>";
+    [_message, 0.0, 0.1, 5, 0.5, 0, 795] remoteExec ["BIS_fnc_dynamicText", 0, false];
 }, [_area], _waitTime] call CBA_fnc_waitAndExecute;
