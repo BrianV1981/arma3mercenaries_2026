@@ -99,7 +99,8 @@ fnc_playRandomTrack = {
     private _title = _trackInfo select 2;
 
     // Display the hint with artist and song name
-    hint format ["Now Playing: %1 - %2", _artist, _title];
+    private _a3mMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>NOW PLAYING</t><br/><t size='0.6' color='#FFFFFF'>%1</t><br/><t size='0.5' color='#AAAAAA'>%2</t></t>", _artist, _title];
+    [_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
 
     // Play the chosen track
     playMusic _track;
