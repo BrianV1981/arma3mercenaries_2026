@@ -182,8 +182,8 @@ class HG_VehiclesShop
 		class MyCashButton: HG_RscButton
 		{
 			idc = HG_VEHICLES_MC_IDC;
-			text = "BANK ACCOUNT";
-			onButtonClick = "closeDialog 0; [player, 'ATM_TRANSFER'] spawn grad_moneymenu_fnc_loadMenu;";
+			text = "CHECK ACCOUNT";
+			onButtonClick = "private _b = [player getVariable ['grad_moneymenu_myBankBalance',0], 1, 0, true] call CBA_fnc_formatNumber; private _w = [player getVariable ['grad_lbm_myFunds',0], 1, 0, true] call CBA_fnc_formatNumber; private _m = format['<t align=""left""><t font=""RobotoCondensedBold"" size=""0.8"" color=""#00FF00"">A.I.M. BANKING NETWORK</t><br/><t font=""PuristaMedium"" size=""0.6"" color=""#FFFFFF"">BANK: $%1<br/>WALLET: $%2</t></t>', _b, _w]; [_m, 0.0, 0.1, 7, 1, 0, 799] spawn bis_fnc_dynamicText;";
 			x = 0.47 * safeZoneW + safeZoneX;
 			y = 0.85 * safeZoneH + safeZoneY;
 			w = 0.1 * safeZoneW;
