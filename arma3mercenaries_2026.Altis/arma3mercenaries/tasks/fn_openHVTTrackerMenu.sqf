@@ -27,6 +27,9 @@ if (isNil "A3M_fnc_serverSatelliteSweep") then {
         // Get the actual exact position from the server where the object is guaranteed to be known
         private _exactPos = getPosATL _hvtTarget;
         
+        // Broadcast the last sweep time for the global cooldown
+        missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
+        
         // Update the task destination to the exact position for everyone
         [_taskId, _exactPos] remoteExec ["BIS_fnc_taskSetDestination", 0, "JIP_id_" + _taskId];
         
@@ -47,9 +50,23 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
         // Execute BI Drone Feed
         [_exactPos, _overlayText, 500, 500, 75, 1, [], 0, true] spawn BIS_fnc_establishingShot;
         
+        private _duration = missionNamespace getVariable ["A3M_HVT_Satellite_Duration", 15];
+        
         // Wait for it to finish or be skipped
-        [] spawn {
-            waitUntil {sleep 1; !(missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false])};
+        [_duration] spawn {
+            params ["_duration"];
+            private _startTime = time;
+            
+            waitUntil {
+                sleep 1; 
+                !(missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false]) || 
+                (time - _startTime >= _duration)
+            };
+            
+            if (missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false]) then {
+                missionNamespace setVariable ["BIS_fnc_establishingShot_playing", false];
+            };
+            
             // A3M Acknowledgment
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Target acquired.<br/>Map has been marked with the HVT's location.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
@@ -68,6 +85,13 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
     A3M_fnc_buySatelliteSweep = {
         if (!missionNamespace getVariable ["A3M_HVT_Satellite_Enabled", true]) exitWith {
             hint "Satellite sweeps are currently disabled.";
+        };
+
+        private _cooldown = missionNamespace getVariable ["A3M_HVT_Satellite_Cooldown", 300];
+        private _lastSweep = missionNamespace getVariable ["A3M_HVT_Satellite_LastSweepTime", -_cooldown];
+        if (time - _lastSweep < _cooldown) exitWith {
+            private _timeLeft = ceil (_cooldown - (time - _lastSweep));
+            hint format ["Satellite uplink is recharging...\nAvailable in %1 seconds.", _timeLeft];
         };
 
         private _display = findDisplay 9020;

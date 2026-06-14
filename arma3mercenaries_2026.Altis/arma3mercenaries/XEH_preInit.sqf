@@ -20,6 +20,24 @@
     true
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_HVT_Satellite_Duration",
+    "SLIDER",
+    ["Satellite Feed Duration", "How long the drone visual feed lasts (in seconds)."],
+    ["A3M Settings", "Tasks"],
+    [5, 120, 15, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_HVT_Satellite_Cooldown",
+    "SLIDER",
+    ["Satellite Cooldown", "Cooldown in seconds before another sweep can be purchased globally."],
+    ["A3M Settings", "Tasks"],
+    [0, 3600, 300, 0],
+    true
+] call CBA_Settings_fnc_init;
+
 // --- CAMPING / ADVANCE TIME SETTINGS ---
 [
     "A3M_Camping_Enabled",
