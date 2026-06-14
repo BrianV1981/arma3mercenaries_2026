@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.18.1] - 2026-06-14
+- Fix: Ticket Dialog Class Inheritance
+
+
 ## [v1.18.0] - 2026-06-14
 - Feature: In-Game Ticketing Pipeline (Closes #70)
 
