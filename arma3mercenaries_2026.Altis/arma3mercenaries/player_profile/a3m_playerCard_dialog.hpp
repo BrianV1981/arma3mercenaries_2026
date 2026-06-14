@@ -22,6 +22,14 @@ class A3M_PlayerProfileDialog {
             h = 18 * GUI_GRID_H;
             colorBackground[] = {0.1, 0.1, 0.1, 0.9}; // Dark translucent grey
         };
+        class ButtonBackground: HG_RscText {
+            idc = -1;
+            x = 1 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.5 * GUI_GRID_H + GUI_GRID_Y;
+            w = 38 * GUI_GRID_W;
+            h = 1.3 * GUI_GRID_H;
+            colorBackground[] = {0.15, 0.15, 0.15, 1}; // Dark bar for buttons
+        };
         class HeaderBackground: HG_RscText {
             idc = -1;
             x = 1 * GUI_GRID_W + GUI_GRID_X;
@@ -73,10 +81,10 @@ class A3M_PlayerProfileDialog {
         class SquadDossierButton: HG_RscButton {
             idc = -1;
             text = "MY SQUAD";
-            x = 16.5 * GUI_GRID_W + GUI_GRID_X;
-            y = 2.625 * GUI_GRID_H + GUI_GRID_Y;
-            w = 4.8 * GUI_GRID_W;
-            h = 0.75 * GUI_GRID_H;
+            x = 1.5 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.75 * GUI_GRID_H + GUI_GRID_Y;
+            w = 6 * GUI_GRID_W;
+            h = 0.8 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openSquadDossier; };";
             colorText[] = {1, 1, 1, 1};
             colorBackground[] = {0.2, 0.4, 0.2, 1};
@@ -86,10 +94,10 @@ class A3M_PlayerProfileDialog {
         class PlayerGuidesButton: HG_RscButton {
             idc = -1;
             text = "PLAYER GUIDES";
-            x = 21.6 * GUI_GRID_W + GUI_GRID_X;
-            y = 2.625 * GUI_GRID_H + GUI_GRID_Y;
-            w = 4.8 * GUI_GRID_W;
-            h = 0.75 * GUI_GRID_H;
+            x = 8 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.75 * GUI_GRID_H + GUI_GRID_Y;
+            w = 6 * GUI_GRID_W;
+            h = 0.8 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openFieldManual; };";
             colorText[] = {1, 1, 1, 1};
             colorBackground[] = {0.2, 0.4, 0.6, 1};
@@ -99,10 +107,10 @@ class A3M_PlayerProfileDialog {
         class LeaderboardButton: HG_RscButton {
             idc = -1;
             text = "LEADERBOARD";
-            x = 26.7 * GUI_GRID_W + GUI_GRID_X;
-            y = 2.625 * GUI_GRID_H + GUI_GRID_Y;
-            w = 4.8 * GUI_GRID_W;
-            h = 0.75 * GUI_GRID_H;
+            x = 14.5 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.75 * GUI_GRID_H + GUI_GRID_Y;
+            w = 6 * GUI_GRID_W;
+            h = 0.8 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openLeaderboard; };";
             colorText[] = {1, 1, 1, 1};
             colorBackground[] = {0.2, 0.2, 0.2, 1};
@@ -112,10 +120,10 @@ class A3M_PlayerProfileDialog {
         class BountyBoardButton: HG_RscButton {
             idc = -1;
             text = "BOUNTY BOARD";
-            x = 31.8 * GUI_GRID_W + GUI_GRID_X;
-            y = 2.625 * GUI_GRID_H + GUI_GRID_Y;
-            w = 4.8 * GUI_GRID_W;
-            h = 0.75 * GUI_GRID_H;
+            x = 21 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.75 * GUI_GRID_H + GUI_GRID_Y;
+            w = 6 * GUI_GRID_W;
+            h = 0.8 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] call A3M_fnc_openBountyBoard; };";
             colorText[] = {1, 1, 1, 1};
             colorBackground[] = {0.6, 0.3, 0.05, 1};

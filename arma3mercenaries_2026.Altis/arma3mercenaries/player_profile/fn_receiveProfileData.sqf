@@ -44,11 +44,29 @@ private _distFly = _profile getOrDefault ["Distance_Flown", 0];
 private _rankName = _profile getOrDefault ["_TargetRankName", "UNKNOWN"];
 private _xp = _profile getOrDefault ["_TargetXP", 0];
 
+private _totalXP = 0;
+private _maxXP = 1000;
+switch (_rankName) do {
+    case "PRIVATE": { _totalXP = _xp; _maxXP = 1000; };
+    case "CORPORAL": { _totalXP = 1000 + _xp; _maxXP = 1500; };
+    case "SERGEANT": { _totalXP = 2500 + _xp; _maxXP = 2000; };
+    case "LIEUTENANT": { _totalXP = 4500 + _xp; _maxXP = 2500; };
+    case "CAPTAIN": { _totalXP = 7000 + _xp; _maxXP = 3000; };
+    case "MAJOR": { _totalXP = 10000 + _xp; _maxXP = 3500; };
+    case "COLONEL": { _totalXP = 13500 + _xp; _maxXP = 0; };
+    default { _totalXP = _xp; _maxXP = 0; };
+};
+
 private _wallet = _profile getOrDefault ["_TargetWallet", 0];
 private _bank = _profile getOrDefault ["_TargetBank", 0];
 
 _listCtrl1 lbAdd format ["RANK: %1", _rankName];
-_listCtrl1 lbAdd format ["EXPERIENCE: %1 XP", _xp];
+if (_maxXP > 0) then {
+    _listCtrl1 lbAdd format ["EXPERIENCE: %1 / %2 XP", _xp, _maxXP];
+} else {
+    _listCtrl1 lbAdd format ["EXPERIENCE: %1 XP (MAX RANK)", _xp];
+};
+_listCtrl1 lbAdd format ["TOTAL CAREER XP: %1", _totalXP];
 _listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["K/D RATIO: %1", _kd];
 _listCtrl1 lbAdd format ["Total Kills: %1", _kills];
