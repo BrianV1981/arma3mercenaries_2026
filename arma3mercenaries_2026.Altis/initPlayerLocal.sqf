@@ -96,6 +96,24 @@ A3M_fnc_openTargetPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mer
 A3M_fnc_deployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_deployMercenary.sqf");
 A3M_fnc_stowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_stowMercenary.sqf");
 
+// 5. Survival Operations -> [Camp]
+private _actSetCamp = [
+    "A3M_SetCamp",
+    "Set Camp (Skip 6 Hours)",
+    "",
+    {
+        titleText ["Setting Camp... Restoring Fatigue & Advancing Time.", "BLACK", 2];
+        player setFatigue 0;
+        [6] remoteExecCall ["skipTime", 2];
+        [] spawn {
+            sleep 3;
+            titleFadeOut 2;
+        };
+    },
+    {true}
+] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions"], _actSetCamp] call ace_interact_menu_fnc_addActionToObject;
+
 // -------------------------------------------------------------------------
 // --- A3M GLOBAL VENDOR ACE ACTIONS (JIP & Respawn Proof) ---
 // -------------------------------------------------------------------------
