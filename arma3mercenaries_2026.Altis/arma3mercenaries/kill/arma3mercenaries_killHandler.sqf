@@ -215,7 +215,8 @@ A3M_fnc_serverHandleReward = {
                             _x addScore 1000;
                             [_x, 500000] call grad_moneymenu_fnc_addFunds;
                             [250, 0] remoteExecCall ["HG_fnc_addOrSubXP", _x, false];
-                            ["<t color='#FFFFFF' size='1.0'>Target neutralized. Good kill. Collect your pay. (+250 XP)</t>", -1, -1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
+                            private _a3mMessage = "<t align='left'><t size='0.8' color='#00FF00'>HVT ELIMINATED</t><br/><t size='0.6' color='#FFFFFF'>Target neutralized. Good kill.<br/><br/>+$500,000<br/>+250 XP</t></t>";
+                            [_a3mMessage, 0.0, 0.1, 10, 1, 0, 799] remoteExec ["BIS_fnc_dynamicText", _x];
                         };
                     } forEach allPlayers;
                 };
