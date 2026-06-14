@@ -39,7 +39,7 @@ if (_isVehicle) then {
         _picturePath = [_itemConfigName] call grad_lbm_fnc_getPicturePath;
     };
     if (_picturePath == "") then {
-        _picturePath = (missionNamespace getVariable ["grad_lbm_moduleRoot", [] call grad_lbm_fnc_getModuleRoot]) + "\data\questionmark.paa";
+        _picturePath = "pictures\arma3mercenaries_v1.paa";
     };
     _pictureCtrl ctrlSetText _picturePath;
 
