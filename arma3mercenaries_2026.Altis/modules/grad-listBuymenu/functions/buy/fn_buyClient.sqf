@@ -15,8 +15,8 @@ player setVariable ["A3M_LBM_LastBuyTime", diag_tickTime];
 
 private _dialog = findDisplay grad_lbm_DIALOG;
 private _listCtrl = _dialog displayCtrl grad_lbm_ITEMLIST;
-private _selIndex = lnbCurSelRow _listCtrl;
-(call compile (_listCtrl lnbData [_selIndex,0])) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath"];
+private _selIndex = lbCurSel _listCtrl;
+(call compile (_listCtrl lbData _selIndex)) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath"];
 
 private _funds = [] call grad_lbm_fnc_getCurrentFunds;
 if (_funds < _price) exitWith {systemChat "Not enough funds.";};

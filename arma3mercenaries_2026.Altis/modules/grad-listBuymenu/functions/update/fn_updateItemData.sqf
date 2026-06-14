@@ -11,15 +11,17 @@ if (isNull _dialog) exitWith {};
 _descCtrl = _dialog displayCtrl grad_lbm_DESCRIPTION;
 _listCtrl = _dialog displayCtrl grad_lbm_ITEMLIST;
 
-_selIndex = lnbCurSelRow _listCtrl;
+_selIndex = lbCurSel _listCtrl;
 
-(call compile (_listCtrl lnbData [_selIndex,0])) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath", ["_isLocked", false]];
+(call compile (_listCtrl lbData _selIndex)) params ["_baseConfigName", "_categoryConfigName", "_itemConfigName", "_displayName", "_price", "_description", "_code", "_picturePath", ["_isLocked", false]];
 
 //set description
 _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
 _categoryDescription = [(missionConfigFile >> "CfgGradBuymenu" >> _baseConfigName >> _categoryConfigName >> "description"),"text",""] call CBA_fnc_getConfigEntry;
-_inStockText = if (_stock > 0) then {format ["IN STOCK: %1<br/><br/>", _stock]} else {"<t color='#FF0000'>OUT OF STOCK</t><br/><br/>"};
-_descCtrl ctrlSetStructuredText parseText (_inStockText + _categoryDescription + _description);
+_inStockText = if (_stock > 0) then {format ["STOCK: %1<br/>", _stock]} else {"<t color='#FF0000'>OUT OF STOCK</t><br/>"};
+private _priceText = format ["PRICE: %1 Cr<br/><br/>", _price];
+private _nameText = format ["<t size='1.2' font='RobotoCondensedBold'>%1</t><br/>", _displayName];
+_descCtrl ctrlSetStructuredText parseText (_nameText + _inStockText + _priceText + _categoryDescription + _description);
 
 //disable buy button if out of stock
 [_baseConfigName, _categoryConfigName, _itemConfigName, _price, _isLocked] call grad_lbm_fnc_updateBuyButton;
