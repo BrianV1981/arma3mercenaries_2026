@@ -10,7 +10,7 @@ if (isNil "A3M_ActiveTasks") then {
 };
 
 // Start the unscheduled Task Tracker PFH
-// Ticks every 180 seconds (3 minutes) to update task destinations and prune dead/completed tasks without spamming players
+// Ticks every 1800 seconds (30 minutes) to update task destinations and prune dead/completed tasks without spamming players
 [{
     params ["_args", "_handle"];
     
@@ -43,4 +43,4 @@ if (isNil "A3M_ActiveTasks") then {
         diag_log format ["[A3M TASK MANAGER] Cleaned up task %1.", _x];
     } forEach _tasksToRemove;
     
-}, 180, []] call CBA_fnc_addPerFrameHandler;
+}, 1800, []] call CBA_fnc_addPerFrameHandler;
