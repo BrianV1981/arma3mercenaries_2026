@@ -255,6 +255,103 @@ private _keysAction = ["A3M_GiveKeys", "Give Keys", "", {
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 
+// ------------------------------------------
+// --- A3M CUSTOM VEHICLE OWNERSHIP LOGIC ---
+// ------------------------------------------
+A3M_fnc_dialogOnLoadGiftVehicle = {
+    params ["_vehicle"];
+    A3M_GIFT_VEHICLE = _vehicle;
+    createDialog "A3M_GiftVehicle";
+    
+    disableSerialization;
+    private _combo = (findDisplay 99800) displayCtrl 9980;
+    lbClear _combo;
+    A3M_GIFT_PLAYERS = [];
+    
+    // Get all players except headless clients and self
+    private _all = (allPlayers - entities "HeadlessClient_F" - [player]);
+    
+    if ((count _all) > 0) then {
+        {
+            private _ind = _combo lbAdd format["%1 - %2", name _x, getPlayerUID _x];
+            _combo lbSetData [_ind, getPlayerUID _x];
+            _combo lbSetValue [_ind, _forEachIndex];
+            A3M_GIFT_PLAYERS pushBack _x;
+        } forEach _all;
+        ((findDisplay 99800) displayCtrl 9981) ctrlEnable true;
+    } else {
+        _combo lbAdd "No players available";
+        ((findDisplay 99800) displayCtrl 9981) ctrlEnable false;
+    };
+    _combo lbSetCurSel 0;
+};
+
+A3M_fnc_giftVehicleConfirm = {
+    disableSerialization;
+    private _combo = (findDisplay 99800) displayCtrl 9980;
+    private _sel = lbCurSel _combo;
+    if (_sel == -1) exitWith {};
+    
+    private _targetPlayer = A3M_GIFT_PLAYERS select (_combo lbValue _sel);
+    private _targetName = name _targetPlayer;
+    private _targetUID = getPlayerUID _targetPlayer;
+    private _vehicle = A3M_GIFT_VEHICLE;
+    
+    closeDialog 0;
+    
+    [_vehicle, _targetPlayer, _targetName, _targetUID] spawn {
+        params ["_vehicle", "_targetPlayer", "_targetName", "_targetUID"];
+        private _msg = format ["Are you sure you want to give this vehicle away for free to %1?", _targetName];
+        private _result = [_msg, "Confirm Gift Vehicle", true, true] call BIS_fnc_guiMessage;
+        
+        if (_result) then {
+            // Transfer ownership completely
+            private _newOwnerArray = [_targetUID, _targetName, side _targetPlayer, [_targetUID]];
+            _vehicle setVariable ["HG_Owner", _newOwnerArray, true];
+            
+            // Notify giver
+            private _a3mMsg = format ["<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#00FF00'>VEHICLE GIFTED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>You gave the vehicle to %1.</t></t>", _targetName];
+            [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+            
+            // Notify receiver
+            private _recvMsg = format ["<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#00FF00'>GIFT RECEIVED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>%1 gifted you a vehicle.</t></t>", name player];
+            [_recvMsg, -1, 0.1, 5, 0.5, 0, 789] remoteExec ["BIS_fnc_dynamicText", _targetPlayer];
+        };
+    };
+};
+
+A3M_fnc_renounceOwnershipConfirm = {
+    params ["_target"];
+    private _result = ["Are you sure you want to completely renounce ownership of this vehicle? Anyone will be able to claim it.", "Confirm Renounce Ownership", true, true] call BIS_fnc_guiMessage;
+    if (_result) then {
+        _target setVariable ["HG_Owner", nil, true];
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>OWNERSHIP RENOUNCED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>Vehicle is now unclaimed.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+    };
+};
+
+// 3.5. Gift Vehicle
+private _giftVehicleAction = ["A3M_GiftVehicleAction", "Gift Vehicle", "", {
+    [_target] call A3M_fnc_dialogOnLoadGiftVehicle;
+}, {
+    private _ownerArray = _target getVariable ["HG_Owner", []];
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) }
+}] call ace_interact_menu_fnc_createAction;
+["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+
+// 3.6. Renounce Ownership
+private _renounceAction = ["A3M_RenounceOwnershipAction", "Renounce Ownership", "", {
+    [_target] spawn A3M_fnc_renounceOwnershipConfirm;
+}, {
+    private _ownerArray = _target getVariable ["HG_Owner", []];
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) }
+}] call ace_interact_menu_fnc_createAction;
+["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+
 // 4. Flip Vehicle (ACE Contextual)
 private _flipAction = ["A3M_FlipVehicle", "Flip Vehicle", "", {
     if (locked _target > 1) then {
