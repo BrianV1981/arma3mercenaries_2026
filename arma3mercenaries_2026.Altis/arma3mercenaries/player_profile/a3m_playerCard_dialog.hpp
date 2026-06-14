@@ -72,7 +72,7 @@ class A3M_PlayerProfileDialog {
             text = "A3M PLAYER CARD"; 
             x = 1.5 * GUI_GRID_W + GUI_GRID_X;
             y = 2 * GUI_GRID_H + GUI_GRID_Y;
-            w = 12.5 * GUI_GRID_W;
+            w = 30 * GUI_GRID_W; // Expanded to prevent name clipping
             h = 2 * GUI_GRID_H;
             colorText[] = {0, 0, 0, 1}; // Black text on orange
             sizeEx = 1.5 * GUI_GRID_H;
