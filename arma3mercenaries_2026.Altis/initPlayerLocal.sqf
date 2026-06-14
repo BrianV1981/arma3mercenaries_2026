@@ -14,7 +14,34 @@ player setUnitTrait ["explosiveSpecialist",true];
 
 // A3M Client-Side Function Compilation
 A3M_fnc_applyChatterEHs = compileFinal (preprocessFileLineNumbers "arma3mercenaries\speech_overhaul\fn_applyChatterEHs.sqf");
+A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_submitTicket.sqf");
 [] execVM "arma3mercenaries\speech_overhaul\fn_initSpeechArrays.sqf";
+
+// -------------------------------------------------------------------------
+// --- A3M TICKETING SYSTEM: ESC Menu Injector (#70) ---
+// -------------------------------------------------------------------------
+[] spawn {
+    disableSerialization;
+    while {true} do {
+        waitUntil { !isNull (findDisplay 49) }; // 49 is the ESC menu
+        private _disp = findDisplay 49;
+        
+        // Inject button if not present
+        if (isNull (_disp displayCtrl 7777)) then {
+            private _btn = _disp ctrlCreate ["RscButtonMenu", 7777];
+            _btn ctrlSetPosition [0.01 * safezoneW + safezoneX, 0.02 * safezoneH + safezoneY, 0.15 * safezoneW, 0.03 * safezoneH];
+            _btn ctrlCommit 0;
+            _btn ctrlSetText "A3M BUG REPORT";
+            _btn ctrlSetBackgroundColor [1, 0.5, 0, 0.9]; // A3M Orange
+            
+            _btn ctrlAddEventHandler ["ButtonClick", {
+                closeDialog 2; // Close ESC menu
+                createDialog "A3M_TicketMenu"; // Open ticketing UI
+            }];
+        };
+        waitUntil { isNull (findDisplay 49) };
+    };
+};
 
 // -------------------------------------------------------------------------
 // --- ACE SELF-INTERACT MENU REORGANIZATION ---

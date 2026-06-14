@@ -202,9 +202,10 @@ A3M_fnc_initPlayerProfile = {
     A3M_LiveProfiles set [_uid, _profile];
 };
 
-A3M_fnc_serverFetchSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverFetchSquadDossier.sqf");
-
 // Virtual Barracks Server Functions
+A3M_fnc_serverFetchSquadDossier = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverFetchSquadDossier.sqf");
+A3M_fnc_serverLogTransaction = compileFinal (preprocessFileLineNumbers "arma3mercenaries\player_profile\fn_serverLogTransaction.sqf");
+A3M_fnc_serverLogTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_serverLogTicket.sqf");
 A3M_fnc_serverDeployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverDeployMercenary.sqf");
 A3M_fnc_serverGlobalWakeup = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverGlobalWakeup.sqf");
 A3M_fnc_serverStowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverStowMercenary.sqf");
