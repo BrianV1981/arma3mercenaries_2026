@@ -97,140 +97,140 @@ class CustomInterface {
 		text = "Surfing Bird";
 		x = 0.23;	// left/right (.52 is right of .23)
 		y = 0.3;	// up/down (.34 is down from .3)
-		action = "['myTrack1'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Trashmen', 'Surfing Bird'];";
+		action = "['myTrack1'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Trashmen', 'Surfing Bird'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 	
 	class TrackButton2: CustomButton {
 		text = "Paint It, Black";
 		x = 0.52; 
 		y = 0.3;
-		action = "['myTrack2'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Rolling Stones', 'Paint It, Black'];";
+		action = "['myTrack2'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Rolling Stones', 'Paint It, Black'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton3: CustomButton {
 		text = "These Boots Are Made For Walkin";
 		x = 0.23; 
 		y = 0.34;
-		action = "['myTrack3'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Nancy Sinatra', 'These Boots Are Made For Walkin'];";
+		action = "['myTrack3'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Nancy Sinatra', 'These Boots Are Made For Walkin'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton4: CustomButton {
 		text = "Wooly Bully";
 		x = 0.52; 
 		y = 0.34;
-		action = "['myTrack4'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Sam the Sham & the Pharaos', 'Wooly Bully'];";
+		action = "['myTrack4'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Sam the Sham & the Pharaos', 'Wooly Bully'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton5: CustomButton {
 		text = "Cisco Kid";
 		x = 0.23; 
 		y = 0.38;
-		action = "['myTrack5'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'WAR', 'Cisco Kid'];";
+		action = "['myTrack5'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'WAR', 'Cisco Kid'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton6: CustomButton {
 		text = "Fortunate Son";
 		x = 0.52; 
 		y = 0.38;
-		action = "['myTrack6'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Creedence Clearwater Revival', 'Fortunate Son'];";
+		action = "['myTrack6'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Creedence Clearwater Revival', 'Fortunate Son'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton8: CustomButton {
 		text = "Hush";
 		x = 0.23;
 		y = 0.42;
-		action = "['myTrack8'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Deep Purple', 'Hush'];";
+		action = "['myTrack8'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Deep Purple', 'Hush'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton9: CustomButton {
 		text = "The Letter";
 		x = 0.52;
 		y = 0.42;
-		action = "['myTrack9'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Box Tops', 'The Letter'];";
+		action = "['myTrack9'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Box Tops', 'The Letter'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton11: CustomButton {
 		text = "Son of a Preacher Man";
 		x = 0.23;
 		y = 0.46;
-		action = "['myTrack11'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Dusty Springfield', 'Son of a Preacher Man'];";
+		action = "['myTrack11'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Dusty Springfield', 'Son of a Preacher Man'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton12: CustomButton {
 		text = "Shakin All Over";
 		x = 0.52;
 		y = 0.46;
-		action = "['myTrack12'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Guess Who', 'Shakin All Over'];";
+		action = "['myTrack12'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Guess Who', 'Shakin All Over'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton20: CustomButton {
 		text = "Gimmie Some Lovin";
 		x = 0.23;
 		y = 0.5;
-		action = "['myTrack20'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Spencer Davis Group', 'Gimmie Some Lovin'];";
+		action = "['myTrack20'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Spencer Davis Group', 'Gimmie Some Lovin'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton21: CustomButton {
 		text = "Gimmie Shelter";
 		x = 0.52; 
 		y = 0.5;
-		action = "['myTrack21'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Rolling Stones', 'Gimmie Shelter'];";
+		action = "['myTrack21'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Rolling Stones', 'Gimmie Shelter'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton22: CustomButton {
 		text = "Hello, I Love You";
 		x = 0.23; 
 		y = 0.54;
-		action = "['myTrack22'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Doors', 'Hello, I Love You'];";
+		action = "['myTrack22'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Doors', 'Hello, I Love You'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton23: CustomButton {
 		text = "White Rabbit";
 		x = 0.52; 
 		y = 0.54;
-		action = "['myTrack23'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Jefferson Airplane', 'White Rabbit'];";
+		action = "['myTrack23'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Jefferson Airplane', 'White Rabbit'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton24: CustomButton {
 		text = "Mellow Yellow";
 		x = 0.23; 
 		y = 0.58;
-		action = "['myTrack24'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Donovan', 'Mellow Yellow'];";
+		action = "['myTrack24'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Donovan', 'Mellow Yellow'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton25: CustomButton {
 		text = "Time Has Come Today";
 		x = 0.52; 
 		y = 0.58;
-		action = "['myTrack25'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Chambers Brothers', 'Time Has Come Today'];";
+		action = "['myTrack25'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Chambers Brothers', 'Time Has Come Today'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton26: CustomButton {
 		text = "House Of The Rising Sun";
 		x = 0.23; 
 		y = 0.62;
-		action = "['myTrack26'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Animals', 'House Of The Rising Sun'];";
+		action = "['myTrack26'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Animals', 'House Of The Rising Sun'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton27: CustomButton {
 		text = "Light My Fire";
 		x = 0.52; 
 		y = 0.62;
-		action = "['myTrack27'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Doors', 'Light My Fire'];";
+		action = "['myTrack27'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'The Doors', 'Light My Fire'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton28: CustomButton {
 		text = "Sittin On The Dock Of The Bay";
 		x = 0.23; 
 		y = 0.66;
-		action = "['myTrack28'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Otis Redding', 'Sittin On The Dock Of The Bay'];";
+		action = "['myTrack28'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Otis Redding', 'Sittin On The Dock Of The Bay'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class TrackButton29: CustomButton {
 		text = "All Along The Watchtower";
 		x = 0.52; 
 		y = 0.66;
-		action = "['myTrack29'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText format ['<t align=""center""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Jimmi Hendrix', 'All Along The Watchtower'];";
+		action = "['myTrack29'] remoteExecCall ['playMusic', 0, true]; [format ['<t align=""left""><t size=""0.8"" color=""#00FF00"">NOW PLAYING</t><br/><t size=""0.6"" color=""#FFFFFF"">%1</t><br/><t size=""0.5"" color=""#AAAAAA"">%2</t></t>', 'Jimmi Hendrix', 'All Along The Watchtower'], 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class MercenaryRadioButton: CustomButton {
@@ -238,7 +238,7 @@ class CustomInterface {
 		x = 0.33;
 		y = 0.70;
 		w = 0.34;
-		action = "hintSilent parseText '<t align=""center""><t size=""1.2"" color=""#00FF00"">A3M RADIO</t><br/><t size=""0.8"" color=""#FFFFFF"">Created By: BrianV1981</t></t>';";
+		action = "['<t align=""left""><t size=""1.2"" color=""#00FF00"">A3M RADIO</t><br/><t size=""0.8"" color=""#FFFFFF"">Created By: BrianV1981</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 
 	class MuteButton: CustomButton {
@@ -246,6 +246,6 @@ class CustomInterface {
 		x = 0.33;
 		y = 0.74;
 		w = 0.34;
-		action = "['myTrack14'] remoteExecCall ['playMusic', 0, true]; hintSilent parseText '<t align=""center""><t size=""0.8"" color=""#FF0000"">RADIO MUTED</t></t>';";
+		action = "['myTrack14'] remoteExecCall ['playMusic', 0, true]; ['<t align=""left""><t size=""0.8"" color=""#FF0000"">RADIO MUTED</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;";
 	};
 };
