@@ -75,10 +75,11 @@ A3M_fnc_serverHandleReward = {
         // ** A. Friendly Fire Penalty **
         if (_instigatorIsPlayer && _sideKiller == _sideKilled && _instigator != _killed && _friendlyFirePenalty > 0) then {
             [_instigator, -_friendlyFirePenalty, true] call grad_moneymenu_fnc_addFunds;
+            [250, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
             if (_silentHintsEnabled) then { // Use this setting to enable/disable dynamic text warnings too
                 private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>FRIENDLY FIRE!</t><br/>" +
-                    "<t size='0.45' align='center'>Killed %1 (%2). -%3 Bank</t>",
+                    "<t size='0.45' align='center'>Killed %1 (%2). -%3 Bank | -250 XP</t>",
                      _killedName, _factionNameKilled, _friendlyFirePenalty
                 ];
                  // diag_log format["[A3M SRV REWARD] Sending FF Penalty HUD to %1", _instigator]; // Optional log
@@ -103,10 +104,11 @@ A3M_fnc_serverHandleReward = {
         // ** C. Civilian Kill Penalty **
         if (_instigatorIsPlayer && _sideKilled == 3 && _civilianKillPenalty > 0) then {
             [_instigator, -_civilianKillPenalty, true] call grad_moneymenu_fnc_addFunds;
+            [100, 1] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
             if (_silentHintsEnabled) then {
                  private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>CIVILIAN KILLED!</t><br/>" +
-                    "<t size='0.45' align='center'>%1. -%2 Bank</t>",
+                    "<t size='0.45' align='center'>%1. -%2 Bank | -100 XP</t>",
                      _killedName, _civilianKillPenalty
                  ];
                  // diag_log format["[A3M SRV REWARD] Sending CIV Penalty HUD to %1", _instigator]; // Optional log
@@ -132,10 +134,11 @@ A3M_fnc_serverHandleReward = {
         // ** F. Death Penalty **
         if (_killedIsPlayer && _sideKiller != _sideKilled && _deathPenalty > 0) then {
             [_killed, -_deathPenalty, true] call grad_moneymenu_fnc_addFunds;
+            [50, 1] remoteExecCall ["HG_fnc_addOrSubXP", _killed, false];
             if (_silentHintsEnabled) then {
                  private _message = format [
                     "<t size='0.55' align='center' color='#FF0000' shadow='1'>PENALTY</t><br/>" +
-                    "<t size='0.45' align='center'>You Died! -%1 Bank</t>",
+                    "<t size='0.45' align='center'>You Died! -%1 Bank | -50 XP</t>",
                      _deathPenalty
                  ];
                  // diag_log format["[A3M REWARDS SRV] Sending Death Penalty HUD to %1", _killed]; // Optional log
