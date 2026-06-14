@@ -149,9 +149,9 @@ class HG_DefaultShop
         displayName = "Artillery Vehicles";
         vehicles[] =
         {
-            {"I_Truck_02_MRL_F", 50000, "true", "This KamAZ MRL combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
-            {"B_MBT_01_mlrs_F", 50000, "true", "This Seara combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
-            {"B_MBT_01_arty_F", 75000, "true", "This Sholef combat support artillery can be utilized from your Ace Self Interact Menu > ALiVE > ALiVE Combat Support."},
+            {"I_Truck_02_MRL_F", 400000, "true", "The KamAZ MRL is simply a modified variant of the baseline Zamak truck that has had its rear flatbed configured to house a rocket pod. It is armed with a 230 mm rocket pod which is always pre-loaded with 12 long-range artillery rockets. (Seating Capacity: 3)"},
+            {"B_MBT_01_mlrs_F", 600000, "true", "Sharing the same chassis as its MBT parent, the Seara is essentially a mobile rocket battery on treads. It can accurately deliver high-explosive rockets with a dispersion of less than 100 m on targets more than 11 km away in a single salvo. (Seating Capacity: 3)"},
+            {"B_MBT_01_arty_F", 700000, "true", "Fitted with a 155 mm howitzer cannon as its primary weapon, the Scorcher is a powerful gun-based fire support vehicle that can launch a mixture of high-explosive, smoke, cluster, and even precision guided shells on targets at extreme distances. (Seating Capacity: 3)"}
         };
         spawnPoints[] =
         {
