@@ -137,21 +137,29 @@ private _startMsg = format [selectRandom _interrogationStartMessages, _newCaptur
             
             // 50% chance for HVT Task
             private _xpReward = 50;
+            private _hvtText = "";
             if (random 100 < 50) then {
                 _reward = _reward * 20;
                 _xpReward = 500;
-                ["HVT found! The information extracted was invaluable to our war effort! (+500 XP)"] remoteExec ["hintSilent", _interrogator];
+                _hvtText = "HVT located! Information invaluable to the war effort.<br/><br/>";
                 ["HVT", getPos _interrogator] remoteExec ["A3M_fnc_requestTask", 2]; // Server creates the task
             };
 
             // Award Funds to the interrogator
             [_interrogator, round _reward] remoteExec ["grad_lbm_fnc_addFunds", _interrogator];
             [_xpReward, 0] remoteExecCall ["HG_fnc_addOrSubXP", _interrogator, false];
-            format ["Intel Extracted: +%1 XP", _xpReward] remoteExec ["systemChat", _interrogator, false];
 
-            // Show custom completion text
+            // Show custom completion text via A3M Lettering
             private _finalMsg = format [_msgTpl, "", _sideText, round _reward, _factionText];
-            [_finalMsg, 0.0, 0.1, 5, 1, 0, 789] remoteExec ["BIS_fnc_dynamicText", _interrogator];
+            private _a3mMessage = format [
+                "<t align='center'><t size='1.2' color='#00FF00'>INTEL EXTRACTED</t><br/><t size='0.8' color='#FFFFFF'>%1%2<br/><br/>+%3 XP<br/>+$%4</t></t>",
+                _hvtText,
+                _finalMsg,
+                _xpReward,
+                round _reward
+            ];
+            
+            [[_a3mMessage], { hintSilent parseText (_this select 0); }] remoteExec ["spawn", _interrogator];
         };
 
         // Clean up variables and the Event Handler itself
