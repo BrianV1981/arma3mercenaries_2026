@@ -27,10 +27,10 @@
 			class Box_NATO_Equip_F_Combat {
                 displayName = "Combat Drone Suppply Drop";
                 description = "This is an emergency supply drop of 10 NATO Darter drones, UAV terminals, batteries, and a vast assortment of explosive payloads intended for aerial delivery.";
-                price = 150000;
+                price = 80000;
                 amount = 1;
                 stock = 9999;
-				code = ["Box_NATO_Equip_F", _this select 0, [], [["HandGrenade", 50], ["MiniGrenade", 50], ["ACE_M14", 50], ["DemoCharge_Remote_Mag", 10], ["SatchelCharge_Remote_Mag", 5]], [["B_UAV_01_backpack_F", 10], ["B_UavTerminal", 2], ["ACE_UAVBattery", 50]]] spawn A3M_fnc_initSupplyDrop;
+				code = ["Box_NATO_Equip_F", _this select 0, [], [["HandGrenade", 10], ["MiniGrenade", 10], ["ACE_M14", 10], ["DemoCharge_Remote_Mag", 5], ["SatchelCharge_Remote_Mag", 2]], [["B_UAV_01_backpack_F", 10], ["B_UavTerminal", 2], ["ACE_UAVBattery", 20]]] spawn A3M_fnc_initSupplyDrop;
             };
 
 			class Box_NATO_WpsSpecial_F {
