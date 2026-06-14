@@ -18,7 +18,16 @@ _selIndex = lbCurSel _listCtrl;
 //set description
 _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
 _categoryDescription = [(missionConfigFile >> "CfgGradBuymenu" >> _baseConfigName >> _categoryConfigName >> "description"),"text",""] call CBA_fnc_getConfigEntry;
-_inStockText = if (_stock > 0) then {format ["STOCK: %1<br/>", _stock]} else {"<t color='#FF0000'>OUT OF STOCK</t><br/>"};
+private _inStockText = "";
+if (_stock <= 0) then {
+    _inStockText = "<t color='#FF0000'>OUT OF STOCK</t><br/>";
+} else {
+    if (_stock <= 3) then {
+        _inStockText = format ["<t color='#FFA500'>LOW STOCK: %1</t><br/>", _stock];
+    } else {
+        _inStockText = format ["STOCK: %1<br/>", _stock];
+    };
+};
 private _priceText = format ["PRICE: %1 Cr<br/><br/>", _price];
 private _nameText = format ["<t size='1.2' font='RobotoCondensedBold'>%1</t><br/>", _displayName];
 _descCtrl ctrlSetStructuredText parseText (_nameText + _inStockText + _priceText + _categoryDescription + _description);

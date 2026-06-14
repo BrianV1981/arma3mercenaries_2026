@@ -57,11 +57,21 @@ _listIndex = 0;
 
     _listIndex = _listCtrl lbAdd _listText;
 
+    private _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
+
     if (_isLocked) then {
         _listCtrl lbSetColor [_listIndex, [0.8, 0.2, 0.2, 1]]; // Red text
     } else {
-        if (_isOnSale) then {
-            _listCtrl lbSetColor [_listIndex, [0, 1, 0, 1]]; // Neon Green
+        if (_stock <= 0) then {
+            _listCtrl lbSetColor [_listIndex, [1.0, 0.2, 0.2, 1]]; // Bright Red
+        } else {
+            if (_stock <= 3) then {
+                _listCtrl lbSetColor [_listIndex, [1.0, 0.65, 0.0, 1]]; // Orange text
+            } else {
+                if (_isOnSale) then {
+                    _listCtrl lbSetColor [_listIndex, [0, 1, 0, 1]]; // Neon Green
+                };
+            };
         };
     };
 
