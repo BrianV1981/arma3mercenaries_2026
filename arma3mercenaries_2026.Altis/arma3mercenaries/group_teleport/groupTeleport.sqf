@@ -94,8 +94,8 @@ player: The center object, using the player's position.
         } forEach units _group;
 
         // Notify the player that the group has been recalled using A3M Dynamic Text
-        private _a3mMsg = "<t align='left'><t size='0.8' color='#00FF00'>SQUAD RECALLED</t><br/><t size='0.6' color='#FFFFFF'>Teammates teleported to a safe location near you.</t></t>";
-        [_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+        private _a3mMsg = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#00FF00'>SQUAD RECALLED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>Teammates teleported to a safe location near you.</t></t>";
+        [_a3mMsg, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
         
         // Custom 3D Marker rendering loop (vehicle purchase green location indicator)
         [_safePos] spawn {
@@ -112,7 +112,7 @@ player: The center object, using the player's position.
         };
     } else {
         // Player canceled the action
-        private _a3mMsgCancel = "<t align='left'><t size='0.8' color='#FF0000'>RECALL CANCELLED</t><br/><t size='0.6' color='#FFFFFF'>Squad regroup aborted.</t></t>";
-        [_a3mMsgCancel, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+        private _a3mMsgCancel = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>RECALL CANCELLED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>Squad regroup aborted.</t></t>";
+        [_a3mMsgCancel, -1, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
     };
 };
