@@ -59,15 +59,15 @@ private _safePos = [[26600, 24580, 0], 0, 1000, 10, 0, 20, 0] call BIS_fnc_findS
         "Sholef",                   // Callsign
         3,                          // Number of units/vehicles to spawn
         [                           // Number of available rounds
-            ["HE",      10],
-            ["ILLUM",   10],
-            ["SMOKE",   10],
-            ["SADARM",  10],
-            ["CLUSTER", 10],
-            ["LASER",   10],
-            ["MINE",    10],
-            ["AT MINE", 10],
-            ["ROCKETS", 10]
+            ["HE",      10000],
+            ["ILLUM",   10000],
+            ["SMOKE",   10000],
+            ["SADARM",  10000],
+            ["CLUSTER", 10000],
+            ["LASER",   10000],
+            ["MINE",    10000],
+            ["AT MINE", 10000],
+            ["ROCKETS", 10000]
         ],
         "(group (_this select 0)) setVariable ['Vcm_Disable',true];(group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];"  // Code to run on spawn
     ]

@@ -59,7 +59,7 @@ private _safePos = [[26563, 24611, 0], 0, 1000, 10, 0, 20, 0] call BIS_fnc_findS
         "Zamak MRL",                   // Callsign
         3,                          // Number of units/vehicles to spawn
         [                           // Number of available rounds
-            ["ROCKETS", 1000]
+            ["ROCKETS", 10000]
         ],
         "(group (_this select 0)) setVariable ['Vcm_Disable',true];(group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];"  // Code to run on spawn
     ]
