@@ -32,7 +32,7 @@ if (_kindOf == "FORTIFICATION") then {
     if (_mass == 0) then { _mass = getNumber (configFile >> "CfgVehicles" >> _itemConfigName >> "mass"); };
     _weightCtrl ctrlSetText format ["WEIGHT: %1", _mass];
 };
-private _nearbyRaw = nearestObjects [player, ["Car", "Tank", "Air", "Ship", "ReammoBox_F"], 25];
+private _nearbyRaw = nearestObjects [player, ["Car", "Tank", "Air", "Ship", "ReammoBox_F"], 50];
 private _nearby = [player];
 private _index = 0;
 private _kindOf = _purchaseData select 4;
