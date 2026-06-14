@@ -152,14 +152,14 @@ private _startMsg = format [selectRandom _interrogationStartMessages, _newCaptur
             // Show custom completion text via A3M Lettering
             private _finalMsg = format [_msgTpl, "", _sideText, round _reward, _factionText];
             private _a3mMessage = format [
-                "<t align='center'><t size='1.2' color='#00FF00'>INTEL EXTRACTED</t><br/><t size='0.8' color='#FFFFFF'>%1%2<br/><br/>+%3 XP<br/>+$%4</t></t>",
+                "<t align='left'><t size='0.8' color='#00FF00'>INTEL EXTRACTED</t><br/><t size='0.6' color='#FFFFFF'>%1%2<br/><br/>+%3 XP<br/>+$%4</t></t>",
                 _hvtText,
                 _finalMsg,
                 _xpReward,
                 round _reward
             ];
             
-            [[_a3mMessage], { hintSilent parseText (_this select 0); }] remoteExec ["spawn", _interrogator];
+            [_a3mMessage, 0.0, 0.1, 5, 1, 0, 789] remoteExec ["BIS_fnc_dynamicText", _interrogator];
         };
 
         // Clean up variables and the Event Handler itself
