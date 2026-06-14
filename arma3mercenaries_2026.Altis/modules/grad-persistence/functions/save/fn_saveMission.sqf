@@ -49,5 +49,8 @@ if (_showWarning) then {
 
     [_allVariableClasses] call FUNC(saveVariables);
 
-    "grad-persistence: SQLite mission save completed" remoteExec ["systemChat",0,false];
+    [
+        "<t align='center'><t size='1.2' color='#00FF00'>A3M PERSISTENCE</t><br/><t size='0.8' color='#FFFFFF'>Saved</t></t>",
+        { hintSilent parseText _this }
+    ] remoteExec ["call", 0, false];
 }, [_area], _waitTime] call CBA_fnc_waitAndExecute;
