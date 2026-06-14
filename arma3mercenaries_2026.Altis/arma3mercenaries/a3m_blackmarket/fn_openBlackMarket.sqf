@@ -218,15 +218,6 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
                 if (_newQty > _oldQty) then {
                     private _diff = _newQty - _oldQty;
                     private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
-                    
-                    // Fallback for default magazines forced by the Arsenal
-                    if (_p == 0) then {
-                        _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_red", 0];
-                        if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_green", 0]; };
-                        if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_yellow", 0]; };
-                        if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer", 0]; };
-                    };
-                    
                     if (_p == 0) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _item]; 
                         _contraband = true;
@@ -357,15 +348,6 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         if (_newQty > _oldQty) then {
             private _diff = _newQty - _oldQty;
             private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
-            
-            // Fallback for default magazines forced by the Arsenal
-            if (_p == 0) then {
-                _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_red", 0];
-                if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_green", 0]; };
-                if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer_yellow", 0]; };
-                if (_p == 0) then { _p = A3M_Armory_GradPrices getOrDefault [_item + "_tracer", 0]; };
-            };
-            
             _totalCost = _totalCost + (_p * _diff); 
         };
     } forEach _newCounts;
