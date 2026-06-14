@@ -102,6 +102,17 @@ if (_playerBounty > 0) then {
     _listCtrl1 lbAdd format ["*** BOUNTY ON HEAD: %1 cr. ***", _playerBounty];
 };
 _listCtrl1 lbAdd "";
+_listCtrl1 lbAdd format ["Missions Completed: %1", _profile getOrDefault ["Missions_Completed", 0]];
+_listCtrl1 lbAdd format ["Vehicles Destroyed: %1", _profile getOrDefault ["Vehicles_Destroyed", 0]];
+_listCtrl1 lbAdd format ["Supply Drops Called: %1", _profile getOrDefault ["Supply_Drops_Called", 0]];
+_listCtrl1 lbAdd format ["Engineer Score (Forts Built): %1", _profile getOrDefault ["Engineer_Score_Total", 0]];
+
+_listCtrl1 lbAdd "";
+_listCtrl1 lbAdd "--- DRONE OPERATOR ---";
+_listCtrl1 lbAdd format ["Ordnance Dropped: %1", _profile getOrDefault ["Drone_Strikes_Dropped", 0]];
+_listCtrl1 lbAdd format ["Kamikaze Kills: %1", _profile getOrDefault ["Drone_Kamikaze_Kills", 0]];
+
+_listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["Distance Walked: %1m", round _distWalk];
 _listCtrl1 lbAdd format ["Distance Driven: %1m", round _distDrive];
 _listCtrl1 lbAdd format ["Distance Flown: %1m", round _distFly];

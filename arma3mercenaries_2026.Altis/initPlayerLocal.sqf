@@ -525,6 +525,17 @@ enableSentences true;
 enableRadio true;
 
 // -------------------------------------------------------------------------
+// --- A3M DEEP STAT TRACKING: Engineer Score (#65) ---
+// -------------------------------------------------------------------------
+["grad_fortifications_onPlace", {
+    params ["_unit", "_fortification", "_vehicle"];
+    if (_unit != player) exitWith {};
+    
+    // We send to server so we don't have to duplicate the dbSetSecure block on client
+    [player, "Engineer_Score_Total"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+}] call CBA_fnc_addEventHandler;
+
+// -------------------------------------------------------------------------
 // --- A3M DEEP STAT TRACKING: ACE Medical Revives ("The Lifesaver") ---
 // -------------------------------------------------------------------------
 ["ace_medical_treatment_onTreatment", {

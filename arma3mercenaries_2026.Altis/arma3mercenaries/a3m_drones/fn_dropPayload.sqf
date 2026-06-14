@@ -39,3 +39,8 @@ _liveBomb setVelocity [(_vel select 0), (_vel select 1), (_vel select 2) - 15];
 
 private _displayName = getText (configFile >> "CfgMagazines" >> _payloadClass >> "displayName");
 systemChat format ["%1 Dropped! Brace for impact.", _displayName];
+
+// --- A3M DEEP STAT TRACKING: Drone Operator (#68) ---
+if (!isNull _caller) then {
+    [_caller, "Drone_Strikes_Dropped"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+};

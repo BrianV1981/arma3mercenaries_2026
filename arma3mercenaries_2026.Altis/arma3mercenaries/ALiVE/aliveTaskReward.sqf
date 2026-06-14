@@ -60,9 +60,16 @@ SAV_fnc_taskSucceeded = {
 [p_16, 100000] call grad_lbm_fnc_addFunds;
 ["An OPCOM task has been completed and a payment of 50,000 Cr. has been delivered to you in person by a CIA courier.", "hint", true, true] call BIS_fnc_MP;
 
-            // do your reward stuff here
-            // task data is in _args
-        };
+// --- A3M DEEP STAT TRACKING: Missions Completed (#66) ---
+{
+    if (isPlayer _x) then {
+        [_x, "Missions_Completed"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+    };
+} forEach allPlayers;
+
+// do your reward stuff here
+// task data is in _args
+};
     };
 };
  

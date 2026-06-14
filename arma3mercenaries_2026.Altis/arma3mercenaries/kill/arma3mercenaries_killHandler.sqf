@@ -418,6 +418,11 @@ addMissionEventHandler ["entityKilled", {
         };
     };
 
+    // --- A3M DEEP STAT TRACKING: Vehicles Destroyed (#67) ---
+    if (isServer && {(_killed isKindOf "LandVehicle" || _killed isKindOf "Air" || _killed isKindOf "Ship")} && {isPlayer _instigator}) then {
+        [_instigator, "Vehicles_Destroyed"] call A3M_fnc_serverIncrementStat;
+    };
+
     if (!(_killed isKindOf "CAManBase")) exitWith {}; // Exit here so vehicle/building kills don't trigger the infantry killfeed
 
     private _killedPos = getPosATL _killed; // Need position early for markers

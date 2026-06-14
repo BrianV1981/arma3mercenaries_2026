@@ -43,6 +43,17 @@ _drone addEventHandler ["Killed", {
     private _payloadClass = _killedDrone getVariable ["A3M_Payload_Class", ""];
     if (_payloadClass == "") exitWith {};
 
+    // --- A3M DEEP STAT TRACKING: Drone Operator (#68) ---
+    if (!isNull _instigator && isPlayer _instigator) then {
+        [_instigator, "Drone_Kamikaze_Kills"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+    } else {
+        // Fallback: If Arma engine doesn't return the instigator, fetch the UAV controller
+        private _controller = (UAVControl _killedDrone) select 0;
+        if (!isNull _controller && isPlayer _controller) then {
+            [_controller, "Drone_Kamikaze_Kills"] remoteExecCall ["A3M_fnc_serverIncrementStat", 2];
+        };
+    };
+
     private _pos = getPosASL _killedDrone;
     
     // Map Magazine class to Armed Projectile class
