@@ -103,7 +103,7 @@ private _activeHVTsFound = false;
 private _activeTasks = player call BIS_fnc_tasksUnit;
 {
     private _taskId = _x;
-    if (_taskId find "task_assassination" >= 0) then {
+    if (toUpper(_taskId) find "TASK_ASSASSINATION" >= 0) then {
         private _state = [_taskId] call BIS_fnc_taskState;
         if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
             _activeHVTsFound = true;
