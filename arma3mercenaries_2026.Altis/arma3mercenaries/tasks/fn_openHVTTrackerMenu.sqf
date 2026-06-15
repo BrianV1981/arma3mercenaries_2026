@@ -5,41 +5,7 @@
 
 if (!hasInterface) exitWith {};
 
-// --- Helper Functions ---
-if (isNil "A3M_fnc_serverSatelliteSweep") then {
-    A3M_fnc_serverSatelliteSweep = {
-        params ["_taskId", "_client", "_cost"];
-        
-        // Find the HVT object
-        private _hvtTarget = objNull;
-        if (!isNil "A3M_ActiveTasks") then {
-            private _taskData = A3M_ActiveTasks getOrDefault [_taskId, []];
-            if (count _taskData > 0) then {
-                _hvtTarget = _taskData select 0;
-            };
-        };
-        
-        if (isNull _hvtTarget || !alive _hvtTarget) exitWith {
-            private _msg = "<t align='left'><t size='0.8' color='#FF0000'>SWEEP FAILED</t><br/><t size='0.6' color='#FFFFFF'>Target signal lost or KIA.</t></t>";
-            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] remoteExec ["BIS_fnc_dynamicText", _client];
-        };
-        
-        // Get the actual exact position from the server where the object is guaranteed to be known
-        private _exactPos = getPosATL _hvtTarget;
-        
-        // Broadcast the last sweep time for the global cooldown
-        missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
-        
-        // Update the task destination to the exact position for everyone
-        [_taskId, _exactPos] remoteExec ["BIS_fnc_taskSetDestination", 0, "JIP_id_" + _taskId];
-        
-        // Deduct Funds from the specific client
-        [_client, -_cost, true] remoteExec ["grad_moneymenu_fnc_addFunds", _client];
-        
-        // Tell the client to start the visual drone feed
-        [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
-    };
-};
+// Removed broken server definition
 
 if (isNil "A3M_fnc_clientSatelliteFeed") then {
     A3M_fnc_clientSatelliteFeed = {
@@ -134,13 +100,12 @@ lbClear _listbox;
 
 private _activeHVTsFound = false;
 
-if (!isNil "A3M_ActiveTasks") then {
-    {
-        private _taskId = _x;
-        private _taskData = _y;
-        _taskData params ["_hvtObj", "_taskType"];
-        
-        if (_taskType == "HVT") then {
+private _activeTasks = player call BIS_fnc_tasksUnit;
+{
+    private _taskId = _x;
+    if (_taskId find "task_assassination" >= 0) then {
+        private _state = [_taskId] call BIS_fnc_taskState;
+        if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
             _activeHVTsFound = true;
             
             // Extract the title of the task
@@ -150,8 +115,8 @@ if (!isNil "A3M_ActiveTasks") then {
             private _index = _listbox lbAdd _taskTitle;
             _listbox lbSetData [_index, _taskId];
         };
-    } forEach A3M_ActiveTasks;
-};
+    };
+} forEach _activeTasks;
 
 if (!_activeHVTsFound) then {
     _listbox lbAdd "No active HVT signals detected.";
