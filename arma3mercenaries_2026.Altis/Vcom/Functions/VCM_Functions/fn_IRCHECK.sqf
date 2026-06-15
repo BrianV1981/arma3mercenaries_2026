@@ -57,8 +57,8 @@ while {alive player && {Vcm_ActivateAI}} do
 					sleep 0.1;
 				};			
 			};
-			sleep 0.25;
+			sleep 1.0;
 		};	
 	};
-	sleep 0.25;
+	sleep 1.0;
 };
