@@ -198,6 +198,7 @@ class CfgRemoteExec
 		class deleteVehicle { allowedTargets = 0; jip = 0; };
 		class setVectorUp { allowedTargets = 0; jip = 0; };
 		class setPosATL { allowedTargets = 0; jip = 0; };
+		class skipTime { allowedTargets = 2; jip = 0; };
 	};
 };
 
