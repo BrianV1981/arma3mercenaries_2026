@@ -101,30 +101,23 @@ lbClear _listbox;
 private _activeHVTsFound = false;
 
 private _activeTasks = [];
-if (!isNil "A3M_ActiveTasks") then {
-    _activeTasks = keys A3M_ActiveTasks;
+if (!isNil "A3M_HVT_Tasks_Array") then {
+    _activeTasks = A3M_HVT_Tasks_Array;
 };
 
 {
     private _taskId = _x;
-    private _taskData = A3M_ActiveTasks get _taskId;
+    private _state = [_taskId] call BIS_fnc_taskState;
     
-    // Safety check in case hashmap data is malformed
-    if (typeName _taskData == "ARRAY" && {count _taskData >= 2}) then {
-        private _taskType = _taskData select 1;
+    // Only display if it hasn't succeeded/failed/canceled
+    if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
+        _activeHVTsFound = true;
         
-        if (_taskType == "HVT") then {
-            private _state = [_taskId] call BIS_fnc_taskState;
-            if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
-                _activeHVTsFound = true;
-                
-                private _taskDescArray = _taskId call BIS_fnc_taskDescription;
-                private _taskTitle = if (count _taskDescArray > 1) then { _taskDescArray select 1 } else { "Unknown HVT" };
-                
-                private _index = _listbox lbAdd _taskTitle;
-                _listbox lbSetData [_index, _taskId];
-            };
-        };
+        private _taskDescArray = _taskId call BIS_fnc_taskDescription;
+        private _taskTitle = if (count _taskDescArray > 1) then { _taskDescArray select 1 } else { "Unknown HVT" };
+        
+        private _index = _listbox lbAdd _taskTitle;
+        _listbox lbSetData [_index, _taskId];
     };
 } forEach _activeTasks;
 

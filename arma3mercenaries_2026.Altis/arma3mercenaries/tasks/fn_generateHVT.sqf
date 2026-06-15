@@ -257,7 +257,12 @@ private _selectedDescription = selectRandom _taskDescriptions;
 _HVT setVariable ["taskID", _taskID];
 // Event Handler logic migrated to arma3mercenaries_killHandler.sqf
 
-// Register to Task Manager
+// Register to Dedicated HVT Array (100% Network Safe - Strings Only)
+if (isNil "A3M_HVT_Tasks_Array") then { A3M_HVT_Tasks_Array = []; };
+A3M_HVT_Tasks_Array pushBackUnique _taskID;
+publicVariable "A3M_HVT_Tasks_Array";
+
+// Keep old HashMap registration purely for server cleanup/PFH logic
 if (!isNil "A3M_ActiveTasks") then {
     A3M_ActiveTasks set [_taskID, [_HVT, "HVT"]];
     publicVariable "A3M_ActiveTasks";
