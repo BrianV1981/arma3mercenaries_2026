@@ -14,8 +14,8 @@ private _name = name _player;
 private _json = format ["{""author"":""%1"",""uid"":""%2"",""title"":""%3"",""description"":""%4""}", 
     _name, 
     _uid, 
-    (_title splitString "\n\r\t""") joinString " ", 
-    (_desc splitString "\n\r\t""") joinString " "
+    (_title splitString (toString [10, 13, 9, 34])) joinString " ", 
+    (_desc splitString (toString [10, 13, 9, 34])) joinString " "
 ];
 
 // Write directly to the native Arma 3 .rpt/server_console.log file using diag_log
