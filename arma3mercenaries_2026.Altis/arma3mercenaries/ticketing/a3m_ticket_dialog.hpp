@@ -2,6 +2,7 @@ class A3M_TicketMenu {
     idd = 7700;
     movingEnable = true;
     enableSimulation = true;
+    onLoad = "(_this select 0) displayAddEventHandler ['KeyDown', { if ((_this select 1) in [28, 156] && !(_this select 2)) then { true } else { false }; }];";
 
     class controlsBackground {
         class MainBackground: HG_RscText {
