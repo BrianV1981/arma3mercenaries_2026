@@ -11,30 +11,100 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
     A3M_fnc_clientSatelliteFeed = {
         params ["_exactPos", "_taskId"];
         private _gridPos = mapGridPosition _exactPos;
-        private _overlayText = format ["SIGINT DETECTED\nTARGET: HVT\nGRID: %1", _gridPos];
         
-        // Execute BI Drone Feed
-        [_exactPos, _overlayText, 500, 500, 75, 1, [], 0, true] spawn BIS_fnc_establishingShot;
-        
-        private _duration = missionNamespace getVariable ["A3M_HVT_Satellite_Duration", 15];
-        
-        // Wait for it to finish or be skipped
-        [_duration] spawn {
-            params ["_duration"];
+        // Create an explicit, visible map marker for the user
+        private _markerName = "A3M_HVT_PINPOINT_" + _taskId;
+        if (getMarkerColor _markerName == "") then {
+            private _marker = createMarkerLocal [_markerName, _exactPos];
+            _marker setMarkerTypeLocal "mil_destroy";
+            _marker setMarkerColorLocal "ColorRed";
+            _marker setMarkerTextLocal "HVT PINPOINT";
+        };
+
+        // Spawn custom interactive camera sequence
+        [_exactPos, _gridPos] spawn {
+            params ["_exactPos", "_gridPos"];
+            
+            showCinemaBorder true;
+            
+            // Initial Camera Setup
+            private _camPos = [_exactPos select 0, _exactPos select 1, 600];
+            A3M_SatCam = "camera" camCreate _camPos;
+            A3M_SatCam cameraEffect ["internal", "BACK"];
+            
+            // Post-processing for a drone/satellite feel
+            "colorCorrections" ppEffectEnable true;
+            "colorCorrections" ppEffectAdjust [1, 1, 0, [0,0,0,0], [0.3,0.3,0.3,0], [1,1,1,0]];
+            "colorCorrections" ppEffectCommit 0;
+            
+            "filmGrain" ppEffectEnable true;
+            "filmGrain" ppEffectAdjust [0.15, 1, 1, 0.1, 1, false];
+            "filmGrain" ppEffectCommit 0;
+
+            A3M_SatCam camPrepareTarget _exactPos;
+            A3M_SatCam camPrepareFOV 0.5;
+            A3M_SatCam camCommitPrepared 0;
+            
+            // Text overlay
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>SATELLITE UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | Backspace to Exit</t>", _gridPos];
+            [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
+            
+            // Global state for Event Handlers
+            A3M_SatCam_FOV = 0.5;
+            A3M_SatCam_ForceExit = false;
+            
+            // Zoom Event Handler
+            A3M_SatCam_ScrollEH = (findDisplay 46) displayAddEventHandler ["MouseZChanged", {
+                params ["_display", "_scroll"];
+                private _newFOV = A3M_SatCam_FOV - (_scroll * 0.05);
+                if (_newFOV < 0.05) then { _newFOV = 0.05; }; // Max zoom in (tight)
+                if (_newFOV > 0.9) then { _newFOV = 0.9; };   // Max zoom out (wide)
+                A3M_SatCam_FOV = _newFOV;
+                
+                A3M_SatCam camPrepareFOV A3M_SatCam_FOV;
+                A3M_SatCam camCommitPrepared 0.1;
+                return true;
+            }];
+            
+            // Early Exit Event Handler
+            A3M_SatCam_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+                params ["_display", "_key"];
+                if (_key == 14 || _key == 1) then { // Backspace or ESC
+                    A3M_SatCam_ForceExit = true;
+                    true
+                } else {
+                    false
+                };
+            }];
+            
+            // Orbit Loop
+            private _angle = 0;
+            private _radius = 400; // Orbit radius
+            private _duration = 60; // 1 full minute
             private _startTime = time;
             
-            waitUntil {
-                sleep 1; 
-                !(missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false]) || 
-                (time - _startTime >= _duration)
+            while {time - _startTime < _duration && !A3M_SatCam_ForceExit} do {
+                _angle = _angle + 0.2; // Speed of orbit
+                private _x = (_exactPos select 0) + (sin _angle * _radius);
+                private _y = (_exactPos select 1) + (cos _angle * _radius);
+                
+                // Adjust altitude based on zoom to give a parallax effect
+                private _alt = 400 + (A3M_SatCam_FOV * 400); 
+                
+                A3M_SatCam setPosATL [_x, _y, _alt];
+                sleep 0.05;
             };
             
-            if (missionNamespace getVariable ["BIS_fnc_establishingShot_playing", false]) then {
-                missionNamespace setVariable ["BIS_fnc_establishingShot_playing", false];
-            };
+            // Cleanup
+            (findDisplay 46) displayRemoveEventHandler ["MouseZChanged", A3M_SatCam_ScrollEH];
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_SatCam_KeyEH];
+            A3M_SatCam cameraEffect ["terminate", "BACK"];
+            camDestroy A3M_SatCam;
             
-            // A3M Acknowledgment
-            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Target acquired.<br/>Map has been marked with the HVT's location.</t></t>";
+            "colorCorrections" ppEffectEnable false;
+            "filmGrain" ppEffectEnable false;
+            
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Map has been marked with the HVT's location.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         };
     };
