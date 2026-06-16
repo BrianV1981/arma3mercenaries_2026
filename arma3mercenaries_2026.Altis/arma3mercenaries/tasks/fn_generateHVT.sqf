@@ -240,12 +240,14 @@ private _taskDescriptions = [
 
 private _selectedDescription = selectRandom _taskDescriptions;
 
+private _fuzzyLocation = _taskLocation getPos [random 300, random 360];
+
 // Create Task with native JIP assignment (array of sides)
 [
     [_taskSide, independent],            // Task owner(s) - west and independent
     _taskID,                // Task ID
     _selectedDescription,   // Description array
-    _taskLocation,          // Task destination
+    _fuzzyLocation,          // Task destination (FUZZY OFFSET)
     "ASSIGNED",             // Task state
     1,                      // Task priority
     true,                   // Show notification

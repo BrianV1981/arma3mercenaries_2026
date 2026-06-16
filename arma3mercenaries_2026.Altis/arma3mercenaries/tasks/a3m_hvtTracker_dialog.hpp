@@ -13,7 +13,7 @@ class A3M_HVTTrackerDialog {
         };
         class Title: grad_lbm_RscText {
             idc = 9025;
-            text = "SATELLITE UPLINK: LOCATE HVT";
+            text = "SPACEX SATELLITE UPLINK: LOCATE HVT";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;

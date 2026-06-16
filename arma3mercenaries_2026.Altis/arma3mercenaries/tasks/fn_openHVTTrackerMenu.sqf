@@ -49,6 +49,17 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             private _overlayText = format ["<t color='#00FF00' size='1.5'>SPACEX UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | Backspace to Exit</t>", _gridPos];
             [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
             
+            // Arma 3 Typing Info Text
+            private _date = date;
+            private _dateStr = format ["%1-%2-%3", _date select 0, _date select 1, _date select 2];
+            private _timeStr = format ["%1:%2", _date select 3, if (_date select 4 < 10) then {format ["0%1", _date select 4]} else {_date select 4}];
+            [
+                ["SPACEX ORBITAL ASSET", "fontTitle"],
+                [format ["TARGET GRID %1", _gridPos]],
+                [_dateStr],
+                [_timeStr]
+            ] spawn BIS_fnc_infoText;
+            
             // Global state for Event Handlers
             A3M_SatCam_FOV = 0.5;
             A3M_SatCam_ForceExit = false;
@@ -149,7 +160,7 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
         diag_log format ["[A3M DEBUG] SAT SWEEP: Selected Task ID: %1", _taskId];
         if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
         
-        private _cost = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 25000];
+        private _cost = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 100000];
         private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
         diag_log format ["[A3M DEBUG] SAT SWEEP: Cost: %1 | Player Funds: %2", _cost, _playerFunds];
         
@@ -165,8 +176,16 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
         private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Re-tasking orbital asset...<br/>-$%1</t></t>", _cost];
         [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         
-        // Delegate to server to get the exact position, since the client may not know the object if it's out of network range
-        [_taskId, player, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
+        // Fade to black and spawn thread
+        titleText ["ESTABLISHING SPACEX UPLINK...", "BLACK", 2];
+        
+        [_taskId, player, _cost] spawn {
+            params ["_taskId", "_client", "_cost"];
+            sleep 3;
+            titleText ["", "BLACK IN", 2];
+            // Delegate to server to get the exact position and spawn spoof player
+            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
+        };
     };
 };
 
@@ -220,6 +239,6 @@ if (!_activeHVTsFound) then {
 
 // Set dynamic cost text UI
 // Set dynamic cost text UI
-private _costAmount = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 25000];
+private _costAmount = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 100000];
 private _costText = _display displayCtrl 9026;
 _costText ctrlSetText format ["COST: $%1", _costAmount];

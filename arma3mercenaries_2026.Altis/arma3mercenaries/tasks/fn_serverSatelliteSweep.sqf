@@ -52,3 +52,20 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 
 // Tell the client to start the visual drone feed
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
+
+// Spawn a spoof player to force ALiVE Virtual AI to uncache the guards
+private _spoofGroup = createGroup [side _client, true];
+private _spoofUnit = _spoofGroup createUnit ["B_Survivor_F", _exactPos, [], 0, "NONE"];
+_spoofUnit hideObjectGlobal true;
+_spoofUnit allowDamage false;
+_spoofUnit disableAI "ALL";
+// Many caching systems require the unit to be recognized as a player proxy or in a player group.
+// But just being on the player's side is usually enough for ALiVE CQB to trigger if the spawn radius is met.
+
+[_spoofUnit] spawn {
+    params ["_spoofUnit"];
+    sleep 65; // Matches the 60s satellite duration + buffer
+    if (!isNull _spoofUnit) then {
+        deleteVehicle _spoofUnit;
+    };
+};
