@@ -14,7 +14,7 @@ player setUnitTrait ["explosiveSpecialist",true];
 
 // A3M Client-Side Function Compilation
 A3M_fnc_applyChatterEHs = compileFinal (preprocessFileLineNumbers "arma3mercenaries\speech_overhaul\fn_applyChatterEHs.sqf");
-A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_submitTicket.sqf");
+// Ticketing system is now registered natively via CfgFunctions
 [] execVM "arma3mercenaries\speech_overhaul\fn_initSpeechArrays.sqf";
 
 // -------------------------------------------------------------------------
