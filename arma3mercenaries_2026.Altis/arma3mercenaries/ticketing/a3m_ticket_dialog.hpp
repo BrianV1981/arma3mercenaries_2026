@@ -54,7 +54,7 @@ class A3M_TicketMenu {
         };
         class DescLabel: HG_RscText {
             idc = -1;
-            text = "DETAILED DESCRIPTION:";
+            text = "DETAILED DESCRIPTION (Use Shift+Enter for new lines):";
             x = 0.31 * safezoneW + safezoneX;
             y = 0.47 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
