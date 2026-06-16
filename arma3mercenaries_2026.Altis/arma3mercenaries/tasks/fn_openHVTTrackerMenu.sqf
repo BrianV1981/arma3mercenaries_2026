@@ -101,9 +101,12 @@ lbClear _listbox;
 private _activeHVTsFound = false;
 
 private _activeTasks = [];
-if (!isNil "A3M_HVT_Tasks_Array") then {
-    _activeTasks = A3M_HVT_Tasks_Array;
-};
+private _allPlayerTasks = player call BIS_fnc_tasksUnit;
+{
+    if (["assassination", _x] call BIS_fnc_inString) then {
+        _activeTasks pushBackUnique _x;
+    };
+} forEach _allPlayerTasks;
 
 {
     private _taskId = _x;
