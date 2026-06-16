@@ -51,7 +51,7 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
     A3M_fnc_buySatelliteSweep = {
         diag_log "[A3M DEBUG] SAT SWEEP: Button Clicked!";
         
-        if (!missionNamespace getVariable ["A3M_HVT_Satellite_Enabled", true]) exitWith {
+        if (!(missionNamespace getVariable ["A3M_HVT_Satellite_Enabled", true])) exitWith {
             hint "Satellite sweeps are currently disabled.";
             diag_log "[A3M DEBUG] SAT SWEEP: Exited - Disabled.";
         };
