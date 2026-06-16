@@ -51,14 +51,22 @@ def main():
                         continue
                         
                     try:
-                        # Format: ... [A3M_TICKETS_EXPORT] {"author":"...", ...}
+                        # Arma 3 diag_log wraps strings in quotes and doubles internal quotes
                         json_str = line.split("[A3M_TICKETS_EXPORT]", 1)[1].strip()
+                        json_str = json_str.rstrip('"\n\r')
+                        if json_str.startswith('"'):
+                            json_str = json_str[1:]
+                        json_str = json_str.replace('""', '"')
+                        
                         ticket_data = json.loads(json_str)
                         
                         author = ticket_data.get("author", "Unknown Player")
                         uid = ticket_data.get("uid", "Unknown UID")
                         title = ticket_data.get("title", "No Title")
                         desc = ticket_data.get("description", "No Description")
+                        ticket_type = ticket_data.get("type", "Bug")
+                        server_name = ticket_data.get("server", "Unknown Server")
+                        ticket_time = ticket_data.get("time", "Unknown Time")
                         
                         # Create a unique hash for this exact ticket to avoid duplicates
                         import hashlib
@@ -68,18 +76,30 @@ def main():
                             continue # Already synced
                             
                         # Format the GitHub issue body
-                        issue_body = f"**Reporter:** {author} (UID: `{uid}`)\n\n**Description:**\n{desc}\n\n---\n*This ticket was automatically generated from the A3M In-Game Bug Reporter via RPT logs.*"
+                        issue_body = f"**Reporter:** {author} (UID: `{uid}`)\n**Server:** {server_name}\n**Time (UTC):** {ticket_time}\n\n**Description:**\n{desc}\n\n---\n*This ticket was automatically generated from the A3M Ticketing System.*"
+                        
+                        # Determine label and title based on type
+                        label = "bug"
+                        issue_title = f"[Player Ticket] {title}"
+                        
+                        if ticket_type == "Enhancement / Feature Request":
+                            label = "enhancement"
+                            issue_title = f"[Feature Request] {title}"
+                        elif ticket_type == "Comment":
+                            label = "discussion"
+                            issue_title = f"{author} ({uid}) suggested: \"{title}\""
+                            issue_body = f'"{desc}"\n\n---\n*Submitted via A3M Ticketing System on {server_name} at {ticket_time}.*'
                         
                         # Run GitHub CLI
                         cmd = [
                             "gh", "issue", "create",
                             "--repo", f"{REPO_OWNER}/{REPO_NAME}",
-                            "--title", f"[Player Ticket] {title}",
+                            "--title", issue_title,
                             "--body", issue_body,
-                            "--label", "bug"
+                            "--label", label
                         ]
                         
-                        print(f"[A3M Sync] Pushing ticket '{title}' to GitHub...")
+                        print(f"[A3M Sync] Pushing {ticket_type} '{title}' to GitHub...")
                         subprocess.run(cmd, check=True)
                         
                         # Mark as synced

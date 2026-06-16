@@ -31,12 +31,14 @@ A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries
             private _btn = _disp ctrlCreate ["RscButtonMenu", 7777];
             _btn ctrlSetPosition [0.01 * safezoneW + safezoneX, 0.02 * safezoneH + safezoneY, 0.15 * safezoneW, 0.03 * safezoneH];
             _btn ctrlCommit 0;
-            _btn ctrlSetText "A3M BUG REPORT";
+            _btn ctrlSetText "A3M TICKETING SYSTEM";
             _btn ctrlSetBackgroundColor [1, 0.5, 0, 0.9]; // A3M Orange
             
             _btn ctrlAddEventHandler ["ButtonClick", {
                 closeDialog 2; // Close ESC menu
                 createDialog "A3M_TicketMenu"; // Open ticketing UI
+                { lbAdd [7705, _x]; } forEach ["Bug", "Enhancement / Feature Request", "Comment"];
+                lbSetCurSel [7705, 0];
             }];
         };
         waitUntil { isNull (findDisplay 49) };
