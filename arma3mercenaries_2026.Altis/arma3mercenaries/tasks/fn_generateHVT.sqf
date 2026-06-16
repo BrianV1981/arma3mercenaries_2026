@@ -10,7 +10,7 @@ if (!isServer) exitWith {};
 waitUntil {!(isNil "BIS_fnc_init")};
 
 // Task Initialization
-private _taskID = format ["task_assassination_%1", diag_tickTime];
+private _taskID = format ["task_assassination_%1_%2", floor(diag_tickTime * 10), floor(random 99999)];
 private _taskSide = west;
 private _taskFaction = "BLU_F"; // Player faction
 private _taskEnemyFaction = "OPF_F"; // This is the faction CLASSNAME used for ALIVE attempts
