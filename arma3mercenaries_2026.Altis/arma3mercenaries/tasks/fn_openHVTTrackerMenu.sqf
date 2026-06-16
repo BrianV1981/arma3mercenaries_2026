@@ -101,7 +101,7 @@ lbClear _listbox;
 private _activeHVTsFound = false;
 
 private _activeTasks = [];
-private _allPlayerTasks = [player] call BIS_fnc_tasksUnit;
+private _allPlayerTasks = player call BIS_fnc_tasksUnit;
 {
     // Re-adding the filter now that the syntax crash is identified
     if (["assassination", _x] call BIS_fnc_inString) then {
@@ -117,8 +117,9 @@ private _allPlayerTasks = [player] call BIS_fnc_tasksUnit;
     if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
         _activeHVTsFound = true;
         
-        private _taskDescArray = [_taskId] call BIS_fnc_taskDescription;
-        private _taskTitle = if (count _taskDescArray > 1) then { _taskDescArray select 1 } else { "Unknown HVT" };
+        private _taskDescArray = _taskId call BIS_fnc_taskDescription;
+        private _taskTitle = if (typeName _taskDescArray == "ARRAY" && {count _taskDescArray > 1}) then { _taskDescArray select 1 } else { _taskId };
+        if (typeName _taskTitle != "STRING") then { _taskTitle = str _taskTitle; };
         
         private _index = _listbox lbAdd _taskTitle;
         _listbox lbSetData [_index, _taskId];
