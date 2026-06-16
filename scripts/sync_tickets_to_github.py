@@ -85,19 +85,38 @@ def main():
                         if ticket_type == "Enhancement / Feature Request":
                             label = "enhancement"
                             issue_title = f"[Feature Request] {title}"
+                            cmd = [
+                                "gh", "issue", "create",
+                                "--repo", f"{REPO_OWNER}/{REPO_NAME}",
+                                "--title", issue_title,
+                                "--body", issue_body,
+                                "--label", label
+                            ]
                         elif ticket_type == "Comment":
-                            label = "discussion"
                             issue_title = f"{author} ({uid}) suggested: \"{title}\""
                             issue_body = f'"{desc}"\n\n---\n*Submitted via A3M Ticketing System on {server_name} at {ticket_time}.*'
-                        
-                        # Run GitHub CLI
-                        cmd = [
-                            "gh", "issue", "create",
-                            "--repo", f"{REPO_OWNER}/{REPO_NAME}",
-                            "--title", issue_title,
-                            "--body", issue_body,
-                            "--label", label
-                        ]
+                            
+                            # GitHub GraphQL API requires Repository ID and Category ID (using "General" category)
+                            # Repo: R_kgDOSvVd5Q | General Category: DIC_kwDOSvVd5c4C_PZe
+                            graphql_query = 'mutation($repoId: ID!, $catId: ID!, $title: String!, $body: String!) { createDiscussion(input: {repositoryId: $repoId, categoryId: $catId, title: $title, body: $body}) { discussion { url } } }'
+                            
+                            cmd = [
+                                "gh", "api", "graphql",
+                                "-f", f"query={graphql_query}",
+                                "-f", "repoId=R_kgDOSvVd5Q",
+                                "-f", "catId=DIC_kwDOSvVd5c4C_PZe",
+                                "-F", f"title={issue_title}",
+                                "-F", f"body={issue_body}"
+                            ]
+                        else:
+                            # Standard Bug
+                            cmd = [
+                                "gh", "issue", "create",
+                                "--repo", f"{REPO_OWNER}/{REPO_NAME}",
+                                "--title", issue_title,
+                                "--body", issue_body,
+                                "--label", label
+                            ]
                         
                         print(f"[A3M Sync] Pushing {ticket_type} '{title}' to GitHub...")
                         subprocess.run(cmd, check=True)
