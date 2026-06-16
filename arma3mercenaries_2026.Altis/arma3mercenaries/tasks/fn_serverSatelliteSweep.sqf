@@ -53,19 +53,16 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 // Tell the client to start the visual drone feed
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
 
-// Force ALiVE Virtual AI to uncache the guards by spoofing a player
-private _spoofPlayer = "Logic" createVehicle _exactPos;
-if (!isNil "ALIVE_playerList") then {
-    ALIVE_playerList pushBackUnique _spoofPlayer;
+// Force ALiVE Virtual AI to uncache the guards using the native ALiVE API
+if (!isNil "ALIVE_fnc_forceSpawnRadius") then {
+    [_exactPos, 800] call ALIVE_fnc_forceSpawnRadius;
 };
 
-[_spoofPlayer] spawn {
-    params ["_spoofPlayer"];
+// Spawn a timer to re-enable virtualization after the satellite sweep ends
+[_exactPos] spawn {
+    params ["_exactPos"];
     sleep 65; // Matches the 60s satellite duration + buffer
-    if (!isNil "ALIVE_playerList") then {
-        ALIVE_playerList = ALIVE_playerList - [_spoofPlayer];
-    };
-    if (!isNull _spoofPlayer) then {
-        deleteVehicle _spoofPlayer;
+    if (!isNil "ALIVE_fnc_forceDespawnRadius") then {
+        [_exactPos, 800] call ALIVE_fnc_forceDespawnRadius;
     };
 };
