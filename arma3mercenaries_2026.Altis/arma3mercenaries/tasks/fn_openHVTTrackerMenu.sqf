@@ -103,9 +103,8 @@ private _activeHVTsFound = false;
 private _activeTasks = [];
 private _allPlayerTasks = player call BIS_fnc_tasksUnit;
 {
-    if (["assassination", _x] call BIS_fnc_inString) then {
-        _activeTasks pushBackUnique _x;
-    };
+    // Removing the filter temporarily to debug what tasks actually exist
+    _activeTasks pushBackUnique _x;
 } forEach _allPlayerTasks;
 
 {
