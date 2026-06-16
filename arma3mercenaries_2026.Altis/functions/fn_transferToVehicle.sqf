@@ -149,19 +149,42 @@ if(LootToVehicleExtended_PlayAnimation) then {
 	_bodies = _args select 5;
 	_soundID = _args select 6;
 
+    // Initialize an overflow weapon holder variable
+    private _overflowPile = objNull;
+    private _itemsTransferred = 0;
+    private _itemsOverflowed = 0;
+
     // Add all items to the vehicle's cargo
 	{
-        _vehicle addItemCargoGlobal [_x, 1];
+        if (_vehicle canAdd _x) then {
+            _vehicle addItemCargoGlobal [_x, 1];
+            _itemsTransferred = _itemsTransferred + 1;
+        } else {
+            if (isNull _overflowPile) then {
+                _overflowPile = createVehicle ["GroundWeaponHolder", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+            };
+            _overflowPile addItemCargoGlobal [_x, 1];
+            _itemsOverflowed = _itemsOverflowed + 1;
+        };
     } forEach _items;
 
     // Add all backpacks to the vehicle's cargo
     {
-        _vehicle addBackpackCargoGlobal [_x, 1];
+        if (_vehicle canAdd _x) then {
+            _vehicle addBackpackCargoGlobal [_x, 1];
+            _itemsTransferred = _itemsTransferred + 1;
+        } else {
+            if (isNull _overflowPile) then {
+                _overflowPile = createVehicle ["GroundWeaponHolder", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+            };
+            _overflowPile addBackpackCargoGlobal [_x, 1];
+            _itemsOverflowed = _itemsOverflowed + 1;
+        };
     } forEach _backpacks;
 
     // Loop through each container and clear its cargo after transfer
     {
-		removeAllAssignedItems [_x, true, true];  // Remove all assigned items from the container.
+		removeAllAssignedItems _x;  // Remove all assigned items from the container.
 		removeAllWeapons _x;  // Remove all weapons from the container.
 		removeBackpackGlobal _x;  // Remove the backpack from the container.
 		if (LootToVehicleExtended_TransferUniform) then {removeUniform _x;};  // Remove uniform if the option is enabled.
@@ -173,13 +196,7 @@ if(LootToVehicleExtended_PlayAnimation) then {
     } forEach _containerList;
 
     // Display the total mass of loot transferred.
-     systemChat format ["You can sell extra loot to any fence that can be found marked on the map. Fences in enemy territory offer the best rates!", (count _items + count _backpacks)];
-
-
-  
-
-// Execute the message only on the player's machine
-_message remoteExecCall ["_message", _player];
+    systemChat format ["%1 items transferred to vehicle. %2 overflow items dropped on ground.", _itemsTransferred, _itemsOverflowed];
 
     // Optionally delete the bodies after looting if the option is enabled.
     if (LootToVehicleExtended_DeleteBodies) then {
