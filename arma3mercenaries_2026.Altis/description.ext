@@ -185,6 +185,7 @@ class CfgRemoteExec
 		class SpawnScript { allowedTargets = 0;jip = 1; };
 		class enableSimulationGlobal { allowedTargets = 0;jip = 1; };
 		class VCM_fnc_KnowAbout { allowedTargets = 0;jip = 1; };
+		class BIS_fnc_dynamicText { allowedTargets = 0; jip = 1; };
 		
 		// A3M Core Database Functions
 		class A3M_fnc_serverFetchProfileForClient { allowedTargets = 2; jip = 1; };
@@ -235,6 +236,9 @@ class CfgRemoteExec
 		class setVectorUp { allowedTargets = 0; jip = 0; };
 		class setPosATL { allowedTargets = 0; jip = 0; };
 		class skipTime { allowedTargets = 2; jip = 0; };
+		class hint { allowedTargets = 0; jip = 1; };
+		class hintSilent { allowedTargets = 0; jip = 1; };
+		class systemChat { allowedTargets = 0; jip = 1; };
 	};
 };
 
