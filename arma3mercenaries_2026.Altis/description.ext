@@ -186,6 +186,42 @@ class CfgRemoteExec
 		class enableSimulationGlobal { allowedTargets = 0;jip = 1; };
 		class VCM_fnc_KnowAbout { allowedTargets = 0;jip = 1; };
 		
+		// A3M Core Database Functions
+		class A3M_fnc_serverFetchProfileForClient { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_receiveProfileData { allowedTargets = 1; jip = 1; };
+		class A3M_fnc_serverFetchSquadDossier { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_receiveSquadDossierData { allowedTargets = 1; jip = 1; };
+		class A3M_fnc_serverIncrementStat { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_serverLogTransaction { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_serverUpdatePedometer { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_serverLogRevive { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_serverLogTicket { allowedTargets = 2; jip = 1; };
+		
+		// Halv Gear (HG) Economy Functions
+		class HG_fnc_addOrSubCash { allowedTargets = 0; jip = 1; };
+		class HG_fnc_getGear { allowedTargets = 0; jip = 1; };
+		class HG_fnc_addOrSubKills { allowedTargets = 0; jip = 1; };
+		class HG_fnc_addOrSubXP { allowedTargets = 0; jip = 1; };
+		class HG_fnc_spawnVehicle { allowedTargets = 0; jip = 1; };
+		class HG_fnc_storeVehicleServer { allowedTargets = 0; jip = 1; };
+		
+		// Map & Task Synchronization
+		class A3M_fnc_serverCreateMarkerGlobal { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_createMarkerGlobal { allowedTargets = 0; jip = 1; };
+		class A3M_fnc_deleteMarkerGlobal { allowedTargets = 0; jip = 1; };
+		class A3M_fnc_updateMarkerText { allowedTargets = 0; jip = 1; };
+		class A3M_fnc_serverSatelliteSweep { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_requestTask { allowedTargets = 2; jip = 1; };
+		
+		// GRAD Persistence & Economy
+		class grad_persistence_fnc_loadAllPlayers { allowedTargets = 2; jip = 1; };
+		class grad_persistence_fnc_loadMission { allowedTargets = 2; jip = 1; };
+		class grad_persistence_fnc_saveMission { allowedTargets = 2; jip = 1; };
+		class grad_moneymenu_fnc_addFunds { allowedTargets = 0; jip = 1; };
+		class grad_moneymenu_fnc_receiveMoney { allowedTargets = 0; jip = 1; };
+		class grad_moneymenu_fnc_setStorage { allowedTargets = 0; jip = 1; };
+		class grad_lbm_fnc_updateFunds { allowedTargets = 0; jip = 1; };
+		class grad_lbm_fnc_addFunds { allowedTargets = 0; jip = 1; };
 	};
 	
 	// List of script commands allowed to be sent from client via remoteExec
