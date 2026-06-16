@@ -16,7 +16,7 @@
     "SLIDER",
     ["Satellite Sweep Cost", "Cost in funds to perform a satellite sweep."],
     ["A3M Settings", "Tasks"],
-    [0, 500000, 25000, 0], // [min, max, default, trailing decimals]
+    [0, 500000, 100000, 0], // [min, max, default, trailing decimals]
     true
 ] call CBA_Settings_fnc_init;
 
@@ -25,7 +25,7 @@
     "SLIDER",
     ["Satellite Feed Duration", "How long the drone visual feed lasts (in seconds)."],
     ["A3M Settings", "Tasks"],
-    [5, 120, 15, 0],
+    [5, 120, 60, 0],
     true
 ] call CBA_Settings_fnc_init;
 
