@@ -53,16 +53,22 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 // Tell the client to start the visual drone feed
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
 
-// Force ALiVE Virtual AI to uncache the guards using the native ALiVE API
-if (!isNil "ALIVE_fnc_forceSpawnRadius") then {
-    [_exactPos, 800] call ALIVE_fnc_forceSpawnRadius;
-};
+// The ALiVE wiki confirms that Virtual AI natively spawns around "players and UAVs".
+// We will spawn an invisible, invincible drone above the HVT and assign it to the player's side.
+private _uavGroup = createGroup (side _client);
+private _spoofUAV = createVehicle ["B_UAV_01_F", [_exactPos select 0, _exactPos select 1, 500], [], 0, "FLY"];
+createVehicleCrew _spoofUAV;
+(crew _spoofUAV) joinSilent _uavGroup;
+_spoofUAV hideObjectGlobal true;
+_spoofUAV allowDamage false;
+_spoofUAV flyInHeight 500;
 
-// Spawn a timer to re-enable virtualization after the satellite sweep ends
-[_exactPos] spawn {
-    params ["_exactPos"];
+// Spawn a timer to delete the UAV after the satellite sweep ends, allowing ALiVE to re-virtualize the area
+[_spoofUAV] spawn {
+    params ["_spoofUAV"];
     sleep 65; // Matches the 60s satellite duration + buffer
-    if (!isNil "ALIVE_fnc_forceDespawnRadius") then {
-        [_exactPos, 800] call ALIVE_fnc_forceDespawnRadius;
+    if (!isNull _spoofUAV) then {
+        { deleteVehicle _x } forEach (crew _spoofUAV);
+        deleteVehicle _spoofUAV;
     };
 };
