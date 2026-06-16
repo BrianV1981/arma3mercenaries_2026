@@ -240,7 +240,7 @@ private _taskDescriptions = [
 
 private _selectedDescription = selectRandom _taskDescriptions;
 
-private _fuzzyLocation = _taskLocation getPos [random 300, random 360];
+private _fuzzyLocation = _taskLocation getPos [300 + random 200, random 360];
 
 // Create Task with native JIP assignment (array of sides)
 [

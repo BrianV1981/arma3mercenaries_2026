@@ -34,7 +34,7 @@ class A3M_HVTTrackerDialog {
         };
         class CostText: grad_lbm_RscText {
             idc = 9026;
-            text = "COST: $25,000";
+            text = "COST: $100,000";
             x = 0.36 * safezoneW + safezoneX;
             y = 0.58 * safezoneH + safezoneY;
             w = 0.28 * safezoneW;
