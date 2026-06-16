@@ -53,21 +53,19 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 // Tell the client to start the visual drone feed
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
 
-// Spawn a spoof UAV to force ALiVE Virtual AI to uncache the guards
-private _spoofGroup = createGroup [side _client, true];
-private _spoofUAV = createVehicle ["B_UAV_01_F", [_exactPos select 0, _exactPos select 1, 400], [], 0, "FLY"];
-createVehicleCrew _spoofUAV;
-(crew _spoofUAV) joinSilent _spoofGroup;
-_spoofUAV hideObjectGlobal true;
-_spoofUAV allowDamage false;
-// ALiVE officially tracks "UAVs and players" for its spawn radius.
-// By spawning a true UAV on the player's side, ALiVE will immediately unvirtualize the compound.
+// Force ALiVE Virtual AI to uncache the guards by spoofing a player
+private _spoofPlayer = "Logic" createVehicle _exactPos;
+if (!isNil "ALIVE_playerList") then {
+    ALIVE_playerList pushBackUnique _spoofPlayer;
+};
 
-[_spoofUAV] spawn {
-    params ["_spoofUAV"];
+[_spoofPlayer] spawn {
+    params ["_spoofPlayer"];
     sleep 65; // Matches the 60s satellite duration + buffer
-    if (!isNull _spoofUAV) then {
-        { deleteVehicle _x } forEach (crew _spoofUAV);
-        deleteVehicle _spoofUAV;
+    if (!isNil "ALIVE_playerList") then {
+        ALIVE_playerList = ALIVE_playerList - [_spoofPlayer];
+    };
+    if (!isNull _spoofPlayer) then {
+        deleteVehicle _spoofPlayer;
     };
 };
