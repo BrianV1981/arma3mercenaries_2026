@@ -46,7 +46,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             A3M_SatCam camCommitPrepared 0;
             
             // Text overlay
-            private _overlayText = format ["<t color='#00FF00' size='1.5'>SATELLITE UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | Backspace to Exit</t>", _gridPos];
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>SPACEX UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | Backspace to Exit</t>", _gridPos];
             [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
             
             // Global state for Event Handlers
@@ -63,7 +63,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
                 
                 A3M_SatCam camPrepareFOV A3M_SatCam_FOV;
                 A3M_SatCam camCommitPrepared 0.1;
-                return true;
+                true
             }];
             
             // Early Exit Event Handler
@@ -104,7 +104,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             "colorCorrections" ppEffectEnable false;
             "filmGrain" ppEffectEnable false;
             
-            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Map has been marked with the HVT's location.</t></t>";
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Map has been marked with the HVT's location.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         };
     };
@@ -162,7 +162,7 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
         closeDialog 0; // Close the menu before initiating feed
         diag_log "[A3M DEBUG] SAT SWEEP: Dialog closed. Initiating remote execution...";
         
-        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>SATELLITE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Re-tasking orbital asset...<br/>-$%1</t></t>", _cost];
+        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Re-tasking orbital asset...<br/>-$%1</t></t>", _cost];
         [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         
         // Delegate to server to get the exact position, since the client may not know the object if it's out of network range
