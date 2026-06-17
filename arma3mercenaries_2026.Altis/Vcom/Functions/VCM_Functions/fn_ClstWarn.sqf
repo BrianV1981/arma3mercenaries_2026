@@ -30,10 +30,10 @@ _unitGroup spawn {sleep 300;_this setVariable ["VCM_RQSTHELP",false];};
 // If the squad is overwhelmed and calling for help, potentially deploy drones
 if (!isNil "A3M_EnableAIDrones" && {A3M_EnableAIDrones}) then {
     if ((random 100) <= A3M_KamikazeDeployChance) then {
-        [_unitGroup] spawn A3M_fnc_aiDroneKamikaze;
+        [_unitGroup, _killer] spawn A3M_fnc_aiDroneKamikaze;
     } else {
         if ((random 100) <= A3M_BomberDeployChance) then {
-            [_unitGroup] spawn A3M_fnc_aiDroneBomber;
+            [_unitGroup, _killer] spawn A3M_fnc_aiDroneBomber;
         };
     };
 };
