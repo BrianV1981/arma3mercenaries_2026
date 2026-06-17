@@ -6,9 +6,10 @@
 params["_player"];
 
 // --- A3M DEEP STAT TRACKING (Phase 1) ---
-private _uid = getPlayerUID _player;
-if (_uid != "") then {
-    [_uid, name _player] call A3M_fnc_initPlayerProfile;
+[_player] spawn {
+    params ["_player"];
+    waitUntil {sleep 0.5; getPlayerUID _player != ""};
+    [getPlayerUID _player, name _player] call A3M_fnc_initPlayerProfile;
 };
 // ----------------------------------------
 

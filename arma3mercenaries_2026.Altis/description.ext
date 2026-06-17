@@ -220,17 +220,23 @@ class CfgRemoteExec
 		class grad_persistence_fnc_loadAllPlayers { allowedTargets = 2; jip = 1; };
 		class grad_persistence_fnc_loadMission { allowedTargets = 2; jip = 1; };
 		class grad_persistence_fnc_saveMission { allowedTargets = 2; jip = 1; };
+		class grad_persistence_fnc_loadPlayer { allowedTargets = 2; jip = 1; };
 		class grad_moneymenu_fnc_addFunds { allowedTargets = 0; jip = 1; };
 		class grad_moneymenu_fnc_receiveMoney { allowedTargets = 0; jip = 1; };
 		class grad_moneymenu_fnc_setStorage { allowedTargets = 0; jip = 1; };
 		class grad_lbm_fnc_updateFunds { allowedTargets = 0; jip = 1; };
 		class grad_lbm_fnc_addFunds { allowedTargets = 0; jip = 1; };
+		
+		// BIS Engine Functions (Required for ALiVE / Tasks)
+		class bis_fnc_settasklocal { allowedTargets = 0; jip = 1; };
+		class bis_fnc_sharedobjectives { allowedTargets = 0; jip = 1; };
+		class bis_fnc_execvm { allowedTargets = 0; jip = 1; };
 	};
 	
 	// List of script commands allowed to be sent from client via remoteExec
 	class Commands
 	{
-		mode = 1;
+		mode = 2;
 		jip = 1;
 		class setName { allowedTargets = 0; jip = 1; };
 		class playMusic { allowedTargets = 0; jip = 1; };

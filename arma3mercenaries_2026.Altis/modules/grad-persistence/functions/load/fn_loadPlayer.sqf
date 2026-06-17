@@ -33,6 +33,10 @@ private _fnc_waitUntil = {
     // Fetch and reconstruct the native HashMap (true parameter)
     private _unitDataHash = [_uniquePlayerKey, createHashMap, true] call A3M_fnc_dbGetSecure;
     
+    // --- A.I.M. Lobby Dummy Overwrite Fix ---
+    // We MUST unlock the profile save BEFORE the early exit so fresh profiles can be saved!
+    _unit setVariable ["A3M_GearLoaded", true, true];
+
     // Check if the HashMap is empty (player has no save data)
     if (count _unitDataHash == 0) exitWith {INFO_1("SQLite data for player %1 not found.",name _unit)};
 
@@ -88,8 +92,5 @@ private _fnc_waitUntil = {
 
     private _vars = _unitDataHash getOrDefault ["vars", []];
     [_vars,_unit] call FUNC(loadObjectVars);
-
-    // --- A.I.M. Lobby Dummy Overwrite Fix ---
-    _unit setVariable ["A3M_GearLoaded", true, true];
 
 }, [_this,_playerWaitCondition]] call CBA_fnc_waitUntilAndExecute;
