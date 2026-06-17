@@ -32,10 +32,7 @@ if (_magCount < _magLimit) then {
 	//Find closest men!
 	_potRearm = _x nearEntities [["WeaponHolderSimulated", "Man", "Air", "Car", "Motorcycle", "Tank"], 200];
 	_potRearm = _potRearm - [_x];
-	{
-		if (alive _x && {_x isKindOf "Man"}) then {_potRearm = _potRearm - [_x];};
-		true;
-	} count _potRearm;
+	_potRearm = _potRearm select {!(alive _x && {_x isKindOf "Man"})};
 	
 	//If men are around see if we can take ammo from them first.
 	_stop = false;

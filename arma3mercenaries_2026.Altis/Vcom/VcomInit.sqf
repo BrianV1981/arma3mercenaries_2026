@@ -47,8 +47,13 @@ Vcm_SM = compileFinal "(_this select 0) switchMove (_this select 1);";
 Vcm_PAN = compileFinal "(_this select 0) playActionNow (_this select 1);";
 VCOM_MINEARRAY = [];
 
-//OnEachFrame monitor for mines. Should make them more responsive, without a significant impact on FPS.
-["VCMMINEMONITOR", "onEachFrame", {[] call VCM_fnc_MineMonitor}] call BIS_fnc_addStackedEventHandler;
+//OnEachFrame monitor for mines. Replaced with a scheduled loop to save FPS.
+[] spawn {
+    while {true} do {
+        [] call VCM_fnc_MineMonitor;
+        sleep 0.5;
+    };
+};
 
 //Below is loop to check for new AI spawning in to be added to the list
 [] spawn
