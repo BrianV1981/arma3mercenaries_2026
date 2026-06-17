@@ -53,22 +53,37 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 // Tell the client to start the visual drone feed
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
 
-// The ALiVE wiki confirms that Virtual AI natively spawns around "players and UAVs".
-// We will spawn an invisible, invincible drone above the HVT and assign it to the player's side.
-private _uavGroup = createGroup (side _client);
-private _spoofUAV = createVehicle ["B_UAV_01_F", [_exactPos select 0, _exactPos select 1, 500], [], 0, "FLY"];
-createVehicleCrew _spoofUAV;
-(crew _spoofUAV) joinSilent _uavGroup;
-_spoofUAV hideObjectGlobal true;
-_spoofUAV allowDamage false;
-_spoofUAV flyInHeight 500;
+// Spawning a UAV didn't work because ALiVE requires a player to physically hold the UAV terminal connection.
+// Instead, we will spawn an invisible physical unit and natively register it to the engine's switchableUnits array.
+// ALiVE's internal loop constantly scans switchableUnits to populate its active spawning nodes.
+private _spoofGroup = createGroup (side _client);
+private _spoofPlayer = _spoofGroup createUnit ["B_Survivor_F", _exactPos, [], 0, "NONE"];
+_spoofPlayer hideObjectGlobal true;
+_spoofPlayer allowDamage false;
+_spoofPlayer disableAI "ALL";
+_spoofPlayer setCaptive true;
 
-// Spawn a timer to delete the UAV after the satellite sweep ends, allowing ALiVE to re-virtualize the area
-[_spoofUAV] spawn {
-    params ["_spoofUAV"];
-    sleep 65; // Matches the 60s satellite duration + buffer
-    if (!isNull _spoofUAV) then {
-        { deleteVehicle _x } forEach (crew _spoofUAV);
-        deleteVehicle _spoofUAV;
+// Register it natively to the engine so ALiVE picks it up on its next scan
+addSwitchableUnit _spoofPlayer;
+
+// Also aggressively inject it into ALiVE's internal array every second just in case
+[_spoofPlayer] spawn {
+    params ["_spoofPlayer"];
+    private _startTime = time;
+    
+    while {time - _startTime < 65} do {
+        if (!isNil "ALIVE_playerList") then {
+            ALIVE_playerList pushBackUnique _spoofPlayer;
+        };
+        sleep 1;
+    };
+    
+    // Cleanup
+    removeSwitchableUnit _spoofPlayer;
+    if (!isNil "ALIVE_playerList") then {
+        ALIVE_playerList = ALIVE_playerList - [_spoofPlayer];
+    };
+    if (!isNull _spoofPlayer) then {
+        deleteVehicle _spoofPlayer;
     };
 };
