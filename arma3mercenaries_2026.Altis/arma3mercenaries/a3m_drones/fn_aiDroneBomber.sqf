@@ -53,7 +53,7 @@ _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
-_drone flyInHeight 5; // User requested 5 meters
+_drone flyInHeight (15 + random 30); // Random height between 15m and 45m
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name _target];
 
