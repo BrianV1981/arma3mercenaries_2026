@@ -6,5 +6,8 @@ class A3M_Drones {
         class attachPayload {};
         class dropPayload {};
         class armKamikaze {};
+        class aiEquipDrone {};
+        class aiDroneKamikaze {};
+        class aiDroneBomber {};
     };
 };

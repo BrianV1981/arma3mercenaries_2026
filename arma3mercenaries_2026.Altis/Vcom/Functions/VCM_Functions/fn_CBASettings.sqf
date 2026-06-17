@@ -336,6 +336,45 @@
     } // function that will be executed once on mission start and every time the setting is changed.
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_EnableAIDrones", // Internal setting name
+    "CHECKBOX", // setting type
+    "Enable AI Drones (Kamikaze & Bomber)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    true, // data for this setting:
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_EnableAIDrones = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_KamikazeDeployChance", // Internal setting name
+    "SLIDER", // setting type
+    "Kamikaze Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [0,100,25,0], // data for this setting: [min, max, default, number of shown trailing decimals]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_KamikazeDeployChance = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_BomberDeployChance", // Internal setting name
+    "SLIDER", // setting type
+    "Bomber Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [0,100,10,0], // data for this setting: [min, max, default, number of shown trailing decimals]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_BomberDeployChance = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 
