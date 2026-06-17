@@ -30,6 +30,7 @@ Vcm_Settings =
 	A3M_BomberDeployChance = 10; // Chance to deploy Bomber Drone
 	A3M_DroneMinAltitude = 10; // Minimum altitude for AI Drone flights
 	A3M_DroneMaxAltitude = 50; // Maximum altitude for AI Drone flights
+	A3M_DroneDiveSpeed = 25; // Speed of Kamikaze Terminal Dive in m/s
 	VCM_MINECHANCE = 10; //Chance to lay a mine
 	VCM_SIDEENABLED = [west,east,resistance]; //Sides that will activate Vcom AI
 	VCM_RAGDOLL = false; //Should AI ragdoll when hit

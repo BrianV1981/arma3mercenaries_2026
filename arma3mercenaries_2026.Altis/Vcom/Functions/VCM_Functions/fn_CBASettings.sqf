@@ -401,6 +401,19 @@
     } // function that will be executed once on mission start and every time the setting is changed.
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_DroneDiveSpeed", // Internal setting name
+    "SLIDER", // setting type
+    "Kamikaze Terminal Dive Speed (m/s)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [10,100,25,0], // data for this setting: [min, max, default, number of shown trailing decimals]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_DroneDiveSpeed = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 

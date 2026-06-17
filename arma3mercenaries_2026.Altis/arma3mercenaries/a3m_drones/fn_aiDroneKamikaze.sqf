@@ -101,7 +101,10 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
             _pos2 set [2, (_pos2 select 2) + 1.2]; 
             
             private _dir = _pos1 vectorFromTo _pos2;
-            private _velocity = _dir vectorMultiply 40; // 40 m/s dive speed (approx 140 km/h)
+            
+            // Pull the dynamic dive speed from CBA settings (default 25 m/s)
+            private _diveSpeed = missionNamespace getVariable ["A3M_DroneDiveSpeed", 25];
+            private _velocity = _dir vectorMultiply _diveSpeed;
             
             // Physically pitch the nose of the drone down so it looks terrifying
             _drone setVectorDirAndUp [_dir, [0,0,1]];
