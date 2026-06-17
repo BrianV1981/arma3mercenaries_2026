@@ -78,6 +78,7 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
     
     private _detonated = false;
     private _lastPos = [0,0,0];
+    private _diving = false;
     
     // Initial move command
     _drone flyInHeight _targetAlt;
@@ -85,27 +86,53 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
     
     while {alive _drone && alive _target && !_detonated} do {
         private _targetPos = getPosATL _target;
+        private _dist2D = _drone distance2D _target;
         
-        // Aggressively force altitude to fight Arma's terrain-avoidance climb
-        _drone flyInHeight _targetAlt;
-        
-        // Only update pathfinding if target moved more than 5 meters
-        if (_targetPos distance2D _lastPos > 5) then {
-            _drone doMove _targetPos;
-            _lastPos = _targetPos;
+        // Terminal Dive Phase (Within 50m)
+        if (_dist2D < 50) then {
+            if (!_diving) then {
+                _diving = true;
+                _drone disableAI "ALL"; // Completely lobotomize the AI pilot so they stop trying to Auto-Hover
+            };
+            
+            // Calculate a direct vector from the drone to the target's chest
+            private _pos1 = getPosASL _drone;
+            private _pos2 = getPosASL _target;
+            _pos2 set [2, (_pos2 select 2) + 1.2]; 
+            
+            private _dir = _pos1 vectorFromTo _pos2;
+            private _velocity = _dir vectorMultiply 40; // 40 m/s dive speed (approx 140 km/h)
+            
+            // Physically pitch the nose of the drone down so it looks terrifying
+            _drone setVectorDirAndUp [_dir, [0,0,1]];
+            
+            // Force the physics engine to slam it forward
+            _drone setVelocity _velocity;
+            
+            // If it gets within 8 meters 3D distance, detonate
+            if ((_drone distance _target) < 8) then {
+                _drone setDamage 1;
+                _detonated = true;
+            };
+            
+            sleep 0.1; // Fast update rate for missile mode
+            
+        } else {
+            // Normal Approach Phase
+            _drone flyInHeight _targetAlt; // Aggressively force altitude
+            
+            // Only update pathfinding if target moved more than 5 meters
+            if (_targetPos distance2D _lastPos > 5) then {
+                _drone doMove _targetPos;
+                _lastPos = _targetPos;
+            };
+            sleep 0.5;
         };
-        
-        // If it gets within 15 meters 3D distance or 10 meters 2D distance, detonate
-        if ((_drone distance _target) < 15 || (_drone distance2D _target) < 10) then {
-            _drone setDamage 1; // Detonates the armed payload
-            _detonated = true;
-        };
-        sleep 0.5;
     };
     
     // Clean up if the target died before drone arrived or it detonated
     if (alive _drone) then {
-        _drone setDamage 1; // Just blow it up anyway as consumption
+        _drone setDamage 1; // Blow it up anyway as consumption
         sleep 1;
         {deleteVehicle _x} forEach crew _drone;
         deleteVehicle _drone;
