@@ -22,7 +22,7 @@ private _text = "
 <t size='0.75'>There are 7 ranks. Ranking up increases paychecks, kill rewards, and unlocks Black Market discounts.</t><br/>
 <t size='0.75'>• PRIVATE (Start) | CORPORAL (1k) | SERGEANT (1.5k) | LIEUTENANT (2k) | CAPTAIN (2.5k) | MAJOR (3k) | COLONEL (3.5k Max)</t><br/>
 
-<t size='1.0' color='#55aaff'>Logistics, Survival, & Medical</t><br/>
+<t size='1.0' color='#55aaff'>Logistics, Survival, and Medical</t><br/>
 <t size='0.75'>• <t color='#ffffff'>REARMING:</t> The cheapest option is the Vehicle Ammo Container from Logistics—unlimited refills for vehicles, turrets, mortars.</t><br/>
 <t size='0.75'>• <t color='#ffffff'>MAINTENANCE:</t> Use a Repair Center or Repair Vehicle. Buy a Gas Tank to keep big vehicles fueled and moving.</t><br/>
 <t size='0.75'>• <t color='#ffffff'>SURVIVAL:</t> You must drink Water to survive and cool off weapons. Med Centers are required to fully remove wounds.</t><br/>

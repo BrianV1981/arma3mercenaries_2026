@@ -17,15 +17,15 @@ class A3M_FieldManualDialog {
         class MainBackground: HG_RscText {
             idc = -1;
             x = 10 * GUI_GRID_W + GUI_GRID_X;
-            y = 4 * GUI_GRID_H + GUI_GRID_Y;
+            y = 3 * GUI_GRID_H + GUI_GRID_Y;
             w = 20 * GUI_GRID_W;
-            h = 18 * GUI_GRID_H;
+            h = 20 * GUI_GRID_H;
             colorBackground[] = {0.1, 0.1, 0.1, 0.9}; // Dark translucent grey
         };
         class HeaderBackground: HG_RscText {
             idc = -1;
             x = 10 * GUI_GRID_W + GUI_GRID_X;
-            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            y = 1 * GUI_GRID_H + GUI_GRID_Y;
             w = 20 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
             colorBackground[] = {0.2, 0.4, 0.6, 1}; // Distinct blue header
@@ -37,7 +37,7 @@ class A3M_FieldManualDialog {
             idc = -1;
             text = "FIELD MANUAL & GUIDES"; 
             x = 10.5 * GUI_GRID_W + GUI_GRID_X;
-            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            y = 1 * GUI_GRID_H + GUI_GRID_Y;
             w = 15 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
             colorText[] = {1, 1, 1, 1}; // White text on blue
@@ -48,7 +48,7 @@ class A3M_FieldManualDialog {
             idc = -1;
             text = "X";
             x = 28 * GUI_GRID_W + GUI_GRID_X;
-            y = 2 * GUI_GRID_H + GUI_GRID_Y;
+            y = 1 * GUI_GRID_H + GUI_GRID_Y;
             w = 2 * GUI_GRID_W;
             h = 2 * GUI_GRID_H;
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7030)}; [] call A3M_fnc_openPlayerCard; };";
@@ -60,9 +60,9 @@ class A3M_FieldManualDialog {
         class ManualContent: HG_RscStructuredText {
             idc = 7031;
             x = 10.5 * GUI_GRID_W + GUI_GRID_X;
-            y = 4.5 * GUI_GRID_H + GUI_GRID_Y;
+            y = 3.5 * GUI_GRID_H + GUI_GRID_Y;
             w = 19 * GUI_GRID_W;
-            h = 17 * GUI_GRID_H;
+            h = 19.5 * GUI_GRID_H;
             colorBackground[] = {0, 0, 0, 0.5};
             sizeEx = 0.8 * GUI_GRID_H;
             text = "";
