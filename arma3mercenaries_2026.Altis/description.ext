@@ -212,6 +212,8 @@ class CfgRemoteExec
 		class A3M_fnc_deleteMarkerGlobal { allowedTargets = 0; jip = 1; };
 		class A3M_fnc_updateMarkerText { allowedTargets = 0; jip = 1; };
 		class A3M_fnc_serverSatelliteSweep { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_serverBlackfishSweep { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_clientBlackfishFeed { allowedTargets = 1; jip = 1; };
 		class A3M_fnc_requestTask { allowedTargets = 2; jip = 1; };
 		
 		// GRAD Persistence & Economy
