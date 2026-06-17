@@ -17,9 +17,12 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
         _spawnPos = getPos _source;
     };
     
-    // Spawn a quadcopter 50m above and 15m away from the caller
-    _spawnPos = _spawnPos getPos [15, random 360];
-    _spawnPos set [2, 50];
+    // Find a relatively safe spot on the ground near the squad
+    private _safePos = [_spawnPos, 2, 15, 1, 0, 20, 0] call BIS_fnc_findSafePos;
+    if (_safePos isEqualTo []) then { _safePos = _spawnPos getPos [5, random 360]; };
+    
+    _spawnPos = _safePos;
+    _spawnPos set [2, 0.2]; // Spawn practically on the ground
     
     private _side = if (_source isEqualType grpNull) then { side _source } else { side group _source };
     private _class = "O_UAV_01_F"; // default to enemy
@@ -29,6 +32,7 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
     private _vehArray = [_spawnPos, random 360, _class, _side] call BIS_fnc_spawnVehicle;
     _drone = _vehArray select 0;
     createVehicleCrew _drone;
+    _drone engineOn true; // Force engine to spool up immediately
 } else {
     // Legacy support if someone passes an actual drone
     _drone = _source;
@@ -55,6 +59,9 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name
 
 [_drone, _target] spawn {
     params ["_drone", "_target"];
+    
+    // Give the drone 3 seconds to take off and clear ground obstacles
+    sleep 3;
     
     private _dropped = false;
     
