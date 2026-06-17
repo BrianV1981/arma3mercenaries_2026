@@ -17,9 +17,9 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
         _spawnPos = getPos _source;
     };
     
-    // Spawn a quadcopter 300m above and slightly away from the caller
-    _spawnPos = _spawnPos getPos [150, random 360];
-    _spawnPos set [2, 300];
+    // Spawn a quadcopter 50m above and 15m away from the caller
+    _spawnPos = _spawnPos getPos [15, random 360];
+    _spawnPos set [2, 50];
     
     private _side = if (_source isEqualType grpNull) then { side _source } else { side group _source };
     private _class = "O_UAV_01_F"; // default to enemy
@@ -44,8 +44,12 @@ if (isNull (_drone getVariable ["A3M_Payload", objNull])) then {
 private _grp = group driver _drone;
 while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) select 0); };
 
-_drone setBehaviour "AWARE";
-_drone setCombatMode "RED";
+// Force careless and fly at 50m so it goes straight without evasive maneuvers
+_drone setBehaviour "CARELESS";
+_drone setCombatMode "BLUE";
+_drone disableAI "TARGET";
+_drone disableAI "AUTOTARGET";
+_drone flyInHeight 50;
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name _target];
 
@@ -58,7 +62,7 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name
         private _targetPos = getPosASL _target;
         _drone doMove ASLToAGL _targetPos;
         
-        // Distance check
+        // Distance check (using 2D distance since it's 50m in the air)
         if ((_drone distance2D _target) < 15) then {
             [_drone, driver _drone] call A3M_fnc_dropPayload;
             _dropped = true;
@@ -66,12 +70,9 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name
         sleep 0.5;
     };
     
-    // RTB after drop
+    // Consumed after drop
     if (alive _drone) then {
-        // Fly away to a random safe distance to loiter or despawn
-        private _safePos = _drone getPos [2000, random 360];
-        _drone doMove _safePos;
-        sleep 60;
+        sleep 2; // Let it stabilize slightly after drop before deleting
         {deleteVehicle _x} forEach crew _drone;
         deleteVehicle _drone;
     };

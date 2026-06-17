@@ -17,9 +17,9 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
         _spawnPos = getPos _source;
     };
     
-    // Spawn a quadcopter 300m above and slightly away from the caller
-    _spawnPos = _spawnPos getPos [150, random 360];
-    _spawnPos set [2, 300];
+    // Spawn a quadcopter 50m above and 15m away from the caller
+    _spawnPos = _spawnPos getPos [15, random 360];
+    _spawnPos set [2, 50];
     
     private _side = if (_source isEqualType grpNull) then { side _source } else { side group _source };
     private _class = "O_UAV_01_F"; // default to enemy
@@ -48,17 +48,38 @@ if (isNull (_drone getVariable ["A3M_Payload", objNull])) then {
 private _grp = group driver _drone;
 while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) select 0); };
 
+// Force careless and dive bomb
 _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
+_drone disableAI "TARGET";
+_drone disableAI "AUTOTARGET";
+_drone flyInHeight 10; // Try to fly directly into the ground/target
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
 
 // Force dive
 [_drone, _target] spawn {
     params ["_drone", "_target"];
-    while {alive _drone && alive _target} do {
+    
+    private _detonated = false;
+    
+    while {alive _drone && alive _target && !_detonated} do {
         private _pos = getPosASL _target;
         _drone doMove ASLToAGL _pos;
+        
+        // If it gets within 15 meters 3D distance or 10 meters 2D distance, detonate
+        if ((_drone distance _target) < 15 || (_drone distance2D _target) < 10) then {
+            _drone setDamage 1; // Detonates the armed payload
+            _detonated = true;
+        };
+        sleep 0.5;
+    };
+    
+    // Clean up if the target died before drone arrived or it detonated
+    if (alive _drone) then {
+        _drone setDamage 1; // Just blow it up anyway as consumption
         sleep 1;
+        {deleteVehicle _x} forEach crew _drone;
+        deleteVehicle _drone;
     };
 };
