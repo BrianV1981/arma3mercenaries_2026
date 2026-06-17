@@ -89,4 +89,7 @@ private _fnc_waitUntil = {
     private _vars = _unitDataHash getOrDefault ["vars", []];
     [_vars,_unit] call FUNC(loadObjectVars);
 
+    // --- A.I.M. Lobby Dummy Overwrite Fix ---
+    _unit setVariable ["A3M_GearLoaded", true, true];
+
 }, [_this,_playerWaitCondition]] call CBA_fnc_waitUntilAndExecute;

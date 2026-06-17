@@ -15,6 +15,11 @@ params [
 if (!isServer) exitWith {};
 if ([_unit] call FUNC(isBlacklisted)) exitWith {};
 
+// --- A.I.M. Lobby Dummy Overwrite Fix ---
+if (!(_unit getVariable ["A3M_GearLoaded", false])) exitWith {
+    diag_log "A3M_GearLoaded false - Aborting savePlayer to prevent dummy overwrite";
+};
+
 if (isNil "_allPlayerVariableClasses") then {
     private _allVariableClasses = "true" configClasses (missionConfigFile >> "CfgGradPersistence" >> "customVariables");
     _allPlayerVariableClasses = _allVariableClasses select {
