@@ -66,7 +66,7 @@ private _catDB = ["A3M_ConstellisDB", "[Constellis Database]", "", {}, {true}] c
 
 
 // 3. A3M HVT Satellite Tracker -> [Support & Logistics]
-private _actLocateHVT = ["A3M_LocateHVT", "Locate HVT (Satellite Uplink)", "", {
+private _actLocateHVT = ["A3M_LocateHVT", "Palantir Gotham (Intelligence and Tracking)", "", {
     [] execVM "arma3mercenaries\tasks\fn_openHVTTrackerMenu.sqf";
 }, {true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_LogisticsStore"], _actLocateHVT] call ace_interact_menu_fnc_addActionToObject;

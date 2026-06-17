@@ -8,12 +8,12 @@ class A3M_HVTTrackerDialog {
             x = 0.35 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;
-            h = 0.5 * safezoneH;
+            h = 0.6 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 0.95};
         };
         class Title: grad_lbm_RscText {
             idc = 9025;
-            text = "SPACEX SATELLITE UPLINK: LOCATE HVT";
+            text = "PALANTIR TRACKING SYSTEMS";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;
@@ -34,7 +34,7 @@ class A3M_HVTTrackerDialog {
         };
         class CostText: grad_lbm_RscText {
             idc = 9026;
-            text = "COST: $100,000";
+            text = "SELECT PALANTIR SERVICE";
             x = 0.36 * safezoneW + safezoneX;
             y = 0.58 * safezoneH + safezoneY;
             w = 0.28 * safezoneW;
@@ -44,20 +44,30 @@ class A3M_HVTTrackerDialog {
         };
         class BuyBtn: grad_lbm_RscButton {
             idc = 9022;
-            text = "AUTHORIZE SATELLITE SWEEP";
+            text = "SpaceX Satellite Sweep ($100k)";
             x = 0.36 * safezoneW + safezoneX;
-            y = 0.65 * safezoneH + safezoneY;
-            w = 0.135 * safezoneW;
+            y = 0.63 * safezoneH + safezoneY;
+            w = 0.28 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.2, 0.8, 0.2, 1};
             action = "[] call A3M_fnc_buySatelliteSweep;";
         };
+        class BuyDroneBtn: grad_lbm_RscButton {
+            idc = 9028;
+            text = "Constellis Drone Sweep ($50k)";
+            x = 0.36 * safezoneW + safezoneX;
+            y = 0.68 * safezoneH + safezoneY;
+            w = 0.28 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0.8, 0.6, 0.2, 1};
+            action = "[] call A3M_fnc_buyDroneSweep;";
+        };
         class BuyBlackfishBtn: grad_lbm_RscButton {
             idc = 9027;
-            text = "AUTHORIZE BLACKFISH STRIKE";
-            x = 0.505 * safezoneW + safezoneX;
-            y = 0.65 * safezoneH + safezoneY;
-            w = 0.135 * safezoneW;
+            text = "Constellis Blackfish Attack Mission ($200k)";
+            x = 0.36 * safezoneW + safezoneX;
+            y = 0.73 * safezoneH + safezoneY;
+            w = 0.28 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0.2, 0.2, 1};
             action = "[] call A3M_fnc_buyBlackfishSweep;";
@@ -66,7 +76,7 @@ class A3M_HVTTrackerDialog {
             idc = 9023;
             text = "CANCEL";
             x = 0.36 * safezoneW + safezoneX;
-            y = 0.70 * safezoneH + safezoneY;
+            y = 0.79 * safezoneH + safezoneY;
             w = 0.28 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0.2, 0.2, 0.8};

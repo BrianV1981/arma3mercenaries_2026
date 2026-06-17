@@ -31,13 +31,15 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             // We physically teleport the player's invisible, invincible body to the target location
             // so ALiVE natively detects them and uncaches the sector.
             if (vehicle player != player) then { moveOut player; sleep 0.1; };
-            private _originalPos = getPosATL player;
+            private _originalPos = getPosASL player;
             player allowDamage false;
+            player setVariable ["ace_medical_allowDamage", false, true];
             player setCaptive true;
             [player, true] remoteExec ["hideObjectGlobal", 2];
             player hideObject true;
             
-            // Place player exactly at the HVT so ALiVE natively uncaches the sector
+            // Place player exactly at the HVT initially to ensure ALiVE uncaches it
+            player setVelocity [0,0,0];
             player setPosATL _exactPos;
             
             // Multi-stage cinematic startup sequence to give ALiVE plenty of time to spawn AI
@@ -68,7 +70,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             "filmGrain" ppEffectCommit 0;
 
             A3M_SatCam camPrepareTarget _exactPos;
-            A3M_SatCam camPrepareFOV 0.5;
+            A3M_SatCam camPrepareFOV 0.9;
             A3M_SatCam camCommitPrepared 0;
             
             // Text overlay
@@ -87,7 +89,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             ] spawn BIS_fnc_infoText;
             
             // Global state for Event Handlers
-            A3M_SatCam_FOV = 0.5;
+            A3M_SatCam_FOV = 0.9;
             A3M_SatCam_ForceExit = false;
             A3M_SatCam_VisionMode = 0;
             
@@ -128,21 +130,31 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
                 };
             }];
             
-            // Orbit Loop
-            private _angle = 0;
-            private _radius = 400; // Orbit radius
+            // Linear Satellite Pass Loop
             private _duration = 60; // 1 full minute
             private _startTime = time;
             
+            // Random pass trajectory (random angle from 0 to 360)
+            private _passAngle = random 360;
+            private _passStart = _exactPos getPos [1200, _passAngle];
+            private _passEnd = _exactPos getPos [1200, _passAngle - 180];
+            
             while {time - _startTime < _duration && !A3M_SatCam_ForceExit} do {
-                _angle = _angle + 0.2; // Speed of orbit
-                private _x = (_exactPos select 0) + (sin _angle * _radius);
-                private _y = (_exactPos select 1) + (cos _angle * _radius);
+                private _progress = (time - _startTime) / _duration; // 0.0 to 1.0
                 
-                // Adjust altitude based on zoom to give a parallax effect
-                private _alt = 400 + (A3M_SatCam_FOV * 400); 
+                private _x = (_passStart select 0) + ((_passEnd select 0) - (_passStart select 0)) * _progress;
+                private _y = (_passStart select 1) + ((_passEnd select 1) - (_passStart select 1)) * _progress;
+                
+                // Extremely high altitude base (1200m)
+                private _alt = 1200;
                 
                 A3M_SatCam setPosATL [_x, _y, _alt];
+                
+                // Move player's physical body with the camera so the audio listener is in the sky, not ground zero
+                // ALiVE will still uncache the base because the body is within the 1500m-3000m vertical spawn cylinder
+                player setVelocity [0,0,0];
+                player setPosATL [_x, _y, _alt];
+                
                 sleep 0.05;
             };
             
@@ -157,8 +169,11 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             camUseNVG false; false setCamUseTi 0;
             
             // Restore Player Body
-            player setPosATL _originalPos;
+            player setVelocity [0,0,0];
+            player setPosASL _originalPos;
+            player setVelocity [0,0,0];
             player allowDamage true;
+            player setVariable ["ace_medical_allowDamage", true, true];
             player setCaptive false;
             [player, false] remoteExec ["hideObjectGlobal", 2];
             player hideObject false;
@@ -171,10 +186,10 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
 
 if (isNil "A3M_fnc_clientBlackfishFeed") then {
     A3M_fnc_clientBlackfishFeed = {
-        params ["_gunship", "_gunner", "_taskId"];
+        params ["_gunship", "_gunner", "_taskId", "_exactPos"];
         
-        [_gunship, _gunner, _taskId] spawn {
-            params ["_gunship", "_gunner", "_taskId"];
+        [_gunship, _gunner, _taskId, _exactPos] spawn {
+            params ["_gunship", "_gunner", "_taskId", "_exactPos"];
             
             titleText ["ESTABLISHING SECURE UPLINK...", "BLACK FADED", 10];
             sleep 2;
@@ -185,6 +200,19 @@ if (isNil "A3M_fnc_clientBlackfishFeed") then {
             titleText ["CALIBRATING OPTICS...", "BLACK FADED", 10];
             sleep 2;
             titleText ["", "BLACK IN", 2];
+            
+            // ALiVE Spoof Teleportation (Forces base to spawn natively)
+            if (vehicle player != player) then { moveOut player; sleep 0.1; };
+            private _originalPos = getPosASL player;
+            player allowDamage false;
+            player setVariable ["ace_medical_allowDamage", false, true];
+            player setCaptive true;
+            [player, true] remoteExec ["hideObjectGlobal", 2];
+            player hideObject true;
+            
+            // Attach player's physical body to the gunship so audio originates from the sky, not the ground impact zone
+            // ALiVE will still uncache the base because the body is right above it
+            player attachTo [_gunship, [0, 0, 0]];
             
             player remoteControl _gunner;
             _gunner switchCamera "GUNNER";
@@ -213,10 +241,97 @@ if (isNil "A3M_fnc_clientBlackfishFeed") then {
             
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Gunship_KeyEH];
             
+            detach player;
             objNull remoteControl _gunner;
             player switchCamera "INTERNAL";
             
+            // Restore Player Body
+            player setVelocity [0,0,0];
+            player setPosASL _originalPos;
+            player setVelocity [0,0,0];
+            player allowDamage true;
+            player setVariable ["ace_medical_allowDamage", true, true];
+            player setCaptive false;
+            [player, false] remoteExec ["hideObjectGlobal", 2];
+            player hideObject false;
+            
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>BLACKFISH UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Gunship returning to base.</t></t>";
+            [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+    };
+};
+
+if (isNil "A3M_fnc_clientDroneFeed") then {
+    A3M_fnc_clientDroneFeed = {
+        params ["_drone", "_gunner", "_taskId", "_exactPos"];
+        
+        [_drone, _gunner, _taskId, _exactPos] spawn {
+            params ["_drone", "_gunner", "_taskId", "_exactPos"];
+            
+            titleText ["ESTABLISHING SECURE UPLINK...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["ROUTING THROUGH ORBITAL RELAY...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["SYNCHRONIZING TARGET SENSORS...", "BLACK FADED", 10];
+            sleep 3;
+            titleText ["CALIBRATING OPTICS...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["", "BLACK IN", 2];
+            
+            // ALiVE Spoof Teleportation (Forces base to spawn natively)
+            if (vehicle player != player) then { moveOut player; sleep 0.1; };
+            private _originalPos = getPosASL player;
+            player allowDamage false;
+            player setVariable ["ace_medical_allowDamage", false, true];
+            player setCaptive true;
+            [player, true] remoteExec ["hideObjectGlobal", 2];
+            player hideObject true;
+            
+            // Attach player's physical body to the drone so audio originates from the sky
+            player attachTo [_drone, [0, 0, 0]];
+            
+            player remoteControl _gunner;
+            _gunner switchCamera "GUNNER";
+            
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>CONSTELLIS DRONE UPLINK ACTIVE</t><br/><t size='0.8' color='#AAAAAA'>You have 5 minutes of firing time | Backspace to Abort</t>"];
+            [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
+            
+            A3M_Drone_ForceExit = false;
+            A3M_Drone_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+                params ["_display", "_key"];
+                if (_key == 14 || _key == 1) then { // Backspace or ESC
+                    A3M_Drone_ForceExit = true;
+                    true
+                } else {
+                    false
+                };
+            }];
+            
+            private _duration = 300; // 5 full minutes
+            private _startTime = time;
+            
+            waitUntil {
+                sleep 0.5;
+                (time - _startTime >= _duration) || A3M_Drone_ForceExit || !alive _drone || !alive _gunner
+            };
+            
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Drone_KeyEH];
+            
+            detach player;
+            objNull remoteControl _gunner;
+            player switchCamera "INTERNAL";
+            
+            // Restore Player Body
+            player setVelocity [0,0,0];
+            player setPosASL _originalPos;
+            player setVelocity [0,0,0];
+            player allowDamage true;
+            player setVariable ["ace_medical_allowDamage", true, true];
+            player setCaptive false;
+            [player, false] remoteExec ["hideObjectGlobal", 2];
+            player hideObject false;
+            
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>CONSTELLIS DRONE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Drone returning to base.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         };
     };
@@ -336,6 +451,43 @@ if (isNil "A3M_fnc_buyBlackfishSweep") then {
     };
 };
 
+if (isNil "A3M_fnc_buyDroneSweep") then {
+    A3M_fnc_buyDroneSweep = {
+        diag_log "[A3M DEBUG] DRONE: Button Clicked!";
+        
+        private _display = findDisplay 9020;
+        if (isNull _display) exitWith { diag_log "[A3M DEBUG] DRONE: Exited - Display null."; };
+        private _listbox = _display displayCtrl 9021;
+        
+        private _selectedIndex = lbCurSel _listbox;
+        if (_selectedIndex == -1) exitWith { hint "Select an HVT first."; };
+        
+        private _taskId = _listbox lbData _selectedIndex;
+        if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
+        
+        private _cost = 50000;
+        private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
+        
+        if (_playerFunds < _cost) exitWith {
+            private _msg = format ["<t align='left'><t size='0.8' color='#FF0000'>REQUEST FAILED</t><br/><t size='0.6' color='#FFFFFF'>Insufficient funds. Requires $%1.</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+        
+        closeDialog 0;
+        
+        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>DRONE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Scrambling Drone...<br/>-$%1</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+        [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        
+        titleText ["ESTABLISHING DRONE UPLINK...", "BLACK FADED", 10];
+        
+        [_taskId, player, _cost] spawn {
+            params ["_taskId", "_client", "_cost"];
+            sleep 1;
+            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverDroneSweep", 2];
+        };
+    };
+};
+
 // --- Open Dialog & Populate ---
 createDialog "A3M_HVTTrackerDialog";
 waitUntil { !isNull findDisplay 9020 };
@@ -380,12 +532,7 @@ diag_log format ["[A3M DEBUG] SAT TRACKER: Filtered 'assassination' tasks: %1", 
 
 if (!_activeHVTsFound) then {
     _listbox lbAdd "No active HVT signals detected.";
-    private _buyBtn = _display displayCtrl 9022;
-    _buyBtn ctrlEnable false;
+    (_display displayCtrl 9022) ctrlEnable false;
+    (_display displayCtrl 9027) ctrlEnable false;
+    (_display displayCtrl 9028) ctrlEnable false;
 };
-
-// Set dynamic cost text UI
-// Set dynamic cost text UI
-private _costAmount = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 100000];
-private _costText = _display displayCtrl 9026;
-_costText ctrlSetText format ["COST: $%1", _costAmount];
