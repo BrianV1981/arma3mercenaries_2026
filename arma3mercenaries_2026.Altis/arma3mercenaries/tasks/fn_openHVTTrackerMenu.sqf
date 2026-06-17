@@ -37,13 +37,18 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             [player, true] remoteExec ["hideObjectGlobal", 2];
             player hideObject true;
             
-            // Offset the player 150m away from the HVT so they are never in the camera's center frame
-            private _spoofPos = _exactPos getPos [150, random 360];
-            player setPosATL _spoofPos;
+            // Place player exactly at the HVT so ALiVE natively uncaches the sector
+            player setPosATL _exactPos;
             
-            // Give ALiVE 5 seconds to physically spawn and pathfind the AI before revealing the feed
-            titleText ["SYNCHRONIZING ORBITAL SENSORS...", "BLACK FADED", 10];
-            sleep 5;
+            // Multi-stage cinematic startup sequence to give ALiVE plenty of time to spawn AI
+            titleText ["ESTABLISHING SECURE UPLINK...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["ROUTING THROUGH ORBITAL RELAY...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["SYNCHRONIZING TARGET SENSORS...", "BLACK FADED", 10];
+            sleep 3;
+            titleText ["CALIBRATING OPTICS...", "BLACK FADED", 10];
+            sleep 2;
             titleText ["", "BLACK IN", 2];
             
             showCinemaBorder true;
@@ -67,7 +72,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             A3M_SatCam camCommitPrepared 0;
             
             // Text overlay
-            private _overlayText = format ["<t color='#00FF00' size='1.5'>SPACEX UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | Backspace to Exit</t>", _gridPos];
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>SPACEX UPLINK ACTIVE</t><br/><t size='1'>TARGET GRID: %1</t><br/><t size='0.8' color='#AAAAAA'>Scroll Mouse Wheel to Zoom | 'N' to Toggle Optics | Backspace to Exit</t>", _gridPos];
             [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
             
             // Arma 3 Typing Info Text
@@ -84,6 +89,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             // Global state for Event Handlers
             A3M_SatCam_FOV = 0.5;
             A3M_SatCam_ForceExit = false;
+            A3M_SatCam_VisionMode = 0;
             
             // Zoom Event Handler
             A3M_SatCam_ScrollEH = (findDisplay 46) displayAddEventHandler ["MouseZChanged", {
@@ -98,14 +104,27 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
                 true
             }];
             
-            // Early Exit Event Handler
+            // Keyboard Event Handler
             A3M_SatCam_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
                 params ["_display", "_key"];
                 if (_key == 14 || _key == 1) then { // Backspace or ESC
                     A3M_SatCam_ForceExit = true;
                     true
                 } else {
-                    false
+                    if (_key == 49) then { // N key
+                        A3M_SatCam_VisionMode = A3M_SatCam_VisionMode + 1;
+                        if (A3M_SatCam_VisionMode > 3) then { A3M_SatCam_VisionMode = 0; };
+                        
+                        switch (A3M_SatCam_VisionMode) do {
+                            case 0: { camUseNVG false; false setCamUseTi 0; }; // Normal
+                            case 1: { camUseNVG true; false setCamUseTi 0; }; // NVG
+                            case 2: { camUseNVG false; true setCamUseTi 0; }; // Thermal WHOT
+                            case 3: { camUseNVG false; true setCamUseTi 1; }; // Thermal BHOT
+                        };
+                        true
+                    } else {
+                        false
+                    };
                 };
             }];
             
@@ -135,6 +154,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             
             "colorCorrections" ppEffectEnable false;
             "filmGrain" ppEffectEnable false;
+            camUseNVG false; false setCamUseTi 0;
             
             // Restore Player Body
             player setPosATL _originalPos;
