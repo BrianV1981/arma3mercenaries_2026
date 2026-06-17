@@ -57,11 +57,9 @@ while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) selec
 (group driver _drone) setVariable ["Vcm_Disable", true, true];
 _drone setVariable ["Vcm_Disable", true, true];
 
-_drone setBehaviour "CARELESS";
-_drone setCombatMode "BLUE";
-_drone disableAI "TARGET";
-_drone disableAI "AUTOTARGET";
-_drone disableAI "FSM"; // Stop native evasion state machines
+// Completely lobotomize the Arma 3 AI so it CANNOT pathfind or hover
+_drone disableAI "ALL";
+_drone engineOn true;
 
 private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
 private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
@@ -69,73 +67,66 @@ private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
 
-// Force dive
+// Pure Physics Flight Controller
 [_drone, _target, _targetAlt] spawn {
     params ["_drone", "_target", "_targetAlt"];
     
-    // Give the drone 3 seconds to take off and clear ground obstacles
-    sleep 3;
+    // Phase 1: Vertical Liftoff (Clear ground obstacles)
+    private _liftoffEnd = time + 3;
+    while {time < _liftoffEnd && alive _drone} do {
+        _drone setVelocity [0, 0, 5]; // Ascend at 5 m/s
+        _drone setVectorDirAndUp [vectorDir _drone, [0,0,1]];
+        sleep 0.1;
+    };
     
     private _detonated = false;
-    private _lastPos = [0,0,0];
-    private _diving = false;
     
-    // Initial move command
-    _drone flyInHeight _targetAlt;
-    _drone doMove getPosATL _target;
-    
+    // Phase 2 & 3: Approach and Dive
     while {alive _drone && alive _target && !_detonated} do {
-        private _targetPos = getPosATL _target;
         private _dist2D = _drone distance2D _target;
         
-        // Terminal Dive Phase (Within 50m)
         if (_dist2D < 50) then {
-            if (!_diving) then {
-                _diving = true;
-                _drone disableAI "ALL"; // Completely lobotomize the AI pilot so they stop trying to Auto-Hover
-            };
-            
-            // Calculate a direct vector from the drone to the target's chest
+            // Phase 3: Terminal Dive
             private _pos1 = getPosASL _drone;
             private _pos2 = getPosASL _target;
-            _pos2 set [2, (_pos2 select 2) + 1.2]; 
+            _pos2 set [2, (_pos2 select 2) + 1.2]; // Aim for chest
             
             private _dir = _pos1 vectorFromTo _pos2;
-            
-            // Pull the dynamic dive speed from CBA settings (default 25 m/s)
             private _diveSpeed = missionNamespace getVariable ["A3M_DroneDiveSpeed", 25];
             private _velocity = _dir vectorMultiply _diveSpeed;
             
-            // Physically pitch the nose of the drone down so it looks terrifying
+            // Pitch nose down
             _drone setVectorDirAndUp [_dir, [0,0,1]];
-            
-            // Force the physics engine to slam it forward
             _drone setVelocity _velocity;
             
-            // If it gets within 8 meters 3D distance, detonate
             if ((_drone distance _target) < 8) then {
                 _drone setDamage 1;
                 _detonated = true;
             };
-            
-            sleep 0.1; // Fast update rate for missile mode
-            
         } else {
-            // Normal Approach Phase
-            _drone flyInHeight _targetAlt; // Aggressively force altitude
+            // Phase 2: Horizontal Approach (Physics-driven)
+            private _dirTo = _drone getDir _target;
+            private _speed = 15; // 15 m/s cruise speed
+            private _vx = (sin _dirTo) * _speed;
+            private _vy = (cos _dirTo) * _speed;
             
-            // Only update pathfinding if target moved more than 5 meters
-            if (_targetPos distance2D _lastPos > 5) then {
-                _drone doMove _targetPos;
-                _lastPos = _targetPos;
-            };
-            sleep 0.5;
+            // Altitude correction
+            private _currentAlt = (getPosATL _drone) select 2;
+            private _vz = 0;
+            if (_currentAlt < _targetAlt - 2) then { _vz = 3; }
+            else { if (_currentAlt > _targetAlt + 2) then { _vz = -3; }; };
+            
+            // Level flight pointing at target
+            _drone setVectorDirAndUp [[_vx, _vy, 0], [0,0,1]]; 
+            _drone setVelocity [_vx, _vy, _vz];
         };
+        
+        sleep 0.1; // Run physics loop at 10 ticks per second
     };
     
-    // Clean up if the target died before drone arrived or it detonated
+    // Cleanup
     if (alive _drone) then {
-        _drone setDamage 1; // Blow it up anyway as consumption
+        _drone setDamage 1; 
         sleep 1;
         {deleteVehicle _x} forEach crew _drone;
         deleteVehicle _drone;
