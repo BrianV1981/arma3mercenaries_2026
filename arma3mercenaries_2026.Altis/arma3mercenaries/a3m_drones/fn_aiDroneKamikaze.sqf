@@ -99,7 +99,8 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
             _drone setVectorDirAndUp [_dir, [0,0,1]];
             _drone setVelocity _velocity;
             
-            if ((_drone distance _target) < 8) then {
+            // Proximity fuse: Detonate when within 3 meters (basically physical impact)
+            if ((_drone distance _target) < 3) then {
                 _drone setDamage 1;
                 _detonated = true;
             };
