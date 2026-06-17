@@ -26,6 +26,19 @@ _unitGroup setVariable ["VCM_RQSTHELP",true];
 
 _unitGroup spawn {sleep 300;_this setVariable ["VCM_RQSTHELP",false];};
 
+// --- A.I.M. DRONE WARFARE DISPATCHER ---
+// If the squad is overwhelmed and calling for help, potentially deploy drones
+if (!isNil "A3M_EnableAIDrones" && {A3M_EnableAIDrones}) then {
+    if ((random 100) <= A3M_KamikazeDeployChance) then {
+        [_unitGroup] spawn A3M_fnc_aiDroneKamikaze;
+    } else {
+        if ((random 100) <= A3M_BomberDeployChance) then {
+            [_unitGroup] spawn A3M_fnc_aiDroneBomber;
+        };
+    };
+};
+// ----------------------------------------
+
 
 private _trgtPos = getpos _killer;
 
