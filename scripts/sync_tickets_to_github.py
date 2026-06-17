@@ -52,7 +52,13 @@ def main():
                         
                     try:
                         # Format: ... [A3M_TICKETS_EXPORT] {"author":"...", ...}
+                        # Arma 3 diag_log wraps strings in quotes and doubles internal quotes
                         json_str = line.split("[A3M_TICKETS_EXPORT]", 1)[1].strip()
+                        json_str = json_str.rstrip('"\n\r')
+                        if json_str.startswith('"'):
+                            json_str = json_str[1:]
+                        json_str = json_str.replace('""', '"')
+                        
                         ticket_data = json.loads(json_str)
                         
                         author = ticket_data.get("author", "Unknown Player")
