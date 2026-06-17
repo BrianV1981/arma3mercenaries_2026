@@ -49,15 +49,25 @@ class A3M_HVTTrackerDialog {
             y = 0.65 * safezoneH + safezoneY;
             w = 0.135 * safezoneW;
             h = 0.04 * safezoneH;
-            colorBackground[] = {0.13, 0.54, 0.21, 0.8};
+            colorBackground[] = {0.2, 0.8, 0.2, 1};
             action = "[] call A3M_fnc_buySatelliteSweep;";
+        };
+        class BuyBlackfishBtn: grad_lbm_RscButton {
+            idc = 9027;
+            text = "AUTHORIZE BLACKFISH STRIKE";
+            x = 0.505 * safezoneW + safezoneX;
+            y = 0.65 * safezoneH + safezoneY;
+            w = 0.135 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0.8, 0.2, 0.2, 1};
+            action = "[] call A3M_fnc_buyBlackfishSweep;";
         };
         class CancelBtn: grad_lbm_RscButton {
             idc = 9023;
             text = "CANCEL";
-            x = 0.505 * safezoneW + safezoneX;
-            y = 0.65 * safezoneH + safezoneY;
-            w = 0.135 * safezoneW;
+            x = 0.36 * safezoneW + safezoneX;
+            y = 0.70 * safezoneH + safezoneY;
+            w = 0.28 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0.2, 0.2, 0.8};
             action = "closeDialog 0;";

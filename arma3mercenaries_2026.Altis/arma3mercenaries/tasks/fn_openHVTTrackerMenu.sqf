@@ -169,6 +169,59 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
     };
 };
 
+if (isNil "A3M_fnc_clientBlackfishFeed") then {
+    A3M_fnc_clientBlackfishFeed = {
+        params ["_gunship", "_gunner", "_taskId"];
+        
+        [_gunship, _gunner, _taskId] spawn {
+            params ["_gunship", "_gunner", "_taskId"];
+            
+            titleText ["ESTABLISHING SECURE UPLINK...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["ROUTING THROUGH ORBITAL RELAY...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["SYNCHRONIZING TARGET SENSORS...", "BLACK FADED", 10];
+            sleep 3;
+            titleText ["CALIBRATING OPTICS...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["", "BLACK IN", 2];
+            
+            player remoteControl _gunner;
+            _gunner switchCamera "GUNNER";
+            
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>BLACKFISH UPLINK ACTIVE</t><br/><t size='0.8' color='#AAAAAA'>You have 5 minutes of firing time | Backspace to Abort</t>"];
+            [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
+            
+            A3M_Gunship_ForceExit = false;
+            A3M_Gunship_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+                params ["_display", "_key"];
+                if (_key == 14 || _key == 1) then { // Backspace or ESC
+                    A3M_Gunship_ForceExit = true;
+                    true
+                } else {
+                    false
+                };
+            }];
+            
+            private _duration = 300; // 5 full minutes
+            private _startTime = time;
+            
+            waitUntil {
+                sleep 0.5;
+                (time - _startTime >= _duration) || A3M_Gunship_ForceExit || !alive _gunship || !alive _gunner
+            };
+            
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Gunship_KeyEH];
+            
+            objNull remoteControl _gunner;
+            player switchCamera "INTERNAL";
+            
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>BLACKFISH UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Gunship returning to base.</t></t>";
+            [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+    };
+};
+
 if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
     A3M_fnc_onHVTTrackerSelChanged = {
         params ["_control", "_selectedIndex"];
@@ -232,6 +285,53 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
             sleep 1; // Wait for the fade to complete
             // Delegate to server to get the exact position and spawn spoof player
             [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
+        };
+    };
+};
+
+if (isNil "A3M_fnc_buyBlackfishSweep") then {
+    A3M_fnc_buyBlackfishSweep = {
+        diag_log "[A3M DEBUG] BLACKFISH: Button Clicked!";
+        
+        private _display = findDisplay 9020;
+        if (isNull _display) exitWith { diag_log "[A3M DEBUG] BLACKFISH: Exited - Display null."; };
+        private _listbox = _display displayCtrl 9021;
+        
+        private _selectedIndex = lbCurSel _listbox;
+        diag_log format ["[A3M DEBUG] BLACKFISH: Selected Index: %1", _selectedIndex];
+        
+        if (_selectedIndex == -1) exitWith {
+            hint "Select an HVT first.";
+        };
+        
+        private _taskId = _listbox lbData _selectedIndex;
+        diag_log format ["[A3M DEBUG] BLACKFISH: Selected Task ID: %1", _taskId];
+        if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
+        
+        private _cost = 200000;
+        private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
+        diag_log format ["[A3M DEBUG] BLACKFISH: Cost: %1 | Player Funds: %2", _cost, _playerFunds];
+        
+        if (_playerFunds < _cost) exitWith {
+            diag_log "[A3M DEBUG] BLACKFISH: Exited - Insufficient funds.";
+            private _msg = format ["<t align='left'><t size='0.8' color='#FF0000'>REQUEST FAILED</t><br/><t size='0.6' color='#FFFFFF'>Insufficient funds. Requires $%1.</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+        
+        closeDialog 0; // Close the menu before initiating feed
+        diag_log "[A3M DEBUG] BLACKFISH: Dialog closed. Initiating remote execution...";
+        
+        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>BLACKFISH UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Scrambling Gunship...<br/>-$%1</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+        [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        
+        // Fade to black and spawn thread
+        titleText ["ESTABLISHING BLACKFISH UPLINK...", "BLACK FADED", 10];
+        
+        [_taskId, player, _cost] spawn {
+            params ["_taskId", "_client", "_cost"];
+            sleep 1; // Wait for the fade to complete
+            // Delegate to server to get the exact position and spawn spoof player
+            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverBlackfishSweep", 2];
         };
     };
 };

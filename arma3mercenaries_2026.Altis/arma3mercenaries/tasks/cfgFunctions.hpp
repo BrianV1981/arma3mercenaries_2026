@@ -5,5 +5,6 @@ class A3M_Tasks {
         class initTaskManager {};
         class requestTask {};
         class generateHVT {};
+        class serverBlackfishSweep {};
     };
 };
