@@ -40,19 +40,24 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
 
 if (!alive _drone) exitWith {};
 
+// Attach Explosives based on CBA Setting
+private _payloadClass = missionNamespace getVariable ["A3M_KamikazePayload", "DemoCharge_Remote_Mag"];
+
 // Equip the drone if it doesn't have a payload
 if (isNull (_drone getVariable ["A3M_Payload", objNull])) then {
-    [_drone, "DemoCharge_Remote_Mag"] call A3M_fnc_aiEquipDrone;
+    [_drone, _payloadClass] call A3M_fnc_aiEquipDrone;
 };
 
 // Arm it
 [_drone, driver _drone] call A3M_fnc_armKamikaze;
 
-// Strip waypoints and disable AI components that might prevent crashing
-private _grp = group driver _drone;
-while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) select 0); };
+// Add Impact Physics Detonator (Explodes strictly on physical contact)
+_drone addEventHandler ["EpeContactStart", { 
+    params ["_object1", "_object2", "_selection1", "_selection2", "_force"];
+    // The moment the drone touches anything solid during its dive, blow it up!
+    if (alive _object1) then { _object1 setDamage 1; };
+}];
 
-// Force careless and dive bomb
 // Exclude from VCOM AI interference
 (group driver _drone) setVariable ["Vcm_Disable", true, true];
 _drone setVariable ["Vcm_Disable", true, true];
@@ -65,7 +70,9 @@ private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
 private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
 private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
 
-systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
+if (missionNamespace getVariable ["A3M_DroneDebug", false]) then {
+    systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2! Payload: %3", "KAMIKAZE", name _target, _payloadClass];
+};
 
 // Pure Physics Flight Controller
 [_drone, _target, _targetAlt] spawn {

@@ -414,6 +414,53 @@
     } // function that will be executed once on mission start and every time the setting is changed.
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_DroneDebug", // Internal setting name
+    "CHECKBOX", // setting type
+    "Show AI Drone Debug Messages", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    false, // data for this setting: default value
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_DroneDebug = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_KamikazePayload", // Internal setting name
+    "LIST", // setting type
+    "Kamikaze Payload Type", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [
+        ["DemoCharge_Remote_Mag", "SatchelCharge_Remote_Mag", "HandGrenade", "ACE_M14"],
+        ["Demo Charge (Medium)", "Satchel Charge (Heavy)", "Frag Grenade (Light)", "Incendiary / M14 (Special)"],
+        0
+    ], // data for this setting: [values, labels, defaultIndex]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_KamikazePayload = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_BomberPayload", // Internal setting name
+    "LIST", // setting type
+    "Bomber Payload Type", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [
+        ["SatchelCharge_Remote_Mag", "DemoCharge_Remote_Mag", "HandGrenade", "1Rnd_HE_Grenade_shell"],
+        ["Satchel Charge (Heavy)", "Demo Charge (Medium)", "Frag Grenade (Light)", "40mm HE Shell (Light)"],
+        0
+    ], // data for this setting: [values, labels, defaultIndex]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_BomberPayload = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 

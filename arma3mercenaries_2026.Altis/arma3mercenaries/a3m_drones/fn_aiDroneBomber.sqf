@@ -40,9 +40,12 @@ if (_source isEqualType grpNull || _source isEqualType objNull) then {
 
 if (!alive _drone) exitWith {};
 
+// Attach Explosives based on CBA Setting
+private _payloadClass = missionNamespace getVariable ["A3M_BomberPayload", "SatchelCharge_Remote_Mag"];
+
 // Equip the drone if it doesn't have a payload
 if (isNull (_drone getVariable ["A3M_Payload", objNull])) then {
-    [_drone, "SatchelCharge_Remote_Mag"] call A3M_fnc_aiEquipDrone;
+    [_drone, _payloadClass] call A3M_fnc_aiEquipDrone;
 };
 
 private _grp = group driver _drone;
@@ -61,7 +64,9 @@ private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
 private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
 private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
 
-systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name _target];
+if (missionNamespace getVariable ["A3M_DroneDebug", false]) then {
+    systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2! Payload: %3", "BOMBER", name _target, (missionNamespace getVariable ["A3M_BomberPayload", "SatchelCharge_Remote_Mag"])];
+};
 
 [_drone, _target, _targetAlt] spawn {
     params ["_drone", "_target", "_targetAlt"];
