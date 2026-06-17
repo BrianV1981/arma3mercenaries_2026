@@ -27,7 +27,7 @@ while {alive player && {Vcm_ActivateAI}} do
 		if !(_lineInter isEqualTo []) then
 		{
 			private _finalPos = (_lineInter select 0 select 0);
-			private _enemies = allUnits select {[_side,(side _x)] call BIS_fnc_sideIsEnemy && (currentVisionMode _x isEqualTo 1)};
+			private _enemies = (player nearEntities ["Man", 1000]) select {[_side,(side _x)] call BIS_fnc_sideIsEnemy && (currentVisionMode _x isEqualTo 1)};
 			private _dirPlayer = getdir Player;
 			if !(_enemies isEqualTo []) then
 			{
@@ -45,20 +45,17 @@ while {alive player && {Vcm_ActivateAI}} do
 							[_ne,player],
 							{
 								params ["_ne","_unit"];
-								if (local _ne) then
-								{
-									private _kv = _ne knowsAbout _unit;
-									_ne reveal [_unit,(_kv + 0.4)];
-								};								
+								private _kv = _ne knowsAbout _unit;
+								_ne reveal [_unit,(_kv + 0.4)];
 							}
-						] remoteExec ["bis_fnc_call",0];		
+						] remoteExec ["bis_fnc_call", _ne];		
 					};					
 					_chunkN = _chunkN + 1;
 					sleep 0.1;
 				};			
 			};
-			sleep 1.0;
+			sleep 2.0;
 		};	
 	};
-	sleep 1.0;
+	sleep 2.0;
 };

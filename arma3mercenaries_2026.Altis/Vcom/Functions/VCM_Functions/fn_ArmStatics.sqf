@@ -14,7 +14,7 @@
 */
 
 private _leader = (leader _this);
-private _weaps = nearestObjects [_leader, ["StaticWeapon"], 150];
+private _weaps = _leader nearEntities ["StaticWeapon", 150];
 private _unitArray = (units _this);
 if (count _weaps < 0) exitWith {};
 private _assignedPairs = []; //Static weapon - Gunner pair

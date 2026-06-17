@@ -32,13 +32,7 @@ private _tempB = _tempA;
 //Filter down the closest positions
 private _unitPosition = getposATL _enemy;
 private _acceptableRange = _unitPosition select 2;
-{
-	if ((_x select 2) < (_acceptableRange - 1) || (_x select 2) > (_acceptableRange + 1)) then
-	{
-		_tempA deleteAt _forEachIndex;
-	};
-
-} foreach _tempA;
+_tempA = _tempA select { (_x select 2) >= (_acceptableRange - 1) && (_x select 2) <= (_acceptableRange + 1) };
 
 if (_tempA isEqualTo []) then {_tempA = _tempB;};
 

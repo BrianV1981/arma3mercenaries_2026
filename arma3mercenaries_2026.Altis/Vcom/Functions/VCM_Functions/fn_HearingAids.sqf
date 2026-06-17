@@ -60,7 +60,7 @@ if ((_timeShot + 10) < time) then
 		
 		if (count _snda > 0) then
 		{
-			[_snda,_unit,0.1] remoteExec ["VCM_fnc_KnowAbout",0];	
+			[_snda,_unit,0.1] remoteExec ["VCM_fnc_KnowAbout",2];	
 		};
 		
 		_unit setVariable ["VCM_FTH",time];

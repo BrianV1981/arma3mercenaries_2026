@@ -13,6 +13,7 @@
 
 
 
+/*
 [] spawn {
 	VCOMTEST = true;
 	while {VCOMTEST} do {
@@ -24,6 +25,7 @@
 	};
 
 };
+*/
 
 
 
@@ -84,7 +86,7 @@ if !(_Vcom_Indoor) then
 			(Vehicle _Unit) setDir _dirTo;
 		};
 
-		_StaticList deleteat _foreachindex;
+		//_StaticList deleteat _foreachindex; // Vcom array shift bug fix
 		[_Unit,_CurrentBackPack,_StaticCreated] spawn VCM_fnc_PackStatic;
 	};
 

@@ -42,13 +42,11 @@ if (isNil "_checkStatus" || {(_unit getVariable ["Vcm_Disable",false])} || {!("I
 private _arrayOrg = _unit call VCM_fnc_FriendlyArray;
 _arrayOrg = _arrayOrg - VCM_ARTYLST;
 //Remove players 
-{if (isPlayer _x) then {_arrayOrg deleteAt _foreachIndex;};} foreach _arrayOrg;
+_arrayOrg = _arrayOrg select {!(isPlayer _x)};
 
 private _array2 = _killer call VCM_fnc_FriendlyArray;
 _array2 = _array2 - VCM_ARTYLST;
-{
-	if (_x distance _killer > 501) then {_array2 = _array2 - [_x];};
-} foreach _array2;
+_array2 = _array2 select {(_x distance _killer) <= 501};
 
 
 

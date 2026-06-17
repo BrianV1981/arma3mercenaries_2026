@@ -47,11 +47,11 @@ Vcm_SM = compileFinal "(_this select 0) switchMove (_this select 1);";
 Vcm_PAN = compileFinal "(_this select 0) playActionNow (_this select 1);";
 VCOM_MINEARRAY = [];
 
-//OnEachFrame monitor for mines. Should make them more responsive, without a significant impact on FPS.
+//OnEachFrame monitor for mines. Replaced with a scheduled loop to save FPS.
 [] spawn {
     while {true} do {
         [] call VCM_fnc_MineMonitor;
-        sleep 2;
+        sleep 0.5;
     };
 };
 
