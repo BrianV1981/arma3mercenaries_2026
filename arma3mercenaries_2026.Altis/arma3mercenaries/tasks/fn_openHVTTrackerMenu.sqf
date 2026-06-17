@@ -35,7 +35,16 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             player allowDamage false;
             player setCaptive true;
             [player, true] remoteExec ["hideObjectGlobal", 2];
-            player setPosATL _exactPos;
+            player hideObject true;
+            
+            // Offset the player 150m away from the HVT so they are never in the camera's center frame
+            private _spoofPos = _exactPos getPos [150, random 360];
+            player setPosATL _spoofPos;
+            
+            // Give ALiVE 5 seconds to physically spawn and pathfind the AI before revealing the feed
+            titleText ["SYNCHRONIZING ORBITAL SENSORS...", "BLACK FADED", 10];
+            sleep 5;
+            titleText ["", "BLACK IN", 2];
             
             showCinemaBorder true;
             
@@ -132,6 +141,7 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             player allowDamage true;
             player setCaptive false;
             [player, false] remoteExec ["hideObjectGlobal", 2];
+            player hideObject false;
             
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Map has been marked with the HVT's location.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
@@ -195,12 +205,11 @@ if (isNil "A3M_fnc_buySatelliteSweep") then {
         [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         
         // Fade to black and spawn thread
-        titleText ["ESTABLISHING SPACEX UPLINK...", "BLACK", 2];
+        titleText ["ESTABLISHING SPACEX UPLINK...", "BLACK FADED", 10];
         
         [_taskId, player, _cost] spawn {
             params ["_taskId", "_client", "_cost"];
-            sleep 3;
-            titleText ["", "BLACK IN", 2];
+            sleep 1; // Wait for the fade to complete
             // Delegate to server to get the exact position and spawn spoof player
             [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
         };
