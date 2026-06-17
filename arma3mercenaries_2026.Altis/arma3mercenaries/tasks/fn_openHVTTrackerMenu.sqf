@@ -25,6 +25,18 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
         [_exactPos, _gridPos] spawn {
             params ["_exactPos", "_gridPos"];
             
+            // The ALiVE Zeus Camera Trick natively
+            // ALiVE strictly evaluates the physical location of 'player' in the engine.
+            // Since the camera is just a local screen effect, ALiVE ignores it.
+            // We physically teleport the player's invisible, invincible body to the target location
+            // so ALiVE natively detects them and uncaches the sector.
+            if (vehicle player != player) then { moveOut player; sleep 0.1; };
+            private _originalPos = getPosATL player;
+            player allowDamage false;
+            player setCaptive true;
+            [player, true] remoteExec ["hideObjectGlobal", 2];
+            player setPosATL _exactPos;
+            
             showCinemaBorder true;
             
             // Initial Camera Setup
@@ -114,6 +126,12 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             
             "colorCorrections" ppEffectEnable false;
             "filmGrain" ppEffectEnable false;
+            
+            // Restore Player Body
+            player setPosATL _originalPos;
+            player allowDamage true;
+            player setCaptive false;
+            [player, false] remoteExec ["hideObjectGlobal", 2];
             
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Map has been marked with the HVT's location.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;

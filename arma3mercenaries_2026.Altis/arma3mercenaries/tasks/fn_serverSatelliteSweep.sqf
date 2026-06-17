@@ -50,40 +50,5 @@ missionNamespace setVariable ["A3M_HVT_Satellite_LastSweepTime", time, true];
 // Deduct Funds from the specific client
 [_client, -_cost, true] remoteExecCall ["grad_moneymenu_fnc_addFunds", _client];
 
-// Tell the client to start the visual drone feed
+// Tell the client to start the visual drone feed and teleport their physical body to trigger ALiVE
 [_exactPos, _taskId] remoteExec ["A3M_fnc_clientSatelliteFeed", _client];
-
-// Spawning a UAV didn't work because ALiVE requires a player to physically hold the UAV terminal connection.
-// Instead, we will spawn an invisible physical unit and natively register it to the engine's switchableUnits array.
-// ALiVE's internal loop constantly scans switchableUnits to populate its active spawning nodes.
-private _spoofGroup = createGroup (side _client);
-private _spoofPlayer = _spoofGroup createUnit ["B_Survivor_F", _exactPos, [], 0, "NONE"];
-_spoofPlayer hideObjectGlobal true;
-_spoofPlayer allowDamage false;
-_spoofPlayer disableAI "ALL";
-_spoofPlayer setCaptive true;
-
-// Register it natively to the engine so ALiVE picks it up on its next scan
-addSwitchableUnit _spoofPlayer;
-
-// Also aggressively inject it into ALiVE's internal array every second just in case
-[_spoofPlayer] spawn {
-    params ["_spoofPlayer"];
-    private _startTime = time;
-    
-    while {time - _startTime < 65} do {
-        if (!isNil "ALIVE_playerList") then {
-            ALIVE_playerList pushBackUnique _spoofPlayer;
-        };
-        sleep 1;
-    };
-    
-    // Cleanup
-    removeSwitchableUnit _spoofPlayer;
-    if (!isNil "ALIVE_playerList") then {
-        ALIVE_playerList = ALIVE_playerList - [_spoofPlayer];
-    };
-    if (!isNull _spoofPlayer) then {
-        deleteVehicle _spoofPlayer;
-    };
-};
