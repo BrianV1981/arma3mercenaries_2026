@@ -53,7 +53,10 @@ _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
-_drone flyInHeight (15 + random 30); // Random height between 15m and 45m
+private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
+private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
+private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
+_drone flyInHeight _targetAlt;
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name _target];
 

@@ -375,6 +375,32 @@
     } // function that will be executed once on mission start and every time the setting is changed.
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_DroneMinAltitude", // Internal setting name
+    "SLIDER", // setting type
+    "AI Drone Min Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [5,300,10,0], // data for this setting: [min, max, default, number of shown trailing decimals]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_DroneMinAltitude = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_DroneMaxAltitude", // Internal setting name
+    "SLIDER", // setting type
+    "AI Drone Max Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
+    "VCOM SETTINGS", // Pretty name of the category
+    [5,300,50,0], // data for this setting: [min, max, default, number of shown trailing decimals]
+    true, // "_isGlobal" flag
+    {  
+        params ["_value"];
+        A3M_DroneMaxAltitude = _value;
+    } // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 

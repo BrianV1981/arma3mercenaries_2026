@@ -57,7 +57,10 @@ _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
-_drone flyInHeight (10 + random 25); // Random height between 10m and 35m
+private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
+private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
+private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
+_drone flyInHeight _targetAlt;
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
 
