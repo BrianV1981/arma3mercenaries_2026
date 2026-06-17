@@ -53,20 +53,25 @@ private _grp = group driver _drone;
 while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) select 0); };
 
 // Force careless and dive bomb
+// Exclude from VCOM AI interference
+(group driver _drone) setVariable ["Vcm_Disable", true, true];
+_drone setVariable ["Vcm_Disable", true, true];
+
 _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
+_drone disableAI "FSM"; // Stop native evasion state machines
+
 private _minAlt = missionNamespace getVariable ["A3M_DroneMinAltitude", 10];
 private _maxAlt = missionNamespace getVariable ["A3M_DroneMaxAltitude", 50];
 private _targetAlt = _minAlt + random (0 max (_maxAlt - _minAlt));
-_drone flyInHeight _targetAlt;
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
 
 // Force dive
-[_drone, _target] spawn {
-    params ["_drone", "_target"];
+[_drone, _target, _targetAlt] spawn {
+    params ["_drone", "_target", "_targetAlt"];
     
     // Give the drone 3 seconds to take off and clear ground obstacles
     sleep 3;
@@ -75,10 +80,14 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
     private _lastPos = [0,0,0];
     
     // Initial move command
+    _drone flyInHeight _targetAlt;
     _drone doMove getPosATL _target;
     
     while {alive _drone && alive _target && !_detonated} do {
         private _targetPos = getPosATL _target;
+        
+        // Aggressively force altitude to fight Arma's terrain-avoidance climb
+        _drone flyInHeight _targetAlt;
         
         // Only update pathfinding if target moved more than 5 meters
         if (_targetPos distance2D _lastPos > 5) then {
