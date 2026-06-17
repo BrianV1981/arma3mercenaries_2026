@@ -2,6 +2,7 @@ class A3M_TicketMenu {
     idd = 7700;
     movingEnable = true;
     enableSimulation = true;
+    onLoad = "(_this select 0) displayAddEventHandler ['KeyDown', { if ((_this select 1) in [28, 156] && !(_this select 2)) then { true } else { false }; }];";
 
     class controlsBackground {
         class MainBackground: HG_RscText {
@@ -35,7 +36,17 @@ class A3M_TicketMenu {
             idc = -1;
             text = "TICKET TITLE (Short Summary):";
             x = 0.31 * safezoneW + safezoneX;
-            y = 0.32 * safezoneH + safezoneY;
+            y = 0.31 * safezoneH + safezoneY;
+            w = 0.38 * safezoneW;
+            h = 0.03 * safezoneH;
+            font = "RobotoCondensed";
+            sizeEx = 0.035;
+        };
+        class TypeLabel: HG_RscText {
+            idc = -1;
+            text = "TICKET TYPE:";
+            x = 0.31 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
             h = 0.03 * safezoneH;
             font = "RobotoCondensed";
@@ -43,9 +54,9 @@ class A3M_TicketMenu {
         };
         class DescLabel: HG_RscText {
             idc = -1;
-            text = "DETAILED DESCRIPTION:";
+            text = "DETAILED DESCRIPTION (Use Shift+Enter for new lines):";
             x = 0.31 * safezoneW + safezoneX;
-            y = 0.41 * safezoneH + safezoneY;
+            y = 0.47 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
             h = 0.03 * safezoneH;
             font = "RobotoCondensed";
@@ -68,19 +79,27 @@ class A3M_TicketMenu {
         class TitleEdit: HG_RscEdit {
             idc = 7701;
             x = 0.31 * safezoneW + safezoneX;
-            y = 0.36 * safezoneH + safezoneY;
+            y = 0.34 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0, 0, 0, 0.8};
             text = "";
         };
+        class TypeCombo: HG_RscCombo {
+            idc = 7705;
+            x = 0.31 * safezoneW + safezoneX;
+            y = 0.42 * safezoneH + safezoneY;
+            w = 0.38 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0, 0, 0, 0.8};
+        };
         class DescEdit: HG_RscEdit {
             idc = 7702;
             style = 16; // ST_MULTI
             x = 0.31 * safezoneW + safezoneX;
-            y = 0.45 * safezoneH + safezoneY;
+            y = 0.50 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
-            h = 0.23 * safezoneH;
+            h = 0.18 * safezoneH;
             colorBackground[] = {0, 0, 0, 0.8};
             text = "";
             lineSpacing = 1;

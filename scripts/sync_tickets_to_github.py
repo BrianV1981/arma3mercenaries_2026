@@ -65,6 +65,9 @@ def main():
                         uid = ticket_data.get("uid", "Unknown UID")
                         title = ticket_data.get("title", "No Title")
                         desc = ticket_data.get("description", "No Description")
+                        ticket_type = ticket_data.get("type", "Bug")
+                        server_name = ticket_data.get("server", "Unknown Server")
+                        ticket_time = ticket_data.get("time", "Unknown Time")
                         
                         # Create a unique hash for this exact ticket to avoid duplicates
                         import hashlib
@@ -74,18 +77,49 @@ def main():
                             continue # Already synced
                             
                         # Format the GitHub issue body
-                        issue_body = f"**Reporter:** {author} (UID: `{uid}`)\n\n**Description:**\n{desc}\n\n---\n*This ticket was automatically generated from the A3M In-Game Bug Reporter via RPT logs.*"
+                        issue_body = f"**Reporter:** {author} (UID: `{uid}`)\n**Server:** {server_name}\n**Time (UTC):** {ticket_time}\n\n**Description:**\n{desc}\n\n---\n*This ticket was automatically generated from the A3M Ticketing System.*"
                         
-                        # Run GitHub CLI
-                        cmd = [
-                            "gh", "issue", "create",
-                            "--repo", f"{REPO_OWNER}/{REPO_NAME}",
-                            "--title", f"[Player Ticket] {title}",
-                            "--body", issue_body,
-                            "--label", "bug"
-                        ]
+                        # Determine label and title based on type
+                        label = "bug"
+                        issue_title = f"[Player Ticket] {title}"
                         
-                        print(f"[A3M Sync] Pushing ticket '{title}' to GitHub...")
+                        if ticket_type == "Enhancement / Feature Request":
+                            label = "enhancement"
+                            issue_title = f"[Feature Request] {title}"
+                            cmd = [
+                                "gh", "issue", "create",
+                                "--repo", f"{REPO_OWNER}/{REPO_NAME}",
+                                "--title", issue_title,
+                                "--body", issue_body,
+                                "--label", label
+                            ]
+                        elif ticket_type == "Comment":
+                            issue_title = f"{author} ({uid}) suggested: \"{title}\""
+                            issue_body = f'"{desc}"\n\n---\n*Submitted via A3M Ticketing System on {server_name} at {ticket_time}.*'
+                            
+                            # GitHub GraphQL API requires Repository ID and Category ID (using "General" category)
+                            # Repo: R_kgDOSvVd5Q | General Category: DIC_kwDOSvVd5c4C_PZe
+                            graphql_query = 'mutation($repoId: ID!, $catId: ID!, $title: String!, $body: String!) { createDiscussion(input: {repositoryId: $repoId, categoryId: $catId, title: $title, body: $body}) { discussion { url } } }'
+                            
+                            cmd = [
+                                "gh", "api", "graphql",
+                                "-f", f"query={graphql_query}",
+                                "-f", "repoId=R_kgDOSvVd5Q",
+                                "-f", "catId=DIC_kwDOSvVd5c4C_PZe",
+                                "-F", f"title={issue_title}",
+                                "-F", f"body={issue_body}"
+                            ]
+                        else:
+                            # Standard Bug
+                            cmd = [
+                                "gh", "issue", "create",
+                                "--repo", f"{REPO_OWNER}/{REPO_NAME}",
+                                "--title", issue_title,
+                                "--body", issue_body,
+                                "--label", label
+                            ]
+                        
+                        print(f"[A3M Sync] Pushing {ticket_type} '{title}' to GitHub...")
                         subprocess.run(cmd, check=True)
                         
                         # Mark as synced
