@@ -53,7 +53,7 @@ _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
-_drone flyInHeight 50;
+_drone flyInHeight 5; // User requested 5 meters
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name _target];
 
@@ -64,12 +64,21 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "BOMBER", name
     sleep 3;
     
     private _dropped = false;
+    private _lastPos = [0,0,0];
+    
+    // Initial move command
+    _drone doMove getPosATL _target;
     
     while {alive _drone && alive _target && !_dropped} do {
-        private _targetPos = getPosASL _target;
-        _drone doMove ASLToAGL _targetPos;
+        private _targetPos = getPosATL _target;
         
-        // Distance check (using 2D distance since it's 50m in the air)
+        // Only update pathfinding if target moved more than 5 meters to prevent AI flaring/hovering
+        if (_targetPos distance2D _lastPos > 5) then {
+            _drone doMove _targetPos;
+            _lastPos = _targetPos;
+        };
+        
+        // Distance check (using 2D distance since it's 5m in the air)
         if ((_drone distance2D _target) < 15) then {
             [_drone, driver _drone] call A3M_fnc_dropPayload;
             _dropped = true;

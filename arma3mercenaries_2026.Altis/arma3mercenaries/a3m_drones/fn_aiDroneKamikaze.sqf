@@ -57,7 +57,7 @@ _drone setBehaviour "CARELESS";
 _drone setCombatMode "BLUE";
 _drone disableAI "TARGET";
 _drone disableAI "AUTOTARGET";
-_drone flyInHeight 10; // Try to fly directly into the ground/target
+_drone flyInHeight 5; // Target 5m above ground
 
 systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", name _target];
 
@@ -69,10 +69,19 @@ systemChat format ["[A3M] Enemy %1 Drone deployed targeting %2!", "KAMIKAZE", na
     sleep 3;
     
     private _detonated = false;
+    private _lastPos = [0,0,0];
+    
+    // Initial move command
+    _drone doMove getPosATL _target;
     
     while {alive _drone && alive _target && !_detonated} do {
-        private _pos = getPosASL _target;
-        _drone doMove ASLToAGL _pos;
+        private _targetPos = getPosATL _target;
+        
+        // Only update pathfinding if target moved more than 5 meters
+        if (_targetPos distance2D _lastPos > 5) then {
+            _drone doMove _targetPos;
+            _lastPos = _targetPos;
+        };
         
         // If it gets within 15 meters 3D distance or 10 meters 2D distance, detonate
         if ((_drone distance _target) < 15 || (_drone distance2D _target) < 10) then {
