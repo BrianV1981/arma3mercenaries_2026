@@ -4,7 +4,7 @@ class Header
 	minPlayers = 1;
 	maxPlayers = 30;
 };
-OnLoadName = "arma3mercenaries Bv8.77_fix_issue_34_15373";
+OnLoadName = "arma3mercenaries (DEV BUILD)";
 onLoadMission = "Constellis is a trusted and experienced provider of security services in high-risk environments, remote areas and emerging markets in support of land-based, aviation, maritime and cyber operations.";
 loadScreen = "pictures\arma3mercenaries_v1.paa";
 author="BrianV1981";
