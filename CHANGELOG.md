@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.22.7] - 2026-06-18
+- Update: Integrated newly designed mission.sqm from operator.
+- Fix: Resolved null object error in ALiVE task rewards when killer is UAV or environmental.
+- Fix: Rewired ALiVE task rewards to use global `grad_moneymenu_fnc_addFunds` API instead of manually bypassing UI state.
+
 ## [v1.22.6] - 2026-06-18
 - Fix: Perfect restoration of Shadow Ops V2 extracted directly from 0310 test build PBO (Reverted agent hallucination)
 
