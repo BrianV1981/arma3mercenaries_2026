@@ -13,5 +13,6 @@ class A3M_Tasks {
         class serverWipeoutSweep {};
         class serverStomperSweep {};
         class serverDarterSweep {};
+        class initALiVERewards { postInit = 1; };
     };
 };

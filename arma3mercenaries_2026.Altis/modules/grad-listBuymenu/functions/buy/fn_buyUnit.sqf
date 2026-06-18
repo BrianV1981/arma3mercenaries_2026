@@ -29,6 +29,9 @@ for "_i" from 1 to _amount do {
     // Spawn the unit and add it to the group
     private _unit = _itemConfigName createUnit [_spawnPosition, _group];
     
+    // Disable VCOM AI so they strictly obey the player's commands
+    [_unit] call A3M_fnc_disableVcom;
+    
     // Assign the arma3mercenaries_groupOwner variable to the unit
     private _ownerUID = getPlayerUID _buyer;
     _unit setVariable ["arma3mercenaries_groupOwner", _ownerUID, true];

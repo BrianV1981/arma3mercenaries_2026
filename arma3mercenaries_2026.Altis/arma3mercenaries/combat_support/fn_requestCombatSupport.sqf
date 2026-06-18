@@ -117,7 +117,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                     ["AT MINE", 30],
                     ["ROCKETS", 30]
                 ],
-                ""
+                "[(_this select 0)] call A3M_fnc_disableVcom;"
             ];
         } else {
             _supportData = [
@@ -125,7 +125,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                 _dir,
                 _classname,
                 _callsign,
-                "",
+                "[(_this select 0)] call A3M_fnc_disableVcom;",
                 "0"
             ];
             

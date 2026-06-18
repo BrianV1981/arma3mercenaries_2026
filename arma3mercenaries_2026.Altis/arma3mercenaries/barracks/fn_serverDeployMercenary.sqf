@@ -64,7 +64,7 @@ if (vehicle _client != _client) then {
 
 // Optional: Set skill to max since they are persistent elites
 _unit setSkill 1;
-_unit setVariable ["Vcm_Disable", true, true]; // Disable VCOM AI if running, so they obey the player
+[_unit] call A3M_fnc_disableVcom; // A3M: Completely shield the deployed mercenary from VCOM AI and ALiVE Simulation so they perfectly obey the player
 
 // Register the mercenary (hooks MPKilled event handler)
 [_unit, _mercID] call A3M_fnc_serverRegisterMercenary;
