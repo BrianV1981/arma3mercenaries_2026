@@ -47,7 +47,7 @@ private _exactPos = getPosATL _hvtTarget;
 private _dist = 300 + random 200;
 private _angle = random 360;
 private _spawnPos = [_exactPos select 0, _exactPos select 1, 0] getPos [_dist, _angle];
-_spawnPos set [2, 500]; // Height 500
+_spawnPos set [2, 200]; // Max hover ceiling for Darter is ~200m
 private _vehArray = [_spawnPos, random 360, "B_UAV_01_F", civilian] call BIS_fnc_spawnVehicle;
 private _drone = _vehArray select 0;
 private _crew = _vehArray select 1;
@@ -58,7 +58,7 @@ createVehicleCrew _drone; // Ensure Arma 3 UAV AI is properly linked to the vehi
 // Configure AI to prioritize flying over engaging
 _grp setBehaviour "CARELESS";
 _grp setCombatMode "BLUE";
-_drone flyInHeight 500;
+_drone flyInHeight 200;
 
 // Create Loiter Waypoint
 private _wp = _grp addWaypoint [_exactPos, 0];

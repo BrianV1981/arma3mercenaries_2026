@@ -337,6 +337,80 @@ if (isNil "A3M_fnc_clientDroneFeed") then {
     };
 };
 
+if (isNil "A3M_fnc_clientCameraFeed") then {
+    A3M_fnc_clientCameraFeed = {
+        params ["_drone", "_taskId", "_exactPos"];
+        
+        [_drone, _taskId, _exactPos] spawn {
+            params ["_drone", "_taskId", "_exactPos"];
+            
+            titleText ["ESTABLISHING CAS UPLINK...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["ROUTING THROUGH ORBITAL RELAY...", "BLACK FADED", 10];
+            sleep 2;
+            titleText ["", "BLACK IN", 2];
+            
+            // ALiVE Spoof Teleportation
+            if (vehicle player != player) then { moveOut player; sleep 0.1; };
+            private _originalPos = getPosASL player;
+            player allowDamage false;
+            player setVariable ["ace_medical_allowDamage", false, true];
+            player setCaptive true;
+            [player, true] remoteExec ["hideObjectGlobal", 2];
+            player hideObject true;
+            
+            // Create cinematic camera attached to Wipeout belly
+            private _cam = "camera" camCreate (getPos _drone);
+            _cam cameraEffect ["Internal", "Back"];
+            _cam attachTo [_drone, [0, 4, -3]];
+            _cam camSetTarget _exactPos;
+            _cam camCommit 0;
+            
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>CONSTELLIS CAS UPLINK ACTIVE</t><br/><t size='0.8' color='#AAAAAA'>Observing Strike | Backspace to Abort</t>"];
+            [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
+            
+            A3M_Drone_ForceExit = false;
+            A3M_Drone_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+                params ["_display", "_key"];
+                if (_key == 14 || _key == 1) then { // Backspace or ESC
+                    A3M_Drone_ForceExit = true;
+                    true
+                } else {
+                    false
+                };
+            }];
+            
+            private _duration = 300;
+            private _startTime = time;
+            
+            waitUntil {
+                sleep 0.5;
+                // Continuously track target
+                _cam camSetTarget _exactPos;
+                _cam camCommit 0.5;
+                (time - _startTime >= _duration) || A3M_Drone_ForceExit || !alive _drone
+            };
+            
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Drone_KeyEH];
+            
+            _cam cameraEffect ["Terminate", "Back"];
+            camDestroy _cam;
+            
+            // Restore Player Body
+            player setVelocity [0,0,0];
+            player setPosASL _originalPos;
+            player allowDamage true;
+            player setVariable ["ace_medical_allowDamage", true, true];
+            player setCaptive false;
+            [player, false] remoteExec ["hideObjectGlobal", 2];
+            player hideObject false;
+            
+            private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>CAS UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Asset returning to base.</t></t>";
+            [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
+        };
+    };
+};
+
 if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
     A3M_fnc_onHVTTrackerSelChanged = {
         params ["_control", "_selectedIndex"];

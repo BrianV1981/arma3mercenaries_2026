@@ -61,9 +61,8 @@ _wp setWaypointType "LOITER";
 _wp setWaypointLoiterRadius 1500;
 _wp setWaypointLoiterType "CIRCLE_L";
 
-// Tell the client to remote control the AI Pilot
-private _gunner = driver _drone;
-[_drone, _gunner, _taskId, _exactPos] remoteExec ["A3M_fnc_clientDroneFeed", _client];
+// Provide cinematic camera feed to the client
+[_drone, _taskId, _exactPos] remoteExec ["A3M_fnc_clientCameraFeed", _client];
 
 // Server-Side Cleanup Thread
 [_drone, _crew, _grp] spawn {

@@ -55,11 +55,11 @@ _grp setBehaviour "COMBAT";
 _grp setCombatMode "RED";
 _drone flyInHeight 300;
 
-// Create Loiter Waypoint
+// Create Attack Waypoint
 private _wp = _grp addWaypoint [_exactPos, 0];
-_wp setWaypointType "LOITER";
-_wp setWaypointLoiterRadius 500;
-_wp setWaypointLoiterType "CIRCLE_L";
+_wp setWaypointType "SAD";
+_wp setWaypointCombatMode "RED";
+_wp setWaypointBehaviour "COMBAT";
 
 // Tell the client to remote control the AI Gunner
 private _gunner = gunner _drone;

@@ -52,6 +52,10 @@ private _grp = _vehArray select 2;
 
 createVehicleCrew _drone; // Ensure Arma 3 UAV AI is properly linked to the vehicle terminal
 
+// Equip Sentinel with 6x Scalpel AGMs so the Gunner can fire them directly! (Fixes the GBU release issue)
+_drone setPylonLoadOut [1, "PylonRack_3Rnd_LG_scalpel"];
+_drone setPylonLoadOut [2, "PylonRack_3Rnd_LG_scalpel"];
+
 // Configure AI to prioritize flying over engaging
 _grp setBehaviour "CARELESS";
 _grp setCombatMode "BLUE";
