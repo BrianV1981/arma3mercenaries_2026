@@ -72,7 +72,7 @@ fi
 
 echo "Packing to $OUTPUT_PBO..."
 
-cd /home/brian-vasquez/aim-arma/projects/arma-projects/external-tools/arma3pbo && PYTHONPATH=src python3 -m arma3pbo.main build -p "$STAGING_DIR" -o "$OUTPUT_PBO"
+cd /home/brian-vasquez/aim-a3m/external-tools/arma3pbo && PYTHONPATH=src python3 -m arma3pbo.main build -p "$STAGING_DIR" -o "$OUTPUT_PBO"
 
 if [ $? -eq 0 ]; then
     echo "Successfully packed to $OUTPUT_PBO"
