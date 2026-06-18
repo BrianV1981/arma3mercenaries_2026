@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.5] - 2026-06-18
+- Fix: Shadow Ops UI Undefined base class parsing error (HG_Rsc overrides)
+
 ## [v1.22.4] - 2026-06-18
 - Fix: Rollback main and restore 03:10 AM Shadow Ops V2 state (Closes #58)
 

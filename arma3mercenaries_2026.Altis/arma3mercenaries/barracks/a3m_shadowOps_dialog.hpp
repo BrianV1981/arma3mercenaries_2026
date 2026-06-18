@@ -4,7 +4,7 @@ class A3M_ShadowOpsDialog {
     enableSimulation = true;
 
     class controlsBackground {
-        class MainBackground: RscText {
+        class MainBackground: HG_RscText {
             idc = -1;
             x = 0.1 * safezoneW + safezoneX;
             y = 0.1 * safezoneH + safezoneY;
@@ -12,7 +12,7 @@ class A3M_ShadowOpsDialog {
             h = 0.8 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 0.95};
         };
-        class Header: RscText {
+        class Header: HG_RscText {
             idc = -1;
             text = "A3M SHADOW OPERATIONS - CLASSIFIED TERMINAL";
             x = 0.1 * safezoneW + safezoneX;
@@ -26,7 +26,7 @@ class A3M_ShadowOpsDialog {
     };
 
     class controls {
-        class MissionList: RscListBox {
+        class MissionList: HG_RscListBox {
             idc = 7052;
             x = 0.12 * safezoneW + safezoneX;
             y = 0.18 * safezoneH + safezoneY;
@@ -35,7 +35,7 @@ class A3M_ShadowOpsDialog {
             colorBackground[] = {0, 0, 0, 0.8};
             onLBSelChanged = "_this call A3M_fnc_onShadowOpsMissionSelected;";
         };
-        class MissionDetails: RscStructuredText {
+        class MissionDetails: HG_RscStructuredText {
             idc = 7053;
             x = 0.12 * safezoneW + safezoneX;
             y = 0.5 * safezoneH + safezoneY;
@@ -46,7 +46,7 @@ class A3M_ShadowOpsDialog {
         };
         
         // --- ASSET REQUISITION CATALOG ---
-        class AssetCatalogText: RscText {
+        class AssetCatalogText: HG_RscText {
             idc = -1;
             text = "AVAILABLE ASSETS";
             x = 0.36 * safezoneW + safezoneX;
@@ -54,7 +54,7 @@ class A3M_ShadowOpsDialog {
             w = 0.2 * safezoneW;
             h = 0.03 * safezoneH;
         };
-        class AssetCatalogList: RscListBox {
+        class AssetCatalogList: HG_RscListBox {
             idc = 7059;
             x = 0.36 * safezoneW + safezoneX;
             y = 0.19 * safezoneH + safezoneY;
@@ -64,7 +64,7 @@ class A3M_ShadowOpsDialog {
             sizeEx = 0.03;
         };
         
-        class BtnAddAsset: RscButton {
+        class BtnAddAsset: HG_RscButton {
             idc = 7060;
             text = "ADD TO CART ->";
             x = 0.40 * safezoneW + safezoneX;
@@ -73,7 +73,7 @@ class A3M_ShadowOpsDialog {
             h = 0.03 * safezoneH;
             action = "[] call A3M_fnc_shadowOpsAddAsset;";
         };
-        class BtnRemoveAsset: RscButton {
+        class BtnRemoveAsset: HG_RscButton {
             idc = 7061;
             text = "<- REMOVE";
             x = 0.40 * safezoneW + safezoneX;
@@ -83,7 +83,7 @@ class A3M_ShadowOpsDialog {
             action = "[] call A3M_fnc_shadowOpsRemoveAsset;";
         };
         
-        class PurchasedAssetsText: RscText {
+        class PurchasedAssetsText: HG_RscText {
             idc = -1;
             text = "PURCHASED ASSETS (CART)";
             x = 0.36 * safezoneW + safezoneX;
@@ -91,7 +91,7 @@ class A3M_ShadowOpsDialog {
             w = 0.2 * safezoneW;
             h = 0.03 * safezoneH;
         };
-        class PurchasedAssetsList: RscListBox {
+        class PurchasedAssetsList: HG_RscListBox {
             idc = 7062;
             x = 0.36 * safezoneW + safezoneX;
             y = 0.51 * safezoneH + safezoneY;
@@ -101,7 +101,7 @@ class A3M_ShadowOpsDialog {
             sizeEx = 0.03;
         };
         
-        class OperationalPlanDetails: RscStructuredText {
+        class OperationalPlanDetails: HG_RscStructuredText {
             idc = 7063;
             x = 0.36 * safezoneW + safezoneX;
             y = 0.67 * safezoneH + safezoneY;
@@ -112,7 +112,7 @@ class A3M_ShadowOpsDialog {
         };
 
         // --- SQUAD ASSIGNMENT ---
-        class AvailableRosterText: RscText {
+        class AvailableRosterText: HG_RscText {
             idc = -1;
             text = "STOWED ROSTER";
             x = 0.6 * safezoneW + safezoneX;
@@ -120,7 +120,7 @@ class A3M_ShadowOpsDialog {
             w = 0.12 * safezoneW;
             h = 0.03 * safezoneH;
         };
-        class AvailableRosterList: RscListBox {
+        class AvailableRosterList: HG_RscListBox {
             idc = 7066;
             x = 0.6 * safezoneW + safezoneX;
             y = 0.19 * safezoneH + safezoneY;
@@ -130,7 +130,7 @@ class A3M_ShadowOpsDialog {
             sizeEx = 0.035;
         };
         
-        class BtnAssign: RscButton {
+        class BtnAssign: HG_RscButton {
             idc = -1;
             text = "ASSIGN ->";
             x = 0.73 * safezoneW + safezoneX;
@@ -139,7 +139,7 @@ class A3M_ShadowOpsDialog {
             h = 0.04 * safezoneH;
             action = "[] call A3M_fnc_shadowOpsAddMerc;";
         };
-        class BtnUnassign: RscButton {
+        class BtnUnassign: HG_RscButton {
             idc = -1;
             text = "<- REMOVE";
             x = 0.73 * safezoneW + safezoneX;
@@ -149,7 +149,7 @@ class A3M_ShadowOpsDialog {
             action = "[] call A3M_fnc_shadowOpsRemoveMerc;";
         };
         
-        class AssignedRosterText: RscText {
+        class AssignedRosterText: HG_RscText {
             idc = -1;
             text = "ASSIGNED TO OPERATION";
             x = 0.8 * safezoneW + safezoneX;
@@ -157,7 +157,7 @@ class A3M_ShadowOpsDialog {
             w = 0.15 * safezoneW;
             h = 0.03 * safezoneH;
         };
-        class AssignedRosterList: RscListBox {
+        class AssignedRosterList: HG_RscListBox {
             idc = 7067;
             x = 0.8 * safezoneW + safezoneX;
             y = 0.19 * safezoneH + safezoneY;
@@ -168,7 +168,7 @@ class A3M_ShadowOpsDialog {
             onLBSelChanged = "[] call A3M_fnc_onShadowOpsPlanChanged;";
         };
         
-        class BtnCalcImpact: RscButton {
+        class BtnCalcImpact: HG_RscButton {
             idc = -1;
             text = "CALCULATE IMPACT";
             x = 0.6 * safezoneW + safezoneX;
@@ -179,7 +179,7 @@ class A3M_ShadowOpsDialog {
             action = "[] call A3M_fnc_onShadowOpsPlanChanged;";
         };
 
-        class BtnDispatch: RscButton {
+        class BtnDispatch: HG_RscButton {
             idc = 7064;
             text = "DISPATCH SQUAD (INITIATE OPERATION)";
             x = 0.6 * safezoneW + safezoneX;
@@ -191,7 +191,7 @@ class A3M_ShadowOpsDialog {
             action = "[] call A3M_fnc_shadowOpsDispatch;";
         };
 
-        class BtnClose: RscButton {
+        class BtnClose: HG_RscButton {
             idc = -1;
             text = "CLOSE";
             x = 0.82 * safezoneW + safezoneX;
