@@ -92,15 +92,19 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                                 if (_price > 0) then {
                                     A3M_Armory_GradPrices set [toLower _className, _price];
                                         
-                                    // Categorize for Arsenal Whitelisting
-                                    private _details = _className call BIS_fnc_itemType;
-                                    private _cat = _details select 0;
-                                    private _type = _details select 1;
-                                    
-                                    if (_cat == "Weapon") then { _whitelistWeapons pushBackUnique _className; };
-                                    if (_cat == "Magazine") then { _whitelistMagazines pushBackUnique _className; };
-                                    if (_type == "Backpack") then { _whitelistBackpacks pushBackUnique _className; } else {
-                                        if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBackUnique _className; };
+                                    // Check if it's out of stock in the dynamic economy
+                                    private _activeShortages = missionNamespace getVariable ["A3M_ActiveShortages", createHashMap];
+                                    if (!(_activeShortages getOrDefault [_className, false])) then {
+                                        // Categorize for Arsenal Whitelisting
+                                        private _details = _className call BIS_fnc_itemType;
+                                        private _cat = _details select 0;
+                                        private _type = _details select 1;
+                                        
+                                        if (_cat == "Weapon") then { _whitelistWeapons pushBackUnique _className; };
+                                        if (_cat == "Magazine") then { _whitelistMagazines pushBackUnique _className; };
+                                        if (_type == "Backpack") then { _whitelistBackpacks pushBackUnique _className; } else {
+                                            if (_cat == "Item" || _cat == "Equipment") then { _whitelistItems pushBackUnique _className; };
+                                        };
                                     };
                                 };
                             };
@@ -210,6 +214,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
             private _totalCost = 0;
             private _contraband = false;
             
+            private _activeSales = missionNamespace getVariable ["A3M_ActiveSales", createHashMap];
             {
                 private _item = _x;
                 private _newQty = _y;
@@ -221,6 +226,9 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
                     if (_p == 0) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _item]; 
                         _contraband = true;
+                    } else {
+                        private _discountMult = _activeSales getOrDefault [_item, 1];
+                        _p = round (_p * _discountMult);
                     };
                     _totalCost = _totalCost + (_p * _diff); 
                 };
@@ -340,6 +348,7 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     
     private _totalCost = 0;
     
+    private _activeSales = missionNamespace getVariable ["A3M_ActiveSales", createHashMap];
     {
         private _item = _x;
         private _newQty = _y;
@@ -348,6 +357,8 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         if (_newQty > _oldQty) then {
             private _diff = _newQty - _oldQty;
             private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
+            private _discountMult = _activeSales getOrDefault [_item, 1];
+            _p = round (_p * _discountMult);
             _totalCost = _totalCost + (_p * _diff); 
         };
     } forEach _newCounts;
