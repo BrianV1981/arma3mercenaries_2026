@@ -414,7 +414,55 @@ if (isNil "A3M_fnc_clientCameraFeed") then {
 if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
     A3M_fnc_onHVTTrackerSelChanged = {
         params ["_control", "_selectedIndex"];
-        // Logic to update UI when a new HVT is selected (e.g. updating the cost if it were dynamic)
+        private _display = ctrlParent _control;
+        private _taskId = _control lbData _selectedIndex;
+        private _map = _display displayCtrl 9023;
+        
+        private _exactPos = [0,0,0];
+        private _targetType = "HVT"; // HVT, FRIENDLY, ENEMY
+        
+        if (_taskId select [0, 7] == "PLAYER_") then {
+            private _uid = _taskId select [7];
+            {
+                if (getPlayerUID _x == _uid) exitWith {
+                    _exactPos = getPosASL _x;
+                    if (side group _x == playerSide) then { _targetType = "FRIENDLY"; } else { _targetType = "ENEMY"; };
+                };
+            } forEach allPlayers;
+        } else {
+            _exactPos = taskDestination _taskId;
+        };
+        
+        if !(_exactPos isEqualTo [0,0,0]) then {
+            _map ctrlMapAnimAdd [1, 0.1, _exactPos];
+            ctrlMapAnimCommit _map;
+        };
+        
+        private _combo = _display displayCtrl 9030;
+        lbClear _combo;
+        
+        private _services = [
+            ["SpaceX Satellite Sweep", 100000, "A3M_fnc_serverSatelliteSweep"]
+        ];
+        
+        if (_targetType != "ENEMY") then {
+            _services append [
+                ["UCAV Sentinel Scan", 150000, "A3M_fnc_serverSentinelSweep"],
+                ["AH-99 Blackfoot CAS", 200000, "A3M_fnc_serverBlackfootSweep"],
+                ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"],
+                ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
+                ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
+                ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],
+                ["Armed Stomper UGV", 50000, "A3M_fnc_serverStomperSweep"]
+            ];
+        };
+        
+        {
+            _x params ["_name", "_cost", "_func"];
+            private _idx = _combo lbAdd format["%1 ($%2)", _name, [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+            _combo lbSetData [_idx, str [_cost, _name, _func]];
+        } forEach _services;
+        _combo lbSetCurSel 0;
     };
 };
 
@@ -471,60 +519,55 @@ lbClear _listbox;
 private _activeHVTsFound = false;
 
 private _activeTasks = [];
-diag_log "[A3M DEBUG] SAT TRACKER: Fetching all player tasks via BIS_fnc_tasksUnit...";
 private _allPlayerTasks = player call BIS_fnc_tasksUnit;
-diag_log format ["[A3M DEBUG] SAT TRACKER: Found %1 total player tasks.", count _allPlayerTasks];
 
 {
     if (["assassination", _x] call BIS_fnc_inString) then {
         _activeTasks pushBackUnique _x;
     };
 } forEach _allPlayerTasks;
-diag_log format ["[A3M DEBUG] SAT TRACKER: Filtered 'assassination' tasks: %1", _activeTasks];
 
 {
     private _taskId = _x;
     private _state = [_taskId] call BIS_fnc_taskState;
-    diag_log format ["[A3M DEBUG] SAT TRACKER: Evaluating Task: %1 | State: %2", _taskId, _state];
-    
-    // Only display if it hasn't succeeded/failed/canceled
     if (_state != "SUCCEEDED" && _state != "FAILED" && _state != "CANCELED") then {
         _activeHVTsFound = true;
-        
         private _taskDescArray = _taskId call BIS_fnc_taskDescription;
-        diag_log format ["[A3M DEBUG] SAT TRACKER: Extracted Description Array: %1", _taskDescArray];
-        
         private _taskTitle = if (typeName _taskDescArray == "ARRAY" && {count _taskDescArray > 1}) then { _taskDescArray select 1 } else { _taskId };
         if (typeName _taskTitle != "STRING") then { _taskTitle = str _taskTitle; };
         
-        private _index = _listbox lbAdd _taskTitle;
+        private _index = _listbox lbAdd format ["HVT: %1", _taskTitle];
         _listbox lbSetData [_index, _taskId];
+        _listbox lbSetColor [_index, [1, 0, 0, 1]]; // Red
     };
 } forEach _activeTasks;
 
-private _combo = _display displayCtrl 9030;
-lbClear _combo;
-
-private _services = [
-    ["SpaceX Satellite Sweep", 100000, "A3M_fnc_serverSatelliteSweep"],
-    ["UCAV Sentinel Scan", 150000, "A3M_fnc_serverSentinelSweep"],
-    ["AH-99 Blackfoot CAS", 200000, "A3M_fnc_serverBlackfootSweep"],
-    ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"],
-    ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
-    ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
-    ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],
-    ["Armed Stomper UGV", 50000, "A3M_fnc_serverStomperSweep"]
-];
-
 {
-    _x params ["_name", "_cost", "_func"];
-    private _idx = _combo lbAdd format["%1 ($%2)", _name, [_cost, 1, 0, true] call CBA_fnc_formatNumber];
-    _combo lbSetData [_idx, str [_cost, _name, _func]];
-} forEach _services;
-_combo lbSetCurSel 0;
+    private _name = name _x;
+    private _uid = getPlayerUID _x;
+    if (_uid != "") then {
+        _activeHVTsFound = true;
+        private _isFriendly = (side group _x == playerSide);
+        private _prefix = if (_x == player) then { "SELF" } else { if (_isFriendly) then { "FRIENDLY" } else { "ENEMY" } };
+        private _index = _listbox lbAdd format ["%1: %2", _prefix, _name];
+        _listbox lbSetData [_index, "PLAYER_" + _uid];
+        
+        if (_x == player) then {
+            _listbox lbSetColor [_index, [0, 1, 0, 1]]; // Green
+        } else {
+            if (_isFriendly) then {
+                _listbox lbSetColor [_index, [0, 0.5, 1, 1]]; // Blue
+            } else {
+                _listbox lbSetColor [_index, [1, 0.5, 0, 1]]; // Orange
+            };
+        };
+    };
+} forEach allPlayers;
 
 if (!_activeHVTsFound) then {
-    _listbox lbAdd "No active HVT signals detected.";
+    _listbox lbAdd "No active HVT or Player signals detected.";
     (_display displayCtrl 9022) ctrlEnable false;
     (_display displayCtrl 9030) ctrlEnable false;
+} else {
+    _listbox lbSetCurSel 0; // Trigger EH
 };
