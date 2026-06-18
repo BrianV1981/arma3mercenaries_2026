@@ -24,7 +24,7 @@ if (!isServer) exitWith {};
         private _isPlayerKill = false;
         if (isPlayer _instigator) then { _isPlayerKill = true; };
         if (!_isPlayerKill && isPlayer _killer) then { _isPlayerKill = true; };
-        if (!_isPlayerKill && {UAVControl vehicle _killer select 1 != ""}) then { _isPlayerKill = true; };
+        if (!_isPlayerKill && {!isNull _killer && {UAVControl vehicle _killer select 1 != ""}}) then { _isPlayerKill = true; };
         
         if (_isPlayerKill) then {
             private _killPos = getPosATL _killed;
@@ -109,8 +109,7 @@ if (!isServer) exitWith {};
                                 };
 
                                 if (_eligible) then {
-                                    private _currentFunds = _x getVariable ["grad_lbm_myFunds", 0];
-                                    _x setVariable ["grad_lbm_myFunds", _currentFunds + _rewardAmount, true];
+                                    [_x, _rewardAmount, false] call grad_moneymenu_fnc_addFunds;
                                 };
                             };
                         } forEach playableUnits;
