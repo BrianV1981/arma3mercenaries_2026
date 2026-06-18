@@ -125,6 +125,14 @@ A3M_fnc_openTargetPlayerCard = compileFinal (preprocessFileLineNumbers "arma3mer
 A3M_fnc_deployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_deployMercenary.sqf");
 A3M_fnc_stowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_stowMercenary.sqf");
 
+A3M_fnc_openShadowOpsDialog = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_openShadowOpsDialog.sqf");
+A3M_fnc_onShadowOpsPlanChanged = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_onShadowOpsPlanChanged.sqf");
+A3M_fnc_shadowOpsAddMerc = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_shadowOpsAddMerc.sqf");
+A3M_fnc_shadowOpsRemoveMerc = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_shadowOpsRemoveMerc.sqf");
+A3M_fnc_shadowOpsAddAsset = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_shadowOpsAddAsset.sqf");
+A3M_fnc_shadowOpsRemoveAsset = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_shadowOpsRemoveAsset.sqf");
+A3M_fnc_shadowOpsDispatch = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_shadowOpsDispatch.sqf");
+
 // 5. Survival Operations -> [Camp]
 private _actSetCamp = [
     "A3M_SetCamp",

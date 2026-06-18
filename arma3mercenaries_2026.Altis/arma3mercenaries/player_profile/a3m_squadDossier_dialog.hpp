@@ -62,6 +62,17 @@ class A3M_SquadDossierDialog {
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7040)}; [] call A3M_fnc_openPlayerCard; };";
         };
 
+        class ShadowOpsButton: HG_RscButton {
+            idc = 7048;
+            text = "SHADOW OPERATIONS";
+            x = 0.70 * safezoneW + safezoneX;
+            y = 0.105 * safezoneH + safezoneY;
+            w = 0.15 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0.1, 0.1, 0.1, 1};
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7040)}; [] spawn A3M_fnc_openShadowOpsDialog; };";
+        };
+
         // Active List
         class ActiveList: HG_RscListBox {
             idc = 7042;
