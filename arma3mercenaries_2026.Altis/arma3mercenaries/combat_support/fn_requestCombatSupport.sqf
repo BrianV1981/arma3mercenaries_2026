@@ -117,7 +117,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                     ["AT MINE", 30],
                     ["ROCKETS", 30]
                 ],
-                "(group (_this select 0)) setVariable ['Vcm_Disable',true]; (group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];"
+                "[(_this select 0)] call A3M_fnc_disableVcom;"
             ];
         } else {
             _supportData = [
@@ -125,7 +125,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                 _dir,
                 _classname,
                 _callsign,
-                "(group (_this select 0)) setVariable ['Vcm_Disable',true]; (group (_this select 0)) setVariable ['ALiVE_disableDynamicSimulation',true,true];",
+                "[(_this select 0)] call A3M_fnc_disableVcom;",
                 "0"
             ];
             

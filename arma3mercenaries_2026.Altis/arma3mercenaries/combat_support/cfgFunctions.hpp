@@ -3,5 +3,6 @@ class A3M_CombatSupport {
     class combat_support {
         file = "arma3mercenaries\combat_support";
         class requestCombatSupport {};
+        class disableVcom {};
     };
 };
