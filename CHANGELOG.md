@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.8] - 2026-06-18
+- Fix: ALiVE task reward notification now broadcasts to eligible players via A3M styled `BIS_fnc_dynamicText` instead of logging silently to the server `.rpt`.
+
 ## [v1.22.7] - 2026-06-18
 - Update: Integrated newly designed mission.sqm from operator.
 - Fix: Resolved null object error in ALiVE task rewards when killer is UAV or environmental.
