@@ -7,5 +7,11 @@ class A3M_Tasks {
         class generateHVT {};
         class serverBlackfishSweep {};
         class serverDroneSweep {};
+        class serverSatelliteSweep {};
+        class serverSentinelSweep {};
+        class serverBlackfootSweep {};
+        class serverWipeoutSweep {};
+        class serverStomperSweep {};
+        class serverDarterSweep {};
     };
 };

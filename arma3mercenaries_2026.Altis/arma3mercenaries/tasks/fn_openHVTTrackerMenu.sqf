@@ -344,128 +344,26 @@ if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
     };
 };
 
-if (isNil "A3M_fnc_buySatelliteSweep") then {
-    A3M_fnc_buySatelliteSweep = {
-        diag_log "[A3M DEBUG] SAT SWEEP: Button Clicked!";
-        
-        if (!(missionNamespace getVariable ["A3M_HVT_Satellite_Enabled", true])) exitWith {
-            hint "Satellite sweeps are currently disabled.";
-            diag_log "[A3M DEBUG] SAT SWEEP: Exited - Disabled.";
-        };
-
-        private _cooldown = missionNamespace getVariable ["A3M_HVT_Satellite_Cooldown", 300];
-        private _lastSweep = missionNamespace getVariable ["A3M_HVT_Satellite_LastSweepTime", (time - _cooldown - 1)];
-        if (time - _lastSweep < _cooldown) exitWith {
-            private _timeLeft = ceil (_cooldown - (time - _lastSweep));
-            hint format ["Satellite uplink is recharging...\nAvailable in %1 seconds.", _timeLeft];
-            diag_log format ["[A3M DEBUG] SAT SWEEP: Exited - Cooldown active (%1s left).", _timeLeft];
-        };
-
+if (isNil "A3M_fnc_buyPalantirService") then {
+    A3M_fnc_buyPalantirService = {
         private _display = findDisplay 9020;
-        if (isNull _display) exitWith { diag_log "[A3M DEBUG] SAT SWEEP: Exited - Display null."; };
+        if (isNull _display) exitWith {};
         private _listbox = _display displayCtrl 9021;
+        private _combo = _display displayCtrl 9030;
         
-        private _selectedIndex = lbCurSel _listbox;
-        diag_log format ["[A3M DEBUG] SAT SWEEP: Selected Index: %1", _selectedIndex];
+        private _hvtIndex = lbCurSel _listbox;
+        if (_hvtIndex == -1) exitWith { hint "Select an HVT first."; };
         
-        if (_selectedIndex == -1) exitWith {
-            hint "Select an HVT first.";
-        };
-        
-        private _taskId = _listbox lbData _selectedIndex;
-        diag_log format ["[A3M DEBUG] SAT SWEEP: Selected Task ID: %1", _taskId];
+        private _taskId = _listbox lbData _hvtIndex;
         if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
         
-        private _cost = missionNamespace getVariable ["A3M_HVT_Satellite_Cost", 100000];
-        private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
-        diag_log format ["[A3M DEBUG] SAT SWEEP: Cost: %1 | Player Funds: %2", _cost, _playerFunds];
+        private _serviceIndex = lbCurSel _combo;
+        if (_serviceIndex == -1) exitWith { hint "Select a Palantir service."; };
         
-        if (_playerFunds < _cost) exitWith {
-            diag_log "[A3M DEBUG] SAT SWEEP: Exited - Insufficient funds.";
-            private _msg = format ["<t align='left'><t size='0.8' color='#FF0000'>SWEEP FAILED</t><br/><t size='0.6' color='#FFFFFF'>Insufficient funds. Requires $%1.</t></t>", _cost];
-            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-        };
+        private _serviceDataStr = _combo lbData _serviceIndex;
+        private _serviceData = parseSimpleArray _serviceDataStr;
+        _serviceData params ["_cost", "_serviceName", "_serverFunction"];
         
-        closeDialog 0; // Close the menu before initiating feed
-        diag_log "[A3M DEBUG] SAT SWEEP: Dialog closed. Initiating remote execution...";
-        
-        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>SPACEX UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Re-tasking orbital asset...<br/>-$%1</t></t>", _cost];
-        [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-        
-        // Fade to black and spawn thread
-        titleText ["ESTABLISHING SPACEX UPLINK...", "BLACK FADED", 10];
-        
-        [_taskId, player, _cost] spawn {
-            params ["_taskId", "_client", "_cost"];
-            sleep 1; // Wait for the fade to complete
-            // Delegate to server to get the exact position and spawn spoof player
-            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverSatelliteSweep", 2];
-        };
-    };
-};
-
-if (isNil "A3M_fnc_buyBlackfishSweep") then {
-    A3M_fnc_buyBlackfishSweep = {
-        diag_log "[A3M DEBUG] BLACKFISH: Button Clicked!";
-        
-        private _display = findDisplay 9020;
-        if (isNull _display) exitWith { diag_log "[A3M DEBUG] BLACKFISH: Exited - Display null."; };
-        private _listbox = _display displayCtrl 9021;
-        
-        private _selectedIndex = lbCurSel _listbox;
-        diag_log format ["[A3M DEBUG] BLACKFISH: Selected Index: %1", _selectedIndex];
-        
-        if (_selectedIndex == -1) exitWith {
-            hint "Select an HVT first.";
-        };
-        
-        private _taskId = _listbox lbData _selectedIndex;
-        diag_log format ["[A3M DEBUG] BLACKFISH: Selected Task ID: %1", _taskId];
-        if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
-        
-        private _cost = 200000;
-        private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
-        diag_log format ["[A3M DEBUG] BLACKFISH: Cost: %1 | Player Funds: %2", _cost, _playerFunds];
-        
-        if (_playerFunds < _cost) exitWith {
-            diag_log "[A3M DEBUG] BLACKFISH: Exited - Insufficient funds.";
-            private _msg = format ["<t align='left'><t size='0.8' color='#FF0000'>REQUEST FAILED</t><br/><t size='0.6' color='#FFFFFF'>Insufficient funds. Requires $%1.</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
-            [_msg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-        };
-        
-        closeDialog 0; // Close the menu before initiating feed
-        diag_log "[A3M DEBUG] BLACKFISH: Dialog closed. Initiating remote execution...";
-        
-        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>BLACKFISH UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Scrambling Gunship...<br/>-$%1</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
-        [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
-        
-        // Fade to black and spawn thread
-        titleText ["ESTABLISHING BLACKFISH UPLINK...", "BLACK FADED", 10];
-        
-        [_taskId, player, _cost] spawn {
-            params ["_taskId", "_client", "_cost"];
-            sleep 1; // Wait for the fade to complete
-            // Delegate to server to get the exact position and spawn spoof player
-            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverBlackfishSweep", 2];
-        };
-    };
-};
-
-if (isNil "A3M_fnc_buyDroneSweep") then {
-    A3M_fnc_buyDroneSweep = {
-        diag_log "[A3M DEBUG] DRONE: Button Clicked!";
-        
-        private _display = findDisplay 9020;
-        if (isNull _display) exitWith { diag_log "[A3M DEBUG] DRONE: Exited - Display null."; };
-        private _listbox = _display displayCtrl 9021;
-        
-        private _selectedIndex = lbCurSel _listbox;
-        if (_selectedIndex == -1) exitWith { hint "Select an HVT first."; };
-        
-        private _taskId = _listbox lbData _selectedIndex;
-        if (_taskId == "") exitWith { hint "Invalid HVT selected."; };
-        
-        private _cost = 50000;
         private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
         
         if (_playerFunds < _cost) exitWith {
@@ -475,15 +373,15 @@ if (isNil "A3M_fnc_buyDroneSweep") then {
         
         closeDialog 0;
         
-        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>DRONE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Scrambling Drone...<br/>-$%1</t></t>", [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+        private _deductMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>UPLINK ACTIVE</t><br/><t size='0.6' color='#FFFFFF'>Requesting %1...<br/>-$%2</t></t>", _serviceName, [_cost, 1, 0, true] call CBA_fnc_formatNumber];
         [_deductMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
         
-        titleText ["ESTABLISHING DRONE UPLINK...", "BLACK FADED", 10];
+        titleText [format["ESTABLISHING %1 UPLINK...", toUpper _serviceName], "BLACK FADED", 10];
         
-        [_taskId, player, _cost] spawn {
-            params ["_taskId", "_client", "_cost"];
+        [_taskId, player, _cost, _serverFunction] spawn {
+            params ["_taskId", "_client", "_cost", "_serverFunction"];
             sleep 1;
-            [_taskId, _client, _cost] remoteExec ["A3M_fnc_serverDroneSweep", 2];
+            [_taskId, _client, _cost] remoteExec [_serverFunction, 2];
         };
     };
 };
@@ -530,9 +428,29 @@ diag_log format ["[A3M DEBUG] SAT TRACKER: Filtered 'assassination' tasks: %1", 
     };
 } forEach _activeTasks;
 
+private _combo = _display displayCtrl 9030;
+lbClear _combo;
+
+private _services = [
+    ["SpaceX Satellite Sweep", 100000, "A3M_fnc_serverSatelliteSweep"],
+    ["UCAV Sentinel Scan", 150000, "A3M_fnc_serverSentinelSweep"],
+    ["AH-99 Blackfoot CAS", 200000, "A3M_fnc_serverBlackfootSweep"],
+    ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"],
+    ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
+    ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
+    ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],
+    ["Armed Stomper UGV", 50000, "A3M_fnc_serverStomperSweep"]
+];
+
+{
+    _x params ["_name", "_cost", "_func"];
+    private _idx = _combo lbAdd format["%1 ($%2)", _name, [_cost, 1, 0, true] call CBA_fnc_formatNumber];
+    _combo lbSetData [_idx, str [_cost, _name, _func]];
+} forEach _services;
+_combo lbSetCurSel 0;
+
 if (!_activeHVTsFound) then {
     _listbox lbAdd "No active HVT signals detected.";
     (_display displayCtrl 9022) ctrlEnable false;
-    (_display displayCtrl 9027) ctrlEnable false;
-    (_display displayCtrl 9028) ctrlEnable false;
+    (_display displayCtrl 9030) ctrlEnable false;
 };
