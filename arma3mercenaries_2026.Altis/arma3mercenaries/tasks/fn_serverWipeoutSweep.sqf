@@ -38,8 +38,9 @@ if (_exactPos isEqualTo [0,0,0]) exitWith {
 [_client, -_cost, true] remoteExecCall ["grad_moneymenu_fnc_addFunds", _client];
 
 // Create A-164 Wipeout CAS
-private _spawnPos = [_exactPos select 0, _exactPos select 1, 1000];
-private _vehArray = [_spawnPos, random 360, "B_Plane_CAS_01_dynamicLoadout_F", civilian] call BIS_fnc_spawnVehicle;
+private _spawnPos2D = _exactPos getPos [3000, random 360];
+private _spawnPos = [_spawnPos2D select 0, _spawnPos2D select 1, 1000];
+private _vehArray = [_spawnPos, _spawnPos getDir _exactPos, "B_Plane_CAS_01_dynamicLoadout_F", civilian] call BIS_fnc_spawnVehicle;
 private _drone = _vehArray select 0;
 private _crew = _vehArray select 1;
 private _grp = _vehArray select 2;
