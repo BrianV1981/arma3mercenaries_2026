@@ -62,12 +62,7 @@ _wp setWaypointLoiterType "CIRCLE_L";
 
 // Tell the client to remote control the AI Gunner
 private _gunner = gunner _drone;
-if (!_isPlayerTarget) then {
-    [_drone, _gunner, _taskId, _exactPos] remoteExec ["A3M_fnc_clientDroneFeed", _client];
-} else {
-    private _msg = "<t align='left'><t size='0.8' color='#00FF00'>CAS UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Asset redirected to target coordinates.<br/>ETA 10 seconds.</t></t>";
-    [_msg, 0.0, 0.1, 5, 0.5, 0, 795] remoteExec ["BIS_fnc_dynamicText", _client];
-};
+[_drone, _gunner, _taskId, _exactPos] remoteExec ["A3M_fnc_clientDroneFeed", _client];
 // Server-Side Cleanup Thread
 [_drone, _crew, _grp] spawn {
     params ["_drone", "_crew", "_grp"];

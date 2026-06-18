@@ -278,17 +278,22 @@ if (isNil "A3M_fnc_clientDroneFeed") then {
             sleep 2;
             titleText ["", "BLACK IN", 2];
             
-            // ALiVE Spoof Teleportation (Forces base to spawn natively)
-            if (vehicle player != player) then { moveOut player; sleep 0.1; };
-            private _originalPos = getPosASL player;
-            player allowDamage false;
-            player setVariable ["ace_medical_allowDamage", false, true];
-            player setCaptive true;
-            [player, true] remoteExec ["hideObjectGlobal", 2];
-            player hideObject true;
+            private _isPlayerTarget = (_taskId select [0, 7] == "PLAYER_");
+            private _originalPos = [0,0,0];
             
-            // Attach player's physical body to the drone so audio originates from the sky
-            player attachTo [_drone, [0, 0, 0]];
+            if (!_isPlayerTarget) then {
+                // ALiVE Spoof Teleportation (Forces base to spawn natively)
+                if (vehicle player != player) then { moveOut player; sleep 0.1; };
+                _originalPos = getPosASL player;
+                player allowDamage false;
+                player setVariable ["ace_medical_allowDamage", false, true];
+                player setCaptive true;
+                [player, true] remoteExec ["hideObjectGlobal", 2];
+                player hideObject true;
+                
+                // Attach player's physical body to the drone so audio originates from the sky
+                player attachTo [_drone, [0, 0, 0]];
+            };
             
             player remoteControl _gunner;
             _gunner switchCamera "GUNNER";
@@ -317,19 +322,21 @@ if (isNil "A3M_fnc_clientDroneFeed") then {
             
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Drone_KeyEH];
             
-            detach player;
             objNull remoteControl _gunner;
             player switchCamera "INTERNAL";
             
-            // Restore Player Body
-            player setVelocity [0,0,0];
-            player setPosASL _originalPos;
-            player setVelocity [0,0,0];
-            player allowDamage true;
-            player setVariable ["ace_medical_allowDamage", true, true];
-            player setCaptive false;
-            [player, false] remoteExec ["hideObjectGlobal", 2];
-            player hideObject false;
+            if (!_isPlayerTarget) then {
+                detach player;
+                // Restore Player Body
+                player setVelocity [0,0,0];
+                player setPosASL _originalPos;
+                player setVelocity [0,0,0];
+                player allowDamage true;
+                player setVariable ["ace_medical_allowDamage", true, true];
+                player setCaptive false;
+                [player, false] remoteExec ["hideObjectGlobal", 2];
+                player hideObject false;
+            };
             
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>CONSTELLIS DRONE UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Drone returning to base.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
@@ -350,14 +357,19 @@ if (isNil "A3M_fnc_clientCameraFeed") then {
             sleep 2;
             titleText ["", "BLACK IN", 2];
             
-            // ALiVE Spoof Teleportation
-            if (vehicle player != player) then { moveOut player; sleep 0.1; };
-            private _originalPos = getPosASL player;
-            player allowDamage false;
-            player setVariable ["ace_medical_allowDamage", false, true];
-            player setCaptive true;
-            [player, true] remoteExec ["hideObjectGlobal", 2];
-            player hideObject true;
+            private _isPlayerTarget = (_taskId select [0, 7] == "PLAYER_");
+            private _originalPos = [0,0,0];
+            
+            if (!_isPlayerTarget) then {
+                // ALiVE Spoof Teleportation
+                if (vehicle player != player) then { moveOut player; sleep 0.1; };
+                _originalPos = getPosASL player;
+                player allowDamage false;
+                player setVariable ["ace_medical_allowDamage", false, true];
+                player setCaptive true;
+                [player, true] remoteExec ["hideObjectGlobal", 2];
+                player hideObject true;
+            };
             
             // Create cinematic camera attached to Wipeout belly
             private _cam = "camera" camCreate (getPos _drone);
@@ -396,14 +408,16 @@ if (isNil "A3M_fnc_clientCameraFeed") then {
             _cam cameraEffect ["Terminate", "Back"];
             camDestroy _cam;
             
-            // Restore Player Body
-            player setVelocity [0,0,0];
-            player setPosASL _originalPos;
-            player allowDamage true;
-            player setVariable ["ace_medical_allowDamage", true, true];
-            player setCaptive false;
-            [player, false] remoteExec ["hideObjectGlobal", 2];
-            player hideObject false;
+            if (!_isPlayerTarget) then {
+                // Restore Player Body
+                player setVelocity [0,0,0];
+                player setPosASL _originalPos;
+                player allowDamage true;
+                player setVariable ["ace_medical_allowDamage", true, true];
+                player setCaptive false;
+                [player, false] remoteExec ["hideObjectGlobal", 2];
+                player hideObject false;
+            };
             
             private _finalMsg = "<t align='left'><t size='0.8' color='#00FF00'>CAS UPLINK</t><br/><t size='0.6' color='#FFFFFF'>Feed terminated.<br/>Asset returning to base.</t></t>";
             [_finalMsg, 0.0, 0.1, 5, 0.5, 0, 795] spawn BIS_fnc_dynamicText;
