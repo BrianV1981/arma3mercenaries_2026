@@ -378,17 +378,39 @@ if (isNil "A3M_fnc_clientCameraFeed") then {
             _cam camSetTarget _exactPos;
             _cam camCommit 0;
             
-            private _overlayText = format ["<t color='#00FF00' size='1.5'>CONSTELLIS CAS UPLINK ACTIVE</t><br/><t size='0.8' color='#AAAAAA'>Observing Strike | Backspace to Abort</t>"];
+            A3M_ActiveCam = _cam;
+            A3M_Cam_FOV = 0.7;
+            A3M_Cam_VisionMode = 0;
+            
+            private _overlayText = format ["<t color='#00FF00' size='1.5'>CONSTELLIS CAS UPLINK ACTIVE</t><br/><t size='0.8' color='#AAAAAA'>[Scroll] Zoom | [N] Vision Mode | [Backspace] Abort</t>"];
             [_overlayText, 0, 0.8, 10, 1] spawn BIS_fnc_dynamicText;
             
             A3M_Drone_ForceExit = false;
+            
+            A3M_Drone_MouseEH = (findDisplay 46) displayAddEventHandler ["MouseZChanged", {
+                params ["_display", "_scroll"];
+                if (_scroll > 0) then { A3M_Cam_FOV = A3M_Cam_FOV - 0.1; } else { A3M_Cam_FOV = A3M_Cam_FOV + 0.1; };
+                if (A3M_Cam_FOV < 0.05) then { A3M_Cam_FOV = 0.05; };
+                if (A3M_Cam_FOV > 0.9) then { A3M_Cam_FOV = 0.9; };
+                if (!isNull A3M_ActiveCam) then { A3M_ActiveCam camSetFov A3M_Cam_FOV; A3M_ActiveCam camCommit 0.1; };
+                false
+            }];
+            
             A3M_Drone_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
                 params ["_display", "_key"];
                 if (_key == 14 || _key == 1) then { // Backspace or ESC
                     A3M_Drone_ForceExit = true;
                     true
                 } else {
-                    false
+                    if (_key == 49) then { // N key
+                        A3M_Cam_VisionMode = A3M_Cam_VisionMode + 1;
+                        if (A3M_Cam_VisionMode > 3) then { A3M_Cam_VisionMode = 0; };
+                        if (A3M_Cam_VisionMode == 0) then { camUseNVG false; false setCamUseTi 0; };
+                        if (A3M_Cam_VisionMode == 1) then { camUseNVG true; false setCamUseTi 0; };
+                        if (A3M_Cam_VisionMode == 2) then { camUseNVG false; true setCamUseTi 0; }; // WHOT
+                        if (A3M_Cam_VisionMode == 3) then { camUseNVG false; true setCamUseTi 1; }; // BHOT
+                        true
+                    } else { false };
                 };
             }];
             
@@ -404,6 +426,10 @@ if (isNil "A3M_fnc_clientCameraFeed") then {
             };
             
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Drone_KeyEH];
+            (findDisplay 46) displayRemoveEventHandler ["MouseZChanged", A3M_Drone_MouseEH];
+            
+            // Reset vision modes
+            camUseNVG false; false setCamUseTi 0;
             
             _cam cameraEffect ["Terminate", "Back"];
             camDestroy _cam;
