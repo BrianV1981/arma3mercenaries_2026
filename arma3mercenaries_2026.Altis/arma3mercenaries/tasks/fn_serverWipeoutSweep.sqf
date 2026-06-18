@@ -44,16 +44,18 @@ private _drone = _vehArray select 0;
 private _crew = _vehArray select 1;
 private _grp = _vehArray select 2;
 
-// Configure AI to prioritize flying over engaging
+// Configure AI to prioritize engaging
 _grp setBehaviour "COMBAT";
 _grp setCombatMode "RED";
-_drone flyInHeight 1000;
+_drone flyInHeight 500; // Lower altitude for better strafing runs
 
-// Create Loiter Waypoint
+// Replace useless Anti-Air (AA) missiles on wingtips with extra 82mm HE Rocket Pods
+_drone setPylonLoadout [1, "PylonRack_7Rnd_Rocket_04_HE_F", true];
+_drone setPylonLoadout [10, "PylonRack_7Rnd_Rocket_04_HE_F", true];
+
+// Create Search and Destroy (SAD) Waypoint for aggressive strafing
 private _wp = _grp addWaypoint [_exactPos, 0];
-_wp setWaypointType "LOITER";
-_wp setWaypointLoiterRadius 1500;
-_wp setWaypointLoiterType "CIRCLE_L";
+_wp setWaypointType "SAD";
 
 // Provide cinematic camera feed to the client
 [_drone, _taskId, _exactPos] remoteExec ["A3M_fnc_clientCameraFeed", _client];
