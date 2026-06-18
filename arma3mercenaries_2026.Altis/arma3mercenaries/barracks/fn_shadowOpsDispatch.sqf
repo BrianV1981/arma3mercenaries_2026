@@ -1,76 +1,93 @@
 /*
     fn_shadowOpsDispatch.sqf
-    Handles client-side dispatch validation.
+    Triggered when the player clicks DISPATCH SQUAD in the Shadow Ops UI.
 */
 disableSerialization;
+
 private _display = findDisplay 7050;
 if (isNull _display) exitWith {};
 
+// 1. Get Selected Mission
 private _missionListCtrl = _display displayCtrl 7052;
-private _assignedListCtrl = _display displayCtrl 7067;
-private _purchasedList = _display displayCtrl 7062;
+private _selectedMissionIndex = lbCurSel _missionListCtrl;
 
-private _selIndex = lbCurSel _missionListCtrl;
-if (_selIndex == -1) exitWith { systemChat "You must select a mission."; };
+if (_selectedMissionIndex == -1) exitWith {
+    systemChat "Error: You must select a contract first.";
+};
 
-if (lbSize _assignedListCtrl == 0) exitWith { systemChat "You cannot dispatch a mission with no assigned squad members."; };
-
-private _missionIdxStr = _missionListCtrl lbData _selIndex;
-private _missionIndex = parseNumber _missionIdxStr;
+private _missionIndexStr = _missionListCtrl lbData _selectedMissionIndex;
+private _missionIndex = parseNumber _missionIndexStr;
 private _missions = _display getVariable ["A3M_ShadowOps_Missions", []];
-private _selectedMission = _missions select _missionIndex;
+private _missionData = _missions select _missionIndex;
 
-_selectedMission params ["_opName", "_mType", "_desc", "_baseDiff", "_mReward", "_time", "_weather", "_reqClass"];
+// Remove mission from session array so it doesn't appear again
+private _sessionMissions = player getVariable ["A3M_ShadowOps_SessionMissions", []];
+if (_missionIndex < count _sessionMissions) then {
+    _sessionMissions deleteAt _missionIndex;
+    player setVariable ["A3M_ShadowOps_SessionMissions", _sessionMissions];
+};
 
-// Extract Asset Info
+// 2. Tally Upgrades from Cart
+private _purchasedList = _display displayCtrl 7062;
 private _allAssets = _display getVariable ["A3M_ShadowOps_Catalog", []];
+
 private _totalCost = 0;
-private _purchasedAssetData = [];
+private _intelMod = 0;
+private _p1Mod = 0;
+private _p2Mod = 0;
+private _p3Mod = 0;
+
+private _assetNames = [];
 
 for "_i" from 0 to ((lbSize _purchasedList) - 1) do {
-    private _dataStr = _purchasedList lbData _i;
-    private _asset = _allAssets select (parseNumber _dataStr);
-    _totalCost = _totalCost + (_asset select 2);
-    _purchasedAssetData pushBack _asset;
+    private _assetIdx = parseNumber (_purchasedList lbData _i);
+    private _assetData = _allAssets select _assetIdx;
+    
+    _assetData params ["_cat", "_name", "_cost", "_iMod", "_1Mod", "_2Mod", "_3Mod"];
+    
+    _totalCost = _totalCost + _cost;
+    _intelMod = _intelMod + _iMod;
+    _p1Mod = _p1Mod + _1Mod;
+    _p2Mod = _p2Mod + _2Mod;
+    _p3Mod = _p3Mod + _3Mod;
+    _assetNames pushBack _name;
 };
 
-// Add Hazard Pay Cost ($20k per Merc)
-private _squadCount = lbSize _assignedListCtrl;
-private _hazardPayCost = _squadCount * 20000;
-_totalCost = _totalCost + _hazardPayCost;
+// 3. Get Selected Mercenaries from the Assigned Listbox
+private _selectedList = _display displayCtrl 7067;
+private _squadCount = lbSize _selectedList;
 
-// Check funds
-private _playerFunds = player getVariable ["grad_lbm_myFunds", 0];
+if (_squadCount == 0) exitWith {
+    systemChat "Error: You must assign at least one mercenary to the squad before dispatching.";
+};
+
+private _selectedMercs = [];
+for "_i" from 0 to (_squadCount - 1) do {
+    private _mercID = _selectedList lbData _i;
+    _selectedMercs pushBack _mercID;
+};
+
+// Add hazard pay
+private _hazardPay = _squadCount * 20000;
+_totalCost = _totalCost + _hazardPay;
+
+// 4. Financial Check
+private _playerFunds = [player, false] call grad_lbm_fnc_getFunds;
 if (_playerFunds < _totalCost) exitWith {
-    systemChat format ["Insufficient funds. You need $%1 to cover Hazard Pay and Assets.", _totalCost];
+    systemChat format ["Error: Insufficient funds. You need $%1 for this operational plan.", _totalCost];
 };
 
-// Extract selected mercs
-private _dispatchedMercIDs = [];
-for "_i" from 0 to ((lbSize _assignedListCtrl) - 1) do {
-    _dispatchedMercIDs pushBack (_assignedListCtrl lbData _i);
+// Deduct Funds
+if (_totalCost > 0) then {
+    [player, -_totalCost] call grad_lbm_fnc_addFunds;
 };
 
-// Verify we have an Infil and Exfil selected (required)
-private _hasInfil = false;
-private _hasExfil = false;
-{
-    if ((_x select 0) == "INFIL") then { _hasInfil = true; };
-    if ((_x select 0) == "EXFIL") then { _hasExfil = true; };
-} forEach _purchasedAssetData;
+// Package plan data and append the purchased asset names to it so the server can re-verify synergies with ACTUAL weather
+private _planData = [_intelMod, _p1Mod, _p2Mod, _p3Mod, _assetNames];
 
-if (!_hasInfil) exitWith { systemChat "Error: You MUST purchase an INFIL method."; };
-if (!_hasExfil) exitWith { systemChat "Error: You MUST purchase an EXFIL method."; };
+// 5. Dispatch to server
+[_missionData, _selectedMercs, _planData, player] remoteExecCall ["A3M_fnc_serverShadowOpsDispatch", 2];
 
-// Validated! Deduct funds
-[player, -_totalCost] remoteExecCall ["grad_lbm_fnc_addFunds", 2];
-systemChat format ["Squad dispatched. $%1 deducted (Assets + Hazard Pay).", _totalCost];
-
-// Remove the mission from local session so it can't be spammed
-_missions deleteAt _missionIndex;
-player setVariable ["A3M_ShadowOps_SessionMissions", _missions];
-
+// Close dialog and notify
 closeDialog 0;
-
-// Send to server
-[_dispatchedMercIDs, _selectedMission, _purchasedAssetData, player] remoteExecCall ["A3M_fnc_serverShadowOpsThread", 2];
+systemChat format ["Dispatch orders sent. Operation funded: $%1 deducted.", _totalCost];

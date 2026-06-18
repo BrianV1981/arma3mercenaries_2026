@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.6] - 2026-06-18
+- Fix: Perfect restoration of Shadow Ops V2 extracted directly from 0310 test build PBO (Reverted agent hallucination)
+
 ## [v1.22.5] - 2026-06-18
 - Fix: Shadow Ops UI Undefined base class parsing error (HG_Rsc overrides)
 

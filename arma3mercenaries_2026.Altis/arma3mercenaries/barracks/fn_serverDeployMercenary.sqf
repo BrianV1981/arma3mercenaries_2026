@@ -20,6 +20,9 @@ if (count _profile == 0) exitWith { "Error: Database profile not found." remoteE
 
 if (_profile getOrDefault ["IsDead", false]) exitWith { "Error: This mercenary is dead." remoteExecCall ["systemChat", _client]; };
 
+private _shadowStatus = _profile getOrDefault ["ShadowOps_Status", "Stowed"];
+if (_shadowStatus != "Stowed") exitWith { format ["Error: Mercenary is currently %1 on a Shadow Operation.", _shadowStatus] remoteExecCall ["systemChat", _client]; };
+
 private _class = _profile getOrDefault ["Class", ""];
 if (_class == "") exitWith { "Error: Invalid class in database." remoteExecCall ["systemChat", _client]; };
 

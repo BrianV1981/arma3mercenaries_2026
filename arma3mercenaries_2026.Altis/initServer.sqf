@@ -211,8 +211,12 @@ A3M_fnc_serverSatelliteSweep = compileFinal (preprocessFileLineNumbers "arma3mer
 
 // Virtual Barracks Server Functions
 A3M_fnc_serverDeployMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverDeployMercenary.sqf");
-A3M_fnc_serverGlobalWakeup = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverGlobalWakeup.sqf");
 A3M_fnc_serverStowMercenary = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverStowMercenary.sqf");
+A3M_fnc_serverGlobalWakeup = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverGlobalWakeup.sqf");
+
+A3M_fnc_serverFetchShadowOpsRoster = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverFetchShadowOpsRoster.sqf");
+A3M_fnc_serverShadowOpsDispatch = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverShadowOpsDispatch.sqf");
+A3M_fnc_serverShadowOpsThread = compileFinal (preprocessFileLineNumbers "arma3mercenaries\barracks\fn_serverShadowOpsThread.sqf");
 
 A3M_fnc_serverFetchProfileForClient = {
     params ["_clientObj"];

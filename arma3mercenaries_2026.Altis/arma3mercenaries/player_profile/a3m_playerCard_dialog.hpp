@@ -130,6 +130,20 @@ class A3M_PlayerProfileDialog {
             colorBackgroundActive[] = {0.8, 0.4, 0.1, 1};
         };
 
+        class ShadowOpsButton: HG_RscButton {
+            idc = -1;
+            text = "SHADOW OPS";
+            x = 27.5 * GUI_GRID_W + GUI_GRID_X;
+            y = 0.75 * GUI_GRID_H + GUI_GRID_Y;
+            w = 6 * GUI_GRID_W;
+            h = 0.8 * GUI_GRID_H;
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7020)}; [] spawn A3M_fnc_openShadowOpsDialog; };";
+            colorText[] = {1, 1, 1, 1};
+            colorBackground[] = {0.1, 0.1, 0.1, 1};
+            colorBackgroundActive[] = {0.3, 0.3, 0.3, 1};
+        };
+
+
         class CloseButton: HG_RscButton {
             idc = -1;
             text = "X";

@@ -41,12 +41,12 @@ minPlayerDistance = 0;
 #include "arma3mercenaries\player_profile\a3m_playerCard_dialog.hpp"
 #include "arma3mercenaries\player_profile\a3m_fieldManual_dialog.hpp"
 #include "arma3mercenaries\player_profile\a3m_squadDossier_dialog.hpp"
+#include "arma3mercenaries\barracks\a3m_shadowOps_dialog.hpp"
 #include "arma3mercenaries\leaderboard\a3m_leaderboard_dialog.hpp"
 #include "arma3mercenaries\bounty\a3m_bountyBoard_dialog.hpp"
 #include "arma3mercenaries\ticketing\a3m_ticket_dialog.hpp"
 #include "arma3mercenaries\a3m_blackmarket\ui\a3m_quartermasterHub_dialog.hpp"
 #include "arma3mercenaries\tasks\a3m_hvtTracker_dialog.hpp"
-#include "arma3mercenaries\barracks\a3m_shadowOps_dialog.hpp"
 
 ///https://github.com/Ghosto27/LootToVehicle/tree/master
 ///ace area loot start
@@ -194,6 +194,9 @@ class CfgRemoteExec
 		class A3M_fnc_receiveProfileData { allowedTargets = 1; jip = 1; };
 		class A3M_fnc_serverFetchSquadDossier { allowedTargets = 2; jip = 1; };
 		class A3M_fnc_receiveSquadDossierData { allowedTargets = 1; jip = 1; };
+		class A3M_fnc_serverFetchShadowOpsRoster { allowedTargets = 2; jip = 1; };
+		class A3M_fnc_receiveShadowOpsRoster { allowedTargets = 1; jip = 1; };
+		class A3M_fnc_serverShadowOpsDispatch { allowedTargets = 2; jip = 1; };
 		class A3M_fnc_serverIncrementStat { allowedTargets = 2; jip = 1; };
 		class A3M_fnc_serverLogTransaction { allowedTargets = 2; jip = 1; };
 		class A3M_fnc_serverUpdatePedometer { allowedTargets = 2; jip = 1; };

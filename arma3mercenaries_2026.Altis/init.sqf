@@ -11,8 +11,8 @@ setPlayerRespawnTime _respawnDelay;
 ///http://alivemod.com/wiki/index.php/Script_Snippets
 /// If you use the ALiVE saving feature one 'issue' is that AI members in the player's group do not get saved or restored. If they are editor-placed units then they will spawn at their original editor start location instead of wherever the player is. To work around this do the following:
 // execVM "arma3mercenaries\ALiVE\aliveGroupMemberPersistence.sqf";
-///http://alivemod.com/wiki/index.php/Script_Snippets
-ALIVE_spawnProfileGroup = compile (preprocessFileLineNumbers "arma3mercenaries\ALiVE\fnc_spawnProfileGroup.sqf");
+///http:// Custom compilation of the ALiVE profile group spawner (Migrated to sector_control)
+ALIVE_spawnProfileGroup = compile (preprocessFileLineNumbers "arma3mercenaries\sector_control\fnc_spawnProfileGroup.sqf");
 
 
 

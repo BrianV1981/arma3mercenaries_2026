@@ -1,140 +1,164 @@
 /*
     fn_serverShadowOpsThread.sqf
-    The massive asynchronous processing thread for Shadow Operations logic on the Server.
+    The Async Story Engine for Shadow Operations.
 */
-params ["_mercIDs", "_missionData", "_assets", "_client"];
+params ["_missionData", "_selectedMercs", "_planData", "_client"];
 
-if (!isServer) exitWith {};
+// Unpack payload
+_missionData params ["_missionName", "_mType", "_missionDesc", "_baseDifficulty", "_rewardMultiplier", "_plannedTime", "_forecastWeather", "_reqClass"];
+_planData params ["_intelMod", "_p1ModBase", "_p2ModBase", "_p3ModBase", "_purchasedAssets"];
 
-_missionData params ["_opName", "_mType", "_desc", "_baseDiff", "_rewardMultiplier", "_forecastTime", "_forecastWeather", "_reqClass"];
+private _squadCount = count _selectedMercs;
+private _squadBonus = _squadCount * 5;
 
-// 1. Mark Mercs as Deployed so they cannot be accessed
-{
-    private _profile = [format["A3M_MERC_%1", _x], createHashMap, true] call A3M_fnc_dbGetSecure;
-    if (count _profile > 0) then {
-        _profile set ["ShadowOps_Status", "ShadowOps"];
-        [format["A3M_MERC_%1", _x], _profile] call A3M_fnc_dbSetSecure;
-    };
-} forEach _mercIDs;
-
+// Helper function for sending stylized UI notifications to the player
 private _fnc_notifyPlayer = {
-    params ["_header", "_msg", "_color"];
-    private _structured = format ["<t color='%3' size='1.2' align='center'>%1</t><br/><br/><t align='center'>%2</t>", _header, _msg, _color];
-    [_structured] remoteExecCall ["hint", _client];
+    params ["_title", "_text", "_color"];
+    private _html = format [
+        "<t align='center' size='1.2' color='%3'>%1</t><br/><br/><t align='center' size='0.9'>%2</t>", 
+        _title, _text, _color
+    ];
+    [parseText _html, "hint"] remoteExecCall ["A3M_fnc_shadowOpsFeedback", _client];
+    uiSleep 8;
 };
 
-["SHADOW OPS DISPATCH", format ["%1 is a go. The squad has gone dark.", _opName], "#FFAA00"] call _fnc_notifyPlayer;
+// ==========================================
+// PRE-EXECUTION: ACTUAL WEATHER & SYNERGIES
+// ==========================================
+["OPERATION LAUNCH", format ["%1 squad members have departed base. Commencing blackout...", _squadCount], "#FFFFFF"] call _fnc_notifyPlayer;
+uiSleep 5;
 
-// Determine TRUE WEATHER (30% chance forecast is wrong)
+// Roll Actual Weather (70% chance to match forecast, 30% chance to be completely random)
+private _weatherTypes = ["Clear", "Overcast", "Rain", "Severe Storm", "Dense Fog"];
 private _actualWeather = _forecastWeather;
-if (random 100 < 30) then {
-    private _weatherTypes = ["Clear", "Overcast", "Rain", "Severe Storm", "Dense Fog"];
+if (random 100 > 70) then {
     _actualWeather = selectRandom _weatherTypes;
-    
-    // Simulate async travel time before briefing update
-    sleep 5;
-    ["METEOROLOGY UPDATE", format ["Commander, the forecast was wrong. Actual weather on target is: %1", _actualWeather], "#FF0000"] call _fnc_notifyPlayer;
+};
+
+if (_actualWeather != _forecastWeather) then {
+    ["WEATHER UPDATE", format ["Meteorology got it wrong. Actual conditions on target are %1. Adjusting parameters.", _actualWeather], "#FFaa00"] call _fnc_notifyPlayer;
+} else {
+    ["WEATHER UPDATE", format ["Conditions hold steady at %1 as forecasted.", _actualWeather], "#00FF00"] call _fnc_notifyPlayer;
 };
 
 // Calculate Class Synergies
+private _hasRequiredClass = false;
 private _hasMedic = false;
-private _hasSpecialist = false;
 {
-    private _profile = [format["A3M_MERC_%1", _x], createHashMap, true] call A3M_fnc_dbGetSecure;
-    private _mercClass = _profile getOrDefault ["Class", ""];
+    private _mercID = _x getOrDefault ["MercID", ""];
+    private _mercClass = _x getOrDefault ["Class", ""];
     
-    if (["medic", _mercClass] call BIS_fnc_inString) then { _hasMedic = true; };
+    private _logicalClass = "Any";
+    if (["medic", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Medic"; _hasMedic = true; };
+    if (["engineer", _mercClass] call BIS_fnc_inString || ["exp", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Engineer"; };
+    if (["sniper", _mercClass] call BIS_fnc_inString || ["marksman", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Sniper"; };
+    if (["at", _mercClass] call BIS_fnc_inString || ["aa", _mercClass] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
     
-    if (_reqClass == "Medic" && ["medic", _mercClass] call BIS_fnc_inString) then { _hasSpecialist = true; };
-    if (_reqClass == "Engineer" && (["engineer", _mercClass] call BIS_fnc_inString || ["exp", _mercClass] call BIS_fnc_inString)) then { _hasSpecialist = true; };
-    if (_reqClass == "Sniper" && (["sniper", _mercClass] call BIS_fnc_inString || ["marksman", _mercClass] call BIS_fnc_inString)) then { _hasSpecialist = true; };
-    if (_reqClass == "AT Specialist" && (["at", _mercClass] call BIS_fnc_inString || ["aa", _mercClass] call BIS_fnc_inString)) then { _hasSpecialist = true; };
-} forEach _mercIDs;
+    if (_logicalClass == _reqClass || _reqClass == "Any") then { _hasRequiredClass = true; };
+} forEach _selectedMercs;
 
-// Calculate Global Odds
-private _p1Mods = 0;
-private _p2Mods = 0;
-private _p3Mods = 0;
+private _p2Mod = _p2ModBase + _squadBonus;
+private _p1Mod = _p1ModBase + _squadBonus;
+private _p3Mod = _p3ModBase + _squadBonus;
 
-{
-    _x params ["_cat", "_name", "_cost", "_p1", "_p2", "_p3"];
-    
-    // Weather Synergy Penalty on Assets
-    if (_name == "Loitering CAS (Wipeout)" && (_actualWeather == "Severe Storm" || _actualWeather == "Dense Fog")) then {
-        _p2 = -30; // Brutal penalty
-    };
-    if (_name == "Escorted Gunship Drop" && (_actualWeather == "Severe Storm")) then {
-        _p1 = -20;
-    };
-    // Time Synergy
-    if (_name == "HALO Drop" && _forecastTime == "1200 Hrs (Noon)") then {
-        _p1 = -30; // Visible drop
-    };
-    if (_name == "HALO Drop" && _forecastTime == "0200 Hrs (Night)") then {
-        _p1 = 35; // Perfect stealth
-    };
-
-    _p1Mods = _p1Mods + _p1;
-    _p2Mods = _p2Mods + _p2;
-    _p3Mods = _p3Mods + _p3;
-} forEach _assets;
-
-if (_hasSpecialist) then {
-    _p2Mods = _p2Mods + 15;
+if (!_hasRequiredClass) then {
+    _p2Mod = _p2Mod - 30;
+    ["SITREP", "Squad lacks the required specialist for this target type. Execution will be extremely difficult.", "#FF0000"] call _fnc_notifyPlayer;
 } else {
-    if (_reqClass != "Any") then { _p2Mods = _p2Mods - 30; };
+    if (_reqClass != "Any") then {
+        _p2Mod = _p2Mod + 15;
+    };
 };
 
-// Size scaling (Large squads = noisy infil, stronger execution, harder exfil)
-private _squadSize = count _mercIDs;
-_p1Mods = _p1Mods - (_squadSize * 2);
-_p2Mods = _p2Mods + (_squadSize * 5);
-_p3Mods = _p3Mods - (_squadSize * 2);
+if (_hasMedic) then {
+    _p3Mod = _p3Mod + 10;
+};
 
-// Phase 1: Insertion
-sleep 8;
-private _p1Roll = random 100;
-private _p1Total = _p1Roll + _p1Mods;
-private _phase1Success = (_p1Total >= _baseDiff);
+// Calculate Asset Synergies
+private _hasHalo = "HALO Drop" in _purchasedAssets;
+private _hasHeloExfil = "Fast Rope Helo Extract" in _purchasedAssets;
+private _hasCAS = "Loitering CAS (Wipeout)" in _purchasedAssets;
 
-private _finalOutcome = "";
+if (_hasHalo && (_plannedTime == "1200 Hrs (Noon)" || _plannedTime == "1800 Hrs (Dusk)")) then {
+    _p1Mod = _p1Mod - 35;
+    ["SITREP", "Daylight HALO drop highly visible. Enemy air defenses are tracking.", "#FF0000"] call _fnc_notifyPlayer;
+};
+if (_hasHalo && (_plannedTime == "0200 Hrs (Night)" || _plannedTime == "2300 Hrs (Night)")) then {
+    _p1Mod = _p1Mod + 20;
+};
+if (_hasHeloExfil && (_actualWeather == "Severe Storm")) then {
+    _p3Mod = _p3Mod - 40;
+    ["SITREP", "Severe storm is throwing the extraction chopper around. Dust-off is highly unstable.", "#FF0000"] call _fnc_notifyPlayer;
+};
+if (_hasCAS && (_actualWeather == "Severe Storm" || _actualWeather == "Dense Fog")) then {
+    _p2Mod = _p2Mod - 20;
+    ["SITREP", "Zero visibility. CAS cannot acquire targets and is returning to base. You are on your own.", "#FF0000"] call _fnc_notifyPlayer;
+};
+
+
+// ==========================================
+// EXECUTION PHASES
+// ==========================================
+
+// --- PHASE 0: HVT Intel Check ---
+// For Assassinations or Captures, if you don't buy intel, you might hit a dry hole.
+private _abortMission = false;
+if (_mType == "Assassination" || _mType == "HVT Capture") then {
+    private _intelRoll = (random 100) + _intelMod;
+    if (_intelRoll < 80) then {
+        ["PHASE 0: TARGET ACQUISITION", "Target was not at the expected location. Dry hole. Aborting operation.", "#FF0000"] call _fnc_notifyPlayer;
+        _abortMission = true;
+    } else {
+        ["PHASE 0: TARGET ACQUISITION", "Target positively identified at location. Proceeding to Phase 1.", "#00FF00"] call _fnc_notifyPlayer;
+    };
+};
+
+if (_abortMission) exitWith {
+    // Return everyone safely
+    {
+        private _profile = _x;
+        private _mercID = _profile getOrDefault ["MercID", ""];
+        _profile set ["ShadowOps_Status", "Stowed"];
+        [format["A3M_MERC_%1", _mercID], _profile, true] call A3M_fnc_dbSetSecure;
+    } forEach _selectedMercs;
+    [format ["Shadow Ops Contract Failed: Dry Hole. Initial investments lost."]] remoteExecCall ["systemChat", _client];
+    // Refresh UI
+    [_client, true] call A3M_fnc_serverFetchSquadDossier;
+};
+
+// --- PHASE 1: INSERTION ---
+private _p1Roll = (random 100) + _p1Mod;
+private _p1Thresh = _baseDifficulty - 20; // Stealthy insertion is usually easier
+private _phase1Success = _p1Roll >= _p1Thresh;
+
 if (_phase1Success) then {
-    _finalOutcome = "Squad successfully inserted without alerting enemy presence.";
-    ["PHASE 1: INSERTION", _finalOutcome, "#00FF00"] call _fnc_notifyPlayer;
+    ["PHASE 1: INSERTION", "Insertion successful. Squad has breached the perimeter undetected.", "#00FF00"] call _fnc_notifyPlayer;
 } else {
-    _finalOutcome = "Insertion compromised. Enemy on high alert. Resistance heavily increased.";
-    ["PHASE 1: INSERTION", _finalOutcome, "#FF0000"] call _fnc_notifyPlayer;
-    _p2Mods = _p2Mods - 15;
-    _p3Mods = _p3Mods - 15;
+    ["PHASE 1: INSERTION", "Insertion compromised! Squad took contact on approach. Element of surprise lost.", "#FFaa00"] call _fnc_notifyPlayer;
+    _baseDifficulty = _baseDifficulty + 10; // Penalty cascades
 };
 
-// Phase 2: Execution
-sleep 8;
-private _p2Roll = random 100;
-private _p2Total = _p2Roll + _p2Mods;
-private _phase2Success = (_p2Total >= _baseDiff);
+// --- PHASE 2: EXECUTION ---
+private _p2Roll = (random 100) + _p2Mod;
+private _p2Thresh = _baseDifficulty;
+private _phase2Success = _p2Roll >= _p2Thresh;
 
 if (_phase2Success) then {
-    _finalOutcome = "Objective secured. Primary targets neutralized.";
-    ["PHASE 2: EXECUTION", _finalOutcome, "#00FF00"] call _fnc_notifyPlayer;
+    ["PHASE 2: EXECUTION", "Objective secured. Primary target eliminated/captured.", "#00FF00"] call _fnc_notifyPlayer;
 } else {
-    _finalOutcome = "Operation failed. Squad sustained heavy casualties and could not secure the objective.";
-    ["PHASE 2: EXECUTION", _finalOutcome, "#FF0000"] call _fnc_notifyPlayer;
-    _p3Mods = _p3Mods - 30;
+    ["PHASE 2: EXECUTION", "Heavy resistance encountered. Squad pinned down and taking casualties.", "#FF0000"] call _fnc_notifyPlayer;
+    _baseDifficulty = _baseDifficulty + 15; // Cascading penalty
 };
 
-// Phase 3: Extraction
-sleep 8;
-private _p3Roll = random 100;
-private _p3Total = _p3Roll + _p3Mods;
-private _phase3Success = (_p3Total >= _baseDiff);
+// --- PHASE 3: EXTRACTION ---
+private _p3Roll = (random 100) + _p3Mod;
+private _p3Thresh = _baseDifficulty;
+private _phase3Success = _p3Roll >= _p3Thresh;
 
-// If they have a medic and the extraction gets messy, medic gives flat survival boost
-if (!_phase3Success && _hasMedic) then {
-    _p3Total = _p3Total + 20;
-    _phase3Success = (_p3Total >= _baseDiff);
-};
-
+// ==========================================
+// AFTERMATH
+// ==========================================
+private _finalOutcome = "";
 private _dbStatus = "Stowed";
 
 if (_phase2Success && _phase3Success) then {
@@ -146,17 +170,6 @@ if (_phase2Success && _phase3Success) then {
     
     [format ["Shadow Ops Contract Complete: $%1", round _totalPayout]] remoteExecCall ["systemChat", _client];
     [_client, round _totalPayout] remoteExecCall ["grad_lbm_fnc_addFunds", 2];
-    
-    // Pay out Hazard Pay to surviving Mercenaries ($20k each)
-    {
-        private _profile = [format["A3M_MERC_%1", _x], createHashMap, true] call A3M_fnc_dbGetSecure;
-        if (count _profile > 0) then {
-            private _currentCash = _profile getOrDefault ["CashCarried", 0];
-            _profile set ["CashCarried", _currentCash + 20000];
-            [format["A3M_MERC_%1", _x], _profile] call A3M_fnc_dbSetSecure;
-        };
-    } forEach _mercIDs;
-    
 } else {
     if (!_phase2Success) then {
         _finalOutcome = "Squad wiped out or captured. Mission Failed.";
@@ -171,24 +184,27 @@ if (_phase2Success && _phase3Success) then {
         private _totalPayout = _basePayout * _rewardMultiplier;
         [format ["Shadow Ops Contract (Partial) Complete: $%1", round _totalPayout]] remoteExecCall ["systemChat", _client];
         [_client, round _totalPayout] remoteExecCall ["grad_lbm_fnc_addFunds", 2];
-        
-        // Hazard Pay
-        {
-            private _profile = [format["A3M_MERC_%1", _x], createHashMap, true] call A3M_fnc_dbGetSecure;
-            if (count _profile > 0) then {
-                private _currentCash = _profile getOrDefault ["CashCarried", 0];
-                _profile set ["CashCarried", _currentCash + 20000];
-                [format["A3M_MERC_%1", _x], _profile] call A3M_fnc_dbSetSecure;
-            };
-        } forEach _mercIDs;
     };
 };
 
-// Free up the Mercs
+// Update Mercenaries in Database
 {
-    private _profile = [format["A3M_MERC_%1", _x], createHashMap, true] call A3M_fnc_dbGetSecure;
-    if (count _profile > 0) then {
-        _profile set ["ShadowOps_Status", _dbStatus];
-        [format["A3M_MERC_%1", _x], _profile] call A3M_fnc_dbSetSecure;
+    private _profile = _x;
+    private _mercID = _profile getOrDefault ["MercID", ""];
+    _profile set ["ShadowOps_Status", _dbStatus];
+    
+    // Add kills if successful
+    if (_phase2Success) then {
+        private _currentKills = _profile getOrDefault ["Kills", 0];
+        _profile set ["Kills", _currentKills + (floor random 5) + 1];
+        
+        // Hazard Pay Delivery (If they didn't wipe in Phase 2)
+        private _currentCash = _profile getOrDefault ["CashCarried", 0];
+        _profile set ["CashCarried", _currentCash + 20000];
     };
-} forEach _mercIDs;
+    
+    [format["A3M_MERC_%1", _mercID], _profile, true] call A3M_fnc_dbSetSecure;
+} forEach _selectedMercs;
+
+// Refresh UI Dossier
+[_client, true] call A3M_fnc_serverFetchSquadDossier;
