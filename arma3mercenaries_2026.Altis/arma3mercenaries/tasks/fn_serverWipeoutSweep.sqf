@@ -54,16 +54,41 @@ _drone flyInHeight 500; // Lower altitude for better strafing runs
 _drone setPylonLoadout [1, "PylonRack_7Rnd_Rocket_04_HE_F", true];
 _drone setPylonLoadout [10, "PylonRack_7Rnd_Rocket_04_HE_F", true];
 
-// Force the AI pilot to instantly know about all enemies in the area so it targets them instead of blindly bombing the waypoint
-{
-    if (side _x != civilian && side _x != side _grp) then {
-        _grp reveal [_x, 4];
+// Dynamic Targeting Thread to force continuous strafing runs
+[_drone, _grp, _exactPos] spawn {
+    params ["_drone", "_grp", "_exactPos"];
+    private _endTime = time + 300; // 5 minutes
+    
+    while {alive _drone && time < _endTime} do {
+        private _enemies = (_exactPos nearEntities [["Man", "Car", "Tank", "StaticWeapon"], 800]) select {side _x != civilian && side _x != side _grp && alive _x};
+        
+        // Clear old waypoints to force fresh pathing
+        while {(count (waypoints _grp)) > 0} do { deleteWaypoint ((waypoints _grp) select 0); };
+        
+        if (count _enemies > 0) then {
+            // Sort by distance to exactPos so it focuses on the objective area
+            _enemies = _enemies apply { [_x distance2D _exactPos, _x] };
+            _enemies sort true;
+            private _target = (_enemies select 0) select 1;
+            
+            _grp reveal [_target, 4];
+            
+            // Attach a literal DESTROY waypoint to the unit to force an attack run
+            private _wp = _grp addWaypoint [getPos _target, 0];
+            _wp waypointAttachVehicle _target;
+            _wp setWaypointType "DESTROY";
+            _wp setWaypointCombatMode "RED";
+            _wp setWaypointBehaviour "COMBAT";
+        } else {
+            // No targets left, loiter low to look for more
+            private _wp = _grp addWaypoint [_exactPos, 0];
+            _wp setWaypointType "LOITER";
+            _wp setWaypointLoiterRadius 1000;
+        };
+        
+        sleep 25; // Re-evaluate and trigger a new pass every 25 seconds
     };
-} forEach (_exactPos nearEntities [["Man", "Car", "Tank", "StaticWeapon"], 800]);
-
-// Create Search and Destroy (SAD) Waypoint for aggressive strafing
-private _wp = _grp addWaypoint [_exactPos, 0];
-_wp setWaypointType "SAD";
+};
 
 // Provide cinematic camera feed to the client
 [_drone, _taskId, _exactPos] remoteExec ["A3M_fnc_clientCameraFeed", _client];
