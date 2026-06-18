@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.4] - 2026-06-18
+- Fix: Rollback main and restore 03:10 AM Shadow Ops V2 state (Closes #58)
+
 ## [v1.22.3] - 2026-06-16
 - Fix: Player profile skipping, CfgRemoteExec whitelist blocking ALiVE, and player guide text truncation
 
