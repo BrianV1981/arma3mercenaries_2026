@@ -7,5 +7,6 @@ class A3M_Tasks {
         class generateHVT {};
         class serverBlackfishSweep {};
         class serverDroneSweep {};
+        class initALiVERewards { postInit = 1; };
     };
 };

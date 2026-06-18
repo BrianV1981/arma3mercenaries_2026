@@ -65,3 +65,27 @@
     true,
     true
 ] call CBA_Settings_fnc_init;
+
+// --- ALiVE REWARD SETTINGS ---
+[
+    "A3M_ALiVE_RewardDistribution",
+    "LIST",
+    ["ALiVE Reward Distribution", "Who receives the payout when an ALiVE task is completed."],
+    ["A3M Settings", "ALiVE Integration"],
+    [
+        [0, 1, 2],
+        ["Reward Side", "Reward Side + Allies", "Players Involved Only"],
+        0
+    ],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_ALiVE_RewardAmount",
+    "SLIDER",
+    ["ALiVE Task Reward Amount", "Funds distributed upon completing a C2ISTAR task."],
+    ["A3M Settings", "ALiVE Integration"],
+    [0, 1000000, 10000, 0],
+    true
+] call CBA_Settings_fnc_init;
+
