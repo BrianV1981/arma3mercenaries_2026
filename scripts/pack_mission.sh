@@ -22,14 +22,13 @@ MISSION_DIR="$1"
 DESC_FILE="$MISSION_DIR/description.ext"
 SERVER_CFG="/home/brian-vasquez/arma3server/server.cfg"
 
-# 1. Extract the base version from description.ext
-major=$(grep -oP 'OnLoadName\s*=\s*".*?Bv\K[0-9]+' "$DESC_FILE" | head -n 1)
-minor=$(grep -oP 'OnLoadName\s*=\s*".*?Bv[0-9]+\.\K[0-9]+' "$DESC_FILE" | head -n 1)
-
-if [ -z "$major" ] || [ -z "$minor" ]; then
-    echo "Failed to extract version from description.ext. Falling back to default."
-    major="0"
-    minor="000"
+# 1. Extract the Master Version from the A.I.M. Root VERSION file
+VERSION_FILE="/home/brian-vasquez/aim-a3m/VERSION"
+if [ -f "$VERSION_FILE" ]; then
+    MASTER_VERSION=$(cat "$VERSION_FILE")
+else
+    echo "Failed to find MASTER_VERSION file. Falling back to default."
+    MASTER_VERSION="v1.0.0"
 fi
 
 # Get the current git branch name
@@ -43,10 +42,10 @@ timestamp=$(date +"%Y%m%d-%H%M")
 # 2. Create the versioned staging folder
 if [ "$branch_name" == "main" ]; then
     # On main, we keep it clean
-    STAGING_NAME="2026_arma3mercenaries_v${major}${minor}.Altis"
+    STAGING_NAME="2026_arma3mercenaries_${MASTER_VERSION}.Altis"
 else
     # On test branches, we append the branch and timestamp
-    STAGING_NAME="2026_arma3mercenaries_v${major}${minor}-${branch_name}-${timestamp}.Altis"
+    STAGING_NAME="2026_arma3mercenaries_${MASTER_VERSION}-${branch_name}-${timestamp}.Altis"
 fi
 
 STAGING_DIR="/tmp/$STAGING_NAME"
@@ -54,6 +53,9 @@ STAGING_DIR="/tmp/$STAGING_NAME"
 echo "Staging $STAGING_NAME..."
 rm -rf "$STAGING_DIR"
 cp -r "$MISSION_DIR" "$STAGING_DIR"
+
+# Synchronize the lobby screen (description.ext) with the master version
+sed -i -r "s/(OnLoadName\s*=\s*\")[^\"]+(\")/\1arma3mercenaries ${MASTER_VERSION}\2/" "$STAGING_DIR/description.ext"
 
 # Remove Git metadata from staging
 rm -rf "$STAGING_DIR/.git"
