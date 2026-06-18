@@ -70,33 +70,58 @@ private _activeShortages = createHashMap; // For HG shops
 // AUDIT CACHE: classname -> [originalPrice, discountMult, storeName, type("SALE"|"OUT_OF_STOCK"|"LOW_STOCK")]
 private _auditData = createHashMap; 
 
-// --- SOLD OUT (20 Items) ---
-for "_i" from 1 to 20 do {
-    // 50/50 chance to pick from GRAD or HG
-    if (count _allGradItems > 0 && {random 1 > 0.5 || count _allHGItems == 0}) then {
-        private _gItem = _allGradItems deleteAt 0;
-        [_gItem select 0, _gItem select 1, _gItem select 2, 0] call grad_lbm_fnc_setStock;
-        _auditData set [_gItem select 2, [_gItem select 3, 1, _gItem select 4, "OUT_OF_STOCK"]];
+// --- GRAD INVENTORY OVERHAUL ---
+// Every single item gets a realistic randomized stock based on its category
+{
+    private _baseConfigName = _x select 0;
+    private _catConfigName = _x select 1;
+    private _itemName = _x select 2;
+    private _price = _x select 3;
+    private _storeDisplayName = _x select 4;
+    
+    // Determine baseline category stock limits
+    private _details = _itemName call BIS_fnc_itemType;
+    private _cat = _details select 0;
+    private _type = _details select 1;
+    
+    private _minStock = 5;
+    private _maxStock = 25;
+    
+    if (_cat == "Magazine") then { _minStock = 30; _maxStock = 120; };
+    if (_cat == "Weapon") then { _minStock = 4; _maxStock = 15; };
+    if (_type == "Backpack") then { _minStock = 10; _maxStock = 30; };
+    if (_cat == "Item" || _cat == "Equipment") then { _minStock = 15; _maxStock = 50; };
+    
+    private _stock = _minStock + floor (random (_maxStock - _minStock));
+    
+    // 5% chance to be completely SOLD OUT
+    if (random 100 < 5) then {
+        _stock = 0;
+        _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
     } else {
-        if (count _allHGItems > 0) then {
-            private _hItem = _allHGItems deleteAt 0;
-            _activeShortages set [_hItem select 0, true];
-            _auditData set [_hItem select 0, [_hItem select 1, 1, _hItem select 2, "OUT_OF_STOCK"]];
+        // 10% chance to be critically LOW STOCK
+        if (random 100 < 10) then {
+            _stock = (floor random 3) + 1; // 1 to 3
+            _auditData set [_itemName, [_price, 1, _storeDisplayName, format["LOW_STOCK (%1 left)", _stock]]];
         };
     };
-};
+    
+    [_baseConfigName, _catConfigName, _itemName, _stock] call grad_lbm_fnc_setStock;
+} forEach _allGradItems;
 
-// --- LOW STOCK (10 Items) ---
-// We only apply this to GRAD stores because they actually support numerical stock natively
-for "_i" from 1 to 10 do {
-    if (count _allGradItems > 0) then {
-        private _gItem = _allGradItems deleteAt 0;
-        private _stockNum = (floor random 3) + 1;
-        [_gItem select 0, _gItem select 1, _gItem select 2, _stockNum] call grad_lbm_fnc_setStock;
-        // Also log to audit so we can see it!
-        _auditData set [_gItem select 2, [_gItem select 3, 1, _gItem select 4, format["LOW_STOCK (%1 left)", _stockNum]]];
+// --- HG INVENTORY OVERHAUL ---
+// HG doesn't support low stock numbers natively, but we can completely sell out items
+{
+    private _itemName = _x select 0;
+    private _price = _x select 1;
+    private _storeDisplayName = _x select 2;
+    
+    // 5% chance to be completely SOLD OUT
+    if (random 100 < 5) then {
+        _activeShortages set [_itemName, true];
+        _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
     };
-};
+} forEach _allHGItems;
 
 // --- OVERSTOCK / 50% OFF (Extremely Rare: 2 Items) ---
 for "_i" from 1 to 2 do {
