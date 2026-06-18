@@ -75,7 +75,7 @@ if (!isServer) exitWith {};
                         private _rewardAmount = missionNamespace getVariable ["A3M_ALiVE_RewardAmount", 10000];
                         private _rewardDist = missionNamespace getVariable ["A3M_ALiVE_RewardDistribution", 0];
 
-                        systemChat format ["ALiVE C2ISTAR Task Completed! Distributing Mercenary Payout: $%1", _rewardAmount];
+                        // systemChat format ["ALiVE C2ISTAR Task Completed! Distributing Mercenary Payout: $%1", _rewardAmount]; // Removed native systemChat
                         
                         {
                             if (isPlayer _x && alive _x) then {
@@ -110,6 +110,14 @@ if (!isServer) exitWith {};
 
                                 if (_eligible) then {
                                     [_x, _rewardAmount, false] call grad_moneymenu_fnc_addFunds;
+                                    
+                                    // A3M Dynamic Text HUD Notification
+                                    private _formattedReward = [_rewardAmount, 1, 0, true] call CBA_fnc_formatNumber;
+                                    private _msg = format [
+                                        "<t align='center'><t size='1.0' color='#FFFFFF'>ALiVE TASK COMPLETED</t><br/><t size='0.8' color='#FFFFFF'>Mercenary Payout: </t><t size='0.8' color='#00FF00'>$%1</t></t>",
+                                        _formattedReward
+                                    ];
+                                    [_msg, -1, 0.8, 5, 0.5, 0, 789] remoteExec ["BIS_fnc_dynamicText", _x];
                                 };
                             };
                         } forEach playableUnits;
