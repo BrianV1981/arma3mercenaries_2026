@@ -53,6 +53,13 @@ _drone flyInHeight 500; // Lower altitude for better strafing runs
 _drone setPylonLoadout [1, "PylonRack_7Rnd_Rocket_04_HE_F", true];
 _drone setPylonLoadout [10, "PylonRack_7Rnd_Rocket_04_HE_F", true];
 
+// Force the AI pilot to instantly know about all enemies in the area so it targets them instead of blindly bombing the waypoint
+{
+    if (side _x != civilian && side _x != side _grp) then {
+        _grp reveal [_x, 4];
+    };
+} forEach (_exactPos nearEntities [["Man", "Car", "Tank", "StaticWeapon"], 800]);
+
 // Create Search and Destroy (SAD) Waypoint for aggressive strafing
 private _wp = _grp addWaypoint [_exactPos, 0];
 _wp setWaypointType "SAD";

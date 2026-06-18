@@ -53,6 +53,13 @@ _drone flyInHeight 300;
 _drone setPylonLoadout [1, "PylonRack_12Rnd_missiles", true];
 _drone setPylonLoadout [2, "PylonRack_12Rnd_missiles", true];
 
+// Force the AI pilot to instantly know about all enemies in the area so it positions the chopper properly for the gunner
+{
+    if (side _x != civilian && side _x != side _grp) then {
+        _grp reveal [_x, 4];
+    };
+} forEach (_exactPos nearEntities [["Man", "Car", "Tank", "StaticWeapon"], 800]);
+
 // Create Search and Destroy (SAD) Waypoint for aggressive strafing
 private _wp = _grp addWaypoint [_exactPos, 0];
 _wp setWaypointType "SAD";
