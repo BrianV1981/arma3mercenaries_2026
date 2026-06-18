@@ -46,6 +46,7 @@ minPlayerDistance = 0;
 #include "arma3mercenaries\bounty\a3m_bountyBoard_dialog.hpp"
 #include "arma3mercenaries\ticketing\a3m_ticket_dialog.hpp"
 #include "arma3mercenaries\a3m_blackmarket\ui\a3m_quartermasterHub_dialog.hpp"
+#include "arma3mercenaries\economy\ui\a3m_economyAudit_dialog.hpp"
 #include "arma3mercenaries\tasks\a3m_hvtTracker_dialog.hpp"
 
 ///https://github.com/Ghosto27/LootToVehicle/tree/master

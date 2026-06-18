@@ -183,6 +183,7 @@ private _actBarracks = [
 A3M_fnc_openQuartermasterHub = compileFinal (preprocessFileLineNumbers "arma3mercenaries\a3m_blackmarket\fn_openQuartermasterHub.sqf");
 A3M_fnc_openBlackMarket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\a3m_blackmarket\fn_openBlackMarket.sqf");
 A3M_fnc_drawNav = compileFinal (preprocessFileLineNumbers "arma3mercenaries\a3m_blackmarket\fn_drawNav.sqf");
+A3M_fnc_openEconomyAudit = compileFinal (preprocessFileLineNumbers "arma3mercenaries\economy\fn_openEconomyAudit.sqf");
 
 private _actQuartermaster = [
     "A3M_QuartermasterHub",

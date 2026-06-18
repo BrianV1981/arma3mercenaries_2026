@@ -9,7 +9,7 @@ class A3M_QuartermasterHub {
             x = 0.35 * safezoneW + safezoneX;
             y = 0.3 * safezoneH + safezoneY;
             w = 0.3 * safezoneW;
-            h = 0.58 * safezoneH;
+            h = 0.65 * safezoneH;
             colorBackground[] = {0.1, 0.1, 0.1, 0.95};
         };
         class HeaderBackground: HG_RscText {
@@ -107,6 +107,15 @@ class A3M_QuartermasterHub {
             text = "MILITARY SURPLUS";
             x = 0.4 * safezoneW + safezoneX;
             y = 0.80 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.05 * safezoneH;
+        };
+        
+        class BtnEconomyAudit: HG_RscButton {
+            idc = 1608;
+            text = "SALES & SUPPLY LEDGER";
+            x = 0.4 * safezoneW + safezoneX;
+            y = 0.87 * safezoneH + safezoneY;
             w = 0.2 * safezoneW;
             h = 0.05 * safezoneH;
         };

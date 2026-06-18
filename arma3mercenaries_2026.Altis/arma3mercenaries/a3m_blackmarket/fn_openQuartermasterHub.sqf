@@ -6,7 +6,7 @@
 params ["_target", "_caller"];
 
 // Read which modules this laptop is authorized to show.
-private _modules = _target getVariable ["A3M_Hub_Modules", ["ARMORY", "VEHICLES", "FORTIFICATIONS", "SUPPORT", "CONTRACTORS", "ARMS_DEALER", "SURPLUS"]];
+private _modules = _target getVariable ["A3M_Hub_Modules", ["ARMORY", "VEHICLES", "FORTIFICATIONS", "SUPPORT", "CONTRACTORS", "ARMS_DEALER", "SURPLUS", "ECONOMY"]];
 
 createDialog "A3M_QuartermasterHub";
 waitUntil {!isNull (findDisplay 9005)};
@@ -22,6 +22,7 @@ private _btnSupport = _display displayCtrl 1604;
 private _btnMercs = _display displayCtrl 1605;
 private _btnArmsDealer = _display displayCtrl 1606;
 private _btnSurplus = _display displayCtrl 1607;
+private _btnEconomy = _display displayCtrl 1608;
 
 // Hide everything initially
 _btnArmory ctrlShow false;
@@ -31,6 +32,7 @@ _btnSupport ctrlShow false;
 _btnMercs ctrlShow false;
 _btnArmsDealer ctrlShow false;
 _btnSurplus ctrlShow false;
+_btnEconomy ctrlShow false;
 
 // -------------------------------------------------------------
 // Inject Routing Actions
@@ -62,6 +64,9 @@ _btnArmsDealer buttonSetAction format ["closeDialog 0; [missionNamespace getVari
 // Military Surplus uses GRAD
 private _gradSurplus = _target getVariable ["A3M_Hub_GradSurplus", "itemStore"];
 _btnSurplus buttonSetAction format ["closeDialog 0; [missionNamespace getVariable ['A3M_HG_CurrentLaptop', player], objNull, objNull, '%1', '', player] call grad_lbm_fnc_loadBuymenu;", _gradSurplus];
+
+// Economy Audit
+_btnEconomy buttonSetAction "closeDialog 0; [] spawn A3M_fnc_openEconomyAudit;";
 
 // -------------------------------------------------------------
 // Layout Engine (Stack buttons dynamically)
@@ -116,5 +121,12 @@ if ("SURPLUS" in _modules) then {
     _btnSurplus ctrlShow true;
     _btnSurplus ctrlSetPosition [0.4 * safezoneW + safezoneX, _currentY * safezoneH + safezoneY, 0.2 * safezoneW, 0.05 * safezoneH];
     _btnSurplus ctrlCommit 0;
+    _currentY = _currentY + _spacingY;
+};
+
+if ("ECONOMY" in _modules) then {
+    _btnEconomy ctrlShow true;
+    _btnEconomy ctrlSetPosition [0.4 * safezoneW + safezoneX, _currentY * safezoneH + safezoneY, 0.2 * safezoneW, 0.05 * safezoneH];
+    _btnEconomy ctrlCommit 0;
     _currentY = _currentY + _spacingY;
 };
