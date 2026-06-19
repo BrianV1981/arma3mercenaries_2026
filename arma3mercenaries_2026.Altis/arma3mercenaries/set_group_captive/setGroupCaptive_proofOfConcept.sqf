@@ -31,9 +31,12 @@ private _index = 0;
                 [_unit] allowGetIn false;
                 unassignVehicle _unit;
                 doGetOut _unit;
+                
+                // Backup: Force them out instantly if they are stubborn
+                moveOut _unit; 
             };
 
-            // Wait 1.5 seconds for them to hit the ground before applying cuffs.
+            // Wait 0.8 seconds for them to hit the ground before applying cuffs.
             [{
                 params ["_unit", "_veh", "_wasLocked"];
                 
@@ -54,7 +57,7 @@ private _index = 0;
                 
                 // Apply ACE handcuffs (visual + behavioral)
                 [_unit, true] call ACE_captives_fnc_setHandcuffed;
-            }, [_unit, _veh, _wasLocked], 1.5] call CBA_fnc_waitAndExecute;
+            }, [_unit, _veh, _wasLocked], 0.8] call CBA_fnc_waitAndExecute;
 
         }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
         
