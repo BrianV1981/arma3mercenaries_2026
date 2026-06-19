@@ -22,9 +22,6 @@ private _index = 0;
                 [_unit] allowGetIn false;
                 unassignVehicle _unit;
                 doGetOut _unit;
-                
-                // Backup: Force them out instantly if they are stubborn
-                moveOut _unit; 
             };
 
             // Wait 1.5 seconds for them to hit the ground before applying cuffs.
