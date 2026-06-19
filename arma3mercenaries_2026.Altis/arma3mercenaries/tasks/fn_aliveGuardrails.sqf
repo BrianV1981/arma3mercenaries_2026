@@ -2,9 +2,10 @@
     Author: A.I.M.
     File: fn_aliveGuardrails.sqf
     Description:
-    The "A3M Sovereign Commander" Daemon.
-    Periodically sweeps active ALiVE tasks, identifies near AI groups of the attacking/defending side,
-    seizes control of them from VCOM and OPCOM, and aggressively forces them to the objective.
+    The "A3M Sovereign Commander" Daemon (Soft Guardrails Version).
+    Periodically sweeps active ALiVE tasks and identifies AI groups of the attacking/defending side.
+    Selectively disables VCOM's "Call for Backup" so they stay on objective, 
+    and issues tactical waypoint nudges to keep them focused on the task.
 */
 
 if (!isServer) exitWith {};
@@ -12,7 +13,7 @@ if (!isServer) exitWith {};
 [] spawn {
     waitUntil {!isNil "ALIVE_taskHandler"};
     
-    diag_log "[A3M SOVEREIGN] Guardrails Daemon initialized. Waiting for tasks...";
+    diag_log "[A3M SOVEREIGN] Soft Guardrails Daemon initialized. Waiting for tasks...";
     
     while {true} do {
         sleep 60; // Sweep every 60 seconds
@@ -49,38 +50,37 @@ if (!isServer) exitWith {};
                                 {
                                     private _group = _x;
                                     
-                                    // 1. SEIZE CONTROL (Vcom Disable)
-                                    _group setVariable ["Vcm_Disable", true, true];
+                                    // 1. SELECTIVE VCOM OVERRIDE (Soft Guardrail)
+                                    // Disable their ability to respond to distant calls for backup from other squads
+                                    _group setVariable ["VCM_NORESCUE", true, true];
                                     
-                                    // Disable fleeing so they don't break off the attack
+                                    // Disable fleeing so they fight to the death on objective
                                     { _x allowFleeing 0; } forEach (units _group);
                                     
-                                    // 2. PURGE WAYPOINTS (Overwrite OPCOM)
-                                    while {(count (waypoints _group)) > 0} do {
-                                        deleteWaypoint ((waypoints _group) select 0);
-                                    };
-                                    
-                                    // 3. FORCE AGGRESSIVE MANEUVER
-                                    private _wp = _group addWaypoint [_taskPos, 0];
-                                    
-                                    // Determine tactics based on task title
-                                    private _isDefend = (["Defend", _taskTitle] call BIS_fnc_inString) || (["Hold", _taskTitle] call BIS_fnc_inString);
-                                    
-                                    if (_isDefend) then {
-                                        _wp setWaypointType "GUARD";
-                                        _wp setWaypointBehaviour "AWARE";
-                                        _wp setWaypointCombatMode "YELLOW";
-                                    } else {
-                                        _wp setWaypointType "SAD"; // Search and Destroy
-                                        _wp setWaypointBehaviour "AWARE";
-                                        _wp setWaypointCombatMode "RED"; // Fire at will, aggressive
-                                        _wp setWaypointSpeed "FULL"; // Rush the objective!
-                                    };
-                                    
-                                    // We don't spam the log for every group every 60s, but we can log unique seizures
-                                    if (!(_group getVariable ["A3M_GuardrailLogged", false])) then {
-                                        diag_log format ["[A3M SOVEREIGN] Seized Group %1. VCOM Disabled. Forced %2 Waypoint on Task %3.", _group, waypointType _wp, _taskID];
-                                        _group setVariable ["A3M_GuardrailLogged", true];
+                                    // 2. THE TACTICAL NUDGE
+                                    // If they have wandered more than 300m from the objective, wipe waypoints and nudge them back
+                                    if ((leader _group distance2D _taskPos) > 300) then {
+                                        
+                                        while {(count (waypoints _group)) > 0} do {
+                                            deleteWaypoint ((waypoints _group) select 0);
+                                        };
+                                        
+                                        private _wp = _group addWaypoint [_taskPos, 0];
+                                        
+                                        private _isDefend = (["Defend", _taskTitle] call BIS_fnc_inString) || (["Hold", _taskTitle] call BIS_fnc_inString);
+                                        
+                                        if (_isDefend) then {
+                                            _wp setWaypointType "GUARD";
+                                            _wp setWaypointBehaviour "AWARE";
+                                        } else {
+                                            _wp setWaypointType "SAD"; // Search and Destroy
+                                            _wp setWaypointBehaviour "AWARE";
+                                        };
+                                        
+                                        if (!(_group getVariable ["A3M_NudgeLogged", false])) then {
+                                            diag_log format ["[A3M SOVEREIGN] Nudged Group %1 back to Task %2. VCM_NORESCUE activated.", _group, _taskID];
+                                            _group setVariable ["A3M_NudgeLogged", true];
+                                        };
                                     };
                                     
                                 } forEach _nearGroups;
