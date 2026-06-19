@@ -16,17 +16,34 @@ private _index = 0;
         [{
             params ["_unit"];
             
+            private _veh = vehicle _unit;
+            private _wasLocked = false;
+            
             // Force dismount from vehicles or static turrets
-            if (vehicle _unit != _unit) then {
+            if (_veh != _unit) then {
+                // If vehicle is locked, unlock it so the AI can physically get out
+                if ((locked _veh) isEqualTo 2) then {
+                    _wasLocked = true;
+                    if (local _veh) then { _veh lock 0; } else { [_veh, 0] remoteExecCall ["HG_fnc_lock", 2]; };
+                };
+
                 [_unit] orderGetIn false;
                 [_unit] allowGetIn false;
                 unassignVehicle _unit;
                 doGetOut _unit;
+                
+                // Backup: Force them out instantly if they are stubborn
+                moveOut _unit; 
             };
 
             // Wait 1.5 seconds for them to hit the ground before applying cuffs.
             [{
-                params ["_unit"];
+                params ["_unit", "_veh", "_wasLocked"];
+                
+                // Relock the vehicle if we unlocked it for them
+                if (_wasLocked) then {
+                    if (local _veh) then { _veh lock 2; } else { [_veh, 2] remoteExecCall ["HG_fnc_lock", 2]; };
+                };
                 
                 // Apply vanilla SQF guards
                 _unit setCaptive true;
@@ -40,7 +57,7 @@ private _index = 0;
                 
                 // Apply ACE handcuffs (visual + behavioral)
                 [_unit, true] call ACE_captives_fnc_setHandcuffed;
-            }, [_unit], 1.5] call CBA_fnc_waitAndExecute;
+            }, [_unit, _veh, _wasLocked], 1.5] call CBA_fnc_waitAndExecute;
 
         }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
         
