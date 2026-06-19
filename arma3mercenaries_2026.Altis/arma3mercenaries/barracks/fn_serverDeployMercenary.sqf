@@ -31,6 +31,9 @@ private _nameParts = _name splitString " ";
 private _firstName = if (count _nameParts > 0) then { _nameParts select 0 } else { _name };
 private _lastName = if (count _nameParts > 1) then { _nameParts select 1 } else { "" };
 
+// Escape single quotes for the init string injection to prevent syntax errors (e.g. O'Brien)
+private _safeName = (_name splitString "'") joinString "''";
+
 // Spawn them safely near the player
 private _spawnPos = (getPos _client) findEmptyPosition [2, 15, _class];
 if (count _spawnPos == 0) then { _spawnPos = getPos _client; };
@@ -48,7 +51,7 @@ _class createUnit [_spawnPos, _dummyGroup, format["
     this setVariable ['arma3mercenaries_aiUnit', '%2', true];
     this setVariable ['arma3mercenaries_groupID', '%3', true];
     A3M_TEMP_SPAWN_UNIT = this;
-", _name, _mercID, getPlayerUID _client]];
+", _safeName, _mercID, getPlayerUID _client]];
 
 // Retrieve the synchronously created unit object
 private _unit = A3M_TEMP_SPAWN_UNIT;

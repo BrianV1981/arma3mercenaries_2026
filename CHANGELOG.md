@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.10] - 2026-06-18
+- Fix: Sanitized single quotes (`'`) from AI names during `fn_serverDeployMercenary` and `fn_loadGroups` string interpolation (e.g., `O'Brien`), which was causing an `Error Missing ]` syntax crash.
+
 ## [v1.22.9] - 2026-06-18
 - Fix: Added dynamic type conversion in `fn_initMercenary.sqf` to support older Beta 2 `[[keys], [values]]` database arrays, preventing `getOrDefault` crashes after DB rollbacks.
 

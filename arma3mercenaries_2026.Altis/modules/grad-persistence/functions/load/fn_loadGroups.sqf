@@ -242,7 +242,8 @@ if (_dbCount > -1) then {
         if (!_editorVehicleFound) then {
             // A3M: Inject ACE names into the init string so they are applied on the exact frame of creation
             private _initString = if (_name != "") then {
-                format["this setVariable ['ACE_Name', '%1', true]; this setVariable ['ACE_name', '%1', true]; this setVariable ['ace_name', '%1', true]; A3M_TEMP_SPAWN_UNIT = this;", _name]
+                private _safeName = (_name splitString "'") joinString "''";
+                format["this setVariable ['ACE_Name', '%1', true]; this setVariable ['ACE_name', '%1', true]; this setVariable ['ace_name', '%1', true]; A3M_TEMP_SPAWN_UNIT = this;", _safeName]
             } else {
                 "A3M_TEMP_SPAWN_UNIT = this;"
             };
