@@ -14,5 +14,6 @@ class A3M_Tasks {
         class serverStomperSweep {};
         class serverDarterSweep {};
         class initALiVERewards { postInit = 1; };
+        class aliveGuardrails { postInit = 1; };
     };
 };
