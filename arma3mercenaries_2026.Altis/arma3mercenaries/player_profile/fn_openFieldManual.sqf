@@ -33,7 +33,7 @@ private _text = "
 <t size='0.75'>2. <t color='#ffffff'>ACE CARGO:</t> Used to haul physically built objects (like crates or statics) inside vehicles.</t><br/>
 <t size='0.75'>3. <t color='#ffffff'>NORMAL:</t> Your standard player backpack and default vehicle trunks for guns, ammo, and cash.</t><br/>
 
-<t size='1.0' color='#ff5555'>Asymmetric Threats & Penalties</t><br/>
+<t size='1.0' color='#ff5555'>Asymmetric Threats and Penalties</t><br/>
 <t size='0.75'>• <t color='#ffffff'>FACTIONS:</t> Syndikat (NATO) and FIA (CSAT) operate across the island. Watch for IEDs and VBIEDs!</t><br/>
 <t size='0.75'>• <t color='#ffffff'>PENALTIES:</t> You will lose XP for dying, teamkilling, and killing unarmed civilians!</t><br/>
 <t size='0.75'>• <t color='#ffffff'>YOUR WALLET:</t> Cash in your inventory is <t color='#ff0000'>dropped on death</t>. Always deposit it in an ATM!</t>
