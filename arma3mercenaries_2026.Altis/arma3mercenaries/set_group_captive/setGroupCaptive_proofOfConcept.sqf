@@ -5,33 +5,50 @@
 
     Description:
     "Stand Down (Deactivate)" — Applies ALL captive guards to AI group members.
-    Sets both the vanilla SQF guards (setCaptive, allowDamage) and ACE handcuffs.
-
-    Runs on the player's client where AI are local (correct locality for ACE calls).
+    Forces them to disembark any vehicles/turrets using proper orderGetIn logic,
+    and then applies vanilla SQF guards and ACE handcuffs.
 */
 
+private _index = 0;
 {
-    if (!isPlayer _x) then {
-        [_x] spawn {
+    private _unit = _x;
+    if (!isPlayer _unit) then {
+        [{
             params ["_unit"];
             
             // Force dismount from vehicles or static turrets
             if (vehicle _unit != _unit) then {
+                [_unit] orderGetIn false;
+                [_unit] allowGetIn false;
                 unassignVehicle _unit;
-                moveOut _unit;
+                doGetOut _unit;
                 
-                // Wait for the engine to physically detach them from the turret/vehicle
-                waitUntil { sleep 0.1; vehicle _unit == _unit };
-                sleep 0.5; // Allow animation state to settle
+                // Backup: Force them out instantly if they are stubborn
+                moveOut _unit; 
             };
 
-            // Apply vanilla SQF guards
-            _unit setCaptive true;
-            _unit allowDamage false;
-            
-            // Apply ACE handcuffs (visual + behavioral) ONLY when safely on foot
-            [_unit, true] call ACE_captives_fnc_setHandcuffed;
-        };
+            // Wait 0.8 seconds for them to hit the ground before applying cuffs.
+            // Tightened from 1.5s to prevent them from walking too far away from the turret.
+            [{
+                params ["_unit"];
+                
+                // Apply vanilla SQF guards
+                _unit setCaptive true;
+                _unit allowDamage false;
+                
+                // Disable their AI brain so they don't try to wander or re-mount
+                _unit disableAI "ALL";
+                
+                // Mark them as deactivated
+                _unit setVariable ["A3M_AwaitingActivation", true, true];
+                
+                // Apply ACE handcuffs (visual + behavioral)
+                [_unit, true] call ACE_captives_fnc_setHandcuffed;
+            }, [_unit], 0.8] call CBA_fnc_waitAndExecute;
+
+        }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
+        
+        _index = _index + 1;
     };
 } forEach units group player;
 
