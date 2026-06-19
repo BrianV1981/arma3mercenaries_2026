@@ -2,10 +2,11 @@
     Author: A.I.M.
     File: fn_aliveGuardrails.sqf
     Description:
-    The "A3M Sovereign Commander" Daemon (Soft Guardrails Version).
+    The "A3M Sovereign Commander" Daemon (Geofenced Tether Version).
     Periodically sweeps active ALiVE tasks and identifies AI groups of the attacking/defending side.
-    Selectively disables VCOM's "Call for Backup" so they stay on objective, 
-    and issues tactical waypoint nudges to keep them focused on the task.
+    Implements a strict 300m Geofence around the objective:
+    - Inside 300m: Vcom is FULLY ACTIVE. The AI will flank, suppress, and use advanced movement.
+    - Outside 300m: Vcom is DISABLED. The AI drops everything and sprints directly back to the objective.
 */
 
 if (!isServer) exitWith {};
@@ -13,10 +14,10 @@ if (!isServer) exitWith {};
 [] spawn {
     waitUntil {!isNil "ALIVE_taskHandler"};
     
-    diag_log "[A3M SOVEREIGN] Soft Guardrails Daemon initialized. Waiting for tasks...";
+    diag_log "[A3M SOVEREIGN] Geofenced Tether Daemon initialized. Waiting for tasks...";
     
     while {true} do {
-        sleep 60; // Sweep every 60 seconds
+        sleep 30; // Increased sweep rate to 30s to catch them before they get too far
         
         if (!isNil "ALIVE_taskHandler") then {
             private _tasks = [ALIVE_taskHandler, "tasks"] call ALIVE_fnc_hashGet;
@@ -39,48 +40,51 @@ if (!isServer) exitWith {};
                             if (_taskSideStr == "GUER") then { _taskSide = independent; };
                             
                             if (_taskSide != sideUnknown) then {
-                                // Find all groups of this side within 2000m of the objective
+                                // Find all groups of this side within 1500m of the objective
                                 private _nearGroups = allGroups select {
                                     side _x == _taskSide 
                                     && {alive leader _x}
-                                    && {isPlayer (leader _x) == false} // Don't hijack player groups!
-                                    && {(leader _x distance2D _taskPos) < 2000}
+                                    && {isPlayer (leader _x) == false} // Don't hijack player groups
+                                    && {(leader _x distance2D _taskPos) < 1500}
                                 };
                                 
                                 {
                                     private _group = _x;
+                                    private _distance = (leader _group) distance2D _taskPos;
                                     
-                                    // 1. SELECTIVE VCOM OVERRIDE (Soft Guardrail)
-                                    // Disable their ability to respond to distant calls for backup from other squads
+                                    // Always lock down fleeing and radio rescue
                                     _group setVariable ["VCM_NORESCUE", true, true];
-                                    
-                                    // Disable fleeing so they fight to the death on objective
                                     { _x allowFleeing 0; } forEach (units _group);
                                     
-                                    // 2. THE TACTICAL NUDGE
-                                    // If they have wandered more than 300m from the objective, wipe waypoints and nudge them back
-                                    if ((leader _group distance2D _taskPos) > 300) then {
+                                    // ============================================
+                                    // THE GEOFENCED TETHER LOGIC
+                                    // ============================================
+                                    if (_distance <= 300) then {
+                                        // 🟢 INSIDE THE SAFE ZONE: Vcom Active
+                                        if (_group getVariable ["Vcm_Disable", false]) then {
+                                            _group setVariable ["Vcm_Disable", false, true];
+                                            diag_log format ["[A3M SOVEREIGN] Group %1 entered Safe Zone for Task %2. Vcom tactical systems RE-ENGAGED.", _group, _taskID];
+                                        };
                                         
+                                        // We don't mess with their waypoints here, let Vcom handle the close-quarters fight
+                                        
+                                    } else {
+                                        // 🔴 OUTSIDE THE SAFE ZONE: Vcom Lobotomized
+                                        if (!(_group getVariable ["Vcm_Disable", false])) then {
+                                            _group setVariable ["Vcm_Disable", true, true];
+                                            diag_log format ["[A3M SOVEREIGN] Group %1 breached 300m Tether for Task %2! Vcom DISABLED. Forcing retreat to objective.", _group, _taskID];
+                                        };
+                                        
+                                        // Force them back
                                         while {(count (waypoints _group)) > 0} do {
                                             deleteWaypoint ((waypoints _group) select 0);
                                         };
                                         
                                         private _wp = _group addWaypoint [_taskPos, 0];
-                                        
-                                        private _isDefend = (["Defend", _taskTitle] call BIS_fnc_inString) || (["Hold", _taskTitle] call BIS_fnc_inString);
-                                        
-                                        if (_isDefend) then {
-                                            _wp setWaypointType "GUARD";
-                                            _wp setWaypointBehaviour "AWARE";
-                                        } else {
-                                            _wp setWaypointType "SAD"; // Search and Destroy
-                                            _wp setWaypointBehaviour "AWARE";
-                                        };
-                                        
-                                        if (!(_group getVariable ["A3M_NudgeLogged", false])) then {
-                                            diag_log format ["[A3M SOVEREIGN] Nudged Group %1 back to Task %2. VCM_NORESCUE activated.", _group, _taskID];
-                                            _group setVariable ["A3M_NudgeLogged", true];
-                                        };
+                                        _wp setWaypointType "MOVE"; // Just sprint back, ignore enemies if possible
+                                        _wp setWaypointBehaviour "AWARE";
+                                        _wp setWaypointCombatMode "YELLOW"; // Fire back, but keep moving
+                                        _wp setWaypointSpeed "FULL";
                                     };
                                     
                                 } forEach _nearGroups;
