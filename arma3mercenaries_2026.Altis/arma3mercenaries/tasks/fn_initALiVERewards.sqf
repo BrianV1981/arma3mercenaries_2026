@@ -54,18 +54,26 @@ if (!isServer) exitWith {};
         params ["_logic","_operation","_args"];
         if (_operation == "handleEvent") then {
             _args params ["_id", "_eventData"];
+            
+            // AGGRESSIVE DEBUG: Log every TASK_UPDATE event to see exactly what ALiVE sends
+            diag_log format ["[A3M REWARD DEBUG] Event: %1 | Raw Data: %2", _id, _eventData];
+            
             if (_id == "TASK_UPDATE") then {
                 
-                private _taskID = _eventData select 0;
-                private _taskSide = _eventData select 2;
-                private _taskPos = _eventData select 3;
-                private _taskState = _eventData select 8;
+                private _taskID = _eventData param [0, ""];
+                private _taskSide = _eventData param [2, ""];
+                private _taskPos = _eventData param [3, [0,0,0]];
+                private _taskState = _eventData param [8, ""];
+
+                diag_log format ["[A3M REWARD DEBUG] Task %1 State is now: %2", _taskID, _taskState];
 
                 if (_taskState == "Succeeded" && {!(_taskID in A3M_PaidTasks)}) then {
                     
                     // Did a player get near it, OR did a player drop bombs on it?
                     private _playersPresent = allPlayers select { alive _x && {(_x distance2D _taskPos) <= 1000} };
                     private _playerContributed = (_taskID in A3M_TaskContributions);
+
+                    diag_log format ["[A3M REWARD DEBUG] Task %1 Succeeded! Players Present: %2 | Player Contributed: %3", _taskID, count _playersPresent, _playerContributed];
 
                     if ((count _playersPresent > 0) || _playerContributed) then {
                         
@@ -75,7 +83,7 @@ if (!isServer) exitWith {};
                         private _rewardAmount = missionNamespace getVariable ["A3M_ALiVE_RewardAmount", 10000];
                         private _rewardDist = missionNamespace getVariable ["A3M_ALiVE_RewardDistribution", 0];
 
-                        // systemChat format ["ALiVE C2ISTAR Task Completed! Distributing Mercenary Payout: $%1", _rewardAmount]; // Removed native systemChat
+                        diag_log format ["[A3M REWARD DEBUG] Distributing $%1 to eligible players...", _rewardAmount];
                         
                         {
                             if (isPlayer _x && alive _x) then {
@@ -98,10 +106,7 @@ if (!isServer) exitWith {};
                                         // Players Involved Only
                                         if (_x in _playersPresent) then { _eligible = true; }
                                         else {
-                                            // Technically we can't easily attribute specific kills to specific players after the fact unless we store them.
-                                            // As a fallback, if someone was assigned to the task, we can reward them if they contributed.
-                                            // However, for now, if it's "players involved", and they aren't near, we check if they're assigned to the task.
-                                            private _assignedPlayers = _eventData select 7; // [[UIDs], [Names]]
+                                            private _assignedPlayers = _eventData param [7, []]; // [[UIDs], [Names]]
                                             private _assignedUIDs = _assignedPlayers param [0, []];
                                             if (getPlayerUID _x in _assignedUIDs) then { _eligible = true; };
                                         };
@@ -109,6 +114,7 @@ if (!isServer) exitWith {};
                                 };
 
                                 if (_eligible) then {
+                                    diag_log format ["[A3M REWARD DEBUG] Paying Player: %1", name _x];
                                     [_x, _rewardAmount, false] call grad_moneymenu_fnc_addFunds;
                                     
                                     // A3M Dynamic Text HUD Notification
@@ -123,7 +129,7 @@ if (!isServer) exitWith {};
                         } forEach playableUnits;
 
                     } else {
-                        diag_log format ["ALiVE Task %1 succeeded by AI. No player presence or combat attribution. Reward denied.", _taskID];
+                        diag_log format ["[A3M REWARD DEBUG] ALiVE Task %1 succeeded by AI. No player presence or combat attribution. Reward denied.", _taskID];
                     };
                 };
             };
@@ -135,5 +141,33 @@ if (!isServer) exitWith {};
     _listener setVariable ["class", _fnc_customReward];
     [ALiVE_eventLog, "addListener", [_listener, ["TASK_UPDATE"]]] call ALIVE_fnc_eventLog;
     
-    diag_log "A3M ALiVE Reward Listener Initialized!";
+    // --- 3. THE FALLBACK TASK MONITOR ---
+    // If ALiVE_eventLog is dropping events, this loop catches task successes directly from the hashmap.
+    [_listener, _fnc_customReward] spawn {
+        params ["_listener", "_fnc_customReward"];
+        while {true} do {
+            sleep 10;
+            if (!isNil "ALIVE_taskHandler") then {
+                private _tasks = [ALIVE_taskHandler, "tasks"] call ALIVE_fnc_hashGet;
+                if (!isNil "_tasks") then {
+                    {
+                        private _taskID = _x;
+                        if (!(_taskID in A3M_PaidTasks)) then {
+                            private _taskData = [_tasks, _taskID] call ALIVE_fnc_hashGet;
+                            if (!isNil "_taskData") then {
+                                private _taskState = _taskData param [8, ""];
+                                if (_taskState == "Succeeded") then {
+                                    diag_log format ["[A3M REWARD FALLBACK] Caught SUCCESS state for Task %1 directly from Hashmap! Data: %2", _taskID, _taskData];
+                                    // Trigger the event manually if the listener missed it
+                                    [_listener, "handleEvent", ["TASK_UPDATE", _taskData]] call _fnc_customReward;
+                                };
+                            };
+                        };
+                    } forEach (_tasks select 1);
+                };
+            };
+        };
+    };
+    
+    diag_log "[A3M DEBUG] ALiVE Reward Listener Initialized with Fallback Monitor!";
 };
