@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.22.9] - 2026-06-18
+- Fix: Added dynamic type conversion in `fn_initMercenary.sqf` to support older Beta 2 `[[keys], [values]]` database arrays, preventing `getOrDefault` crashes after DB rollbacks.
+
 ## [v1.22.8] - 2026-06-18
 - Fix: ALiVE task reward notification now broadcasts to eligible players via A3M styled `BIS_fnc_dynamicText` instead of logging silently to the server `.rpt`.
 

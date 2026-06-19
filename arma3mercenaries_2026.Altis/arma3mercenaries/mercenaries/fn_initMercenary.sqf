@@ -142,6 +142,22 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
                 
                 // Add to Player's list of owned AI (so we can populate the UI later)
                 private _playerProfile = ["A3M_PROFILE_" + _playerUID, createHashMap, true] call A3M_fnc_dbGetSecure;
+                
+                // A3M Backward Compatibility Fix: Convert old Beta 2 Array format [[keys], [values]] to HashMap
+                if (_playerProfile isEqualType []) then {
+                    if (count _playerProfile == 2 && {(_playerProfile select 0) isEqualType []}) then {
+                        private _keys = _playerProfile select 0;
+                        private _vals = _playerProfile select 1;
+                        private _tempHash = createHashMap;
+                        {
+                            _tempHash set [_x, _vals select _forEachIndex];
+                        } forEach _keys;
+                        _playerProfile = _tempHash;
+                    } else {
+                        _playerProfile = createHashMap;
+                    };
+                };
+                
                 private _ownedMercs = _playerProfile getOrDefault ["OwnedMercenaries", []];
                 _ownedMercs pushBack _aiUnitID;
                 _playerProfile set ["OwnedMercenaries", _ownedMercs];
