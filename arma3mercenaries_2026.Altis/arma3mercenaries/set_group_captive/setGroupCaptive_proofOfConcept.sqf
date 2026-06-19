@@ -27,8 +27,7 @@ private _index = 0;
                 moveOut _unit; 
             };
 
-            // Wait 1.2 seconds for them to hit the ground before applying cuffs.
-            // Tightened from 1.5s to prevent them from walking too far away from the turret.
+            // Wait 1.5 seconds for them to hit the ground before applying cuffs.
             [{
                 params ["_unit"];
                 
@@ -44,7 +43,7 @@ private _index = 0;
                 
                 // Apply ACE handcuffs (visual + behavioral)
                 [_unit, true] call ACE_captives_fnc_setHandcuffed;
-            }, [_unit], 1.2] call CBA_fnc_waitAndExecute;
+            }, [_unit], 1.5] call CBA_fnc_waitAndExecute;
 
         }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
         
