@@ -30,6 +30,15 @@ _content ctrlSetBackgroundColor [0, 0, 0, 0.5];
 _content ctrlCommit 0;
 
 private _text = "
+<t size='1.1' color='#55aaff'>Welcome</t><br/>
+<t size='0.85'><t color='#ff0000'>BETA DISCLAIMER</t><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <t color='#ffaa00'>Arma 3 Mercenaries (A3M)</t>!<br/><br/>
+This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
+
+<t color='#00aaff'>USING YOUR MAP:</t> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
+
+Please read through the tabs below to understand how to survive and thrive as a contractor.<br/><br/>
+You can also press the <t color='#00aaff'>'P'</t> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.</t><br/><br/>
+
 <t size='1.1' color='#55aaff'>The Dynamic ALiVE War</t><br/>
 <t size='0.85'><t color='#ffaa00'>A LIVING, BREATHING BATTLEFIELD</t><br/>
 The entire war raging across the island is completely dynamic. The only hand-placed units on the map are the player characters! Every other hostile, civilian, vehicle, and military patrol is dynamically generated and commanded by the ALiVE Military Commander engine.<br/><br/>
@@ -169,15 +178,6 @@ With your newfound wealth, recruit a squad and head to <t color='#ffff00'>Fort M
 
 <t color='#ffaa00'>4. LOGISTICS &amp; BASE BUILDING ARE CENTRAL</t><br/>
 You cannot win this war with just infantry. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!</t><br/><br/>
-
-<t size='1.1' color='#55aaff'>Welcome</t><br/>
-<t size='0.85'><t color='#ff0000'>BETA DISCLAIMER</t><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <t color='#ffaa00'>Arma 3 Mercenaries (A3M)</t>!<br/><br/>
-This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
-
-<t color='#00aaff'>USING YOUR MAP:</t> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
-
-Please read through the tabs below to understand how to survive and thrive as a contractor.<br/><br/>
-You can also press the <t color='#00aaff'>'P'</t> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.</t><br/><br/>
 
 <t size='1.1' color='#55aaff'>Ranks and Progression</t><br/>
 <t size='0.85'><t color='#ffaa00'>RANKS AND REWARDS</t><br/>

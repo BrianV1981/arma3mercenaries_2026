@@ -86,7 +86,13 @@ Resets your AI group's formation and combat states if they are acting buggy."""
             beta_text = "<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>"
             tab['text'] = beta_text + tab['text']
 
-# Now m_tabs contains ALL original M text + the unique P texts. Total 15 tabs.
+    # Shift 'Welcome' tab to the very top (Index 0)
+    welcome_tab = next((t for t in m_tabs if t['title'] == 'Welcome'), None)
+    if welcome_tab:
+        m_tabs.remove(welcome_tab)
+        m_tabs.insert(0, welcome_tab)
+
+# Now m_tabs contains ALL original M text + the unique P texts. Total 16 tabs.
 
 # 1. Generate M_FILE
 m_out = """/*

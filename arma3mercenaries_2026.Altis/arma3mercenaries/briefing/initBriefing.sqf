@@ -62,18 +62,6 @@ There are 7 ranks. Ranking up increases paychecks, kill rewards, and unlocks Bla
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Welcome", 
-"
-<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
-This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
-
-<font color='#00aaff'>USING YOUR MAP:</font> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
-
-Please read through the tabs below to understand how to survive and thrive as a contractor.<br/><br/>
-You can also press the <font color='#00aaff'>'P'</font> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.
-"
-]];
-
 player createDiaryRecord ["a3m_field_manual", ["The Core Gameplay Loop", 
 "
 <font color='#ffaa00'>1. INTERROGATE FOR SEED MONEY</font><br/>
@@ -244,6 +232,18 @@ The entire war raging across the island is completely dynamic. The only hand-pla
 
 <font color='#ffaa00'>SECTOR CONTROL</font><br/>
 The frontlines naturally shift as NATO and OPFOR clash. All Sector Control scripts and military objectives are entirely handled by ALiVE, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["Welcome", 
+"
+<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
+This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
+
+<font color='#00aaff'>USING YOUR MAP:</font> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
+
+Please read through the tabs below to understand how to survive and thrive as a contractor.<br/><br/>
+You can also press the <font color='#00aaff'>'P'</font> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.
 "
 ]];
 
