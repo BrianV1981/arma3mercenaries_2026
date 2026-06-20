@@ -7,28 +7,7 @@ createDialog "A3M_FieldManualDialog";
 waitUntil {!isNull (findDisplay 7030)};
 
 private _display = findDisplay 7030;
-
-#define GUI_GRID_X    (safezoneX)
-#define GUI_GRID_Y    (safezoneY)
-#define GUI_GRID_W    (safezoneW / 40)
-#define GUI_GRID_H    (safezoneH / 25)
-
-// Dynamically create a scrollable ControlsGroup to hold the text
-private _group = _display ctrlCreate ["RscControlsGroupNoHScrollbars", 7032];
-_group ctrlSetPosition [
-    10.5 * GUI_GRID_W + GUI_GRID_X,
-    3.5 * GUI_GRID_H + GUI_GRID_Y,
-    19 * GUI_GRID_W,
-    19.5 * GUI_GRID_H
-];
-_group ctrlCommit 0;
-
-// Create the structured text INSIDE the group
-private _content = _display ctrlCreate ["HG_RscStructuredText", 7031, _group];
-_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, 10]; // Temporary height
-_content ctrlSetBackgroundColor [0, 0, 0, 0.5];
-_content ctrlCommit 0;
-
+private _content = _display displayCtrl 7031;
 
 private _text = "
 <t size='1.1' color='#55aaff'>The Dynamic ALiVE War</t><br/>
@@ -203,12 +182,20 @@ Used to haul physically built objects (like crates or statics) inside vehicles.<
 <t color='#ffaa00'>3. NORMAL</t><br/>
 Your standard player backpack and default vehicle trunks for guns, ammo, and cash.</t><br/><br/>
 
+<t size='1.1' color='#55aaff'>A3M Custom Squad Controls</t><br/>
+<t size='0.85'><t color='#ffaa00'>ACE INTERACTION MENU</t><br/>
+We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
+<t color='#ffaa00'>RECALL SQUAD</t><br/>
+Instantly teleports your entire AI squad directly to your position if they get stuck or fall behind.<br/><br/>
+<t color='#ffaa00'>STAND DOWN (DEACTIVATE)</t><br/>
+Orders your AI to instantly disembark any vehicles, un-equip their weapons, and put on zip-ties (setting them to Captive). Use this to prevent them from engaging targets or getting shot while you perform stealth operations or drive through hostile checkpoints.<br/><br/>
+<t color='#ffaa00'>MOBILIZE (REACTIVATE)</t><br/>
+Removes the zip-ties from your squad, returning them to full combat readiness and allowing them to fire on enemies.<br/><br/>
+<t color='#ffaa00'>QUICK LOAD & SECURE BASE TURRETS</t><br/>
+Forces your AI to immediately board any empty vehicles or static weapons within a 6m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
+<t color='#ffaa00'>REFORM SQUAD</t><br/>
+Resets your AI group's formation and combat states if they are acting buggy.</t><br/><br/>
+
 ";
 
 _content ctrlSetStructuredText parseText _text;
-
-// Adjust height of structured text to fit content perfectly, triggering the scrollbar
-private _h = ctrlTextHeight _content;
-_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, _h];
-_content ctrlCommit 0;
-
