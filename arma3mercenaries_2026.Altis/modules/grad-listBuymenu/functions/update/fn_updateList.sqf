@@ -50,14 +50,22 @@ _listIndex = 0;
     };
     // ----------------------------------------------
 
+    private _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
+
     private _listText = format ["[%1 Cr] %2", _price, _displayName];
-    if (_isOnSale) then {
-        _listText = format ["[%1 Cr] [SALE] %2", _price, _displayName];
+    if (_stock <= 0) then {
+        _listText = format ["[%1 Cr] [SOLD OUT] %2", _price, _displayName];
+    } else {
+        if (_stock <= 3) then {
+            _listText = format ["[%1 Cr] [LOW STOCK] %2", _price, _displayName];
+        } else {
+            if (_isOnSale) then {
+                _listText = format ["[%1 Cr] [SALE] %2", _price, _displayName];
+            };
+        };
     };
 
     _listIndex = _listCtrl lbAdd _listText;
-
-    private _stock = [_baseConfigName, _categoryConfigName, _itemConfigName] call grad_lbm_fnc_getStock;
 
     if (_isLocked) then {
         _listCtrl lbSetColor [_listIndex, [0.8, 0.2, 0.2, 1]]; // Red text

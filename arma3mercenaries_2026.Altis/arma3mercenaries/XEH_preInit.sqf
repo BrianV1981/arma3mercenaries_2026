@@ -57,6 +57,7 @@
     true
 ] call CBA_Settings_fnc_init;
 
+
 [
     "A3M_Camping_RestoreFatigue",
     "CHECKBOX",
@@ -86,6 +87,161 @@
     ["ALiVE Task Reward Amount", "Funds distributed upon completing a C2ISTAR task."],
     ["A3M Settings", "ALiVE Integration"],
     [0, 1000000, 10000, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+// --- DYNAMIC ECONOMY SETTINGS ---
+[
+    "A3M_Economy_Enable",
+    "CHECKBOX",
+    ["Enable Dynamic Economy", "Allow the server to generate daily sales and stock shortages."],
+    ["A3M Settings", "Dynamic Economy"],
+    true,
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_OOSChance",
+    "SLIDER",
+    ["Out of Stock Chance (%)", "The percentage chance an item will completely sell out."],
+    ["A3M Settings", "Dynamic Economy"],
+    [0, 100, 5, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_LowStockChance",
+    "SLIDER",
+    ["Low Stock Chance (%)", "The percentage chance an item will have low inventory (1-3 items) if it isn't sold out."],
+    ["A3M Settings", "Dynamic Economy"],
+    [0, 100, 10, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_OverstockCount",
+    "SLIDER",
+    ["Overstock Sale Count", "How many items are randomly selected for the massive Overstock discount."],
+    ["A3M Settings", "Dynamic Economy"],
+    [0, 100, 4, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_OverstockDiscount",
+    "SLIDER",
+    ["Overstock Discount (%)", "How much cheaper these items are (e.g., 50 = Half Price)."],
+    ["A3M Settings", "Dynamic Economy"],
+    [1, 99, 50, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_ClearanceCount",
+    "SLIDER",
+    ["Clearance Sale Count", "How many items are randomly selected for the Clearance discount."],
+    ["A3M Settings", "Dynamic Economy"],
+    [0, 100, 10, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_ClearanceDiscount",
+    "SLIDER",
+    ["Clearance Discount (%)", "How much cheaper these items are (e.g., 30 = 30% Off)."],
+    ["A3M Settings", "Dynamic Economy"],
+    [1, 99, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_DailyCount",
+    "SLIDER",
+    ["Daily Sale Count", "How many items are randomly selected for the standard Daily discount."],
+    ["A3M Settings", "Dynamic Economy"],
+    [0, 100, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_DailyDiscount",
+    "SLIDER",
+    ["Daily Discount (%)", "How much cheaper these items are (e.g., 10 = 10% Off)."],
+    ["A3M Settings", "Dynamic Economy"],
+    [1, 99, 10, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+// --- BASE STOCK GENERATION ---
+[
+    "A3M_Economy_BaseStock_WeaponsMin",
+    "SLIDER",
+    ["Weapons Min Stock", "Minimum number of standard weapons available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 100, 4, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_WeaponsMax",
+    "SLIDER",
+    ["Weapons Max Stock", "Maximum number of standard weapons available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 100, 15, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_MagsMin",
+    "SLIDER",
+    ["Magazines Min Stock", "Minimum number of magazines available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 500, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_MagsMax",
+    "SLIDER",
+    ["Magazines Max Stock", "Maximum number of magazines available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 500, 120, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_BackpacksMin",
+    "SLIDER",
+    ["Backpacks Min Stock", "Minimum number of backpacks available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 200, 10, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_BackpacksMax",
+    "SLIDER",
+    ["Backpacks Max Stock", "Maximum number of backpacks available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 200, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_MiscMin",
+    "SLIDER",
+    ["Misc Items Min Stock", "Minimum number of misc items (equipment) available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 200, 15, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_BaseStock_MiscMax",
+    "SLIDER",
+    ["Misc Items Max Stock", "Maximum number of misc items (equipment) available."],
+    ["A3M Settings", "Dynamic Economy (Stock Ranges)"],
+    [0, 200, 50, 0],
     true
 ] call CBA_Settings_fnc_init;
 
