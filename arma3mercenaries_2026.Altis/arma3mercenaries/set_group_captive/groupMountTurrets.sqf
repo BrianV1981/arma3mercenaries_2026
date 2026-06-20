@@ -28,7 +28,7 @@ private _index = 0;
             // Clear activation flag
             _unit setVariable ["A3M_AwaitingActivation", nil, true];
 
-            // Scan for nearest vehicles around the unit (their nearest turret)
+            // Scan for nearest vehicles
             private _nearestVehicles = nearestObjects [_unit, ["LandVehicle", "Air", "Ship", "StaticWeapon"], _radius];
             private _mounted = false;
 
@@ -41,14 +41,12 @@ private _index = 0;
                     {
                         _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                         if (!_mounted && {isNull _occupant} && {_role in ["gunner", "commander", "turret"]}) then {
-                            if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; }; // Unlock via HG BEFORE assigning so engine doesn't eject them
                             if (_role == "gunner") then { _unit assignAsGunner _vehicle; };
                             if (_role == "commander") then { _unit assignAsCommander _vehicle; };
                             if (_role == "turret") then { _unit assignAsTurret [_vehicle, _turretPath]; };
                             
                             [_unit] orderGetIn true;
                             _unit moveInTurret [_vehicle, _turretPath];
-                            [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                             _mounted = true;
                         };
                     } forEach _allSeats;
@@ -58,11 +56,9 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "driver"}) then {
-                                if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; };
                                 _unit assignAsDriver _vehicle;
                                 [_unit] orderGetIn true;
                                 _unit moveInDriver _vehicle;
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;
@@ -73,11 +69,9 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "cargo"}) then {
-                                if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; };
                                 _unit assignAsCargoIndex [_vehicle, _cargoIndex];
                                 [_unit] orderGetIn true;
                                 _unit moveInCargo [_vehicle, _cargoIndex];
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;
@@ -90,5 +84,4 @@ private _index = 0;
     };
 } forEach units group player;
 
-private _a3mMsg = "<t align='left'><t size='0.8' color='#FFaa00'>SQUAD QUICK LOAD</t><br/><t size='0.6' color='#FFFFFF'>Squad mobilized and mounting nearest vehicles.</t></t>";
-[_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
+systemChat "[A3M] Squad mobilized and mounting nearest vehicle.";
