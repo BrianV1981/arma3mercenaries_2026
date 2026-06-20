@@ -87,4 +87,5 @@ private _index = 0;
     };
 } forEach units group player;
 
-systemChat "[A3M] Squad mobilized and mounting nearest vehicle.";
+private _a3mMsg = "<t align='left'><t size='0.8' color='#FFaa00'>SQUAD QUICK LOAD</t><br/><t size='0.6' color='#FFFFFF'>Squad mobilized and mounting nearest vehicles.</t></t>";
+[_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
