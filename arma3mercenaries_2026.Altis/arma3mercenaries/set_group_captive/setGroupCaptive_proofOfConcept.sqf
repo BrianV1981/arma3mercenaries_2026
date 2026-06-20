@@ -22,9 +22,9 @@ private _index = 0;
             // Force dismount from vehicles or static turrets
             if (_veh != _unit) then {
                 // If vehicle is locked, unlock it so the AI can physically get out
-                if ((locked _veh) isEqualTo 2) then {
+                if ((locked _veh) >= 2) then {
                     _wasLocked = true;
-                    if (local _veh) then { _veh lock 0; } else { [_veh, 0] remoteExecCall ["HG_fnc_lock", 2]; };
+                    [_veh] call HG_fnc_lockOrUnlock;
                 };
 
                 [_unit] orderGetIn false;
@@ -42,7 +42,9 @@ private _index = 0;
                 
                 // Relock the vehicle if we unlocked it for them
                 if (_wasLocked) then {
-                    if (local _veh) then { _veh lock 2; } else { [_veh, 2] remoteExecCall ["HG_fnc_lock", 2]; };
+                    if ((locked _veh) < 2) then {
+                        [_veh] call HG_fnc_lockOrUnlock;
+                    };
                 };
                 
                 // Apply vanilla SQF guards
