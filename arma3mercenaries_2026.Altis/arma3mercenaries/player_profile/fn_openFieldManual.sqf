@@ -7,7 +7,28 @@ createDialog "A3M_FieldManualDialog";
 waitUntil {!isNull (findDisplay 7030)};
 
 private _display = findDisplay 7030;
-private _content = _display displayCtrl 7031;
+
+#define GUI_GRID_X    (safezoneX)
+#define GUI_GRID_Y    (safezoneY)
+#define GUI_GRID_W    (safezoneW / 40)
+#define GUI_GRID_H    (safezoneH / 25)
+
+// Dynamically create a scrollable ControlsGroup to hold the text
+private _group = _display ctrlCreate ["RscControlsGroupNoHScrollbars", 7032];
+_group ctrlSetPosition [
+    10.5 * GUI_GRID_W + GUI_GRID_X,
+    3.5 * GUI_GRID_H + GUI_GRID_Y,
+    19 * GUI_GRID_W,
+    19.5 * GUI_GRID_H
+];
+_group ctrlCommit 0;
+
+// Create the structured text INSIDE the group
+private _content = _display ctrlCreate ["HG_RscStructuredText", 7031, _group];
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, 10]; // Temporary height
+_content ctrlSetBackgroundColor [0, 0, 0, 0.5];
+_content ctrlCommit 0;
+
 
 private _text = "
 <t size='1.1' color='#55aaff'>The Dynamic ALiVE War</t><br/>
@@ -185,3 +206,9 @@ Your standard player backpack and default vehicle trunks for guns, ammo, and cas
 ";
 
 _content ctrlSetStructuredText parseText _text;
+
+// Adjust height of structured text to fit content perfectly, triggering the scrollbar
+private _h = ctrlTextHeight _content;
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, _h];
+_content ctrlCommit 0;
+
