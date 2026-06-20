@@ -23,7 +23,7 @@ class A3M_TicketMenu {
         };
         class HeaderText: HG_RscText {
             idc = -1;
-            text = "A3M TICKETING & BUG REPORT SYSTEM";
+            text = "A3M TICKETING (BUGS & FEATURES - NOT FOR REPORTING PLAYERS)";
             x = 0.31 * safezoneW + safezoneX;
             y = 0.25 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;
@@ -64,7 +64,7 @@ class A3M_TicketMenu {
         };
         class InfoLabel: HG_RscText {
             idc = -1;
-            text = "Tickets are pushed securely to the remote GitHub issue tracker.";
+            text = "Use this to report bugs, request features, or start discussions. Tickets go to GitHub.";
             x = 0.31 * safezoneW + safezoneX;
             y = 0.70 * safezoneH + safezoneY;
             w = 0.38 * safezoneW;

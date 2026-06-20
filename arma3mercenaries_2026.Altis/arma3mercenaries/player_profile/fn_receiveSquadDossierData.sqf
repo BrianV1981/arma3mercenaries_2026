@@ -45,7 +45,7 @@ if (count _activeSquad == 0) then {
             _dateStr = format ["%1-%2-%3", _joinDate select 0, _joinDate select 1, _joinDate select 2];
         };
         
-        private _entry = format ["%1 %2 | Enlisted: %3 | Kills: %4 | Cash: $%5", _statusStr, _name, _dateStr, _kills, _cash];
+        private _entry = format ["%1 %2 (%6) | Enlisted: %3 | Kills: %4 | Cash: $%5", _statusStr, _name, _dateStr, _kills, _cash, _class];
         private _index = _listActive lbAdd _entry;
         _listActive lbSetData [_index, _mercID];
         
@@ -85,7 +85,7 @@ if (count _graveyard == 0) then {
             };
         };
         
-        private _entry = format ["%1 | Time Served: %2 | Kills: %3 | Cause: %4", _name, _timeServedStr, _kills, _causeOfDeath];
+        private _entry = format ["%1 (%5) | Time Served: %2 | Kills: %3 | Cause: %4", _name, _timeServedStr, _kills, _causeOfDeath, _class];
         private _index = _listGraveyard lbAdd _entry;
         _listGraveyard lbSetData [_index, _mercID];
         _listGraveyard lbSetColor [_index, [1, 0.4, 0.4, 1]];

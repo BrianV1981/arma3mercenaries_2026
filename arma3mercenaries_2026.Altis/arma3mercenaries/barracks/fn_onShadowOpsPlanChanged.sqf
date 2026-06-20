@@ -62,17 +62,11 @@ private _hasRequiredClass = false;
 private _hasMedic = false;
 
 for "_i" from 0 to (_squadCount - 1) do {
-    private _mercID = _selectedSquadList lbData _i;
-    private _profile = [format["A3M_MERC_%1", _mercID], createHashMap, true] call A3M_fnc_dbGetSecure;
-    private _mercClass = _profile getOrDefault ["Class", ""];
+    private _dataStr = _selectedSquadList lbData _i;
+    private _parts = _dataStr splitString "|";
+    private _logicalClass = if (count _parts > 1) then { _parts select 1 } else { "Any" };
     
-    // Convert Arma classnames to our logical categories
-    private _logicalClass = "Any";
-    if (["medic", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Medic"; _hasMedic = true; };
-    if (["engineer", _mercClass] call BIS_fnc_inString || ["exp", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Engineer"; };
-    if (["sniper", _mercClass] call BIS_fnc_inString || ["marksman", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Sniper"; };
-    if (["at", _mercClass] call BIS_fnc_inString || ["aa", _mercClass] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
-    
+    if (_logicalClass == "Medic") then { _hasMedic = true; };
     if (_logicalClass == _reqClass || _reqClass == "Any") then {
         _hasRequiredClass = true;
     };

@@ -31,7 +31,9 @@ if (count _sessionMissions == 0) then {
         ["Extreme Recovery", 120, 3.0, ["VIP NATO Ambassador", "Nuclear Launch Codes", "President's Family", "Biological Weapon Sample"], ["Active Warzone", "Enemy Capital", "Sinking Ship", "CSAT Black Site"], "Medic"],
         ["Reconnaissance", 55, 1.3, ["HQ Comm Relay", "Border Defenses", "Naval Fleet Movement", "Secret Missile Silo"], ["Mountaintop Base", "Border Wall", "Open Ocean", "Desert Depths"], "Sniper"],
         ["Raid", 40, 0.5, ["Small Arms Cache", "Medical Supply Convoy", "Smuggler's Hideout", "Outpost Armory"], ["Desert Ruins", "Jungle Camp", "Coastal Caves", "Abandoned Town"], "Any"],
-        ["Defensive", 45, 0.6, ["FOB Guardian", "Civilian Hospital", "Refugee Camp", "UN Aid Convoy"], ["Altis Border", "Kavala Center", "Charkia", "Neochori"], "AT Specialist"]
+        ["Defensive", 45, 0.6, ["FOB Guardian", "Civilian Hospital", "Refugee Camp", "UN Aid Convoy"], ["Altis Border", "Kavala Center", "Charkia", "Neochori"], "AT Specialist"],
+        ["Air Superiority", 80, 1.5, ["Enemy Airbase", "Forward FARP", "Landed Gunship", "Radar Array"], ["Salt Flats", "Altis Airport", "Abdera", "Therisa"], "AA Specialist"],
+        ["Suppressive Assault", 60, 1.1, ["Enemy Checkpoint", "Trench Network", "Convoy Ambush Point", "Overwatch Position"], ["Kavala Highway", "Panochori", "Zaros", "Athira"], "Machine Gunner"]
     ];
 
     private _weatherTypes = ["Clear", "Overcast", "Rain", "Severe Storm", "Dense Fog"];

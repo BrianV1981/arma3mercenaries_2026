@@ -18,11 +18,11 @@ if (count _rosterData == 0) exitWith {
 };
 
 {
-    _x params ["_mercID", "_name", "_class", "_kills"];
+    _x params ["_mercID", "_name", "_logicalClass", "_kills"];
     
-    private _displayName = format ["%1 - %2 (Kills: %3)", _name, _class, _kills];
+    private _displayName = format ["%1 - %2 (Kills: %3)", _name, _logicalClass, _kills];
     private _index = _rosterListCtrl lbAdd _displayName;
     
-    // Store the database ID in the UI control data so we know who we selected
-    _rosterListCtrl lbSetData [_index, _mercID];
+    // Store the database ID and logical class in the UI control data so we know who we selected
+    _rosterListCtrl lbSetData [_index, format ["%1|%2", _mercID, _logicalClass]];
 } forEach _rosterData;

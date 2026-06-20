@@ -73,6 +73,28 @@ class A3M_ShadowOpsDialog {
             w = 0.02 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.8, 0, 0, 1};
+            action = "closeDialog 0;";
+        };
+
+        class ReturnToDossierButton: HG_RscButton {
+            idc = -1;
+            text = "PLAYER DOSSIER";
+            x = 0.11 * safezoneW + safezoneX;
+            y = 0.105 * safezoneH + safezoneY;
+            w = 0.10 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0.2, 0.4, 0.6, 1};
+            action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7050)}; [] call A3M_fnc_openPlayerCard; };";
+        };
+
+        class ReturnToBarracksButton: HG_RscButton {
+            idc = -1;
+            text = "SQUAD BARRACKS";
+            x = 0.22 * safezoneW + safezoneX;
+            y = 0.105 * safezoneH + safezoneY;
+            w = 0.10 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0.2, 0.4, 0.6, 1};
             action = "closeDialog 0; [] spawn { waitUntil {isNull (findDisplay 7050)}; [] call A3M_fnc_openSquadDossier; };";
         };
 

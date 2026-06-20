@@ -535,7 +535,10 @@ private _actInterrogate = [
         params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
         // DIK Code 25 is 'P'. Ensure no modifiers are pressed to prevent conflicts with combinations.
         if (_key == 25 && !_shift && !_ctrl && !_alt) then {
-            if (isNull (findDisplay 7020) && isNull (findDisplay 7030)) then {
+            private _openDisplays = [7020, 7030, 7040, 7050, 7700] select { !isNull (findDisplay _x) };
+            if (count _openDisplays > 0) then {
+                { (findDisplay _x) closeDisplay 1; } forEach _openDisplays;
+            } else {
                 [] call A3M_fnc_openPlayerCard;
             };
             // Return true to consume the keypress and override default 'P' (Scoreboard) behavior

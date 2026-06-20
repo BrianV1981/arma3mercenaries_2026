@@ -17,7 +17,7 @@ player createDiaryRecord ["a3m_field_manual", ["The Dynamic ALiVE War",
 The entire war raging across the island is completely dynamic. The only hand-placed units on the map are the player characters! Every other hostile, civilian, vehicle, and military patrol is dynamically generated and commanded by the ALiVE Military Commander engine.<br/><br/>
 
 <font color='#ffaa00'>SECTOR CONTROL</font><br/>
-The frontlines naturally shift as NATO and OPFOR clash. All Sector Control scripts and military objectives are entirely handled by ALiVE, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
+The frontlines naturally shift as NATO and OPFOR clash. While it utilizes ALiVE's virtualized squads in the overarching war, the Sector Control system is completely custom-built from scratch to be compatible with ALiVE! ALiVE's virtualized units can actually capture these custom sectors, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
 "
 ]];
 
@@ -145,8 +145,10 @@ You have two separate balances: Cash (Wallet) and Bank. Cash is used for transac
 
 <font color='#ffaa00'>ALTERNATIVE MONEY MAKERS</font><br/>
 Don't just rely on interrogations! There are many ways to build your empire:<br/>
+• <t color='#ffffff'>Shadow Ops:</t> Deploy your offline AI squad members on asynchronous background missions. They will earn you massive payouts while you sleep, provided you send the right specialist for the job!<br/>
+• <t color='#ffffff'>ALiVE Opcom Missions:</t> The ALiVE Operational Commander will periodically generate dynamic combat tasks. Completing these military objectives rewards you with lucrative payouts.<br/>
+• <t color='#ffffff'>Looting and Fencing:</t> Strip weapons and gear from dead enemies. You can sell these commandeered items to Traders for pure profit. Look for Traders and Vehicle Traders—they are conveniently located at all Garage zones and will buy your gear and vehicles.<br/>
 • <t color='#ffffff'>Vehicle Salvaging:</t> Find destroyed vehicle wrecks and use a toolkit to salvage them for massive resource payouts.<br/>
-• <t color='#ffffff'>Looting and Fencing:</t> Strip weapons and gear from dead enemies. You can sell these commandeered weapons to the Black Market fence for pure profit.<br/>
 • <t color='#ffffff'>Sector Control:</t> The deeper you push into enemy territory, the higher the payouts. Capture and hold sectors to earn massive payouts every 10 seconds.<br/><br/>
 
 <font color='#ffaa00'>PENALTIES AND FINES</font><br/>
