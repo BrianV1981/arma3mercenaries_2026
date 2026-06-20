@@ -41,7 +41,7 @@ private _index = 0;
                     {
                         _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                         if (!_mounted && {isNull _occupant} && {_role in ["gunner", "commander", "turret"]}) then {
-                            _vehicle lock 0; // Unlock BEFORE assigning so engine doesn't eject them
+                            if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; }; // Unlock via HG BEFORE assigning so engine doesn't eject them
                             if (_role == "gunner") then { _unit assignAsGunner _vehicle; };
                             if (_role == "commander") then { _unit assignAsCommander _vehicle; };
                             if (_role == "turret") then { _unit assignAsTurret [_vehicle, _turretPath]; };
@@ -57,7 +57,7 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "driver"}) then {
-                                _vehicle lock 0;
+                                if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; };
                                 _unit assignAsDriver _vehicle;
                                 [_unit] orderGetIn true;
                                 _unit moveInDriver _vehicle;
@@ -71,7 +71,7 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "cargo"}) then {
-                                _vehicle lock 0;
+                                if ((locked _vehicle) >= 2) then { [_vehicle] call HG_fnc_lockOrUnlock; };
                                 _unit assignAsCargoIndex [_vehicle, _cargoIndex];
                                 [_unit] orderGetIn true;
                                 _unit moveInCargo [_vehicle, _cargoIndex];
