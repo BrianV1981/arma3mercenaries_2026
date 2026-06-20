@@ -22,7 +22,7 @@ Orders your AI to instantly disembark any vehicles, un-equip their weapons, and 
 <font color='#ffaa00'>MOBILIZE (REACTIVATE)</font><br/>
 Removes the zip-ties from your squad, returning them to full combat readiness and allowing them to fire on enemies.<br/><br/>
 <font color='#ffaa00'>QUICK LOAD AND SECURE BASE TURRETS</font><br/>
-Forces your AI to immediately board any empty vehicles or static weapons within a 6m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
+Forces your AI to immediately board any empty vehicles or static weapons within a 5m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
 <font color='#ffaa00'>REFORM SQUAD (RESETS SQUAD)</font><br/>
 Resets your AI group's formation and combat states. Extremely useful after recovering from incapacitation when the AI might try to assume leadership, or if they are acting buggy.
 "

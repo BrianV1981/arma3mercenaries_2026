@@ -88,8 +88,8 @@ private _actGrpStandDown = ["groupSetCaptive","Stand Down (Deactivate)","",{exec
 private _actGrpMobilize = ["groupRejoin","Mobilize (Reactivate)","",{execVM "arma3mercenaries\set_group_captive\groupRejoin_proofOfConcept.sqf"},{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMobilize] call ace_interact_menu_fnc_addActionToObject;
 
-private _actGrpMountTurrets6 = ["groupMountTurrets6","Quick Load (6m)","",{ [6] execVM "arma3mercenaries\set_group_captive\groupMountTurrets.sqf" },{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMountTurrets6] call ace_interact_menu_fnc_addActionToObject;
+private _actGrpMountTurrets5 = ["groupMountTurrets5","Quick Load (5m)","",{ [5] execVM "arma3mercenaries\set_group_captive\groupMountTurrets.sqf" },{true}] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMountTurrets5] call ace_interact_menu_fnc_addActionToObject;
 
 private _actGrpMountTurrets50 = ["groupMountTurrets50","Secure Base Turrets (50m)","",{ [50] execVM "arma3mercenaries\set_group_captive\groupMountTurrets.sqf" },{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMountTurrets50] call ace_interact_menu_fnc_addActionToObject;
