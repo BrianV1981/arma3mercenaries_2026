@@ -29,4 +29,6 @@
     };
 } forEach units group player;
 
-systemChat format ["[A3M] %1 mercenaries mobilized and combat-ready.", {!isPlayer _x} count units group player];
+private _count = {!isPlayer _x} count units group player;
+private _a3mMsg = format ["<t align='left'><t size='0.8' color='#FFaa00'>SQUAD MOBILIZED</t><br/><t size='0.6' color='#FFFFFF'>%1 mercenaries mobilized and combat-ready.</t></t>", _count];
+[_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
