@@ -41,14 +41,12 @@ private _index = 0;
                     {
                         _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                         if (!_mounted && {isNull _occupant} && {_role in ["gunner", "commander", "turret"]}) then {
-                            [_vehicle, 0] remoteExecCall ["HG_fnc_lock", 2, false]; // Unlock
                             if (_role == "gunner") then { _unit assignAsGunner _vehicle; };
                             if (_role == "commander") then { _unit assignAsCommander _vehicle; };
                             if (_role == "turret") then { _unit assignAsTurret [_vehicle, _turretPath]; };
                             
                             [_unit] orderGetIn true;
                             _unit moveInTurret [_vehicle, _turretPath];
-                            [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                             _mounted = true;
                         };
                     } forEach _allSeats;
@@ -58,11 +56,9 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "driver"}) then {
-                                [_vehicle, 0] remoteExecCall ["HG_fnc_lock", 2, false]; // Unlock
                                 _unit assignAsDriver _vehicle;
                                 [_unit] orderGetIn true;
                                 _unit moveInDriver _vehicle;
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;
@@ -73,11 +69,9 @@ private _index = 0;
                         {
                             _x params ["_occupant", "_role", "_cargoIndex", "_turretPath", "_personTurret"];
                             if (!_mounted && {isNull _occupant} && {_role == "cargo"}) then {
-                                [_vehicle, 0] remoteExecCall ["HG_fnc_lock", 2, false]; // Unlock
                                 _unit assignAsCargoIndex [_vehicle, _cargoIndex];
                                 [_unit] orderGetIn true;
                                 _unit moveInCargo [_vehicle, _cargoIndex];
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;
