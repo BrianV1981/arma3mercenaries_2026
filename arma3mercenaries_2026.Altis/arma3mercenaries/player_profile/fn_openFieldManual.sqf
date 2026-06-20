@@ -7,7 +7,27 @@ createDialog "A3M_FieldManualDialog";
 waitUntil {!isNull (findDisplay 7030)};
 
 private _display = findDisplay 7030;
-private _content = _display displayCtrl 7031;
+
+#define GUI_GRID_X    (safezoneX)
+#define GUI_GRID_Y    (safezoneY)
+#define GUI_GRID_W    (safezoneW / 40)
+#define GUI_GRID_H    (safezoneH / 25)
+
+// Dynamically create a scrollable ControlsGroup to hold the text
+private _group = _display ctrlCreate ["RscControlsGroupNoHScrollbars", 7032];
+_group ctrlSetPosition [
+    10.5 * GUI_GRID_W + GUI_GRID_X,
+    3.5 * GUI_GRID_H + GUI_GRID_Y,
+    19 * GUI_GRID_W,
+    19.5 * GUI_GRID_H
+];
+_group ctrlCommit 0;
+
+// Create the structured text INSIDE the group
+private _content = _display ctrlCreate ["HG_RscStructuredText", 7031, _group];
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, 10]; // Temporary height
+_content ctrlSetBackgroundColor [0, 0, 0, 0.5];
+_content ctrlCommit 0;
 
 private _text = "
 <t size='1.1' color='#55aaff'>The Dynamic ALiVE War</t><br/>
@@ -151,7 +171,7 @@ With your newfound wealth, recruit a squad and head to <t color='#ffff00'>Fort M
 You cannot win this war with just infantry. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!</t><br/><br/>
 
 <t size='1.1' color='#55aaff'>Welcome</t><br/>
-<t size='0.85'>Welcome to <t color='#ffaa00'>Arma 3 Mercenaries (A3M)</t>!<br/><br/>
+<t size='0.85'><t color='#ff0000'>BETA DISCLAIMER</t><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <t color='#ffaa00'>Arma 3 Mercenaries (A3M)</t>!<br/><br/>
 This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
 
 <t color='#00aaff'>USING YOUR MAP:</t> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
@@ -174,14 +194,6 @@ You must drink Water to survive and cool off weapons. Med Centers are required t
 <t color='#ffaa00'>ESSENTIAL GEAR</t><br/>
 You MUST carry <t color='#ffff00'>Zip Ties</t> for detaining civilians (Interrogations) and forcing AI onto static turrets! Also carry basic ACE Medical gear.</t><br/><br/>
 
-<t size='1.1' color='#55aaff'>The 3 Inventory Systems</t><br/>
-<t size='0.85'><t color='#ffaa00'>1. FORTIFICATION</t><br/>
-Holds unbuilt construction items (walls, bunkers). Has massive space limits.<br/><br/>
-<t color='#ffaa00'>2. ACE CARGO</t><br/>
-Used to haul physically built objects (like crates or statics) inside vehicles.<br/><br/>
-<t color='#ffaa00'>3. NORMAL</t><br/>
-Your standard player backpack and default vehicle trunks for guns, ammo, and cash.</t><br/><br/>
-
 <t size='1.1' color='#55aaff'>A3M Custom Squad Controls</t><br/>
 <t size='0.85'><t color='#ffaa00'>ACE INTERACTION MENU</t><br/>
 We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
@@ -199,3 +211,8 @@ Resets your AI group's formation and combat states if they are acting buggy.</t>
 ";
 
 _content ctrlSetStructuredText parseText _text;
+
+// Adjust height of structured text to fit content perfectly, triggering the scrollbar
+private _h = ctrlTextHeight _content;
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, _h];
+_content ctrlCommit 0;

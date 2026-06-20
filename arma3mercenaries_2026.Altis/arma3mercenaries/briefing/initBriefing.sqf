@@ -28,17 +28,6 @@ Resets your AI group's formation and combat states if they are acting buggy.
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["The 3 Inventory Systems", 
-"
-<font color='#ffaa00'>1. FORTIFICATION</font><br/>
-Holds unbuilt construction items (walls, bunkers). Has massive space limits.<br/><br/>
-<font color='#ffaa00'>2. ACE CARGO</font><br/>
-Used to haul physically built objects (like crates or statics) inside vehicles.<br/><br/>
-<font color='#ffaa00'>3. NORMAL</font><br/>
-Your standard player backpack and default vehicle trunks for guns, ammo, and cash.
-"
-]];
-
 player createDiaryRecord ["a3m_field_manual", ["Logistics, Survival, and Medical", 
 "
 <font color='#ffaa00'>REARMING</font><br/>
@@ -62,7 +51,7 @@ There are 7 ranks. Ranking up increases paychecks, kill rewards, and unlocks Bla
 
 player createDiaryRecord ["a3m_field_manual", ["Welcome", 
 "
-Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
+<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
 This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
 
 <font color='#00aaff'>USING YOUR MAP:</font> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>

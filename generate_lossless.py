@@ -52,15 +52,6 @@ You must drink Water to survive and cool off weapons. Med Centers are required t
 You MUST carry <t color='#ffff00'>Zip Ties</t> for detaining civilians (Interrogations) and forcing AI onto static turrets! Also carry basic ACE Medical gear."""
         },
         {
-            "title": "The 3 Inventory Systems",
-            "text": """<font color='#ffaa00'>1. FORTIFICATION</font><br/>
-Holds unbuilt construction items (walls, bunkers). Has massive space limits.<br/><br/>
-<font color='#ffaa00'>2. ACE CARGO</font><br/>
-Used to haul physically built objects (like crates or statics) inside vehicles.<br/><br/>
-<font color='#ffaa00'>3. NORMAL</font><br/>
-Your standard player backpack and default vehicle trunks for guns, ammo, and cash."""
-        },
-        {
             "title": "A3M Custom Squad Controls",
             "text": """<font color='#ffaa00'>ACE INTERACTION MENU</font><br/>
 We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
@@ -78,6 +69,11 @@ Resets your AI group's formation and combat states if they are acting buggy."""
     ]
     
     m_tabs.extend(unique_tabs)
+
+    for tab in m_tabs:
+        if tab['title'] == 'Welcome':
+            beta_text = "<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>"
+            tab['text'] = beta_text + tab['text']
 
 # Now m_tabs contains ALL original M text + the unique P texts. Total 15 tabs.
 
@@ -115,7 +111,27 @@ createDialog "A3M_FieldManualDialog";
 waitUntil {!isNull (findDisplay 7030)};
 
 private _display = findDisplay 7030;
-private _content = _display displayCtrl 7031;
+
+#define GUI_GRID_X    (safezoneX)
+#define GUI_GRID_Y    (safezoneY)
+#define GUI_GRID_W    (safezoneW / 40)
+#define GUI_GRID_H    (safezoneH / 25)
+
+// Dynamically create a scrollable ControlsGroup to hold the text
+private _group = _display ctrlCreate ["RscControlsGroupNoHScrollbars", 7032];
+_group ctrlSetPosition [
+    10.5 * GUI_GRID_W + GUI_GRID_X,
+    3.5 * GUI_GRID_H + GUI_GRID_Y,
+    19 * GUI_GRID_W,
+    19.5 * GUI_GRID_H
+];
+_group ctrlCommit 0;
+
+// Create the structured text INSIDE the group
+private _content = _display ctrlCreate ["HG_RscStructuredText", 7031, _group];
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, 10]; // Temporary height
+_content ctrlSetBackgroundColor [0, 0, 0, 0.5];
+_content ctrlCommit 0;
 
 private _text = "
 """
@@ -132,6 +148,11 @@ for tab in m_tabs:
 p_out += """";
 
 _content ctrlSetStructuredText parseText _text;
+
+// Adjust height of structured text to fit content perfectly, triggering the scrollbar
+private _h = ctrlTextHeight _content;
+_content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, _h];
+_content ctrlCommit 0;
 """
 
 with open(P_FILE, "w") as f:

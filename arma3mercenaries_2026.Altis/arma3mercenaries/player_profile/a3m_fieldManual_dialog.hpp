@@ -56,10 +56,5 @@ class A3M_FieldManualDialog {
             colorBackground[] = {0.8, 0.1, 0.1, 1};
             colorBackgroundActive[] = {1, 0.2, 0.2, 1};
         };
-
-        
-            sizeEx = 0.8 * GUI_GRID_H;
-            text = "";
-        };
     };
 };
