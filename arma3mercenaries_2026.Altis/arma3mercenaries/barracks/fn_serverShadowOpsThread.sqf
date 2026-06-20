@@ -48,11 +48,13 @@ private _hasMedic = false;
     private _mercID = _x getOrDefault ["MercID", ""];
     private _mercClass = _x getOrDefault ["Class", ""];
     
-    private _logicalClass = "Any";
+    private _logicalClass = "Rifleman";
     if (["medic", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Medic"; _hasMedic = true; };
     if (["engineer", _mercClass] call BIS_fnc_inString || ["exp", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Engineer"; };
     if (["sniper", _mercClass] call BIS_fnc_inString || ["marksman", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Sniper"; };
-    if (["at", _mercClass] call BIS_fnc_inString || ["aa", _mercClass] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
+    if (["at", _mercClass] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
+    if (["aa", _mercClass] call BIS_fnc_inString) then { _logicalClass = "AA Specialist"; };
+    if (["mg", _mercClass] call BIS_fnc_inString || ["autorifle", _mercClass] call BIS_fnc_inString) then { _logicalClass = "Machine Gunner"; };
     
     if (_logicalClass == _reqClass || _reqClass == "Any") then { _hasRequiredClass = true; };
 } forEach _selectedMercs;

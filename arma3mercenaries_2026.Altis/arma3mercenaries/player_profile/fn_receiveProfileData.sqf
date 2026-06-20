@@ -76,15 +76,27 @@ _listCtrl1 lbAdd format ["Civilian Casualties: %1", _profile getOrDefault ["Civi
 _listCtrl1 lbAdd format ["Suicides: %1", _profile getOrDefault ["Suicides", 0]];
 
 // Calculate Signature Weapon
-private _weaponStats = _profile getOrDefault ["Weapon_Kills", createHashMap];
+private _weaponStats = _profile getOrDefault ["Weapon_Kills", []];
 private _favWeapon = "None";
 private _maxWepKills = 0;
-{
-    if (_y > _maxWepKills) then {
-        _favWeapon = _x;
-        _maxWepKills = _y;
+if (typeName _weaponStats == "ARRAY") then {
+    {
+        _x params ["_weap", "_kills"];
+        if (_kills > _maxWepKills) then {
+            _favWeapon = _weap;
+            _maxWepKills = _kills;
+        };
+    } forEach _weaponStats;
+} else {
+    if (typeName _weaponStats == "HASHMAP") then {
+        {
+            if (_y > _maxWepKills) then {
+                _favWeapon = _x;
+                _maxWepKills = _y;
+            };
+        } forEach _weaponStats;
     };
-} forEach _weaponStats;
+};
 
 _listCtrl1 lbAdd "";
 _listCtrl1 lbAdd format ["Signature Weapon: %1 (%2 kills)", _favWeapon, _maxWepKills];

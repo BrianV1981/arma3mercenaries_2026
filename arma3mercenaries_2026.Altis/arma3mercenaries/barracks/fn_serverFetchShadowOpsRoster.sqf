@@ -30,9 +30,18 @@ private _eligibleRoster = [];
             if (!_isDeployed) then {
                 private _name = _profile getOrDefault ["Name", "Unknown"];
                 private _class = _profile getOrDefault ["Class", "Unknown"];
+                
+                private _logicalClass = "Rifleman";
+                if (["medic", _class] call BIS_fnc_inString) then { _logicalClass = "Medic"; };
+                if (["engineer", _class] call BIS_fnc_inString || ["exp", _class] call BIS_fnc_inString) then { _logicalClass = "Engineer"; };
+                if (["sniper", _class] call BIS_fnc_inString || ["marksman", _class] call BIS_fnc_inString) then { _logicalClass = "Sniper"; };
+                if (["at", _class] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
+                if (["aa", _class] call BIS_fnc_inString) then { _logicalClass = "AA Specialist"; };
+                if (["mg", _class] call BIS_fnc_inString || ["autorifle", _class] call BIS_fnc_inString) then { _logicalClass = "Machine Gunner"; };
+                
                 private _kills = _profile getOrDefault ["Kills", 0];
                 
-                _eligibleRoster pushBack [_mercID, _name, _class, _kills];
+                _eligibleRoster pushBack [_mercID, _name, _logicalClass, _kills];
             };
         };
     };
