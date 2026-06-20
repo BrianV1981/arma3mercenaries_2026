@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.27.1] - 2026-06-20
+- Fix: PvP Side-only Markers and Grenade Ammo Heuristics (Closes #123)
+
+
+## [v1.27.0] - 2026-06-20
+- Feature: Smart Weapon Heuristics and HC Overlord Tracker (Closes #122)
+
+
+## [v1.26.0] - 2026-06-20
+- Feature: Global economy overhaul and CSAT regulars restoration (Closes #121)
+
+
 ## [v1.25.5] - 2026-06-20
 - Fix: Update NATO sample mercenary prices to align with gear cost (Closes #121)
 
