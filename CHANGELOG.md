@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.25.5] - 2026-06-20
+- Fix: Update NATO sample mercenary prices to align with gear cost (Closes #121)
+
+
 ## [v1.22.10] - 2026-06-18
 - Fix: Sanitized single quotes (`'`) from AI names during `fn_serverDeployMercenary` and `fn_loadGroups` string interpolation (e.g., `O'Brien`), which was causing an `Error Missing ]` syntax crash.
 

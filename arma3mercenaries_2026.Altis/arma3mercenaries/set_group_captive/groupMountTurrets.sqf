@@ -35,7 +35,15 @@ private _index = 0;
             {
                 private _vehicle = _x;
                 if (!_mounted) then {
-                    private _allSeats = fullCrew [_vehicle, "", true];
+                    private _ownerArray = _vehicle getVariable ["HG_Owner", []];
+                    private _hasKey = true;
+                    if (count _ownerArray > 0) then {
+                        _hasKey = (((_ownerArray select 0) == getPlayerUID player) || {getPlayerUID player in (_ownerArray select 3)});
+                    };
+                    
+                    // Only process this vehicle if it is unlocked OR the player has the key
+                    if ((locked _vehicle < 2) || _hasKey) then {
+                        private _allSeats = fullCrew [_vehicle, "", true];
                     
                     // Priority 1: Turrets (Gunner, Commander, Turret)
                     {
