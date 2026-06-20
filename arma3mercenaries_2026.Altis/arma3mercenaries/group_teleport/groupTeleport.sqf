@@ -110,6 +110,9 @@ player: The center object, using the player's position.
                 (time > _endTime)
             };
         };
+        
+        // Auto-reform squad after teleporting
+        execVM "arma3mercenaries\set_group_captive\squadReform.sqf";
     } else {
         // Player canceled the action
         private _a3mMsgCancel = "<t align='center'><t font='RobotoCondensedBold' size='0.8' color='#FF0000'>RECALL CANCELLED</t><br/><t font='PuristaMedium' size='0.6' color='#FFFFFF'>Squad regroup aborted.</t></t>";

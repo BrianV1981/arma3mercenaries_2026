@@ -207,16 +207,16 @@ A specialized virtual inventory specifically for holding unbuilt construction ma
 <t size='1.1' color='#55aaff'>A3M Custom Squad Controls</t><br/>
 <t size='0.85'><t color='#ffaa00'>ACE INTERACTION MENU</t><br/>
 We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
-<t color='#ffaa00'>RECALL SQUAD</t><br/>
-Instantly teleports your entire AI squad directly to your position if they get stuck or fall behind.<br/><br/>
+<t color='#ffaa00'>RECALL SQUAD (GROUP TELEPORT)</t><br/>
+Instantly teleports your entire AI squad directly to your position. This feature is crucial if they get stuck on terrain, fall behind, or start ignoring orders. It automatically triggers a squad reform after teleporting.<br/><br/>
 <t color='#ffaa00'>STAND DOWN (DEACTIVATE)</t><br/>
 Orders your AI to instantly disembark any vehicles, un-equip their weapons, and put on zip-ties (setting them to Captive). Use this to prevent them from engaging targets or getting shot while you perform stealth operations or drive through hostile checkpoints.<br/><br/>
 <t color='#ffaa00'>MOBILIZE (REACTIVATE)</t><br/>
 Removes the zip-ties from your squad, returning them to full combat readiness and allowing them to fire on enemies.<br/><br/>
 <t color='#ffaa00'>QUICK LOAD AND SECURE BASE TURRETS</t><br/>
 Forces your AI to immediately board any empty vehicles or static weapons within a 6m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
-<t color='#ffaa00'>REFORM SQUAD</t><br/>
-Resets your AI group's formation and combat states if they are acting buggy.</t><br/><br/>
+<t color='#ffaa00'>REFORM SQUAD (RESETS SQUAD)</t><br/>
+Resets your AI group's formation and combat states. Extremely useful after recovering from incapacitation when the AI might try to assume leadership, or if they are acting buggy.</t><br/><br/>
 
 ";
 
