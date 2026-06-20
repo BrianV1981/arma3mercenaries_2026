@@ -46,39 +46,54 @@ private _guerGroupType = ["I_C_Soldier_Para_1_F"];
 
     if ((count _realPlayersInArea) > 0) then {
         // Players present: Despawn active ALiVE representations
-        if (!isNull _groupEast) then { { _x setDamage 1 } forEach units _groupEast; _groupEast deleteGroupWhenEmpty true; };
-        if (!isNull _groupWest) then { { _x setDamage 1 } forEach units _groupWest; _groupWest deleteGroupWhenEmpty true; };
-        if (!isNull _groupGuer) then { { _x setDamage 1 } forEach units _groupGuer; _groupGuer deleteGroupWhenEmpty true; };
+        if (!isNull _groupEast) then { { deleteVehicle _x } forEach units _groupEast; _groupEast deleteGroupWhenEmpty true; };
+        if (!isNull _groupWest) then { { deleteVehicle _x } forEach units _groupWest; _groupWest deleteGroupWhenEmpty true; };
+        if (!isNull _groupGuer) then { { deleteVehicle _x } forEach units _groupGuer; _groupGuer deleteGroupWhenEmpty true; };
     } else {
         // No players present: Spawn ALiVE representations based on virtual profiles
         // Spawn East
         if ((count ([_waypointPos, _markerRadius, ["EAST", "entity"]] call ALIVE_fnc_getNearProfiles)) > 0) then {
             if (isNull _groupEast || {count units _groupEast == 0}) then {
                 _groupEast = [_spawnPos, EAST, _eastGroupType] call BIS_fnc_spawnGroup;
-                if (!isNull _groupEast) then { _groupEast deleteGroupWhenEmpty true; private _wp = _groupEast addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; };
+                if (!isNull _groupEast) then { 
+                    _groupEast setVariable ["ALIVE_profileIgnore", true, true];
+                    {_x setVariable ["ALIVE_profileIgnore", true, true]} forEach units _groupEast;
+                    _groupEast deleteGroupWhenEmpty true; 
+                    private _wp = _groupEast addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; 
+                };
             };
         } else {
-            if (!isNull _groupEast) then { { _x setDamage 1 } forEach units _groupEast; _groupEast deleteGroupWhenEmpty true; };
+            if (!isNull _groupEast) then { { deleteVehicle _x } forEach units _groupEast; _groupEast deleteGroupWhenEmpty true; };
         };
         
         // Spawn West
         if ((count ([_waypointPos, _markerRadius, ["WEST", "entity"]] call ALIVE_fnc_getNearProfiles)) > 0) then {
             if (isNull _groupWest || {count units _groupWest == 0}) then {
                 _groupWest = [_spawnPos, WEST, _westGroupType] call BIS_fnc_spawnGroup;
-                if (!isNull _groupWest) then { _groupWest deleteGroupWhenEmpty true; private _wp = _groupWest addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; };
+                if (!isNull _groupWest) then { 
+                    _groupWest setVariable ["ALIVE_profileIgnore", true, true];
+                    {_x setVariable ["ALIVE_profileIgnore", true, true]} forEach units _groupWest;
+                    _groupWest deleteGroupWhenEmpty true; 
+                    private _wp = _groupWest addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; 
+                };
             };
         } else {
-            if (!isNull _groupWest) then { { _x setDamage 1 } forEach units _groupWest; _groupWest deleteGroupWhenEmpty true; };
+            if (!isNull _groupWest) then { { deleteVehicle _x } forEach units _groupWest; _groupWest deleteGroupWhenEmpty true; };
         };
 
         // Spawn Guer
         if ((count ([_waypointPos, _markerRadius, ["GUER", "entity"]] call ALIVE_fnc_getNearProfiles)) > 0) then {
             if (isNull _groupGuer || {count units _groupGuer == 0}) then {
                 _groupGuer = [_spawnPos, INDEPENDENT, _guerGroupType] call BIS_fnc_spawnGroup;
-                if (!isNull _groupGuer) then { _groupGuer deleteGroupWhenEmpty true; private _wp = _groupGuer addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; };
+                if (!isNull _groupGuer) then { 
+                    _groupGuer setVariable ["ALIVE_profileIgnore", true, true];
+                    {_x setVariable ["ALIVE_profileIgnore", true, true]} forEach units _groupGuer;
+                    _groupGuer deleteGroupWhenEmpty true; 
+                    private _wp = _groupGuer addWaypoint [_waypointPos, 0]; _wp setWaypointType "MOVE"; _wp setWaypointSpeed "FULL"; 
+                };
             };
         } else {
-            if (!isNull _groupGuer) then { { _x setDamage 1 } forEach units _groupGuer; _groupGuer deleteGroupWhenEmpty true; };
+            if (!isNull _groupGuer) then { { deleteVehicle _x } forEach units _groupGuer; _groupGuer deleteGroupWhenEmpty true; };
         };
     };
 
