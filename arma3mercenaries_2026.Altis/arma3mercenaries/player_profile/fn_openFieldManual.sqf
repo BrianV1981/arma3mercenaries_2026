@@ -24,7 +24,7 @@ _group ctrlSetPosition [
 _group ctrlCommit 0;
 
 // Create the structured text INSIDE the group
-private _content = _display ctrlCreate ["HG_RscStructuredText", 7031, _group];
+private _content = _display ctrlCreate ["RscStructuredText", 7031, _group];
 _content ctrlSetPosition [0, 0, 18.5 * GUI_GRID_W, 10]; // Temporary height
 _content ctrlSetBackgroundColor [0, 0, 0, 0.5];
 _content ctrlCommit 0;
