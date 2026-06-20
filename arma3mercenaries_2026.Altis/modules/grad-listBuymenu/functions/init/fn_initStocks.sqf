@@ -30,3 +30,6 @@ _baseConfigs = "true" configClasses (missionConfigFile >> "CfgGradBuymenu");
 } forEach _baseConfigs;
 
 publicVariable "GRAD_LBM_ITEMSTOCKS";
+
+// Announce to the A3M Framework that the stock database is ready
+["grad_lbm_stocksInitialized", []] call CBA_fnc_serverEvent;
