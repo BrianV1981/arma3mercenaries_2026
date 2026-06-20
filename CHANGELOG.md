@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.27.2] - 2026-06-20
+- Fix: Fatal scope error in player dossier SQLite tracking
+
+
 ## [v1.27.1] - 2026-06-20
 - Fix: PvP Side-only Markers and Grenade Ammo Heuristics (Closes #123)
 
