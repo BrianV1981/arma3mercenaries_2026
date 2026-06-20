@@ -5,41 +5,57 @@
 
     Description:
     "Stand Down (Deactivate)" — Applies ALL captive guards to AI group members.
-    Sets both the vanilla SQF guards (setCaptive, allowDamage) and ACE handcuffs.
-
-    Runs on the player's client where AI are local (correct locality for ACE calls).
+    Forces them to disembark any vehicles/turrets using proper orderGetIn logic,
+    and then applies vanilla SQF guards and ACE handcuffs.
 */
 
+private _index = 0;
 {
-    if (!isPlayer _x) then {
-        [_x] spawn {
+    private _unit = _x;
+    if (!isPlayer _unit) then {
+        [{
             params ["_unit"];
             
+            private _veh = vehicle _unit;
+            
             // Force dismount from vehicles or static turrets
-            if (vehicle _unit != _unit) then {
-                private _veh = vehicle _unit;
-                
-                // Temporarily unlock the vehicle so AI can dismount without being blocked
-                [_veh, 0] remoteExecCall ["HG_fnc_lock", 2, false];
-                
+            if (_veh != _unit) then {
+                [_unit] orderGetIn false;
+                [_unit] allowGetIn false;
                 unassignVehicle _unit;
-                moveOut _unit;
+                doGetOut _unit;
                 
-                // Wait for the engine to physically detach them from the turret/vehicle
-                waitUntil { sleep 0.1; vehicle _unit == _unit };
-                sleep 0.5; // Allow animation state to settle
-                
-                // Re-lock the vehicle behind them
-                [_veh, 2] remoteExecCall ["HG_fnc_lock", 2, false];
+                // Backup: Force them out instantly if they are stubborn
+                moveOut _unit; 
             };
 
-            // Apply vanilla SQF guards
-            _unit setCaptive true;
-            _unit allowDamage false;
-            
-            // Apply ACE handcuffs (visual + behavioral) ONLY when safely on foot
-            [_unit, true] call ACE_captives_fnc_setHandcuffed;
-        };
+            // Wait 0.8 seconds for them to hit the ground before applying cuffs.
+            [{
+                params ["_unit", "_veh"];
+                
+                // ALWAYS lock the vehicle after they dismount (per user directive: deactivate locks)
+                if (_veh != _unit) then {
+                    if ((locked _veh) < 2) then {
+                        [_veh] call HG_fnc_lockOrUnlock;
+                    };
+                };
+                
+                // Apply vanilla SQF guards
+                _unit setCaptive true;
+                _unit allowDamage false;
+                
+                // Disable their AI brain so they don't try to wander or re-mount
+                _unit disableAI "ALL";
+                
+                // Mark them as deactivated
+                _unit setVariable ["A3M_AwaitingActivation", true, true];
+                
+                    [_unit, true] call ACE_captives_fnc_setHandcuffed;
+            }, [_unit, _veh], 0.8] call CBA_fnc_waitAndExecute;
+
+        }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
+        
+        _index = _index + 1;
     };
 } forEach units group player;
 

@@ -56,16 +56,5 @@ class A3M_FieldManualDialog {
             colorBackground[] = {0.8, 0.1, 0.1, 1};
             colorBackgroundActive[] = {1, 0.2, 0.2, 1};
         };
-
-        class ManualContent: HG_RscStructuredText {
-            idc = 7031;
-            x = 10.5 * GUI_GRID_W + GUI_GRID_X;
-            y = 3.5 * GUI_GRID_H + GUI_GRID_Y;
-            w = 19 * GUI_GRID_W;
-            h = 19.5 * GUI_GRID_H;
-            colorBackground[] = {0, 0, 0, 0.5};
-            sizeEx = 0.8 * GUI_GRID_H;
-            text = "";
-        };
     };
 };

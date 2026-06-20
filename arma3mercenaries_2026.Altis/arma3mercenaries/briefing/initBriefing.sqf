@@ -11,13 +11,64 @@ player createDiarySubject ["a3m_field_manual", "A3M Field Manual"];
 // Note: createDiaryRecord is LIFO (Last In, First Out). 
 // The last one created appears at the TOP of the list.
 
+player createDiaryRecord ["a3m_field_manual", ["A3M Custom Squad Controls", 
+"
+<font color='#ffaa00'>ACE INTERACTION MENU</font><br/>
+We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
+<font color='#ffaa00'>RECALL SQUAD (GROUP TELEPORT)</font><br/>
+Instantly teleports your entire AI squad directly to your position. This feature is crucial if they get stuck on terrain, fall behind, or start ignoring orders. It automatically triggers a squad reform after teleporting.<br/><br/>
+<font color='#ffaa00'>STAND DOWN (DEACTIVATE)</font><br/>
+Orders your AI to instantly disembark any vehicles, un-equip their weapons, and put on zip-ties (setting them to Captive). Use this to prevent them from engaging targets or getting shot while you perform stealth operations or drive through hostile checkpoints.<br/><br/>
+<font color='#ffaa00'>MOBILIZE (REACTIVATE)</font><br/>
+Removes the zip-ties from your squad, returning them to full combat readiness and allowing them to fire on enemies.<br/><br/>
+<font color='#ffaa00'>QUICK LOAD AND SECURE BASE TURRETS</font><br/>
+Forces your AI to immediately board any empty vehicles or static weapons within a 5m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
+<font color='#ffaa00'>REFORM SQUAD (RESETS SQUAD)</font><br/>
+Resets your AI group's formation and combat states. Extremely useful after recovering from incapacitation when the AI might try to assume leadership, or if they are acting buggy.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["The 4 Inventory Systems", 
+"
+<font color='#ffaa00'>1. PLAYER INVENTORY</font><br/>
+Your personal gear, backpack, and uniform. Used for weapons, ammo, medical supplies, and physical cash.<br/><br/>
+<font color='#ffaa00'>2. VEHICLE INVENTORY</font><br/>
+The standard trunk space of any vehicle. Used to store excess player weapons, ammo, and gear.<br/><br/>
+<font color='#ffaa00'>3. ACE CARGO</font><br/>
+Used to haul physically built objects (like supply crates, spare tires, or heavy static weapons) inside the cargo hold of vehicles.<br/><br/>
+<font color='#ffaa00'>4. FORTIFICATION INVENTORY</font><br/>
+A specialized virtual inventory specifically for holding unbuilt construction materials (walls, bunkers, tank traps). It has massive space limits and can be accessed on players or vehicles.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["Logistics, Survival, and Medical", 
+"
+<font color='#ffaa00'>REARMING</font><br/>
+The cheapest option is the Vehicle Ammo Container from Logistics—unlimited refills for vehicles, turrets, mortars.<br/><br/>
+<font color='#ffaa00'>MAINTENANCE</font><br/>
+Use a Repair Center or Repair Vehicle. Buy a Gas Tank to keep big vehicles fueled and moving.<br/><br/>
+<font color='#ffaa00'>SURVIVAL</font><br/>
+You must drink Water to survive and cool off weapons. Med Centers are required to fully remove wounds.<br/><br/>
+<font color='#ffaa00'>ESSENTIAL GEAR</font><br/>
+You MUST carry <t color='#ffff00'>Zip Ties</t> for detaining civilians (Interrogations) and forcing AI onto static turrets! Also carry basic ACE Medical gear.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["Ranks and Progression", 
+"
+<font color='#ffaa00'>RANKS AND REWARDS</font><br/>
+There are 7 ranks. Ranking up increases paychecks, kill rewards, and unlocks Black Market discounts.<br/>
+• PRIVATE (Start) | CORPORAL (1k) | SERGEANT (1.5k) | LIEUTENANT (2k) | CAPTAIN (2.5k) | MAJOR (3k) | COLONEL (3.5k Max)
+"
+]];
+
 player createDiaryRecord ["a3m_field_manual", ["The Dynamic ALiVE War", 
 "
 <font color='#ffaa00'>A LIVING, BREATHING BATTLEFIELD</font><br/>
 The entire war raging across the island is completely dynamic. The only hand-placed units on the map are the player characters! Every other hostile, civilian, vehicle, and military patrol is dynamically generated and commanded by the ALiVE Military Commander engine.<br/><br/>
 
 <font color='#ffaa00'>SECTOR CONTROL</font><br/>
-The frontlines naturally shift as NATO and OPFOR clash. While it utilizes ALiVE's virtualized squads in the overarching war, the Sector Control system is completely custom-built from scratch to be compatible with ALiVE! ALiVE's virtualized units can actually capture these custom sectors, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
+The frontlines naturally shift as NATO and OPFOR clash. All Sector Control scripts and military objectives are entirely handled by ALiVE, creating a highly unpredictable and replayable warzone. You are just a contractor caught in the middle.
 "
 ]];
 
@@ -138,7 +189,7 @@ When you die, a red marker appears on the map. Your corpse and gear will remain 
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["The Economy and Alternative Income",  
+player createDiaryRecord ["a3m_field_manual", ["The Economy and Alternative Income", 
 "
 <font color='#ffaa00'>BANK VS. WALLET</font><br/>
 You have two separate balances: Cash (Wallet) and Bank. Cash is used for transactions in the field and is dropped on death. Bank funds are safely secured. Use ATMs to deposit your cash!<br/><br/>
@@ -186,9 +237,60 @@ You cannot win this war with just infantry. Logistics and base building are <t c
 "
 ]];
 
+player createDiaryRecord ["a3m_field_manual", ["Ranks and Progression", 
+"
+<font color='#ffaa00'>RANKS AND REWARDS</font><br/>
+There are 7 ranks. Ranking up increases paychecks, kill rewards, and unlocks Black Market discounts.<br/>
+• PRIVATE (Start) | CORPORAL (1k) | SERGEANT (1.5k) | LIEUTENANT (2k) | CAPTAIN (2.5k) | MAJOR (3k) | COLONEL (3.5k Max)
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["Logistics, Survival, and Medical", 
+"
+<font color='#ffaa00'>REARMING</font><br/>
+The cheapest option is the Vehicle Ammo Container from Logistics—unlimited refills for vehicles, turrets, mortars.<br/><br/>
+<font color='#ffaa00'>MAINTENANCE</font><br/>
+Use a Repair Center or Repair Vehicle. Buy a Gas Tank to keep big vehicles fueled and moving.<br/><br/>
+<font color='#ffaa00'>SURVIVAL</font><br/>
+You must drink Water to survive and cool off weapons. Med Centers are required to fully remove wounds.<br/><br/>
+<font color='#ffaa00'>ESSENTIAL GEAR</font><br/>
+You MUST carry <t color='#ffff00'>Zip Ties</t> for detaining civilians (Interrogations) and forcing AI onto static turrets! Also carry basic ACE Medical gear.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["The 4 Inventory Systems", 
+"
+<font color='#ffaa00'>1. PLAYER INVENTORY</font><br/>
+Your personal gear, backpack, and uniform. Used for weapons, ammo, medical supplies, and physical cash.<br/><br/>
+<font color='#ffaa00'>2. VEHICLE INVENTORY</font><br/>
+The standard trunk space of any vehicle. Used to store excess player weapons, ammo, and gear.<br/><br/>
+<font color='#ffaa00'>3. ACE CARGO</font><br/>
+Used to haul physically built objects (like supply crates, spare tires, or heavy static weapons) inside the cargo hold of vehicles.<br/><br/>
+<font color='#ffaa00'>4. FORTIFICATION INVENTORY</font><br/>
+A specialized virtual inventory specifically for holding unbuilt construction materials (walls, bunkers, tank traps). It has massive space limits and can be accessed on players or vehicles.
+"
+]];
+
+player createDiaryRecord ["a3m_field_manual", ["A3M Custom Squad Controls", 
+"
+<font color='#ffaa00'>ACE INTERACTION MENU</font><br/>
+We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
+<font color='#ffaa00'>RECALL SQUAD (GROUP TELEPORT)</font><br/>
+Instantly teleports your entire AI squad directly to your position. This feature is crucial if they get stuck on terrain, fall behind, or start ignoring orders. It automatically triggers a squad reform after teleporting.<br/><br/>
+<font color='#ffaa00'>STAND DOWN (DEACTIVATE)</font><br/>
+Orders your AI to instantly disembark any vehicles, un-equip their weapons, and put on zip-ties (setting them to Captive). Use this to prevent them from engaging targets or getting shot while you perform stealth operations or drive through hostile checkpoints.<br/><br/>
+<font color='#ffaa00'>MOBILIZE (REACTIVATE)</font><br/>
+Removes the zip-ties from your squad, returning them to full combat readiness and allowing them to fire on enemies.<br/><br/>
+<font color='#ffaa00'>QUICK LOAD AND SECURE BASE TURRETS</font><br/>
+Forces your AI to immediately board any empty vehicles or static weapons within a 5m or 50m radius. Extremely useful for manning FOB defenses instantly!<br/><br/>
+<font color='#ffaa00'>REFORM SQUAD (RESETS SQUAD)</font><br/>
+Resets your AI group's formation and combat states. Extremely useful after recovering from incapacitation when the AI might try to assume leadership, or if they are acting buggy.
+"
+]];
+
 player createDiaryRecord ["a3m_field_manual", ["Welcome", 
 "
-Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
+<font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/><font color='#ff0000'>BETA DISCLAIMER</font><br/>This server is currently in BETA. It has bugs—some fixable, some unfixable (for which we try to come up with workarounds).<br/>Please note that we have a built-in <t color='#00ff00'>Bug Report Tool</t> on the Escape/Pause menu. Use it to report bugs, submit suggestions, or report players.<br/><br/>Welcome to <font color='#ffaa00'>Arma 3 Mercenaries (A3M)</font>!<br/><br/>
 This server features custom MMO-style mechanics including a deeply persistent database, dynamic economies, player-built outposts, advanced ALiVE combat support, and AI mercenary management.<br/><br/>
 
 <font color='#00aaff'>USING YOUR MAP:</font> There is a massive amount of data, POIs, and markers available on your map. You must <t color='#ffff00'>zoom in</t> to make sense of it all and find specific Quartermasters, ATMs, and Barracks.<br/><br/>
@@ -197,3 +299,4 @@ Please read through the tabs below to understand how to survive and thrive as a 
 You can also press the <font color='#00aaff'>'P'</font> key at any time to open your Player Dossier for live stats, leaderboards, and quick guides.
 "
 ]];
+
