@@ -267,7 +267,7 @@
 			class B_Soldier_F {
                 displayName = "NATO Rifleman";
                 description = "This is a team of four NATO rifleman.";
-                price = 6000;
+                price = 12000;
                 amount = 1;
                 stock = 9999;
 				code = "[_this select 1, _this select 0] spawn A3M_fnc_initMercenary;";
@@ -347,7 +347,7 @@
 			class B_sniper_F {
                 displayName = "NATO Sniper";
                 description = "This is a NATO sniper.";
-                price = 6000;
+                price = 25000;
                 amount = 1;
                 stock = 9999;
 				code = "[_this select 1, _this select 0] spawn A3M_fnc_initMercenary;";
@@ -379,7 +379,7 @@
 			class B_soldier_AT_F {
                 displayName = "NATO AT Missile Specialist";
                 description = "This is a NATO AT missile specialist.";
-                price = 8000;
+                price = 40000;
                 amount = 1;
                 stock = 9999;
 				code = "[_this select 1, _this select 0] spawn A3M_fnc_initMercenary;";
@@ -443,7 +443,7 @@
 			class B_medic_F {
                 displayName = "NATO Combat Life Saver";
                 description = "NATO This is a NATO combat life saver.";
-                price = 6000;
+                price = 15000;
                 amount = 1;
                 stock = 9999;
 				code = "[_this select 1, _this select 0] spawn A3M_fnc_initMercenary;";
