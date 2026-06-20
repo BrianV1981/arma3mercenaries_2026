@@ -87,6 +87,7 @@ private _index = 0;
                             };
                         } forEach _allSeats;
                     };
+                    }; // Closes the _hasKey check
                 };
             } forEach _nearestVehicles;
         }, [_unit, _radius], _index * 0.5] call CBA_fnc_waitAndExecute;
