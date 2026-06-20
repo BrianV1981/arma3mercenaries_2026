@@ -13,7 +13,7 @@ private _index = 0;
     private _unit = _x;
     if (!isPlayer _unit) then {
         [{
-            params ["_unit", "_radius"];
+            params ["_unit", "_radius", "_playerObj"];
             
             // Remove ACE handcuffs (visual + behavioral)
             [_unit, false] call ACE_captives_fnc_setHandcuffed;
@@ -28,8 +28,8 @@ private _index = 0;
             // Clear activation flag
             _unit setVariable ["A3M_AwaitingActivation", nil, true];
 
-            // Scan for nearest vehicles
-            private _nearestVehicles = nearestObjects [_unit, ["LandVehicle", "Air", "Ship", "StaticWeapon"], _radius];
+            // Scan for nearest vehicles around the PLAYER, not the lagging unit
+            private _nearestVehicles = nearestObjects [_playerObj, ["LandVehicle", "Air", "Ship", "StaticWeapon"], _radius];
             private _mounted = false;
 
             {
@@ -47,6 +47,7 @@ private _index = 0;
                             
                             [_unit] orderGetIn true;
                             _unit moveInTurret [_vehicle, _turretPath];
+                            _vehicle lock 0; // Unlock so player can order them out
                             _mounted = true;
                         };
                     } forEach _allSeats;
@@ -59,6 +60,7 @@ private _index = 0;
                                 _unit assignAsDriver _vehicle;
                                 [_unit] orderGetIn true;
                                 _unit moveInDriver _vehicle;
+                                _vehicle lock 0; // Unlock so player can order them out
                                 _mounted = true;
                             };
                         } forEach _allSeats;
@@ -72,13 +74,14 @@ private _index = 0;
                                 _unit assignAsCargoIndex [_vehicle, _cargoIndex];
                                 [_unit] orderGetIn true;
                                 _unit moveInCargo [_vehicle, _cargoIndex];
+                                _vehicle lock 0; // Unlock so player can order them out
                                 _mounted = true;
                             };
                         } forEach _allSeats;
                     };
                 };
             } forEach _nearestVehicles;
-        }, [_unit, _radius], _index * 0.5] call CBA_fnc_waitAndExecute;
+        }, [_unit, _radius, player], _index * 0.5] call CBA_fnc_waitAndExecute;
         
         _index = _index + 1;
     };
