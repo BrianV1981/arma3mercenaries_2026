@@ -63,7 +63,8 @@ if (_squadCount == 0) exitWith {
 
 private _selectedMercs = [];
 for "_i" from 0 to (_squadCount - 1) do {
-    private _mercID = _selectedList lbData _i;
+    private _dataStr = _selectedList lbData _i;
+    private _mercID = (_dataStr splitString "|") select 0;
     _selectedMercs pushBack _mercID;
 };
 

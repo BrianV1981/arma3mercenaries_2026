@@ -21,6 +21,15 @@ private _graveyard = [];
     if (count _profile > 0) then {
         private _name = _profile getOrDefault ["Name", "Unknown"];
         private _class = _profile getOrDefault ["Class", "Unknown"];
+        
+        private _logicalClass = "Rifleman";
+        if (["medic", _class] call BIS_fnc_inString) then { _logicalClass = "Medic"; };
+        if (["engineer", _class] call BIS_fnc_inString || ["exp", _class] call BIS_fnc_inString) then { _logicalClass = "Engineer"; };
+        if (["sniper", _class] call BIS_fnc_inString || ["marksman", _class] call BIS_fnc_inString) then { _logicalClass = "Sniper"; };
+        if (["at", _class] call BIS_fnc_inString) then { _logicalClass = "AT Specialist"; };
+        if (["aa", _class] call BIS_fnc_inString) then { _logicalClass = "AA Specialist"; };
+        if (["mg", _class] call BIS_fnc_inString || ["autorifle", _class] call BIS_fnc_inString) then { _logicalClass = "Machine Gunner"; };
+        
         private _kills = _profile getOrDefault ["Kills", 0];
         private _cash = _profile getOrDefault ["CashCarried", 0];
         private _isDead = _profile getOrDefault ["IsDead", false];
@@ -29,7 +38,7 @@ private _graveyard = [];
         if (_isDead) then {
             private _cause = _profile getOrDefault ["CauseOfDeath", "Unknown"];
             private _deathDate = _profile getOrDefault ["DeathDate", []];
-            _graveyard pushBack [_mercID, _name, _class, _kills, _cash, _cause, _joinDate, _deathDate];
+            _graveyard pushBack [_mercID, _name, _logicalClass, _kills, _cash, _cause, _joinDate, _deathDate];
         } else {
             // Check if they are currently spawned in the game (Deployed vs In Barracks)
             private _isDeployed = false;
@@ -37,7 +46,7 @@ private _graveyard = [];
                 if ((_x getVariable ["arma3mercenaries_aiUnit", ""]) == _mercID) exitWith { _isDeployed = true; };
             } forEach allUnits;
             
-            _activeSquad pushBack [_mercID, _name, _class, _kills, _cash, _joinDate, _isDeployed];
+            _activeSquad pushBack [_mercID, _name, _logicalClass, _kills, _cash, _joinDate, _isDeployed];
         };
     };
 } forEach _ownedMercs;

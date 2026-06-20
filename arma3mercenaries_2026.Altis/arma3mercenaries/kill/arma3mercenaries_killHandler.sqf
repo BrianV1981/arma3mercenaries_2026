@@ -285,9 +285,19 @@ A3M_fnc_serverHandleReward = {
                             _profile set ["Kills_Total", (_profile getOrDefault ["Kills_Total", 0]) + 1];
                             [15, 0] remoteExecCall ["HG_fnc_addOrSubXP", _instigator, false];
                             
-                            // Weapon Tracking
-                            private _weaponStats = _profile getOrDefault ["Weapon_Kills", createHashMap];
-                            _weaponStats set [_weaponDisplayName, (_weaponStats getOrDefault [_weaponDisplayName, 0]) + 1];
+                            // Weapon Tracking (Refactored to Array for SQLite serialization safety)
+                            private _weaponStats = _profile getOrDefault ["Weapon_Kills", []];
+                            if (typeName _weaponStats == "HASHMAP") then { _weaponStats = []; }; // Nuke corrupted hashmap
+                            private _foundWeapon = false;
+                            {
+                                if ((_x select 0) == _weaponDisplayName) exitWith {
+                                    _x set [1, (_x select 1) + 1];
+                                    _foundWeapon = true;
+                                };
+                            } forEach _weaponStats;
+                            if (!_foundWeapon) then {
+                                _weaponStats pushBack [_weaponDisplayName, 1];
+                            };
                             _profile set ["Weapon_Kills", _weaponStats];
                             
                             // Last 10 Kills
