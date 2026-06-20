@@ -28,6 +28,19 @@ Resets your AI group's formation and combat states if they are acting buggy.
 "
 ]];
 
+player createDiaryRecord ["a3m_field_manual", ["The 4 Inventory Systems", 
+"
+<font color='#ffaa00'>1. PLAYER INVENTORY</font><br/>
+Your personal gear, backpack, and uniform. Used for weapons, ammo, medical supplies, and physical cash.<br/><br/>
+<font color='#ffaa00'>2. VEHICLE INVENTORY</font><br/>
+The standard trunk space of any vehicle. Used to store excess player weapons, ammo, and gear.<br/><br/>
+<font color='#ffaa00'>3. ACE CARGO</font><br/>
+Used to haul physically built objects (like supply crates, spare tires, or heavy static weapons) inside the cargo hold of vehicles.<br/><br/>
+<font color='#ffaa00'>4. FORTIFICATION INVENTORY</font><br/>
+A specialized virtual inventory specifically for holding unbuilt construction materials (walls, bunkers, tank traps). It has massive space limits and can be accessed on players or vehicles.
+"
+]];
+
 player createDiaryRecord ["a3m_field_manual", ["Logistics, Survival, and Medical", 
 "
 <font color='#ffaa00'>REARMING</font><br/>

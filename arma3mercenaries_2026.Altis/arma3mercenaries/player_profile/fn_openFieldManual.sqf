@@ -194,6 +194,16 @@ You must drink Water to survive and cool off weapons. Med Centers are required t
 <t color='#ffaa00'>ESSENTIAL GEAR</t><br/>
 You MUST carry <t color='#ffff00'>Zip Ties</t> for detaining civilians (Interrogations) and forcing AI onto static turrets! Also carry basic ACE Medical gear.</t><br/><br/>
 
+<t size='1.1' color='#55aaff'>The 4 Inventory Systems</t><br/>
+<t size='0.85'><t color='#ffaa00'>1. PLAYER INVENTORY</t><br/>
+Your personal gear, backpack, and uniform. Used for weapons, ammo, medical supplies, and physical cash.<br/><br/>
+<t color='#ffaa00'>2. VEHICLE INVENTORY</t><br/>
+The standard trunk space of any vehicle. Used to store excess player weapons, ammo, and gear.<br/><br/>
+<t color='#ffaa00'>3. ACE CARGO</t><br/>
+Used to haul physically built objects (like supply crates, spare tires, or heavy static weapons) inside the cargo hold of vehicles.<br/><br/>
+<t color='#ffaa00'>4. FORTIFICATION INVENTORY</t><br/>
+A specialized virtual inventory specifically for holding unbuilt construction materials (walls, bunkers, tank traps). It has massive space limits and can be accessed on players or vehicles.</t><br/><br/>
+
 <t size='1.1' color='#55aaff'>A3M Custom Squad Controls</t><br/>
 <t size='0.85'><t color='#ffaa00'>ACE INTERACTION MENU</t><br/>
 We have built a suite of custom commands to manage the AI in your squad. Use your <t color='#ffff00'>ACE Self-Interact</t> key, navigate to [Squad Commands], and use these abilities:<br/><br/>
