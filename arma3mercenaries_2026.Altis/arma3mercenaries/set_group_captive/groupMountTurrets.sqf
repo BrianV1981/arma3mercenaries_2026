@@ -56,7 +56,6 @@ private _index = 0;
                             
                             [_unit] orderGetIn true;
                             _unit moveInTurret [_vehicle, _turretPath];
-                            [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                             _mounted = true;
                         };
                     } forEach _allSeats;
@@ -70,7 +69,6 @@ private _index = 0;
                                 _unit assignAsDriver _vehicle;
                                 [_unit] orderGetIn true;
                                 _unit moveInDriver _vehicle;
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;
@@ -85,7 +83,6 @@ private _index = 0;
                                 _unit assignAsCargoIndex [_vehicle, _cargoIndex];
                                 [_unit] orderGetIn true;
                                 _unit moveInCargo [_vehicle, _cargoIndex];
-                                [_vehicle, 2] remoteExecCall ["HG_fnc_lock", 2, false]; // Re-lock
                                 _mounted = true;
                             };
                         } forEach _allSeats;

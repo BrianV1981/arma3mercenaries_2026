@@ -17,13 +17,11 @@ private _index = 0;
             params ["_unit"];
             
             private _veh = vehicle _unit;
-            private _wasLocked = false;
             
             // Force dismount from vehicles or static turrets
             if (_veh != _unit) then {
                 // If vehicle is locked, unlock it so the AI can physically get out
                 if ((locked _veh) >= 2) then {
-                    _wasLocked = true;
                     [_veh] call HG_fnc_lockOrUnlock;
                 };
 
@@ -38,10 +36,10 @@ private _index = 0;
 
             // Wait 0.8 seconds for them to hit the ground before applying cuffs.
             [{
-                params ["_unit", "_veh", "_wasLocked"];
+                params ["_unit", "_veh"];
                 
-                // Relock the vehicle if we unlocked it for them
-                if (_wasLocked) then {
+                // ALWAYS lock the vehicle after they dismount (per user directive)
+                if (_veh != _unit) then {
                     if ((locked _veh) < 2) then {
                         [_veh] call HG_fnc_lockOrUnlock;
                     };
@@ -58,7 +56,7 @@ private _index = 0;
                 _unit setVariable ["A3M_AwaitingActivation", true, true];
                 
                     [_unit, true] call ACE_captives_fnc_setHandcuffed;
-            }, [_unit, _veh, _wasLocked], 0.8] call CBA_fnc_waitAndExecute;
+            }, [_unit, _veh], 0.8] call CBA_fnc_waitAndExecute;
 
         }, [_unit], _index * 0.5] call CBA_fnc_waitAndExecute;
         
