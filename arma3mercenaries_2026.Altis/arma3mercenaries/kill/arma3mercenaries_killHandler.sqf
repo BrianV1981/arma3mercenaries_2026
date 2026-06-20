@@ -36,7 +36,7 @@ A3M_fnc_showWarningHUD = {
 // Server-Side Function: Handle Rewards & Penalties
 //------------------------------------------------------
 A3M_fnc_serverHandleReward = {
-    params ["_killed", "_killer", "_instigator", "_killedType", "_instigatorType", "_killedName", "_instigatorName"];
+    params ["_killed", "_killer", "_instigator", "_killedType", "_instigatorType", "_killedName", "_instigatorName", ["_weaponDisplayName", "Unknown"]];
     if (!isServer) exitWith {}; // Run only on server
 
     // diag_log format ["[A3M SRV REWARD] Received Event: Instigator=%1, Killed=%2", _instigatorName, _killedName]; // Optional log
@@ -53,10 +53,6 @@ A3M_fnc_serverHandleReward = {
         
         // Calculate distance/weapon for ALL kills (used by HUD and SQLite Tracking)
         private _distance = floor (_instigator distance2D _killed);
-        private _weaponDisplayName = "Unknown";
-        private _weapon = currentWeapon _instigator;
-        if (_weapon != "") then { try { _weaponDisplayName = getText(configFile >> "CfgWeapons" >> _weapon >> "displayName"); } catch {}; };
-        if (_killer != _instigator && {!isNull _killer}) then { try { _weaponDisplayName = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
 
         // --- ACCESS CBA SETTINGS VIA GLOBAL VARIABLES ---
         private _friendlyFirePenalty = if (isNil "arma3mercenaries_friendlyFirePenalty") then { 10000 } else { arma3mercenaries_friendlyFirePenalty };
@@ -446,6 +442,31 @@ addMissionEventHandler ["entityKilled", {
     private _killedName = if (_killedIsPlayer) then { name _killed } else { getText (configFile >> "CfgVehicles" >> _killedType >> "displayname") };
     private _instigatorName = if (_instigatorIsPlayer) then { name _instigator } else { getText (configFile >> "CfgVehicles" >> _instigatorType >> "displayname") };
 
+    // --- A3M HEADLESS CLIENT TRACKER ---
+    if (["HC_", _instigatorName] call BIS_fnc_inString) then {
+        _instigatorName = format ["Vcom Overlord (%1)", _instigatorName];
+    };
+
+    // --- A3M SMART WEAPON HEURISTICS ---
+    private _weaponDisplayName = "Unknown";
+    if (_instigator == _killed || isNull _instigator) then {
+        private _veh = vehicle _killed;
+        if (_veh != _killed && {damage _veh >= 1 || !canMove _veh}) then {
+            _weaponDisplayName = "Vehicle Crash";
+        } else {
+            private _velocity = velocity _killed;
+            if (abs(_velocity select 2) > 10 || (getPosATL _killed select 2) > 5) then {
+                _weaponDisplayName = "Fall Damage / Impact";
+            } else {
+                _weaponDisplayName = "Explosive / Medical";
+            };
+        };
+    } else {
+        private _weapon = currentWeapon _instigator;
+        if (_weapon != "") then { try { _weaponDisplayName = getText(configFile >> "CfgWeapons" >> _weapon >> "displayName"); } catch {}; };
+        if (_killer != _instigator && {!isNull _killer}) then { try { _weaponDisplayName = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
+    };
+
 
     // --- Client-Side Actions (Kill Feed HUD, Sound, Marker Trigger) ---
     if (local _instigator && _instigatorIsPlayer) then { // Only for local player killer
@@ -456,10 +477,7 @@ addMissionEventHandler ["entityKilled", {
             if ( !(isNil "arma3mercenaries_killFeedEnabled") && {arma3mercenaries_killFeedEnabled} ) then {
                 private _killed_Color = (side group _killed call BIS_fnc_sideColor) call BIS_fnc_colorRGBtoHTML;
                 private _distance = _instigator distance2D _killed;
-                private _weapon = currentWeapon _instigator;
-                private _weaponDisplayName = "Unknown";
-                 if (_weapon != "") then { try { _weaponDisplayName = getText(configFile >> "CfgWeapons" >> _weapon >> "displayName"); } catch {}; };
-                 if (_killer != _instigator && {!isNull _killer} && {_killer isKindOf "LandVehicle" || _killer isKindOf "Air" || _killer isKindOf "Ship"}) then { try { _weaponDisplayName = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
+                private _killFeedDuration = if (isNil "arma3mercenaries_killFeedDuration") then { 5 } else { arma3mercenaries_killFeedDuration };
                 private _killFeedDuration = if (isNil "arma3mercenaries_killFeedDuration") then { 5 } else { arma3mercenaries_killFeedDuration };
                 private _kill_HUD = format[ "<t size='0.45' align='center' shadow='1'>Killed </t><t size='0.65' align='center' shadow='1' color='%1'>%2 </t><t size='0.45' align='center' shadow='1'>[%3m | %4]</t>", _killed_Color, _killedName, floor _distance, _weaponDisplayName ];
                 private _posX = 0.5; private _posY = 0.05; // Top Center
@@ -481,10 +499,7 @@ addMissionEventHandler ["entityKilled", {
                 private _sideKilled = getNumber (configFile >> "cfgVehicles" >> _killedType >> "side");
                 private _sideKiller = getNumber (configFile >> "cfgVehicles" >> _instigatorType >> "side"); // Killer is player here
                 private _distanceForMarker = _instigator distance2D _killed;
-                private _weaponForMarker = currentWeapon _instigator;
-                private _weaponDisplayNameForMarker = "Unknown";
-                 if (_weaponForMarker != "") then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgWeapons" >> _weaponForMarker >> "displayName"); } catch {}; };
-                 if (_killer != _instigator && {!isNull _killer}) then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
+                private _weaponDisplayNameForMarker = _weaponDisplayName;
                  private _factionNameKilled = switch (_sideKilled) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
                  private _factionNameKiller = switch (_sideKiller) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
 
@@ -517,10 +532,7 @@ addMissionEventHandler ["entityKilled", {
                 private _sideKilled = getNumber (configFile >> "cfgVehicles" >> _killedType >> "side");
                 private _sideKiller = getNumber (configFile >> "cfgVehicles" >> _instigatorType >> "side");
                 private _distanceForMarker = _instigator distance2D _killed;
-                private _weaponForMarker = currentWeapon _instigator;
-                private _weaponDisplayNameForMarker = "Unknown";
-                if (_weaponForMarker != "") then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgWeapons" >> _weaponForMarker >> "displayName"); } catch {}; };
-                if (_killer != _instigator && {!isNull _killer} && {_killer isKindOf "LandVehicle" || _killer isKindOf "Air" || _killer isKindOf "Ship"}) then { try { _weaponDisplayNameForMarker = getText(configFile >> "CfgVehicles" >> typeOf _killer >> "displayName"); } catch {}; };
+                private _weaponDisplayNameForMarker = _weaponDisplayName;
                 private _factionNameKilled = switch (_sideKilled) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
                 private _factionNameKiller = switch (_sideKiller) do { case 0:{"O"}; case 1:{"N"}; case 2:{"I"}; case 3:{"C"}; default {"U"}; };
                 
@@ -543,7 +555,7 @@ addMissionEventHandler ["entityKilled", {
     // --- Trigger Server Reward Processing (Always if initial checks passed) ---
     try {
         if (isServer) then {
-            private _params = [ _killed, _killer, _instigator, _killedType, _instigatorType, _killedName, _instigatorName ];
+            private _params = [ _killed, _killer, _instigator, _killedType, _instigatorType, _killedName, _instigatorName, _weaponDisplayName ];
             _params call A3M_fnc_serverHandleReward; // Call directly since we are on the server
         };
     } catch { diag_log ("ERROR RWD RE: " + str _exception); };
