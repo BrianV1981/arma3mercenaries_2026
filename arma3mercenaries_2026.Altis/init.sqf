@@ -20,3 +20,6 @@ execVM "arma3mercenaries\kill\arma3mercenaries_killHandler.sqf";
 // execVM "arma3mercenaries\kill\arma3mercenaries_killFeed.sqf";
 // execVM "arma3mercenaries\kill\arma3mercenaries_killRewards.sqf";
 // execVM "arma3mercenaries\kill\arma3mercenaries_killMarkers.sqf";
+
+// Load ALiVE Static Data Override (OPCOM Task Whitelist)
+execVM "staticData.sqf";
