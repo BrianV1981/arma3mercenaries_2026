@@ -17,12 +17,20 @@
             
             // Force dismount from vehicles or static turrets
             if (vehicle _unit != _unit) then {
+                private _veh = vehicle _unit;
+                
+                // Temporarily unlock the vehicle so AI can dismount without being blocked
+                [_veh, 0] remoteExecCall ["HG_fnc_lock", 2, false];
+                
                 unassignVehicle _unit;
                 moveOut _unit;
                 
                 // Wait for the engine to physically detach them from the turret/vehicle
                 waitUntil { sleep 0.1; vehicle _unit == _unit };
                 sleep 0.5; // Allow animation state to settle
+                
+                // Re-lock the vehicle behind them
+                [_veh, 2] remoteExecCall ["HG_fnc_lock", 2, false];
             };
 
             // Apply vanilla SQF guards
