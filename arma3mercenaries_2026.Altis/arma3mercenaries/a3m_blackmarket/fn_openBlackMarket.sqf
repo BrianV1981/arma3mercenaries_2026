@@ -89,7 +89,7 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                                 private _className = configName _itemClass;
                                 private _price = getNumber (_itemClass >> "price");
                                 
-                                if (_price > 0) then {
+                                if (_price >= 0) then {
                                     A3M_Armory_GradPrices set [toLower _className, _price];
                                         
                                     // Check if it's out of stock in the dynamic economy
