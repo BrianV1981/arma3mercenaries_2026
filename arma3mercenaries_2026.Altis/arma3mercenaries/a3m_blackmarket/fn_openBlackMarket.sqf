@@ -177,8 +177,8 @@ if (_cbaShell != "") then {
     
     // Apply specific height offsets so the player isn't stuck inside the model's geometric center
     private _zOffset = 0;
-    if (_cbaShell == "Land_Pier_F") then { _zOffset = -2.3; }; // Eden tested: Player at 30, Pier at 27.7
-    if (_cbaShell == "Land_Warehouse_03_F") then { _zOffset = 0; }; // Eden tested: Player at 30, Warehouse at 30
+    if (_cbaShell == "Land_Pier_F") then { _zOffset = -4.3; }; // Dropped by 2m
+    if (_cbaShell == "Land_Warehouse_03_F") then { _zOffset = 3; }; // Raised by 3m
     
     A3M_ArmoryShellObj attachTo [A3M_ArmoryAnchor, [0, 0, _zOffset]];
     A3M_ArmoryShellObj setDir 0;
