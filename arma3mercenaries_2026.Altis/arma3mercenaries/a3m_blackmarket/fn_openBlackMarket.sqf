@@ -138,22 +138,25 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 [A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
 
 // -------------------------------------------------------------------------
-// 3.5 "Concrete Platform" (Teleport to Ocean Platform for Unobstructed View)
+// 3.5 "Concrete Platform" (Teleport to Sky Platform for Unobstructed View)
 // -------------------------------------------------------------------------
-player setVariable ["A3M_Armory_RealPos", getPosASL player];
+private _realPos = getPosASL player;
+player setVariable ["A3M_Armory_RealPos", _realPos];
 player setVariable ["A3M_Armory_RealDir", getDir player];
 
-// Spawn a massive, solid concrete Pier block over the ocean
+// Spawn a massive, solid concrete Pier block in the sky (directly above the player)
 if (isNull (missionNamespace getVariable ["A3M_ArmorySolidPlatform", objNull])) then {
     A3M_ArmorySolidPlatform = "Land_Pier_F" createVehicleLocal [0,0,0];
     A3M_ArmorySolidPlatform allowDamage false;
 };
-// Place the platform safely above the waves
-A3M_ArmorySolidPlatform setPosASL [100, 100, 10];
+// Place the platform at 10,000m altitude directly above current location
+private _skyX = _realPos select 0;
+private _skyY = _realPos select 1;
+A3M_ArmorySolidPlatform setPosASL [_skyX, _skyY, 10000];
 
 // Teleport Box and Player directly onto the solid Concrete Platform
-A3M_ArmoryBox setPosASL [100, 100, 14.5];
-player setPosASL [100, 100, 14.5];
+A3M_ArmoryBox setPosASL [_skyX, _skyY, 10004.5];
+player setPosASL [_skyX, _skyY, 10004.5];
 player setDir 0;
 
 // Add a "Studio Light" so it isn't pitch black at night
@@ -164,7 +167,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryLight", objNull])) then {
     A3M_ArmoryLight setLightColor [1, 1, 1];
     A3M_ArmoryLight setLightAttenuation [0, 0, 0, 0, 10, 15]; // Smooth falloff
 };
-A3M_ArmoryLight setPosASL [100, 100, 18]; // 3.5 meters above the player
+A3M_ArmoryLight setPosASL [_skyX, _skyY, 10008]; // 3.5 meters above the player
 
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
