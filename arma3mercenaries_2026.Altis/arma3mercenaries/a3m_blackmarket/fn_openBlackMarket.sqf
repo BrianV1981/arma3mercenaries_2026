@@ -168,6 +168,16 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryAnchor", objNull])) then {
 };
 A3M_ArmoryAnchor setPosATL _skyPos;
 
+// Spawn Room Shell if enabled
+private _cbaShell = missionNamespace getVariable ["A3M_Armory_RoomShell", ""];
+if (_cbaShell != "") then {
+    if (isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
+        A3M_ArmoryShellObj = _cbaShell createVehicleLocal [0,0,0];
+    };
+    A3M_ArmoryShellObj setPosATL _skyPos;
+    A3M_ArmoryShellObj setDir 0;
+};
+
 // Attach player and box to the anchor to completely disable falling physics
 player setVelocity [0,0,0];
 player setPosATL _skyPos;
@@ -365,6 +375,12 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         // Option 3: Velocity Nullifier + Detach from Anchor
         detach player;
         detach A3M_ArmoryBox;
+        
+        // Cleanup Room Shell
+        if (!isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
+            deleteVehicle A3M_ArmoryShellObj;
+            A3M_ArmoryShellObj = objNull;
+        };
         
         player allowDamage false;
         player setVelocity [0,0,0];

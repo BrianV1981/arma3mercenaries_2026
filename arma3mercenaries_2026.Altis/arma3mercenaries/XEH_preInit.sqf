@@ -290,3 +290,16 @@
     true,
     true
 ] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_RoomShell",
+    "LIST",
+    ["Local Room Shell", "Spawn a local, invisible-to-others physical structure around the player during shopping to boost FPS and immersion."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [
+        ["", "Land_VR_Block_02_F", "Land_Dome_Big_F", "Land_Pier_F"],
+        ["None (Floating)", "VR Grid Floor (Open)", "Massive Concrete Dome (Enclosed)", "Concrete Pier Platform (Open)"],
+        0
+    ],
+    true
+] call CBA_Settings_fnc_init;
