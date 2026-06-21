@@ -20,6 +20,7 @@
         // Remove vanilla SQF guards
         _unit setCaptive false;
         _unit allowDamage true;
+        _unit setVariable ["ace_medical_allowDamage", true, true];
 
         // Ensure AI brain is fully enabled
         _unit enableAI "ALL";
