@@ -156,6 +156,16 @@ A3M_ArmoryBox setPosASL [100, 100, 14.5];
 player setPosASL [100, 100, 14.5];
 player setDir 0;
 
+// Add a "Studio Light" so it isn't pitch black at night
+if (isNull (missionNamespace getVariable ["A3M_ArmoryLight", objNull])) then {
+    A3M_ArmoryLight = "#lightpoint" createVehicleLocal [0,0,0];
+    A3M_ArmoryLight setLightBrightness 1.5;
+    A3M_ArmoryLight setLightAmbient [1, 1, 1];
+    A3M_ArmoryLight setLightColor [1, 1, 1];
+    A3M_ArmoryLight setLightAttenuation [0, 0, 0, 0, 10, 15]; // Smooth falloff
+};
+A3M_ArmoryLight setPosASL [100, 100, 18]; // 3.5 meters above the player
+
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
 
