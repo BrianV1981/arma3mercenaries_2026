@@ -138,14 +138,22 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 [A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
 
 // -------------------------------------------------------------------------
-// 3.5 "VR" Background (Teleport to Skybox for Unobstructed View)
+// 3.5 "VR" Background (Teleport to Ocean VR Platform for Unobstructed View)
 // -------------------------------------------------------------------------
 player setVariable ["A3M_Armory_RealPos", getPosASL player];
 player setVariable ["A3M_Armory_RealDir", getDir player];
 
-// Teleport Box and Player to 10,000m above the ocean
-A3M_ArmoryBox setPosASL [10, 10, 10000];
-player setPosASL [10, 10, 10000];
+// Option 4 + 2: Spawn the VR "Matrix" Block (20x10x8) over the ocean corner
+if (isNull (missionNamespace getVariable ["A3M_ArmoryVRPlatform", objNull])) then {
+    A3M_ArmoryVRPlatform = "Land_VR_Block_01_F" createVehicleLocal [0,0,0];
+    A3M_ArmoryVRPlatform allowDamage false;
+};
+// Place the platform safely above the waves
+A3M_ArmoryVRPlatform setPosASL [100, 100, 10];
+
+// Teleport Box and Player directly onto the solid VR Platform
+A3M_ArmoryBox setPosASL [100, 100, 14.1];
+player setPosASL [100, 100, 14.1];
 player setDir 0;
 
 // Open the Arsenal locally
@@ -313,13 +321,22 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         A3M_Armory_EH_ID = nil;
     };
     
-    // Restore Real Position from VR Skybox
+    // Restore Real Position from VR Platform
     private _realPos = player getVariable ["A3M_Armory_RealPos", [0,0,0]];
     private _realDir = player getVariable ["A3M_Armory_RealDir", 0];
     if (_realPos isNotEqualTo [0,0,0]) then {
+        // Option 3: Velocity Nullifier
+        player allowDamage false;
+        player setVelocity [0,0,0];
         player setPosASL _realPos;
         player setDir _realDir;
         A3M_ArmoryBox setPosASL _realPos;
+        
+        // Restore damage safety after 3 seconds
+        [] spawn {
+            sleep 3;
+            player allowDamage true;
+        };
     };
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];
