@@ -89,7 +89,7 @@ for "_i" from 0 to ((count _cfgBuymenu) - 1) do {
                                 private _className = configName _itemClass;
                                 private _price = getNumber (_itemClass >> "price");
                                 
-                                if (_price > 0) then {
+                                if (_price >= 0) then {
                                     A3M_Armory_GradPrices set [toLower _className, _price];
                                         
                                     // Check if it's out of stock in the dynamic economy
@@ -136,6 +136,88 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 [A3M_ArmoryBox, _whitelistMagazines] call BIS_fnc_addVirtualMagazineCargo;
 [A3M_ArmoryBox, _whitelistItems] call BIS_fnc_addVirtualItemCargo;
 [A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
+
+// -------------------------------------------------------------------------
+// 3.5 "Skybox Matrix" (Teleport to Sky via Invisible Anchor)
+// -------------------------------------------------------------------------
+// Parse CBA Settings
+private _cbaHeight = missionNamespace getVariable ["A3M_Armory_HoverHeight", 30];
+private _cbaDist = missionNamespace getVariable ["A3M_Armory_HoverDistance", 0];
+private _cbaCustomStr = missionNamespace getVariable ["A3M_Armory_CustomSpawn", ""];
+private _cbaLight = missionNamespace getVariable ["A3M_Armory_StudioLighting", 1.5];
+private _cbaGhost = missionNamespace getVariable ["A3M_Armory_GhostProtocol", true];
+
+private _realPos = getPosASL player;
+player setVariable ["A3M_Armory_RealPos", _realPos];
+player setVariable ["A3M_Armory_RealDir", getDir player];
+
+private _skyPos = player modelToWorld [0, _cbaDist, _cbaHeight];
+
+// Attempt to parse custom string to array
+if (_cbaCustomStr != "") then {
+    // Ensure the string has brackets in case the user just typed numbers separated by commas
+    if ((_cbaCustomStr find "[") == -1) then {
+        _cbaCustomStr = format ["[%1]", _cbaCustomStr];
+    };
+    
+    private _parsedArray = call compile _cbaCustomStr;
+    
+    if (!isNil "_parsedArray" && {_parsedArray isEqualType []} && {count _parsedArray == 3}) then {
+        _skyPos = _parsedArray;
+    };
+};
+
+// Spawn an invisible anchor
+if (isNull (missionNamespace getVariable ["A3M_ArmoryAnchor", objNull])) then {
+    A3M_ArmoryAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
+    A3M_ArmoryAnchor hideObject true;
+};
+A3M_ArmoryAnchor setPosATL _skyPos;
+
+// Spawn Room Shell if enabled
+private _cbaShell = missionNamespace getVariable ["A3M_Armory_RoomShell", ""];
+if (_cbaShell != "") then {
+    if (isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
+        A3M_ArmoryShellObj = _cbaShell createVehicleLocal [0,0,0];
+    };
+    
+    // Apply specific height offsets so the player isn't stuck inside the model's geometric center
+    private _zOffset = 0;
+    private _dirOffset = 0;
+    if (_cbaShell == "Land_Pier_F") then { _zOffset = -4.64; }; // Raised by 0.01m
+    if (_cbaShell == "Land_Warehouse_03_F") then { 
+        _zOffset = 2.4; // Dropped by another 0.1m
+        _dirOffset = 90; // Rotated clockwise by 90 degrees
+    }; 
+    
+    A3M_ArmoryShellObj attachTo [A3M_ArmoryAnchor, [0, 0, _zOffset]];
+    A3M_ArmoryShellObj setDir _dirOffset;
+};
+
+// Attach player and box to the anchor to completely disable falling physics
+player setVelocity [0,0,0];
+player setPosATL _skyPos;
+player attachTo [A3M_ArmoryAnchor, [0, 0, 0]];
+A3M_ArmoryBox attachTo [A3M_ArmoryAnchor, [0, 2, 0]];
+player setDir 0;
+
+// Add a "Studio Light" so it isn't pitch black at night
+if (isNull (missionNamespace getVariable ["A3M_ArmoryLight", objNull])) then {
+    A3M_ArmoryLight = "#lightpoint" createVehicleLocal [0,0,0];
+    A3M_ArmoryLight setLightAmbient [1, 1, 1];
+    A3M_ArmoryLight setLightColor [1, 1, 1];
+    A3M_ArmoryLight setLightAttenuation [0, 0, 0, 0, 10, 15]; // Smooth falloff
+};
+A3M_ArmoryLight setLightBrightness _cbaLight;
+A3M_ArmoryLight setPosATL [_skyPos select 0, _skyPos select 1, (_skyPos select 2) + 3.5];
+
+// Ghost Protocol
+if (_cbaGhost) then {
+    player setCaptive true;
+    player hideObjectGlobal true;
+    player allowDamage false;
+    player setVariable ["ace_medical_allowDamage", false, true];
+};
 
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
@@ -222,15 +304,15 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
                 
                 if (_newQty > _oldQty) then {
                     private _diff = _newQty - _oldQty;
-                    private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
-                    if (_p == 0) then { 
+                    if (!(_item in A3M_Armory_GradPrices)) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _item]; 
                         _contraband = true;
                     } else {
+                        private _p = A3M_Armory_GradPrices get _item;
                         private _discountMult = _activeSales getOrDefault [_item, 1];
                         _p = round (_p * _discountMult);
+                        _totalCost = _totalCost + (_p * _diff); 
                     };
-                    _totalCost = _totalCost + (_p * _diff); 
                 };
             } forEach _newCounts;
             
@@ -300,6 +382,40 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     if (!isNil "A3M_Armory_EH_ID") then {
         [missionNamespace, "arsenalClosed", A3M_Armory_EH_ID] call BIS_fnc_removeScriptedEventHandler;
         A3M_Armory_EH_ID = nil;
+    };
+    
+    // Restore Real Position from VR Platform
+    private _realPos = player getVariable ["A3M_Armory_RealPos", [0,0,0]];
+    private _realDir = player getVariable ["A3M_Armory_RealDir", 0];
+    if (_realPos isNotEqualTo [0,0,0]) then {
+        // Option 3: Velocity Nullifier + Detach from Anchor
+        detach player;
+        detach A3M_ArmoryBox;
+        
+        // Cleanup Room Shell
+        if (!isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
+            deleteVehicle A3M_ArmoryShellObj;
+            A3M_ArmoryShellObj = objNull;
+        };
+        
+        player allowDamage false;
+        player setVelocity [0,0,0];
+        player setPosASL _realPos;
+        player setDir _realDir;
+        A3M_ArmoryBox setPosASL _realPos;
+        
+        // Restore damage safety after 3 seconds, and clear Ghost Protocol
+        private _cbaGhost = missionNamespace getVariable ["A3M_Armory_GhostProtocol", true];
+        [_cbaGhost] spawn {
+            params ["_cbaGhost"];
+            sleep 3;
+            player allowDamage true;
+            if (_cbaGhost) then {
+                player setCaptive false;
+                player hideObjectGlobal false;
+                player setVariable ["ace_medical_allowDamage", true, true];
+            };
+        };
     };
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];

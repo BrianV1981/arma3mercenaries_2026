@@ -48,6 +48,7 @@ private _index = 0;
                 // Apply vanilla SQF guards
                 _unit setCaptive true;
                 _unit allowDamage false;
+                _unit setVariable ["ace_medical_allowDamage", false, true];
                 
                 // Disable their AI brain so they don't try to wander or re-mount
                 _unit disableAI "ALL";
