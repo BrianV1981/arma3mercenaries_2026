@@ -161,13 +161,9 @@ if (_cbaCustomStr != "") then {
     };
     
     private _parsedArray = call compile _cbaCustomStr;
-    systemChat format ["[Armory Debug] Raw CBA String: %1 | Parsed Array: %2", _cbaCustomStr, _parsedArray];
     
     if (!isNil "_parsedArray" && {_parsedArray isEqualType []} && {count _parsedArray == 3}) then {
         _skyPos = _parsedArray;
-        systemChat format ["[Armory Debug] Custom Coordinate Override SUCCESS! Teleporting to: %1", _skyPos];
-    } else {
-        systemChat "[Armory Debug] Custom Coordinate Override FAILED! Falling back to dynamic hover.";
     };
 };
 
