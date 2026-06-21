@@ -297,8 +297,8 @@
     ["Local Room Shell", "Spawn a local, invisible-to-others physical structure around the player during shopping to boost FPS and immersion."],
     ["A3M Settings", "Armory (Black Market)"],
     [
-        ["", "Land_VR_Block_02_F", "Land_Dome_Big_F", "Land_Pier_F"],
-        ["None (Floating)", "VR Grid Floor (Open)", "Massive Concrete Dome (Enclosed)", "Concrete Pier Platform (Open)"],
+        ["", "Land_Warehouse_03_F", "Land_Pier_F"],
+        ["None (Floating)", "Warehouse (Blue)", "Concrete Pier (Open)"],
         0
     ],
     true
