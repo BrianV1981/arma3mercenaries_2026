@@ -144,19 +144,18 @@ private _realPos = getPosASL player;
 player setVariable ["A3M_Armory_RealPos", _realPos];
 player setVariable ["A3M_Armory_RealDir", getDir player];
 
-private _skyX = _realPos select 0;
-private _skyY = _realPos select 1;
+private _skyPos = player modelToWorld [0, 10, 30];
 
-// Spawn an invisible anchor at 10,000m
+// Spawn an invisible anchor at 30m
 if (isNull (missionNamespace getVariable ["A3M_ArmoryAnchor", objNull])) then {
     A3M_ArmoryAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
     A3M_ArmoryAnchor hideObject true;
 };
-A3M_ArmoryAnchor setPosASL [_skyX, _skyY, 10000];
+A3M_ArmoryAnchor setPosATL _skyPos;
 
 // Attach player and box to the anchor to completely disable falling physics
 player setVelocity [0,0,0];
-player setPosASL [_skyX, _skyY, 10000];
+player setPosATL _skyPos;
 player attachTo [A3M_ArmoryAnchor, [0, 0, 0]];
 A3M_ArmoryBox attachTo [A3M_ArmoryAnchor, [0, 2, 0]];
 player setDir 0;
@@ -169,7 +168,7 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryLight", objNull])) then {
     A3M_ArmoryLight setLightColor [1, 1, 1];
     A3M_ArmoryLight setLightAttenuation [0, 0, 0, 0, 10, 15]; // Smooth falloff
 };
-A3M_ArmoryLight setPosASL [_skyX, _skyY, 10008]; // 3.5 meters above the player
+A3M_ArmoryLight setPosATL [_skyPos select 0, _skyPos select 1, (_skyPos select 2) + 3.5];
 
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
