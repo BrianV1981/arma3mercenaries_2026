@@ -79,6 +79,7 @@ if(_color != "") then
 };
 
 _vehicle allowDamage true;
+_vehicle setVariable ["Vcm_Disable", true, true]; // Prevent Vcom AI from hijacking player vehicles/UAVs
 _vehicle addEventHandler["Killed",{_this call HG_fnc_killedVehicle}];
 [_vehicle] remoteExecCall ["HG_fnc_addActions",(owner _unit),false];
 

@@ -59,7 +59,7 @@ class CfgFunctions {
     #include "modules\grad-fortifications\cfgFunctions.hpp"
     #include "modules\grad-persistence\cfgFunctions.hpp"
     #include "HG\Functions\HG_Functions.h"           
-    #include "vcom\cfgFunctions.hpp"
+    #include "Vcom\cfgFunctions.hpp"
     #include "arma3mercenaries\sector_control\cfgFunctions.hpp"
     #include "arma3mercenaries\combat_support\cfgFunctions.hpp"
     #include "functions\looter_cfgFunctions.hpp"
@@ -301,7 +301,9 @@ class CfgSounds {
         sound[] = {"arma3mercenaries\kill\kill_notification_sounds\kill_notification.ogg", db-5, 1.0};
         titles[] = {};
     };
-
-    // A3M Custom Speech Overhaul (PMC Audio Lines)
-    #include "arma3mercenaries\speech_overhaul\cfgSpeechSounds.hpp"
+    class A3M_RankUp {
+        name = "A3M_RankUp";
+        sound[] = {"sounds\A3M_RankUp.ogg", db+0, 1.0};
+        titles[] = {};
+    };
 };

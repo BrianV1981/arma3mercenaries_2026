@@ -13,9 +13,7 @@ player setUnitTrait ["UAVHacker",true];
 player setUnitTrait ["explosiveSpecialist",true];
 
 // A3M Client-Side Function Compilation
-A3M_fnc_applyChatterEHs = compileFinal (preprocessFileLineNumbers "arma3mercenaries\speech_overhaul\fn_applyChatterEHs.sqf");
 A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_submitTicket.sqf");
-[] execVM "arma3mercenaries\speech_overhaul\fn_initSpeechArrays.sqf";
 
 // -------------------------------------------------------------------------
 // --- A3M TICKETING SYSTEM: ESC Menu Injector (#70) ---
@@ -292,8 +290,9 @@ private _catVehicleOps = ["A3M_VehicleOps", "[Vehicle Operations]", "", {}, {tru
 private _claimAction = ["A3M_ClaimVehicle", "Claim Vehicle", "", {
     [_target] call HG_fnc_setOwner;
     _target setVariable ["ALiVE_disableDynamicSimulation", true, true];
+    _target setVariable ["Vcm_Disable", true, true];
 }, {
-    isNil {_target getVariable "HG_Owner"}
+    (isNil {_target getVariable "HG_Owner"}) && {count (crew _target) == 0}
 }] call ace_interact_menu_fnc_createAction;
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
@@ -611,3 +610,14 @@ enableRadio true;
         };
     };
 }] call CBA_fnc_addEventHandler;
+
+// -------------------------------------------------------------------------
+// --- BACKPACK DRONE/STATIC ASSEMBLE PROTECTION ---
+// -------------------------------------------------------------------------
+// Prevent Vcom AI from hijacking drones or statics assembled from backpacks by the player
+player addEventHandler ["WeaponAssembled", {
+    params ["_assembler", "_weapon"];
+    _weapon setVariable ["Vcm_Disable", true, true];
+    // Automatically claim the drone/static for the player who assembled it!
+    [_weapon] call HG_fnc_setOwner; 
+}];
