@@ -137,6 +137,17 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 [A3M_ArmoryBox, _whitelistItems] call BIS_fnc_addVirtualItemCargo;
 [A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
 
+// -------------------------------------------------------------------------
+// 3.5 "VR" Background (Teleport to Skybox for Unobstructed View)
+// -------------------------------------------------------------------------
+player setVariable ["A3M_Armory_RealPos", getPosASL player];
+player setVariable ["A3M_Armory_RealDir", getDir player];
+
+// Teleport Box and Player to 10,000m above the ocean
+A3M_ArmoryBox setPosASL [10, 10, 10000];
+player setPosASL [10, 10, 10000];
+player setDir 0;
+
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
 
@@ -300,6 +311,15 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     if (!isNil "A3M_Armory_EH_ID") then {
         [missionNamespace, "arsenalClosed", A3M_Armory_EH_ID] call BIS_fnc_removeScriptedEventHandler;
         A3M_Armory_EH_ID = nil;
+    };
+    
+    // Restore Real Position from VR Skybox
+    private _realPos = player getVariable ["A3M_Armory_RealPos", [0,0,0]];
+    private _realDir = player getVariable ["A3M_Armory_RealDir", 0];
+    if (_realPos isNotEqualTo [0,0,0]) then {
+        player setPosASL _realPos;
+        player setDir _realDir;
+        A3M_ArmoryBox setPosASL _realPos;
     };
     
     private _readyToPurchase = player getVariable ["A3M_Armory_ReadyToPurchase", false];
