@@ -138,25 +138,27 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 [A3M_ArmoryBox, _whitelistBackpacks] call BIS_fnc_addVirtualBackpackCargo;
 
 // -------------------------------------------------------------------------
-// 3.5 "Concrete Platform" (Teleport to Sky Platform for Unobstructed View)
+// 3.5 "Skybox Matrix" (Teleport to Sky via Invisible Anchor)
 // -------------------------------------------------------------------------
 private _realPos = getPosASL player;
 player setVariable ["A3M_Armory_RealPos", _realPos];
 player setVariable ["A3M_Armory_RealDir", getDir player];
 
-// Spawn a massive, solid concrete Pier block in the sky (directly above the player)
-if (isNull (missionNamespace getVariable ["A3M_ArmorySolidPlatform", objNull])) then {
-    A3M_ArmorySolidPlatform = "Land_Pier_F" createVehicleLocal [0,0,0];
-    A3M_ArmorySolidPlatform allowDamage false;
-};
-// Place the platform at 10,000m altitude directly above current location
 private _skyX = _realPos select 0;
 private _skyY = _realPos select 1;
-A3M_ArmorySolidPlatform setPosASL [_skyX, _skyY, 10000];
 
-// Teleport Box and Player directly onto the solid Concrete Platform
-A3M_ArmoryBox setPosASL [_skyX, _skyY, 10004.5];
-player setPosASL [_skyX, _skyY, 10004.5];
+// Spawn an invisible anchor at 10,000m
+if (isNull (missionNamespace getVariable ["A3M_ArmoryAnchor", objNull])) then {
+    A3M_ArmoryAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
+    A3M_ArmoryAnchor hideObject true;
+};
+A3M_ArmoryAnchor setPosASL [_skyX, _skyY, 10000];
+
+// Attach player and box to the anchor to completely disable falling physics
+player setVelocity [0,0,0];
+player setPosASL [_skyX, _skyY, 10000];
+player attachTo [A3M_ArmoryAnchor, [0, 0, 0]];
+A3M_ArmoryBox attachTo [A3M_ArmoryAnchor, [0, 2, 0]];
 player setDir 0;
 
 // Add a "Studio Light" so it isn't pitch black at night
@@ -338,7 +340,10 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
     private _realPos = player getVariable ["A3M_Armory_RealPos", [0,0,0]];
     private _realDir = player getVariable ["A3M_Armory_RealDir", 0];
     if (_realPos isNotEqualTo [0,0,0]) then {
-        // Option 3: Velocity Nullifier
+        // Option 3: Velocity Nullifier + Detach from Anchor
+        detach player;
+        detach A3M_ArmoryBox;
+        
         player allowDamage false;
         player setVelocity [0,0,0];
         player setPosASL _realPos;
