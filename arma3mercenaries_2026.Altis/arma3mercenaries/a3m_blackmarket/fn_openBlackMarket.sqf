@@ -140,13 +140,28 @@ if (isNull (missionNamespace getVariable ["A3M_ArmoryBox", objNull])) then {
 // -------------------------------------------------------------------------
 // 3.5 "Skybox Matrix" (Teleport to Sky via Invisible Anchor)
 // -------------------------------------------------------------------------
+// Parse CBA Settings
+private _cbaHeight = missionNamespace getVariable ["A3M_Armory_HoverHeight", 30];
+private _cbaDist = missionNamespace getVariable ["A3M_Armory_HoverDistance", 0];
+private _cbaCustomStr = missionNamespace getVariable ["A3M_Armory_CustomSpawn", ""];
+private _cbaLight = missionNamespace getVariable ["A3M_Armory_StudioLighting", 1.5];
+private _cbaGhost = missionNamespace getVariable ["A3M_Armory_GhostProtocol", true];
+
 private _realPos = getPosASL player;
 player setVariable ["A3M_Armory_RealPos", _realPos];
 player setVariable ["A3M_Armory_RealDir", getDir player];
 
-private _skyPos = player modelToWorld [0, 10, 30];
+private _skyPos = player modelToWorld [0, _cbaDist, _cbaHeight];
 
-// Spawn an invisible anchor at 30m
+// Attempt to parse custom string to array
+if (_cbaCustomStr != "") then {
+    private _parsedArray = parseSimpleArray _cbaCustomStr;
+    if (_parsedArray isEqualType [] && {count _parsedArray == 3}) then {
+        _skyPos = _parsedArray;
+    };
+};
+
+// Spawn an invisible anchor
 if (isNull (missionNamespace getVariable ["A3M_ArmoryAnchor", objNull])) then {
     A3M_ArmoryAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
     A3M_ArmoryAnchor hideObject true;
@@ -163,12 +178,20 @@ player setDir 0;
 // Add a "Studio Light" so it isn't pitch black at night
 if (isNull (missionNamespace getVariable ["A3M_ArmoryLight", objNull])) then {
     A3M_ArmoryLight = "#lightpoint" createVehicleLocal [0,0,0];
-    A3M_ArmoryLight setLightBrightness 1.5;
     A3M_ArmoryLight setLightAmbient [1, 1, 1];
     A3M_ArmoryLight setLightColor [1, 1, 1];
     A3M_ArmoryLight setLightAttenuation [0, 0, 0, 0, 10, 15]; // Smooth falloff
 };
+A3M_ArmoryLight setLightBrightness _cbaLight;
 A3M_ArmoryLight setPosATL [_skyPos select 0, _skyPos select 1, (_skyPos select 2) + 3.5];
+
+// Ghost Protocol
+if (_cbaGhost) then {
+    player setCaptive true;
+    player hideObjectGlobal true;
+    player allowDamage false;
+    player setVariable ["ace_medical_allowDamage", false, true];
+};
 
 // Open the Arsenal locally
 ["Open", [false, A3M_ArmoryBox, player]] call BIS_fnc_arsenal;
@@ -349,10 +372,17 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         player setDir _realDir;
         A3M_ArmoryBox setPosASL _realPos;
         
-        // Restore damage safety after 3 seconds
-        [] spawn {
+        // Restore damage safety after 3 seconds, and clear Ghost Protocol
+        private _cbaGhost = missionNamespace getVariable ["A3M_Armory_GhostProtocol", true];
+        [_cbaGhost] spawn {
+            params ["_cbaGhost"];
             sleep 3;
             player allowDamage true;
+            if (_cbaGhost) then {
+                player setCaptive false;
+                player hideObjectGlobal false;
+                player setVariable ["ace_medical_allowDamage", true, true];
+            };
         };
     };
     

@@ -245,3 +245,48 @@
     true
 ] call CBA_Settings_fnc_init;
 
+// --- ARMORY (BLACK MARKET) SETTINGS ---
+[
+    "A3M_Armory_CustomSpawn",
+    "EDITBOX",
+    ["Custom Spawn Coordinate", "Override the dynamic hover. Enter coordinates like [1234, 5678, 10] to force the Armory to spawn in a specific physical room. Leave blank to use dynamic hover."],
+    ["A3M Settings", "Armory (Black Market)"],
+    "",
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_HoverHeight",
+    "SLIDER",
+    ["Dynamic Hover Altitude", "If using dynamic hover, how high above the player should the Armory spawn? Default is 30m."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [5, 10000, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_HoverDistance",
+    "SLIDER",
+    ["Dynamic Hover Distance", "If using dynamic hover, how far forward from the player should the Armory spawn? Default is 0m (directly above)."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [0, 100, 0, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_StudioLighting",
+    "SLIDER",
+    ["Studio Lighting Brightness", "Brightness of the automatic light spawned in the Armory at night."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [0, 5, 1.5, 1],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_GhostProtocol",
+    "CHECKBOX",
+    ["Ghost Protocol (Invincibility)", "Make players invisible and completely invincible while they are inside the Armory (Prevents getting sniped while shopping)."],
+    ["A3M Settings", "Armory (Black Market)"],
+    true,
+    true
+] call CBA_Settings_fnc_init;
