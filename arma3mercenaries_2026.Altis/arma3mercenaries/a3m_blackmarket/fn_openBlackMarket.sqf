@@ -174,8 +174,24 @@ if (_cbaShell != "") then {
     if (isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
         A3M_ArmoryShellObj = _cbaShell createVehicleLocal [0,0,0];
     };
-    A3M_ArmoryShellObj setPosATL _skyPos;
+    
+    // Apply specific height offsets so the player isn't stuck inside the model's geometric center
+    private _zOffset = 0;
+    if (_cbaShell == "Land_Pier_F") then { _zOffset = -7; }; // Drop Pier by 7m so player stands on top
+    if (_cbaShell == "Land_VR_Block_02_F") then { _zOffset = -5; };
+    if (_cbaShell == "Land_Dome_Big_F") then { _zOffset = -1; };
+    
+    A3M_ArmoryShellObj attachTo [A3M_ArmoryAnchor, [0, 0, _zOffset]];
     A3M_ArmoryShellObj setDir 0;
+    
+    // If it's the Dome, it has no floor, so we must spawn a solid Pier under it!
+    if (_cbaShell == "Land_Dome_Big_F") then {
+        if (isNull (missionNamespace getVariable ["A3M_ArmoryFloorObj", objNull])) then {
+            A3M_ArmoryFloorObj = "Land_Pier_F" createVehicleLocal [0,0,0];
+        };
+        A3M_ArmoryFloorObj attachTo [A3M_ArmoryAnchor, [0, 0, -7]];
+        A3M_ArmoryFloorObj setDir 0;
+    };
 };
 
 // Attach player and box to the anchor to completely disable falling physics
@@ -380,6 +396,10 @@ A3M_Armory_EH_ID = [missionNamespace, "arsenalClosed", {
         if (!isNull (missionNamespace getVariable ["A3M_ArmoryShellObj", objNull])) then {
             deleteVehicle A3M_ArmoryShellObj;
             A3M_ArmoryShellObj = objNull;
+        };
+        if (!isNull (missionNamespace getVariable ["A3M_ArmoryFloorObj", objNull])) then {
+            deleteVehicle A3M_ArmoryFloorObj;
+            A3M_ArmoryFloorObj = objNull;
         };
         
         player allowDamage false;
