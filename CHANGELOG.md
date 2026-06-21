@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.29.0] - 2026-06-20
+- Feature: Lobotomized Proxy Optimization (Closes #130)
+
+
+## [v1.28.1] - 2026-06-20
+- Fix: Optimize ALiVE Proxy Sector Bridge (Closes #129)
+
+
+## [v1.28.0] - 2026-06-20
+- Feature: Whitelist OPCOM Tasks via staticData.sqf (Closes #128)
+
+
 ## [v1.27.2] - 2026-06-20
 - Fix: Fatal scope error in player dossier SQLite tracking
 

@@ -20,7 +20,7 @@ fi
 
 MISSION_DIR="$1"
 DESC_FILE="$MISSION_DIR/description.ext"
-SERVER_CFG="/home/brian-vasquez/arma3server/server.cfg"
+SERVER_CFG="/home/brian-vasquez/arma3server/server_beta.cfg"
 
 # 1. Extract the Master Version from the A.I.M. Root VERSION file
 VERSION_FILE="/home/brian-vasquez/aim-a3m/VERSION"
