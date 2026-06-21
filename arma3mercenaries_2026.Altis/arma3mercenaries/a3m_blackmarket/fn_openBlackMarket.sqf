@@ -304,15 +304,15 @@ if (_cbaGhost) then {
                 
                 if (_newQty > _oldQty) then {
                     private _diff = _newQty - _oldQty;
-                    private _p = A3M_Armory_GradPrices getOrDefault [_item, 0];
-                    if (_p == 0) then { 
+                    if (!(_item in A3M_Armory_GradPrices)) then { 
                         systemChat format ["CONTRABAND DETECTED: %1 is not sold here.", _item]; 
                         _contraband = true;
                     } else {
+                        private _p = A3M_Armory_GradPrices get _item;
                         private _discountMult = _activeSales getOrDefault [_item, 1];
                         _p = round (_p * _discountMult);
+                        _totalCost = _totalCost + (_p * _diff); 
                     };
-                    _totalCost = _totalCost + (_p * _diff); 
                 };
             } forEach _newCounts;
             
