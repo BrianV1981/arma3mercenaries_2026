@@ -178,7 +178,7 @@ if (_cbaShell != "") then {
     // Apply specific height offsets so the player isn't stuck inside the model's geometric center
     private _zOffset = 0;
     private _dirOffset = 0;
-    if (_cbaShell == "Land_Pier_F") then { _zOffset = -4.65; }; // Dropped by another 0.05m
+    if (_cbaShell == "Land_Pier_F") then { _zOffset = -4.64; }; // Raised by 0.01m
     if (_cbaShell == "Land_Warehouse_03_F") then { 
         _zOffset = 2.4; // Dropped by another 0.1m
         _dirOffset = 90; // Rotated clockwise by 90 degrees
