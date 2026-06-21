@@ -30,3 +30,11 @@ removeGoggles _newUnit;
 // This prevents them from keeping building supplies after death
 _newUnit setVariable ["grad_fortifications_myFortsHash", [[], 0] call CBA_fnc_hashCreate, true];
 _newUnit setVariable ["grad_fortifications_inventoryCargo", 0, true];
+
+// Prevent Vcom AI from hijacking drones or statics assembled from backpacks by the player
+_newUnit addEventHandler ["WeaponAssembled", {
+    params ["_assembler", "_weapon"];
+    _weapon setVariable ["Vcm_Disable", true, true];
+    // Automatically claim the drone/static for the player who assembled it!
+    [_weapon] call HG_fnc_setOwner; 
+}];

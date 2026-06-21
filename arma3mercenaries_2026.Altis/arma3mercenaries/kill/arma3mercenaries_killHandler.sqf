@@ -368,11 +368,15 @@ A3M_fnc_serverCreateMarkerGlobal = {
 
     // diag_log format["[A3M MARKER SRV] Received request: %1", _name]; // Optional log
 
-    // Delete previous marker if it exists globally
-    deleteMarker _name;
-
-    // Create the marker globally
-    private _marker = createMarker [_name, _pos];
+    // If the marker already exists, simply move it to avoid network sync glitches. 
+    // If it doesn't exist, create it.
+    private _marker = _name;
+    if (getMarkerColor _name == "") then {
+        createMarker [_name, _pos];
+    } else {
+        _marker setMarkerPos _pos;
+    };
+    
     _marker setMarkerShape _shape;
     _marker setMarkerType _type;
     _marker setMarkerColor _color;
