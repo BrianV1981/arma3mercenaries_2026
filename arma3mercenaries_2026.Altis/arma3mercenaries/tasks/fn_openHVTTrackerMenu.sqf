@@ -496,7 +496,7 @@ if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
             _services append [
                 ["UCAV Sentinel Scan", 150000, "A3M_fnc_serverSentinelSweep"],
                 ["AH-99 Blackfoot CAS", 200000, "A3M_fnc_serverBlackfootSweep"],
-                ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"],
+                // ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"], // Stubbed out temporarily
                 ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
                 ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
                 ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],
