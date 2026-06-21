@@ -155,8 +155,8 @@ private _skyPos = player modelToWorld [0, _cbaDist, _cbaHeight];
 
 // Attempt to parse custom string to array
 if (_cbaCustomStr != "") then {
-    private _parsedArray = parseSimpleArray _cbaCustomStr;
-    if (_parsedArray isEqualType [] && {count _parsedArray == 3}) then {
+    private _parsedArray = call compile _cbaCustomStr;
+    if (!isNil "_parsedArray" && {_parsedArray isEqualType []} && {count _parsedArray == 3}) then {
         _skyPos = _parsedArray;
     };
 };
