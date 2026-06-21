@@ -101,6 +101,24 @@
 ] call CBA_Settings_fnc_init;
 
 [
+    "A3M_Economy_Whitelist_ZeroCost",
+    "CHECKBOX",
+    ["Whitelist $0 Items", "Automatically exempt all items with a base cost of $0 from the economy changes (sales & shortages)."],
+    ["A3M Settings", "Dynamic Economy (Whitelist)"],
+    true,
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_Whitelist_Classes",
+    "EDITBOX",
+    ["Whitelisted Items (Comma Separated)", "Specific classnames that should be ignored by the economy (e.g. 'hgun_P07_F, ItemMap')."],
+    ["A3M Settings", "Dynamic Economy (Whitelist)"],
+    "",
+    true
+] call CBA_Settings_fnc_init;
+
+[
     "A3M_Economy_OOSChance",
     "SLIDER",
     ["Out of Stock Chance (%)", "The percentage chance an item will completely sell out."],
