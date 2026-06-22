@@ -15,8 +15,29 @@
 
 private _leader = (leader _this);
 private _weaps = _leader nearEntities ["StaticWeapon", 150];
+
+// Filter out HG Owned static weapons based on CBA settings
+private _filteredWeaps = [];
+{
+	private _weap = _x;
+	private _skipHGOwner = false;
+	if (!isNil {_weap getVariable "HG_Owner"}) then {
+		if (missionNamespace getVariable ["VCM_SkipAllHGOwned", true]) then {
+			_skipHGOwner = true;
+		} else {
+			if (missionNamespace getVariable ["VCM_SkipHGLocked", true] && {locked _weap == 2}) then {
+				_skipHGOwner = true;
+			};
+		};
+	};
+	if (!_skipHGOwner) then {
+		_filteredWeaps pushBack _weap;
+	};
+} forEach _weaps;
+_weaps = _filteredWeaps;
+
 private _unitArray = (units _this);
-if (count _weaps < 0) exitWith {};
+if (count _weaps <= 0) exitWith {};
 private _assignedPairs = []; //Static weapon - Gunner pair
 
 {

@@ -53,10 +53,10 @@ if (VCM_ClassSteal) then
 	{
 		private _skipHGOwner = false;
 		if (!isNil {_x getVariable "HG_Owner"}) then {
-			if (VCM_SkipAllHGOwned) then {
+			if (missionNamespace getVariable ["VCM_SkipAllHGOwned", true]) then {
 				_skipHGOwner = true;
 			} else {
-				if (VCM_SkipHGLocked && {locked _x == 2}) then {
+				if (missionNamespace getVariable ["VCM_SkipHGLocked", true] && {locked _x == 2}) then {
 					_skipHGOwner = true;
 				};
 			};
@@ -91,10 +91,10 @@ else
 	{
 		private _skipHGOwner = false;
 		if (!isNil {_x getVariable "HG_Owner"}) then {
-			if (VCM_SkipAllHGOwned) then {
+			if (missionNamespace getVariable ["VCM_SkipAllHGOwned", true]) then {
 				_skipHGOwner = true;
 			} else {
-				if (VCM_SkipHGLocked && {locked _x == 2}) then {
+				if (missionNamespace getVariable ["VCM_SkipHGLocked", true] && {locked _x == 2}) then {
 					_skipHGOwner = true;
 				};
 			};
