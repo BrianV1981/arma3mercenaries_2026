@@ -51,41 +51,60 @@ if (VCM_ClassSteal) then
 
 	
 	{
-	
-		if (count _Crewmen > 0) then
-		{
-			if (_x iskindof "Tank" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
-			{
-				_this addvehicle _x;
-			};				
+		private _skipHGOwner = false;
+		if (!isNil {_x getVariable "HG_Owner"}) then {
+			if (VCM_SkipAllHGOwned) then {
+				_skipHGOwner = true;
+			} else {
+				if (VCM_SkipHGLocked && {locked _x == 2}) then {
+					_skipHGOwner = true;
+				};
+			};
 		};
 		
-		if (count _Pilots > 0) then
-		{
-			if (_x iskindof "Air" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
+		if (!_skipHGOwner) then {
+			if (count _Crewmen > 0) then
+			{
+				if (_x iskindof "Tank" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
+				{
+					_this addvehicle _x;
+				};				
+			};
+			
+			if (count _Pilots > 0) then
+			{
+				if (_x iskindof "Air" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
+				{
+					_this addvehicle _x;
+				};			
+			};
+		
+			if (_x iskindof "Car" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
 			{
 				_this addvehicle _x;
-			};			
+			};
 		};
-
-	
-		if (_x iskindof "Car" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
-		{
-			_this addvehicle _x;
-		};
-	
 	} foreach vehicles;
 }
 else
 {
-	
 	{
-	
-		if (_x iskindof "LandVehicle" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
-		{
-			_this addvehicle _x;
+		private _skipHGOwner = false;
+		if (!isNil {_x getVariable "HG_Owner"}) then {
+			if (VCM_SkipAllHGOwned) then {
+				_skipHGOwner = true;
+			} else {
+				if (VCM_SkipHGLocked && {locked _x == 2}) then {
+					_skipHGOwner = true;
+				};
+			};
 		};
-	
-	} foreach vehicles;
 
+		if (!_skipHGOwner) then {
+			if (_x iskindof "LandVehicle" && {crew _x isEqualTo []} && {_x distance _Leader < VCM_AIDISTANCEVEHPATH} && {locked _x != 2}) then
+			{
+				_this addvehicle _x;
+			};
+		};
+	} foreach vehicles;
 };

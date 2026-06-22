@@ -152,6 +152,32 @@
 ] call CBA_Settings_fnc_init;
 
 [
+    "VCM_SkipAllHGOwned", 
+    "CHECKBOX", 
+    "Skip All HG Owned Vehicles", 
+    "VCOM SETTINGS", 
+    true,
+    true, 
+    {  
+        params ["_value"];
+        VCM_SkipAllHGOwned = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
+    "VCM_SkipHGLocked", 
+    "CHECKBOX", 
+    "Skip Locked HG Vehicles", 
+    "VCOM SETTINGS", 
+    true,
+    true, 
+    {  
+        params ["_value"];
+        VCM_SkipHGLocked = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
     "VCM_ForceSpeed", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
     "CHECKBOX", // setting type
     "Enforce AI Speed 'FULL'?", // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
