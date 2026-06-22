@@ -7,6 +7,7 @@ execVM "arma3mercenaries\jukebox\ambientRadioChatter.sqf";
 execVM "scripts\HG_initPlayerLocal.sqf";
 execVM "scripts\wearAllUniforms.sqf";
 execVM "arma3mercenaries\briefing\initBriefing.sqf";
+execVM "briefing.sqf";
 
 // player traits
 player setUnitTrait ["UAVHacker",true];
