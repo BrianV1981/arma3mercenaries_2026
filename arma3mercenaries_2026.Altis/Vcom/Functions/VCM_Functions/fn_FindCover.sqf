@@ -74,7 +74,9 @@ private _roads = _movePosition nearRoads _moveDist;
 			private _maxWidth = abs ((_p2 select 0) - (_p1 select 0));
 			private _maxLength = abs ((_p2 select 1) - (_p1 select 1));
 			private _maxHeight = abs ((_p2 select 2) - (_p1 select 2));
-			if ((_maxWidth > 1.5 && {_maxLength > 1.5} && {_maxHeight > 1.5}) || {_Type in ["ACE_envelope_big", "ACE_envelope_small"]}) then
+			private _a3mCover = missionNamespace getVariable ["A3M_VCM_EmergencyCoverType", "ACE_envelope_big"];
+			private _a3mCustom = missionNamespace getVariable ["A3M_VCM_EmergencyCoverCustom", ""];
+			if ((_maxWidth > 1.5 && {_maxLength > 1.5} && {_maxHeight > 1.5}) || {_Type in [_a3mCover, _a3mCustom, "ACE_envelope_big", "ACE_envelope_small"]}) then
 			{
 				if (_type isEqualTo "") then 
 				{
@@ -134,13 +136,21 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 			};
 			
 			// 2. Leader digs trench
+			private _buildTime = missionNamespace getVariable ["A3M_VCM_TrenchBuildTime", 4.5];
 			_leader forcespeed 0;
 			_leader playActionNow "Medic"; 
-			sleep 4.5; 
+			sleep _buildTime; 
 			
 			private _trenchPos = _leader getRelPos [2, 0];
 			private _dir = _leader getDir _nearestEnemy;
-			private _trench = createVehicle ["ACE_envelope_big", _trenchPos, [], 0, "CAN_COLLIDE"];
+			
+			private _coverType = missionNamespace getVariable ["A3M_VCM_EmergencyCoverType", "ACE_envelope_big"];
+			if (_coverType == "CUSTOM") then {
+				_coverType = missionNamespace getVariable ["A3M_VCM_EmergencyCoverCustom", "ACE_envelope_big"];
+				if (_coverType == "") then { _coverType = "ACE_envelope_big"; };
+			};
+			
+			private _trench = createVehicle [_coverType, _trenchPos, [], 0, "CAN_COLLIDE"];
 			_trench setDir _dir; 
 			_trench setPosATL [_trenchPos select 0, _trenchPos select 1, 0];
 			

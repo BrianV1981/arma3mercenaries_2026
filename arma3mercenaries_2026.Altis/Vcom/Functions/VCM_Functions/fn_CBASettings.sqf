@@ -552,6 +552,49 @@
     } 
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_VCM_EmergencyCoverType", 
+    "LIST", 
+    "[A3M] Emergency Cover Type", 
+    "A3M VCOM SETTINGS", 
+    [
+        ["ACE_envelope_big", "Land_BagFence_Short_F", "Land_BagFence_Long_F", "Land_CncBarrierMedium_F", "CUSTOM"],
+        ["ACE Big Trench", "Sandbag Wall (Short)", "Sandbag Wall (Long)", "Concrete Barrier (Medium)", "Custom Object (Define Below)"],
+        0
+    ], 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_EmergencyCoverType = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_VCM_EmergencyCoverCustom", 
+    "EDITBOX", 
+    "[A3M] Custom Cover Classname", 
+    "A3M VCOM SETTINGS", 
+    "", 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_EmergencyCoverCustom = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_VCM_TrenchBuildTime", 
+    "SLIDER", 
+    "[A3M] Cover Build Time (Seconds)", 
+    "A3M VCOM SETTINGS", 
+    [1, 30, 4.5, 1], 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_TrenchBuildTime = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 
