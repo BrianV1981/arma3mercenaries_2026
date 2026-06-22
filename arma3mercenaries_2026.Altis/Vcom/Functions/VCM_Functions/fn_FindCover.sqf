@@ -139,7 +139,7 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 			
 			private _trenchPos = _leader getRelPos [2, 0];
 			private _dir = _leader getDir _nearestEnemy;
-			private _trench = createVehicle ["ace_trenches_bigEnvelope", _trenchPos, [], 0, "CAN_COLLIDE"];
+			private _trench = createVehicle ["ACE_envelope_big", _trenchPos, [], 0, "CAN_COLLIDE"];
 			_trench setDir _dir; 
 			_trench setPosATL [_trenchPos select 0, _trenchPos select 1, 0];
 			
