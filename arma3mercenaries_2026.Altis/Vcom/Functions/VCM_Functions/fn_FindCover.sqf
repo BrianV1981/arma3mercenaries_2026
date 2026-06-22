@@ -150,6 +150,24 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 			};
 			
 			_leader forcespeed -1;
+			
+			// 4. Force the squad to occupy the newly built trench
+			{
+				if (alive _x) then {
+					// Spread them out slightly along the trench line
+					private _occupyPos = _trench getRelPos [random 2.5, random 360];
+					_x doMove _occupyPos;
+					// Encourage them to stay low while moving in
+					_x setUnitPos "MIDDLE";
+					
+					// Reset them to AUTO stance after 15 seconds so they aren't permanently stuck crouching
+					[_x] spawn {
+						params ["_unit"];
+						sleep 15;
+						if (alive _unit) then { _unit setUnitPos "AUTO"; };
+					};
+				};
+			} forEach _units;
 		};
 	};
 
