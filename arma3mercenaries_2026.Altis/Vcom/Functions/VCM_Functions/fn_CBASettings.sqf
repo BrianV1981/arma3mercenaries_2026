@@ -487,6 +487,45 @@
     } // function that will be executed once on mission start and every time the setting is changed.
 ] call CBA_Settings_fnc_init;
 
+[
+    "A3M_VCM_EmergencyTrench", 
+    "CHECKBOX", 
+    "[A3M] Enable Emergency AI Trenches", 
+    "A3M VCOM SETTINGS", 
+    true, 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_EmergencyTrench = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_VCM_TrenchSmokeCover", 
+    "CHECKBOX", 
+    "[A3M] Squad Pops Smoke For Trench Cover", 
+    "A3M VCOM SETTINGS", 
+    true, 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_TrenchSmokeCover = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_VCM_TrenchPersistence", 
+    "CHECKBOX", 
+    "[A3M] Tag AI Trenches for GRAD Persistence", 
+    "A3M VCOM SETTINGS", 
+    false, 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_TrenchPersistence = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
 };
 diag_log "VCOM: Loaded CBA settings";
 

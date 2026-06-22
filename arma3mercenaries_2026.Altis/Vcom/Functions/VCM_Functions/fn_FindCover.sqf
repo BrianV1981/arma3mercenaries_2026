@@ -93,10 +93,71 @@ private _roads = _movePosition nearRoads _moveDist;
 if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith 
 {
 	//NO COVER
+	
+	// A3M VCOM EMERGENCY TRENCH PROTOCOL
+	private _trenchEnabled = missionNamespace getVariable ["A3M_VCM_EmergencyTrench", true];
+	private _hasTrench = _grp getVariable ["A3M_HasTrench", false];
+	
+	if (_trenchEnabled && !_hasTrench) then {
+		_grp setVariable ["A3M_HasTrench", true];
+		
+		[_leader, _units, _nearestEnemy] spawn {
+			params ["_leader", "_units", "_nearestEnemy"];
+			
+			// 1. Squad members throw smoke on leader if enabled
+			if (missionNamespace getVariable ["A3M_VCM_TrenchSmokeCover", true]) then {
+				private _smokeThrown = 0;
+				{
+					if (_smokeThrown < 2 && _x != _leader) then {
+						private _smokes = magazines _x select {["smoke", _x, false] call BIS_fnc_inString};
+						if (count _smokes > 0) then {
+							private _smokeMag = _smokes select 0;
+							_x removeMagazine _smokeMag;
+							_smokeThrown = _smokeThrown + 1;
+							
+							private _smokePos = (_leader getRelPos [random 5, random 360]);
+							private _smokeType = getText (configFile >> "CfgMagazines" >> _smokeMag >> "ammo");
+							if (_smokeType == "") then { _smokeType = "SmokeShell"; };
+							
+							[_x, _smokeType, _smokePos] spawn {
+								params ["_unit", "_smokeType", "_smokePos"];
+								_unit playActionNow "ThrowGrenade";
+								sleep 1;
+								createVehicle [_smokeType, _smokePos, [], 0, "NONE"];
+							};
+						};
+					};
+				} forEach _units;
+			};
+			
+			// 2. Leader digs trench
+			_leader forcespeed 0;
+			_leader playActionNow "Medic"; 
+			sleep 4.5; 
+			
+			private _trenchPos = _leader getRelPos [2, 0];
+			private _dir = _leader getDir _nearestEnemy;
+			private _trench = createVehicle ["ace_trenches_bigEnvelope", _trenchPos, [], 0, "CAN_COLLIDE"];
+			_trench setDir _dir; 
+			_trench setPosATL [_trenchPos select 0, _trenchPos select 1, 0];
+			
+			// 3. Optional GRAD persistence
+			if (missionNamespace getVariable ["A3M_VCM_TrenchPersistence", false]) then {
+				["ace_trenches_finished", [_leader, _trench]] call CBA_fnc_localEvent;
+			};
+			
+			_leader forcespeed -1;
+		};
+	};
+
+	// Scramble Logic
 	{
-		private _P = [[[_movePosition, 50]],["water"]] call BIS_fnc_randomPos;
-		_x forcespeed -1;
-		_x doMove _P;		
+		private _isDiggingLeader = (_trenchEnabled && !_hasTrench && _x == _leader);
+		if (!_isDiggingLeader) then {
+			private _P = [[[_movePosition, 50]],["water"]] call BIS_fnc_randomPos;
+			_x forcespeed -1;
+			_x doMove _P;		
+		};
 	} foreach _units;
 };
 
