@@ -365,7 +365,7 @@
 [
     "A3M_EnableAIDrones", // Internal setting name
     "CHECKBOX", // setting type
-    "Enable AI Drones (Kamikaze & Bomber)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Enable AI Drones (Kamikaze & Bomber)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     true, // data for this setting:
     true, // "_isGlobal" flag
@@ -378,7 +378,7 @@
 [
     "A3M_KamikazeDeployChance", // Internal setting name
     "SLIDER", // setting type
-    "Kamikaze Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Kamikaze Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [0,100,25,0], // data for this setting: [min, max, default, number of shown trailing decimals]
     true, // "_isGlobal" flag
@@ -391,7 +391,7 @@
 [
     "A3M_BomberDeployChance", // Internal setting name
     "SLIDER", // setting type
-    "Bomber Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Bomber Drone Deploy Chance (%)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [0,100,10,0], // data for this setting: [min, max, default, number of shown trailing decimals]
     true, // "_isGlobal" flag
@@ -404,7 +404,7 @@
 [
     "A3M_DroneMinAltitude", // Internal setting name
     "SLIDER", // setting type
-    "AI Drone Min Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] AI Drone Min Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [5,300,10,0], // data for this setting: [min, max, default, number of shown trailing decimals]
     true, // "_isGlobal" flag
@@ -417,7 +417,7 @@
 [
     "A3M_DroneMaxAltitude", // Internal setting name
     "SLIDER", // setting type
-    "AI Drone Max Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] AI Drone Max Flight Altitude (m)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [5,300,50,0], // data for this setting: [min, max, default, number of shown trailing decimals]
     true, // "_isGlobal" flag
@@ -430,7 +430,7 @@
 [
     "A3M_DroneDiveSpeed", // Internal setting name
     "SLIDER", // setting type
-    "Kamikaze Terminal Dive Speed (m/s)", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Kamikaze Terminal Dive Speed (m/s)", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [10,100,25,0], // data for this setting: [min, max, default, number of shown trailing decimals]
     true, // "_isGlobal" flag
@@ -443,7 +443,7 @@
 [
     "A3M_DroneDebug", // Internal setting name
     "CHECKBOX", // setting type
-    "Show AI Drone Debug Messages", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Show AI Drone Debug Messages", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     false, // data for this setting: default value
     true, // "_isGlobal" flag
@@ -456,7 +456,7 @@
 [
     "A3M_KamikazePayload", // Internal setting name
     "LIST", // setting type
-    "Kamikaze Payload Type", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Kamikaze Payload Type", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [
         ["DemoCharge_Remote_Mag", "SatchelCharge_Remote_Mag", "HandGrenade", "ACE_M14"],
@@ -473,7 +473,7 @@
 [
     "A3M_BomberPayload", // Internal setting name
     "LIST", // setting type
-    "Bomber Payload Type", // Pretty name shown inside the ingame settings menu.
+    "[A3M] Bomber Payload Type", // Pretty name shown inside the ingame settings menu.
     "A3M VCOM SETTINGS", // Pretty name of the category
     [
         ["SatchelCharge_Remote_Mag", "DemoCharge_Remote_Mag", "HandGrenade", "1Rnd_HE_Grenade_shell"],
