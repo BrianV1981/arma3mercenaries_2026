@@ -7,7 +7,12 @@ _fort setPosASL _posASL;
 
 [_fort,_owner] remoteExec ["grad_fortifications_fnc_initFort",0,true];
 
-if !([_type] call grad_fortifications_fnc_isVehicle) then {
+if ([_type] call grad_fortifications_fnc_isVehicle) then {
+    // A.I.M. Issue #141 - Auto-claim vehicles/drones/emplacements built via GRAD Fortifications
+    if (!isNull _owner && {isPlayer _owner}) then {
+        _fort setVariable ["HG_Owner", [(getPlayerUID _owner), "A3M", "", []], true];
+    };
+} else {
     switch (grad_fortifications_fortificationOwnerType) do {
         case ("BUILDER"): {
             _fort setVariable ["grad_fortifications_fortOwner",_owner,true];

@@ -306,4 +306,9 @@ class CfgSounds {
         sound[] = {"sounds\A3M_RankUp.ogg", db+0, 1.0};
         titles[] = {};
     };
+    class A3M_RankDown {
+        name = "A3M_RankDown";
+        sound[] = {"sounds\A3M_RankDown.ogg", db+0, 1.0};
+        titles[] = {};
+    };
 };
