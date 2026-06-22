@@ -74,7 +74,7 @@ private _roads = _movePosition nearRoads _moveDist;
 			private _maxWidth = abs ((_p2 select 0) - (_p1 select 0));
 			private _maxLength = abs ((_p2 select 1) - (_p1 select 1));
 			private _maxHeight = abs ((_p2 select 2) - (_p1 select 2));
-			if (_maxWidth > 1.5 && {_maxLength > 1.5} && {_maxHeight > 1.5}) then
+			if ((_maxWidth > 1.5 && {_maxLength > 1.5} && {_maxHeight > 1.5}) || {_Type in ["ACE_envelope_big", "ACE_envelope_small"]}) then
 			{
 				if (_type isEqualTo "") then 
 				{
