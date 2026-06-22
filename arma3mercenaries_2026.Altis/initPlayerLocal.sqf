@@ -281,10 +281,15 @@ private _actATM = [ (localize "STR_HG_ATM"), (localize "STR_HG_ATM"), "HG\UI\Ico
 // --- ACE GLOBAL VEHICLE INTERACTIONS (Replaces addActions) ---
 // -------------------------------------------------------------------------
 
-private _catVehicleOps = ["A3M_VehicleOps", "[Vehicle Operations]", "", {}, {true}] call ace_interact_menu_fnc_createAction;
+// Standard Vehicles
+private _catVehicleOps = ["A3M_VehicleOps", "[Vehicle Operations]", "", {}, { !(_target isKindOf "StaticWeapon") }] call ace_interact_menu_fnc_createAction;
 ["LandVehicle", 0, ["ACE_MainActions"], _catVehicleOps, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions"], _catVehicleOps, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions"], _catVehicleOps, true] call ace_interact_menu_fnc_addActionToClass;
+
+// Static Turrets / Emplacements
+private _catTurretOps = ["A3M_TurretOps", "[Turret Operations]", "", {}, { _target isKindOf "StaticWeapon" }] call ace_interact_menu_fnc_createAction;
+["StaticWeapon", 0, ["ACE_MainActions"], _catTurretOps, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 1. Claim Vehicle
 private _claimAction = ["A3M_ClaimVehicle", "Claim Vehicle", "", {
@@ -297,6 +302,7 @@ private _claimAction = ["A3M_ClaimVehicle", "Claim Vehicle", "", {
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _claimAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 2. Lock / Unlock
 private _lockAction = ["A3M_ToggleLock", "Lock / Unlock", "", {
@@ -308,6 +314,7 @@ private _lockAction = ["A3M_ToggleLock", "Lock / Unlock", "", {
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _lockAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _lockAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _lockAction, true] call ace_interact_menu_fnc_addActionToClass;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _lockAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 3. Give Keys
 private _keysAction = ["A3M_GiveKeys", "Give Keys", "", {
@@ -319,6 +326,7 @@ private _keysAction = ["A3M_GiveKeys", "Give Keys", "", {
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _keysAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // ------------------------------------------
 // --- A3M CUSTOM VEHICLE OWNERSHIP LOGIC ---
@@ -400,11 +408,20 @@ private _giftVehicleAction = ["A3M_GiftVehicleAction", "Gift Vehicle", "", {
     [_target] call A3M_fnc_dialogOnLoadGiftVehicle;
 }, {
     private _ownerArray = _target getVariable ["HG_Owner", []];
-    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) }
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) } && { !(_target isKindOf "StaticWeapon") }
 }] call ace_interact_menu_fnc_createAction;
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _giftVehicleAction, true] call ace_interact_menu_fnc_addActionToClass;
+
+// 3.5b. Gift Turret
+private _giftTurretAction = ["A3M_GiftTurretAction", "Gift Turret", "", {
+    [_target] call A3M_fnc_dialogOnLoadGiftVehicle;
+}, {
+    private _ownerArray = _target getVariable ["HG_Owner", []];
+    (count _ownerArray > 0) && { ((_ownerArray select 0) == getPlayerUID player) } && { _target isKindOf "StaticWeapon" }
+}] call ace_interact_menu_fnc_createAction;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _giftTurretAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 3.6. Renounce Ownership
 private _renounceAction = ["A3M_RenounceOwnershipAction", "Renounce Ownership", "", {
@@ -416,6 +433,7 @@ private _renounceAction = ["A3M_RenounceOwnershipAction", "Renounce Ownership", 
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Air", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _renounceAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 4. Flip Vehicle (ACE Contextual)
 private _flipAction = ["A3M_FlipVehicle", "Flip Vehicle", "", {
@@ -439,6 +457,7 @@ private _flipAction = ["A3M_FlipVehicle", "Flip Vehicle", "", {
 }] call ace_interact_menu_fnc_createAction;
 ["LandVehicle", 0, ["ACE_MainActions", "A3M_VehicleOps"], _flipAction, true] call ace_interact_menu_fnc_addActionToClass;
 ["Ship", 0, ["ACE_MainActions", "A3M_VehicleOps"], _flipAction, true] call ace_interact_menu_fnc_addActionToClass;
+["StaticWeapon", 0, ["ACE_MainActions", "A3M_TurretOps"], _flipAction, true] call ace_interact_menu_fnc_addActionToClass;
 
 // 5. A3M Radio
 private _radioAction = ["A3M_Radio", "A3M Radio", "", {
