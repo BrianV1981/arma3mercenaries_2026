@@ -13,6 +13,17 @@ if (!_isEnabled) exitWith {};
 // Read CBA Settings
 private _oosChance = missionNamespace getVariable ["A3M_Economy_OOSChance", 5];
 private _lsChance = missionNamespace getVariable ["A3M_Economy_LowStockChance", 10];
+private _whitelistZero = missionNamespace getVariable ["A3M_Economy_Whitelist_ZeroCost", true];
+private _whitelistClassesStr = missionNamespace getVariable ["A3M_Economy_Whitelist_Classes", ""];
+
+// Parse whitelist string into an array of lowercase classnames
+private _whitelistClasses = [];
+if (_whitelistClassesStr != "") then {
+    private _rawArr = _whitelistClassesStr splitString ",";
+    {
+        _whitelistClasses pushBack (toLower ([_x] call CBA_fnc_trim));
+    } forEach _rawArr;
+};
 
 private _overstockCount = missionNamespace getVariable ["A3M_Economy_OverstockCount", 4];
 private _clearanceCount = missionNamespace getVariable ["A3M_Economy_ClearanceCount", 10];
@@ -84,7 +95,24 @@ private _hgVehicleStores = "true" configClasses (missionConfigFile >> "CfgClient
 // Shuffle the massive lists
 _allHGItems = _allHGItems call BIS_fnc_arrayShuffle;
 _allGradItems = _allGradItems call BIS_fnc_arrayShuffle;
-private _combinedItems = _allHGItems + (_allGradItems apply { [_x select 2, _x select 3, _x select 4] });
+
+private _combinedItems = [];
+{
+    private _price = _x select 1;
+    private _isWhitelisted = false;
+    if (_whitelistZero && _price <= 0) then { _isWhitelisted = true; };
+    if ((toLower (_x select 0)) in _whitelistClasses) then { _isWhitelisted = true; };
+    if (!_isWhitelisted) then { _combinedItems pushBack _x; };
+} forEach _allHGItems;
+
+{
+    private _price = _x select 3;
+    private _isWhitelisted = false;
+    if (_whitelistZero && _price <= 0) then { _isWhitelisted = true; };
+    if ((toLower (_x select 2)) in _whitelistClasses) then { _isWhitelisted = true; };
+    if (!_isWhitelisted) then { _combinedItems pushBack [_x select 2, _x select 3, _x select 4]; };
+} forEach _allGradItems;
+
 _combinedItems = _combinedItems call BIS_fnc_arrayShuffle;
 
 // 2. Assign the sales & shortages!
@@ -124,15 +152,21 @@ private _auditData = createHashMap;
         };
     };
 
+    private _isWhitelisted = false;
+    if (_whitelistZero && _price <= 0) then { _isWhitelisted = true; };
+    if ((toLower _itemName) in _whitelistClasses) then { _isWhitelisted = true; };
+
     // Apply Shortages via CBA Settings
-    if (random 100 < _oosChance) then {
-        _stock = 0; // Completely SOLD OUT
-        _activeShortages set [_itemName, true];
-        _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
-    } else {
-        if (random 100 < _lsChance) then {
-            _stock = 1 + floor(random 3); // 1 to 3 items
-            _auditData set [_itemName, [_price, 1, _storeDisplayName, format["LOW_STOCK (%1 left)", _stock]]];
+    if (!_isWhitelisted) then {
+        if (random 100 < _oosChance) then {
+            _stock = 0; // Completely SOLD OUT
+            _activeShortages set [_itemName, true];
+            _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
+        } else {
+            if (random 100 < _lsChance) then {
+                _stock = 1 + floor(random 3); // 1 to 3 items
+                _auditData set [_itemName, [_price, 1, _storeDisplayName, format["LOW_STOCK (%1 left)", _stock]]];
+            };
         };
     };
     // Inject directly into GRAD Hashmap to bypass setStock validation errors
@@ -150,10 +184,16 @@ publicVariable "GRAD_LBM_ITEMSTOCKS";
     private _price = _x select 1;
     private _storeDisplayName = _x select 2;
     
+    private _isWhitelisted = false;
+    if (_whitelistZero && _price <= 0) then { _isWhitelisted = true; };
+    if ((toLower _itemName) in _whitelistClasses) then { _isWhitelisted = true; };
+
     // Check against CBA Out of Stock setting
-    if (random 100 < _oosChance) then {
-        _activeShortages set [_itemName, true];
-        _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
+    if (!_isWhitelisted) then {
+        if (random 100 < _oosChance) then {
+            _activeShortages set [_itemName, true];
+            _auditData set [_itemName, [_price, 1, _storeDisplayName, "OUT_OF_STOCK"]];
+        };
     };
 } forEach _allHGItems;
 

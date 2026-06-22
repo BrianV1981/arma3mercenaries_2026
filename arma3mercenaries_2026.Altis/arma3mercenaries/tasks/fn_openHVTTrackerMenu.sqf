@@ -139,6 +139,11 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             private _passStart = _exactPos getPos [1200, _passAngle];
             private _passEnd = _exactPos getPos [1200, _passAngle - 180];
             
+            // The "Invisible Anchor" trick to prevent the freefall animation
+            private _palantirAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
+            _palantirAnchor hideObject true;
+            player attachTo [_palantirAnchor, [0,0,0]];
+            
             while {time - _startTime < _duration && !A3M_SatCam_ForceExit} do {
                 private _progress = (time - _startTime) / _duration; // 0.0 to 1.0
                 
@@ -150,10 +155,9 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
                 
                 A3M_SatCam setPosATL [_x, _y, _alt];
                 
-                // Move player's physical body with the camera so the audio listener is in the sky, not ground zero
-                // ALiVE will still uncache the base because the body is within the 1500m-3000m vertical spawn cylinder
-                player setVelocity [0,0,0];
-                player setPosATL [_x, _y, _alt];
+                // Move the anchor. The player is physically attached to it, so they move seamlessly
+                // WITHOUT ever triggering the Arma freefall/skydiving animation!
+                _palantirAnchor setPosATL [_x, _y, _alt];
                 
                 sleep 0.05;
             };
@@ -169,6 +173,9 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             camUseNVG false; false setCamUseTi 0;
             
             // Restore Player Body
+            detach player;
+            deleteVehicle _palantirAnchor;
+            
             player setVelocity [0,0,0];
             player setPosASL _originalPos;
             player setVelocity [0,0,0];
@@ -489,7 +496,7 @@ if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
             _services append [
                 ["UCAV Sentinel Scan", 150000, "A3M_fnc_serverSentinelSweep"],
                 ["AH-99 Blackfoot CAS", 200000, "A3M_fnc_serverBlackfootSweep"],
-                ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"],
+                // ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"], // Stubbed out temporarily
                 ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
                 ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
                 ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],

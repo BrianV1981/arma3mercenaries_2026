@@ -101,6 +101,24 @@
 ] call CBA_Settings_fnc_init;
 
 [
+    "A3M_Economy_Whitelist_ZeroCost",
+    "CHECKBOX",
+    ["Whitelist $0 Items", "Automatically exempt all items with a base cost of $0 from the economy changes (sales & shortages)."],
+    ["A3M Settings", "Dynamic Economy (Whitelist)"],
+    true,
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Economy_Whitelist_Classes",
+    "EDITBOX",
+    ["Whitelisted Items (Comma Separated)", "Specific classnames that should be ignored by the economy (e.g. 'hgun_P07_F, ItemMap')."],
+    ["A3M Settings", "Dynamic Economy (Whitelist)"],
+    "",
+    true
+] call CBA_Settings_fnc_init;
+
+[
     "A3M_Economy_OOSChance",
     "SLIDER",
     ["Out of Stock Chance (%)", "The percentage chance an item will completely sell out."],
@@ -245,3 +263,61 @@
     true
 ] call CBA_Settings_fnc_init;
 
+// --- ARMORY (BLACK MARKET) SETTINGS ---
+[
+    "A3M_Armory_CustomSpawn",
+    "EDITBOX",
+    ["Custom Spawn Coordinate", "Override the dynamic hover. Enter coordinates like [1234, 5678, 10] to force the Armory to spawn in a specific physical room. Leave blank to use dynamic hover."],
+    ["A3M Settings", "Armory (Black Market)"],
+    "",
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_HoverHeight",
+    "SLIDER",
+    ["Dynamic Hover Altitude", "If using dynamic hover, how high above the player should the Armory spawn? Default is 30m."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [5, 10000, 30, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_HoverDistance",
+    "SLIDER",
+    ["Dynamic Hover Distance", "If using dynamic hover, how far forward from the player should the Armory spawn? Default is 0m (directly above)."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [0, 100, 0, 0],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_StudioLighting",
+    "SLIDER",
+    ["Studio Lighting Brightness", "Brightness of the automatic light spawned in the Armory at night."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [0, 5, 1.5, 1],
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_GhostProtocol",
+    "CHECKBOX",
+    ["Ghost Protocol (Invincibility)", "Make players invisible and completely invincible while they are inside the Armory (Prevents getting sniped while shopping)."],
+    ["A3M Settings", "Armory (Black Market)"],
+    true,
+    true
+] call CBA_Settings_fnc_init;
+
+[
+    "A3M_Armory_RoomShell",
+    "LIST",
+    ["Local Room Shell", "Spawn a local, invisible-to-others physical structure around the player during shopping to boost FPS and immersion."],
+    ["A3M Settings", "Armory (Black Market)"],
+    [
+        ["", "Land_Warehouse_03_F", "Land_Pier_F"],
+        ["None (Floating)", "Warehouse (Blue)", "Concrete Pier (Open)"],
+        0
+    ],
+    true
+] call CBA_Settings_fnc_init;
