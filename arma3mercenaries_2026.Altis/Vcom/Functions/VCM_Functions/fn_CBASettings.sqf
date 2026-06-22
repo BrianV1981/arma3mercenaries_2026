@@ -488,6 +488,19 @@
 ] call CBA_Settings_fnc_init;
 
 [
+    "A3M_VCM_TrenchChance", 
+    "SLIDER", 
+    "[A3M] Emergency AI Trench Chance (%)", 
+    "A3M VCOM SETTINGS", 
+    [0, 100, 25, 0], 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_TrenchChance = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
     "A3M_VCM_EmergencyTrench", 
     "CHECKBOX", 
     "[A3M] Enable Emergency AI Trenches", 

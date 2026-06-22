@@ -96,9 +96,11 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 	
 	// A3M VCOM EMERGENCY TRENCH PROTOCOL
 	private _trenchEnabled = missionNamespace getVariable ["A3M_VCM_EmergencyTrench", true];
+	private _trenchChance = missionNamespace getVariable ["A3M_VCM_TrenchChance", 25];
+	private _roll = random 100;
 	private _hasTrench = _grp getVariable ["A3M_HasTrench", false];
 	
-	if (_trenchEnabled && !_hasTrench) then {
+	if (_trenchEnabled && !_hasTrench && {_roll <= _trenchChance}) then {
 		_grp setVariable ["A3M_HasTrench", true];
 		
 		[_leader, _units, _nearestEnemy] spawn {

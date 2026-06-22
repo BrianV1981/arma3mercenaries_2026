@@ -564,7 +564,7 @@ class FSM
                                         to="Checks";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"((behaviour _leader) isEqualTo ""COMBAT"") && {!(_Beh isEqualTo ""COMBAT"")} && {!(_VCOM_GARRISONED)}"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/"//[_Leader,50] call VCM_fnc_FindCover;" \n
+                                        action=/*%FSM<ACTION""">*/"[_Leader,50] spawn VCM_fnc_FindCover;" \n
                                          "_Cover2Cover = time;" \n
                                          "_Beh = ""COMBAT"";" \n
                                          "if (VCM_FullSpeed) then {_Group setSpeedMode ""FULL"";};"/*%FSM</ACTION""">*/;
