@@ -97,11 +97,12 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 	// A3M VCOM EMERGENCY TRENCH PROTOCOL
 	private _trenchEnabled = missionNamespace getVariable ["A3M_VCM_EmergencyTrench", true];
 	private _trenchChance = missionNamespace getVariable ["A3M_VCM_TrenchChance", 25];
+	private _trenchLimit = missionNamespace getVariable ["A3M_VCM_TrenchLimit", 1];
 	private _roll = random 100;
-	private _hasTrench = _grp getVariable ["A3M_HasTrench", false];
+	private _trenchCount = _grp getVariable ["A3M_TrenchCount", 0];
 	
-	if (_trenchEnabled && !_hasTrench && {_roll <= _trenchChance}) then {
-		_grp setVariable ["A3M_HasTrench", true];
+	if (_trenchEnabled && {_trenchCount < _trenchLimit} && {_roll <= _trenchChance}) then {
+		_grp setVariable ["A3M_TrenchCount", _trenchCount + 1];
 		
 		[_leader, _units, _nearestEnemy] spawn {
 			params ["_leader", "_units", "_nearestEnemy"];
@@ -154,7 +155,7 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 
 	// Scramble Logic
 	{
-		private _isDiggingLeader = (_trenchEnabled && !_hasTrench && _x == _leader);
+		private _isDiggingLeader = (_trenchEnabled && {_trenchCount < _trenchLimit} && {_roll <= _trenchChance} && _x == _leader);
 		if (!_isDiggingLeader) then {
 			private _P = [[[_movePosition, 50]],["water"]] call BIS_fnc_randomPos;
 			_x forcespeed -1;

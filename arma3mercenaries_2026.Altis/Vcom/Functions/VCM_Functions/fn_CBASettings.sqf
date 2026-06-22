@@ -488,6 +488,19 @@
 ] call CBA_Settings_fnc_init;
 
 [
+    "A3M_VCM_TrenchLimit", 
+    "SLIDER", 
+    "[A3M] Max Emergency Trenches Per Squad", 
+    "A3M VCOM SETTINGS", 
+    [1, 5, 1, 0], 
+    true, 
+    {  
+        params ["_value"];
+        A3M_VCM_TrenchLimit = _value;
+    } 
+] call CBA_Settings_fnc_init;
+
+[
     "A3M_VCM_TrenchChance", 
     "SLIDER", 
     "[A3M] Emergency AI Trench Chance (%)", 
