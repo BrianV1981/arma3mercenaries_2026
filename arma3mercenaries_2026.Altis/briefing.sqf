@@ -2,11 +2,8 @@ if (!hasInterface) exitWith {};
 
 waitUntil {!isNull player};
 
-// Create a new subject tab on the map screen
-player createDiarySubject ["a3m_lore", "A3M: Narrative"];
-
-// Add the backstory record
-player createDiaryRecord ["a3m_lore", ["The Shadow War", "
+// Add the backstory record directly to the default "Briefing" (Diary) tab
+player createDiaryRecord ["Diary", ["A3M: Narrative", "
 <font size='18' color='#FFA500'>A3M: The Shadow War (Narrative Briefing)</font><br/><br/>
 <font face='PuristaBold'>DATE:</font> October 14, 2026<br/>
 <font face='PuristaBold'>LOCATION:</font> Altis, Mediterranean Sea<br/>
@@ -24,7 +21,7 @@ You are an elite, highly autonomous operator flying under the banner of <font fa
 
 Your mandate is to tip the scales of power using asymmetric warfare, deep-strike sabotage, and targeted assassinations. You are expected to operate entirely off the grid, funding your own campaign by bleeding the local economy, salvaging enemy hardware, and claiming bounties.<br/><br/>
 
-<font size='16' color='#FFA500'>The Technology Edge & Hardware</font><br/>
+<font size='16' color='#FFA500'>The Technology Edge &amp; Hardware</font><br/>
 While the FIA insurgents rely on rusty technicals and the local population despises you, you have a distinct technological advantage over the conventional forces occupying the island, powered by real-world defense contractors:<br/><br/>
 
 <execute>•</execute> <font face='PuristaBold'>Palantir Gotham on Panasonic Toughbooks:</font> The heart of your intelligence network. Out in the field, operators carry Panasonic Rugged Tablets running Palantir Gotham. By zip-tying and interrogating hostile locals and CSAT sympathizers, you feed raw HUMINT into the system. Palantir processes these data streams in real-time, generating actionable dossiers on High Value Targets (HVTs) hidden deep within enemy territory.<br/>
@@ -37,7 +34,7 @@ CSAT is actively trying to blind the Starshield and Palantir networks by deployi
 
 To expand Constellis' operational reach, PMCs are regularly contracted to conduct high-risk <font face='PuristaBold'>Network Infiltration Missions</font>. These missions require operators to assault heavily defended CSAT radio towers and antennas scattered across the AO. Once the perimeter is secured, operators must physically install and hardwire Palantir AIP server blades into the enemy's own infrastructure, hijacking their sensor data and feeding it directly back into the Constellis intelligence grid.<br/><br/>
 
-<font size='16' color='#FFA500'>The Ground Reality & Banking</font><br/>
+<font size='16' color='#FFA500'>The Ground Reality &amp; Banking</font><br/>
 Survival requires brutal pragmatism. You'll build massive Forward Operating Bases (FOBs) like <font face='PuristaBold'>Fort MAGA</font> using HESCO barriers and heavy turrets hauled in via ACE Cargo networks. You must manage your own hydration, medical supplies, and vehicle maintenance.<br/><br/>
 
 Every road is a gamble. The FIA insurgents have seeded the highways with IEDs, rigged abandoned vehicles as VBIEDs, and deployed suicide bombers into civilian populations.<br/><br/>
