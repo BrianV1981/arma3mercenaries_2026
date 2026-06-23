@@ -39,7 +39,12 @@ out.append("    class A3M_FieldManual {")
 out.append('        displayName = "A3M Field Manual";')
 out.append('        logicalOrder = 1;')
 
+seen_titles = set()
 for i, (title, body) in enumerate(hints):
+    if title in seen_titles:
+        continue
+    seen_titles.add(title)
+    
     class_name = re.sub(r'[^a-zA-Z0-9]', '', title)
     if not class_name:
         class_name = f"Entry_{i}"
