@@ -5,6 +5,9 @@ def convert_to_hint_text(text):
     # Replace <font> with <t> to be safe in CfgHints
     text = re.sub(r"<font([^>]*)>", r"<t\1>", text)
     text = text.replace("</font>", "</t>")
+    # Strip actual line breaks since config files don't support multi-line strings
+    text = text.replace('\n', ' ')
+    text = text.replace('\r', '')
     # Escape quotes
     text = text.replace('"', '""')
     # Replace % with %% just in case it thinks it's a format arg
