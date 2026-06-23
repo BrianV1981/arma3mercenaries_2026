@@ -1,5 +1,29 @@
 # Changelog
 
+## [v1.30.7] - 2026-06-22
+- Fix: Add CBA toggles for VCOM HG vehicle hijacking (Closes #145)
+
+
+## [v1.30.6] - 2026-06-22
+- Fix: Overhaul ACE interactions for Turrets (Closes #144, Closes #125)
+
+
+## [v1.30.3] - 2026-06-21
+- Fix: Patch Armory $0 contraband bug (Closes #143)
+
+
+## [v1.30.2] - 2026-06-21
+- Fix: Finalize Armory VR Room Shell offsets (Closes #139)
+
+
+## [v1.30.1] - 2026-06-21
+- Fix: Auto-claim GRAD fortification vehicles/drones (Closes #141)
+
+
+## [v1.30.0] - 2026-06-21
+- Feature: Added Dynamic Economy Whitelist via CBA Settings (Closes #140)
+
+
 ## [v1.29.0] - 2026-06-20
 - Feature: Lobotomized Proxy Optimization (Closes #130)
 
