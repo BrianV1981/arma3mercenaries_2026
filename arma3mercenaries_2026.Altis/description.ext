@@ -312,3 +312,5 @@ class CfgSounds {
         titles[] = {};
     };
 };
+
+#include "a3m_hints.hpp"
