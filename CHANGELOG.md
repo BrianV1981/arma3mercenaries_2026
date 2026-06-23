@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.32.0] - 2026-06-23
+- Feature: Multi-faction ambient CSAR loop integrated with CBA settings
+
+
 ## [v1.30.7] - 2026-06-22
 - Fix: Add CBA toggles for VCOM HG vehicle hijacking (Closes #145)
 
