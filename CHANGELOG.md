@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.33.0] - 2026-06-23
+- Feature: Added coordinate and radius sliders to CBA for markerless AOs and spawns
+
+
 ## [v1.32.0] - 2026-06-23
 - Feature: Multi-faction ambient CSAR loop integrated with CBA settings
 
