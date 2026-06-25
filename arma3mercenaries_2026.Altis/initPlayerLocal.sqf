@@ -644,6 +644,7 @@ player addEventHandler ["WeaponAssembled", {
 // --- A3M DEV MONEY SPIGOT ---
 [] spawn {
     waitUntil {!isNull player && player == player};
+    waitUntil {!isNull (findDisplay 46)}; // Wait for main game screen
     sleep 10;
     if (missionNamespace getVariable ["A3M_Dev_MoneySpigot", false]) then {
         private _result = ["Welcome to the A3M Test Center.<br/><br/>Here is a $10,000,000 blank check.<br/><br/>Go cause some absolute havoc.", "A3M Money Spigot", "I'm Rich!", "Cancel"] call BIS_fnc_guiMessage;
