@@ -375,7 +375,7 @@ private _expiryTime = time + (_expiryMin * 3600) + random ((_expiryMax - _expiry
         if (time > _qrfActivationTime) then {
             _pilot setVariable ["A3M_QRF_Triggered", true, true];
             
-            ["Enemy forces have deployed a recovery team to search the crash site. They are attempting to capture the downed pilot and secure the intel. Protect the pilot!"] remoteExec ["A3M_fnc_logInfo", _taskSide];
+            ["Enemy forces have deployed a recovery team to search the crash site. They are attempting to capture the downed pilot and secure the intel. Protect the pilot!"] remoteExec ["A3M_fnc_logInfo", _side];
             ["Enemy forces have deployed a recovery team to search the crash site. They are attempting to capture the downed pilot and secure the intel. Protect the pilot!"] remoteExec ["A3M_fnc_logInfo", independent];
             
             ["Command has deployed an AI QRF recovery team to your sector to capture the downed pilot. Secure the area and assist them!"] remoteExec ["A3M_fnc_logInfo", east];
