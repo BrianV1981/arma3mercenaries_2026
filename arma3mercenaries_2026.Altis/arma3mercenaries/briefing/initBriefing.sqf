@@ -142,13 +142,16 @@ Any player-owned vehicle left out on the battlefield is persistent! When the ser
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Drones and Aerial Payloads", 
+player createDiaryRecord ["a3m_field_manual", ["Palantir Gotham: Edge Assets", 
 "
-<font color='#ffaa00'>ATTACHING EXPLOSIVES</font><br/>
+<font color='#ffaa00'>GOTHAM EDGE DEPLOYMENT</font><br/>
+Palantir Gotham functions as a centralized command operating system, allowing human-in-the-loop control over distributed edge assets. Through your Palantir terminal, you can summon UCAV Sentinels, Blackfoot CAS, and Constellis Blackfish Gunships. These assets are routed through an orbital relay, allowing you to take manual control of the weapons systems (Turret [0]) from anywhere on the battlefield.<br/><br/>
+
+<font color='#ffaa00'>ATTACHING EXPLOSIVES (AR-2 DARTER)</font><br/>
 Any standard AR-2 Darter UAV can be weaponized. Using your ACE Interaction menu on a drone, you can attach explosives directly from your inventory. The drone supports Satchel Charges, Demo Charges (C4), Hand Grenades, 40mm HE Shells, and ACE_M14 Incendiary Grenades.<br/><br/>
 
-<font color='#ffaa00'>BOMBER MODE</font><br/>
-While piloting the UAV, use your scroll wheel to select <t color='#ff0000'>[DROP PAYLOAD]</t>. This will instantly drop a massive, live-armed ballistic equivalent of your explosive (e.g. C4 drops a heavy rocket explosion, Satchels drop a massive GBU, and M14s simulate a White Phosphorus artillery blast) straight down. It detonates instantly on impact.<br/><br/>
+<font color='#ffaa00'>BOMBER MODE & AI-KILL CHAINS</font><br/>
+While piloting the UAV, use your scroll wheel to select <t color='#ff0000'>[DROP PAYLOAD]</t>. This leverages Gotham's AI-powered kill chain to calculate a direct ballistic drop of your explosive (e.g. C4 drops a heavy rocket explosion, Satchels drop a massive GBU).<br/><br/>
 
 <font color='#ffaa00'>KAMIKAZE (FPV) MODE</font><br/>
 Alternatively, once a payload is attached, pilots can select <t color='#ff8c00'>[ARM KAMIKAZE MODE]</t> from their scroll wheel. This locks the payload to the drone. The exact millisecond the drone crashes into a target, hits a wall, or is shot out of the sky, the massive payload will detonate instantly. An emergency <t color='#ffa500'>[DETONATE KAMIKAZE]</t> action is also provided for manual mid-airbursts.
@@ -207,33 +210,36 @@ Watch your fire! Friendly Fire incidents will instantly dock your bank account a
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["Advanced Operations (HVTs)", 
+player createDiaryRecord ["a3m_field_manual", ["Palantir Gotham: Intelligence & HVTs", 
 "
-<font color='#ffaa00'>INTERROGATIONS</font><br/>
-Use your ACE interact menu to zip-tie and detain civilians or enemies. Escort them to an 'Interrogation Point' (Alpha, Bravo, Charlie) to process them. This is how you generate your initial seed money. The process is fully automated once they are brought to the interrogation desk.<br/><br/>
+<font color='#ffaa00'>THE GOTHAM OPERATING SYSTEM</font><br/>
+Your primary tool for managing the battlefield is Palantir Gotham. It is not just a tracking app; it is a unified data fusion platform. It connects disparate intelligence streams—from human interrogations to SpaceX orbital sweeps—into a single Common Operating Picture (COP).<br/><br/>
 
-<font color='#ffaa00'>HIGH VALUE TARGETS (HVTs)</font><br/>
-During interrogations, there is a chance you will uncover special intelligence that triggers an HVT mission. These are the crown jewels of the A3M economy.<br/>
-The payout for triggering the HVT intel alone is massive (up to 600,000 Cr), and tracking down the physical HVT guarantees you will find at least 100,000 Cr physically on their body. Happy hunting.<br/><br/>
+<font color='#ffaa00'>DATA INGESTION (INTERROGATIONS)</font><br/>
+Use your ACE interact menu to zip-tie and detain civilians or enemies. Escort them to an 'Interrogation Point' (Alpha, Bravo, Charlie) to process them. This feeds raw human intelligence (HUMINT) directly into the Gotham node, generating your initial seed money and mapping enemy relationships.<br/><br/>
+
+<font color='#ffaa00'>HIGH VALUE TARGETS (HVTs) & CSAR</font><br/>
+During interrogations, Gotham's predictive analytics will occasionally uncover special intelligence that triggers an HVT mission or a CSAR (Combat Search and Rescue) contract. These are the crown jewels of the A3M economy.<br/>
+The payout for uncovering the intel alone is massive (up to 600,000 Cr). You can then use your Palantir terminal to track the HVT in real-time, or purchase a SpaceX Satellite Sweep to update their exact grid coordinates on your map.<br/><br/>
 
 <font color='#ffaa00'>PLAYER BOUNTIES</font><br/>
-Got a grudge? Place a financial bounty on another player's head using the Player Dossier (Press 'P'). Whoever kills them claims the cash instantly.
+Got a grudge? Place a financial bounty on another player's head using the Player Dossier (Press 'P'). Gotham tracks all PMC operatives on the island, and whoever executes the kill claims the cash instantly.
 "
 ]];
 
-player createDiaryRecord ["a3m_field_manual", ["The Core Gameplay Loop", 
+player createDiaryRecord ["a3m_field_manual", ["The Core Gameplay Loop (Gotham Integration)", 
 "
-<font color='#ffaa00'>1. INTERROGATE FOR SEED MONEY</font><br/>
-You will deploy with a default set of Squad Leader gear. Your very first objective is to detain civilians and escort them to an Interrogation Point. Process them to earn cash.<br/><br/>
+<font color='#ffaa00'>1. FEED GOTHAM WITH INTELLIGENCE</font><br/>
+You will deploy with a default set of Squad Leader gear. Your very first objective is to detain civilians and escort them to an Interrogation Point. Processing them feeds data into Palantir Gotham and earns you seed cash.<br/><br/>
 
-<font color='#ffaa00'>2. HIGH VALUE TARGETS (HVTs)</font><br/>
-Keep doing interrogations until you uncover an HVT mission. These targets carry massive amounts of cash. Once you have a large bankroll from interrogations and HVTs, you will be strong enough to begin your military campaign.<br/><br/>
+<font color='#ffaa00'>2. PALANTIR GOTHAM & HVT CONTRACTS & CSAR</font><br/>
+Keep doing interrogations until Gotham's AI connects the dots and uncovers an HVT or CSAR mission. These contracts carry massive amounts of cash. Once you have a large bankroll, use your Palantir terminal to purchase orbital UCAV strikes or drone surveillance to begin your military campaign.<br/><br/>
 
 <font color='#ffaa00'>3. PUSH TO FORT MAGA</font><br/>
 With your newfound wealth, recruit a squad and head to <t color='#ffff00'>Fort MAGA</t>. Defend this sector, build it up, and use it as your primary staging area to push into other hostile sectors across the island.<br/><br/>
 
 <font color='#ffaa00'>4. LOGISTICS &amp; BASE BUILDING ARE CENTRAL</font><br/>
-You cannot win this war with just infantry. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!
+You cannot win this war with just infantry and orbital strikes. Logistics and base building are <t color='#00ff00'>CENTRAL</t> to taking and holding areas. The A3M logistics system, especially when combined with ACE Cargo, is incredibly deep. Use the Quartermaster's Grad Store menu to purchase and build Turrets, Mortars, heavy weapons, ammo supplies, and defensive walls so you have a place to fall back, regroup, and rearm during heavy assaults!
 "
 ]];
 

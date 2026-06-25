@@ -103,7 +103,7 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 	private _roll = random 100;
 	private _trenchCount = _grp getVariable ["A3M_TrenchCount", 0];
 	
-	if (_trenchEnabled && {_trenchCount < _trenchLimit} && {_roll <= _trenchChance}) then {
+	if (_trenchEnabled && {isNull objectParent _leader} && {_trenchCount < _trenchLimit} && {_roll <= _trenchChance}) then {
 		_grp setVariable ["A3M_TrenchCount", _trenchCount + 1];
 		
 		[_leader, _units, _nearestEnemy] spawn {

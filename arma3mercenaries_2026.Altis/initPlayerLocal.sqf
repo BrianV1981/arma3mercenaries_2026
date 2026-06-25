@@ -641,3 +641,17 @@ player addEventHandler ["WeaponAssembled", {
     // Automatically claim the drone/static for the player who assembled it!
     [_weapon] call HG_fnc_setOwner; 
 }];
+// --- A3M DEV MONEY SPIGOT ---
+[] spawn {
+    waitUntil {!isNull player && player == player};
+    sleep 10;
+    if (missionNamespace getVariable ["A3M_Dev_MoneySpigot", false]) then {
+        private _result = ["Welcome to the A3M Test Center.<br/><br/>Here is a $10,000,000 blank check.<br/><br/>Go cause some absolute havoc.", "A3M Money Spigot", "I'm Rich!", "Cancel"] call BIS_fnc_guiMessage;
+        if (_result) then {
+            playSound "A3M_Im_Rich";
+            [player, 10000000] call grad_moneymenu_fnc_addFunds;
+            private _message = "<t size='0.7' align='center' color='#FFD700' shadow='1'>$10,000,000 DEPOSITED</t><br/><t size='0.5' align='center'>Go break things.</t>";
+            [_message] spawn A3M_fnc_showWarningHUD;
+        };
+    };
+};

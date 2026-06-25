@@ -25,7 +25,6 @@ if (_taskId select [0, 7] == "PLAYER_") then {
     };
     if (!isNull _hvtTarget && alive _hvtTarget) then {
         _exactPos = getPosATL _hvtTarget;
-        [_taskId, _exactPos] remoteExec ["BIS_fnc_taskSetDestination", 0, "JIP_id_" + _taskId];
     };
 };
 

@@ -4,7 +4,7 @@ class Header
 	minPlayers = 1;
 	maxPlayers = 30;
 };
-OnLoadName = "arma3mercenaries Bv9.00";
+OnLoadName = "arma3mercenaries v1.33.0";
 onLoadMission = "Constellis is a trusted and experienced provider of security services in high-risk environments, remote areas and emerging markets in support of land-based, aviation, maritime and cyber operations.";
 loadScreen = "pictures\arma3mercenaries_v1.paa";
 author="BrianV1981";
@@ -65,6 +65,7 @@ class CfgFunctions {
     #include "functions\looter_cfgFunctions.hpp"
     #include "arma3mercenaries\interrogations\cfgFunctions.hpp"
     #include "arma3mercenaries\tasks\cfgFunctions.hpp"
+    #include "arma3mercenaries\a3m_contracts\cfgFunctions.hpp"
     #include "arma3mercenaries\bounty\cfgFunctions.hpp"
     #include "arma3mercenaries\salvage\cfgFunctions.hpp"
     #include "arma3mercenaries\a3m_drones\cfgFunctions.hpp"
@@ -309,6 +310,11 @@ class CfgSounds {
     class A3M_RankDown {
         name = "A3M_RankDown";
         sound[] = {"sounds\A3M_RankDown.ogg", db+0, 1.0};
+        titles[] = {};
+    };
+    class A3M_Im_Rich {
+        name = "A3M_Im_Rich";
+        sound[] = {"sounds\im_rich.ogg", db+5, 1.0};
         titles[] = {};
     };
 };

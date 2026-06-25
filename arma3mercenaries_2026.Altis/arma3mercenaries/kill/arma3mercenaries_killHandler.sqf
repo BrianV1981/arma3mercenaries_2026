@@ -195,8 +195,19 @@ A3M_fnc_serverHandleReward = {
             private _taskIdFound = "";
             {
                 private _taskId = _x;
-                private _taskData = _y; // [HVT Object, Task Type]
-                if ((_taskData select 0) == _killed) exitWith {
+                private _taskData = _y;
+                private _targetObject = _taskData select 0;
+                private _taskType = "HVT";
+                
+                if (count _taskData == 3) then {
+                    _taskType = _taskData select 2;
+                } else {
+                    if (count _taskData == 2 && typeName (_taskData select 1) == "STRING") then {
+                        _taskType = _taskData select 1;
+                    };
+                };
+
+                if (_targetObject == _killed && _taskType != "CSAR") exitWith {
                     _isHVT = true;
                     _taskIdFound = _taskId;
                 };

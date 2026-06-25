@@ -519,6 +519,30 @@ A3M_fnc_serverFetchBountyTargets = {
 // Initialize the new Task State Manager
 [] call A3M_fnc_initTaskManager;
 
+// Initialize Ambient CSAR Loops (Multi-Faction)
+if (missionNamespace getVariable ["A3M_CSAR_F1_Enabled", false]) then {
+    ["A3M_CSAR_F1", "NORMAL"] spawn A3M_fnc_organicCSARLoop;
+    diag_log "[A3M TASK MANAGER] Launched Faction 1 Ambient CSAR Loop.";
+};
+if (missionNamespace getVariable ["A3M_CSAR_F2_Enabled", false]) then {
+    ["A3M_CSAR_F2", "NORMAL"] spawn A3M_fnc_organicCSARLoop;
+};
+
+if (missionNamespace getVariable ["A3M_CSAR_F2_Enabled", false]) then {
+    ["A3M_CSAR_F2", "NORMAL"] spawn A3M_fnc_organicCSARLoop;
+    diag_log "[A3M TASK MANAGER] Launched Faction 2 Ambient CSAR Loop.";
+};
+
+if (missionNamespace getVariable ["A3M_CSAR_F3_Enabled", false]) then {
+    ["A3M_CSAR_F3", "NORMAL"] spawn A3M_fnc_organicCSARLoop;
+    diag_log "[A3M TASK MANAGER] Launched Faction 3 Ambient CSAR Loop.";
+};
+
+if (missionNamespace getVariable ["A3M_CSAR_F4_Enabled", false]) then {
+    ["A3M_CSAR_F4", "NORMAL"] spawn A3M_fnc_organicCSARLoop;
+    diag_log "[A3M TASK MANAGER] Launched Faction 4 Ambient CSAR Loop.";
+};
+
 // -------------------------------------------------------------------------
 // --- ACE3 Trenches to GRAD Fortifications/Persistence Bridge ---
 // -------------------------------------------------------------------------

@@ -128,3 +128,6 @@ _profileWaypoint = [_destinationPosition, _waypointPlacementRadius, _waypointTyp
 // MAIN -------------------------------------------------------------------------------------
  
 // ====================================================================================
+
+// A3M: Return the spawned profiles so external scripts can attach debug markers or track them
+_profiles

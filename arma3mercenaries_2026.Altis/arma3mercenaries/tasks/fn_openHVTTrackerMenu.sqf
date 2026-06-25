@@ -12,13 +12,46 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
         params ["_exactPos", "_taskId"];
         private _gridPos = mapGridPosition _exactPos;
         
+        // Calculate the marker text and type dynamically
+        private _markerText = "SpaceX Location: HVT";
+        private _markerType = "mil_destroy";
+
+        if (_taskId select [0, 7] == "PLAYER_") then {
+            private _uid = _taskId select [7];
+            private _playerName = "Unknown";
+            { if (getPlayerUID _x == _uid) exitWith { _playerName = name _x; }; } forEach allPlayers;
+            _markerText = format ["SpaceX Location: %1 (player)", _playerName];
+            _markerType = "mil_dot";
+        } else {
+            private _taskDescArray = _taskId call BIS_fnc_taskDescription;
+            private _taskTitle = if (typeName _taskDescArray == "ARRAY" && {count _taskDescArray > 1}) then { _taskDescArray select 1 } else { _taskId };
+            
+            // Safely unpack any deeply nested ALiVE string arrays
+            while {typeName _taskTitle == "ARRAY" && {count _taskTitle > 0}} do {
+                _taskTitle = _taskTitle select 0;
+            };
+            
+            // Force it into a safe string representation without adding extra quotes
+            _taskTitle = if (typeName _taskTitle == "STRING") then { _taskTitle } else { format ["%1", _taskTitle] };            
+            if (["contract_csar_", _taskId] call BIS_fnc_inString) then {
+                private _callsign = _taskTitle;
+                if (["CSAR: ", _taskTitle] call BIS_fnc_inString) then {
+                    _callsign = _taskTitle select [6];
+                };
+                _markerText = format ["SpaceX Location: %1 (CSAR)", _callsign];
+                _markerType = "mil_dot";
+            } else {
+                _markerText = format ["SpaceX Location: %1", _taskTitle];
+            };
+        };
+
         // Create an explicit, visible map marker for the user
         private _markerName = "A3M_HVT_PINPOINT_" + _taskId;
         if (getMarkerColor _markerName == "") then {
             private _marker = createMarkerLocal [_markerName, _exactPos];
-            _marker setMarkerTypeLocal "mil_destroy";
+            _marker setMarkerTypeLocal _markerType;
             _marker setMarkerColorLocal "ColorRed";
-            _marker setMarkerTextLocal "HVT PINPOINT";
+            _marker setMarkerTextLocal _markerText;
         };
 
         // Spawn custom interactive camera sequence
@@ -136,8 +169,13 @@ if (isNil "A3M_fnc_clientSatelliteFeed") then {
             
             // Random pass trajectory (random angle from 0 to 360)
             private _passAngle = random 360;
-            private _passStart = _exactPos getPos [1200, _passAngle];
-            private _passEnd = _exactPos getPos [1200, _passAngle - 180];
+            
+            // Offset the trajectory laterally to prevent gimbal lock (violent camera flip at exactly 0-degree zenith)
+            private _offsetDist = 200 + random 200;
+            private _centerPath = _exactPos getPos [_offsetDist, _passAngle + 90];
+            
+            private _passStart = _centerPath getPos [1200, _passAngle];
+            private _passEnd = _centerPath getPos [1200, _passAngle - 180];
             
             // The "Invisible Anchor" trick to prevent the freefall animation
             private _palantirAnchor = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
@@ -238,6 +276,15 @@ if (isNil "A3M_fnc_clientBlackfishFeed") then {
                 };
             }];
             
+            A3M_Gunship_MouseBtnEH = (findDisplay 46) displayAddEventHandler ["MouseButtonDown", {
+                params ["_display", "_button"];
+                if (_button == 1 || _button == 2) then { true } else { false };
+            }];
+            
+            inGameUISetEventHandler ["Action", "true"];
+            inGameUISetEventHandler ["PrevAction", "true"];
+            inGameUISetEventHandler ["NextAction", "true"];
+            
             private _duration = 300; // 5 full minutes
             private _startTime = time;
             
@@ -247,6 +294,11 @@ if (isNil "A3M_fnc_clientBlackfishFeed") then {
             };
             
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Gunship_KeyEH];
+            (findDisplay 46) displayRemoveEventHandler ["MouseButtonDown", A3M_Gunship_MouseBtnEH];
+            
+            inGameUISetEventHandler ["Action", ""];
+            inGameUISetEventHandler ["PrevAction", ""];
+            inGameUISetEventHandler ["NextAction", ""];
             
             detach player;
             objNull remoteControl _gunner;
@@ -319,6 +371,15 @@ if (isNil "A3M_fnc_clientDroneFeed") then {
                 };
             }];
             
+            A3M_Drone_MouseBtnEH = (findDisplay 46) displayAddEventHandler ["MouseButtonDown", {
+                params ["_display", "_button"];
+                if (_button == 1 || _button == 2) then { true } else { false };
+            }];
+            
+            inGameUISetEventHandler ["Action", "true"];
+            inGameUISetEventHandler ["PrevAction", "true"];
+            inGameUISetEventHandler ["NextAction", "true"];
+            
             private _duration = 300; // 5 full minutes
             private _startTime = time;
             
@@ -328,6 +389,11 @@ if (isNil "A3M_fnc_clientDroneFeed") then {
             };
             
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Drone_KeyEH];
+            (findDisplay 46) displayRemoveEventHandler ["MouseButtonDown", A3M_Drone_MouseBtnEH];
+            
+            inGameUISetEventHandler ["Action", ""];
+            inGameUISetEventHandler ["PrevAction", ""];
+            inGameUISetEventHandler ["NextAction", ""];
             
             objNull remoteControl _gunner;
             player switchCamera "INTERNAL";
@@ -499,8 +565,7 @@ if (isNil "A3M_fnc_onHVTTrackerSelChanged") then {
                 // ["A-164 Wipeout CAS", 200000, "A3M_fnc_serverWipeoutSweep"], // Stubbed out temporarily
                 ["Constellis Blackfish Attack", 200000, "A3M_fnc_serverBlackfishSweep"],
                 ["Constellis Drone Sweep (Greyhawk)", 75000, "A3M_fnc_serverDroneSweep"],
-                ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"],
-                ["Armed Stomper UGV", 50000, "A3M_fnc_serverStomperSweep"]
+                ["Darter Micro-UAV Sweep", 50000, "A3M_fnc_serverDarterSweep"]
             ];
         };
         
@@ -569,7 +634,7 @@ private _activeTasks = [];
 private _allPlayerTasks = player call BIS_fnc_tasksUnit;
 
 {
-    if (["assassination", _x] call BIS_fnc_inString) then {
+    if (["assassination", _x] call BIS_fnc_inString || ["contract_csar_", _x] call BIS_fnc_inString) then {
         _activeTasks pushBackUnique _x;
     };
 } forEach _allPlayerTasks;
@@ -581,11 +646,26 @@ private _allPlayerTasks = player call BIS_fnc_tasksUnit;
         _activeHVTsFound = true;
         private _taskDescArray = _taskId call BIS_fnc_taskDescription;
         private _taskTitle = if (typeName _taskDescArray == "ARRAY" && {count _taskDescArray > 1}) then { _taskDescArray select 1 } else { _taskId };
-        if (typeName _taskTitle != "STRING") then { _taskTitle = str _taskTitle; };
         
-        private _index = _listbox lbAdd format ["HVT: %1", _taskTitle];
+        // Safely unpack any deeply nested ALiVE string arrays
+        while {typeName _taskTitle == "ARRAY" && {count _taskTitle > 0}} do {
+            _taskTitle = _taskTitle select 0;
+        };
+        
+        // Force it into a safe string representation without adding extra quotes
+        _taskTitle = if (typeName _taskTitle == "STRING") then { _taskTitle } else { format ["%1", _taskTitle] };
+        
+        private _isCSAR = ["contract_csar_", _taskId] call BIS_fnc_inString;
+        private _menuText = if (_isCSAR) then { _taskTitle } else { format ["HVT: %1", _taskTitle] };
+        
+        private _index = _listbox lbAdd _menuText;
         _listbox lbSetData [_index, _taskId];
-        _listbox lbSetColor [_index, [1, 0, 0, 1]]; // Red
+        
+        if (_isCSAR) then {
+            _listbox lbSetColor [_index, [0, 1, 0.5, 1]]; // Greenish Blue for CSAR
+        } else {
+            _listbox lbSetColor [_index, [1, 0, 0, 1]]; // Red for HVT
+        };
     };
 } forEach _activeTasks;
 

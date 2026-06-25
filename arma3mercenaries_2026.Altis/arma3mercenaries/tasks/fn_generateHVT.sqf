@@ -171,32 +171,119 @@ private _HVT = _HVTGroup createUnit [_selectedHvtUnitType, _taskLocation, [], 0,
 // Add cash to the HVT unit
 [_HVT, 100000] call grad_moneymenu_fnc_addFunds;
 
-// --- HVT Waypoint Setup (Initial Move + Patrol Cycle) ---
-private _HVTwp1 = _HVTGroup addWaypoint [_taskLocation, 0];
-_HVTwp1 setWaypointType "MOVE";
-_HVTwp1 setWaypointSpeed "NORMAL";
-_HVTwp1 setWaypointBehaviour "AWARE";
-_HVTwp1 setWaypointCompletionRadius 25;
+// --- HVT Roaming Setup ---
+// Make the HVT roam safely within the compound rather than patrolling out in the open
+[_HVTGroup, _taskLocation, 30, 2, true] call CBA_fnc_taskDefend;
 
-private _patrolRadius = 75;
-private _patrolPoints = 3;
-private _lastPatrolWpIndex = 1;
+// --- HVT Dynamic Flee & Exfil Logic ---
+[_HVT, _taskLocation, _taskSide, _taskID] spawn {
+    params ["_hvt", "_basePos", "_taskSide", "_taskID"];
+    
+    // Wait for the HVT to settle into the compound
+    sleep 15;
+    
+    private _fleeing = false;
+    private _fleeReason = "COMBAT";
+    
+    private _expiryMin = missionNamespace getVariable ["A3M_CSAR_ExpiryMin", 2];
+    private _expiryMax = missionNamespace getVariable ["A3M_CSAR_ExpiryMax", 4];
+    private _expiryTime = time + (_expiryMin * 3600) + random ((_expiryMax - _expiryMin) * 3600);
+    
+    while {alive _hvt && !_fleeing} do {
+        sleep 5;
+        
+        // Assess situational stress
+        private _nearAllies = (_hvt nearEntities ["Man", 100]) select {side _x == side _hvt && alive _x && _x != _hvt};
+        private _nearEnemies = (_hvt nearEntities ["Man", 200]) select {side _x == _taskSide && alive _x};
+        
+        // Flee triggers: Taking damage, knowing about enemies while guards are dead, or being in direct combat
+        if (damage _hvt > 0.05 || (count _nearEnemies > 0 && count _nearAllies < 2) || behaviour _hvt == "COMBAT") then {
+            _fleeing = true;
+            _fleeReason = "COMBAT";
+        };
+        
+        // Time Limit Trigger
+        if (time > _expiryTime) then {
+            _fleeing = true;
+            _fleeReason = "TIMEOUT";
+        };
+    };
+    
+    if (_fleeing && alive _hvt) then {
+        // Cancel garrison orders
+        for "_i" from count waypoints group _hvt - 1 to 0 step -1 do {
+            deleteWaypoint [group _hvt, _i];
+        };
+        
+        // Broadcast Intel Warning
+        private _intelMsg = "";
+        if (_fleeReason == "TIMEOUT") then {
+            _intelMsg = "INTERCEPTED COMM: The HVT has finished their meeting and requested air extraction! Target will be off-map shortly.";
+            // Also explicitly fail the task natively if time expired
+            [_taskID, 'FAILED', true] call BIS_fnc_taskSetState;
+            if (!isNil "A3M_ActiveTasks") then { A3M_ActiveTasks deleteAt _taskID; publicVariable "A3M_ActiveTasks"; };
+        } else {
+            _intelMsg = "INTERCEPTED COMM: The HVT is under assault and requesting emergency air extraction! Do not let them escape!";
+        };
+        [[_taskSide, "HQ"], _intelMsg] remoteExec ["sideChat", 0];
+        
+        // Spawn Exfiltration Vehicle
+        private _useHeli = (random 100 > 50);
+        private _vehType = "";
+        private _spawnDir = random 360;
+        private _spawnPos = _basePos getPos [3000, _spawnDir];
 
-for "_i" from 1 to _patrolPoints do {
-    private _patrolPos = [_taskLocation, 0, _patrolRadius * 0.8, 10, 0, 0.3, 0, [], [_taskLocation]] call BIS_fnc_findSafePos;
-    if (count _patrolPos == 0) then { _patrolPos = _taskLocation getPos [_patrolRadius * (0.5 + random 0.5), random 360]; };
+        if (_useHeli) then {
+            _vehType = if (side _hvt == EAST) then { "O_Heli_Light_02_unarmed_F" } else { "I_Heli_light_03_unarmed_F" };
+        } else {
+            _vehType = if (side _hvt == EAST) then { "O_MRAP_02_F" } else { "I_MRAP_03_F" };
+            // Ensure ground transport spawns on a road to prevent getting stuck in trees
+            private _roads = _spawnPos nearRoads 500;
+            if (count _roads > 0) then { _spawnPos = getPos (selectRandom _roads); };
+        };
 
-    _lastPatrolWpIndex = _lastPatrolWpIndex + 1;
-    private _wpPatrol = _HVTGroup addWaypoint [_patrolPos, _lastPatrolWpIndex - 1];
-    _wpPatrol setWaypointType "MOVE";
-    _wpPatrol setWaypointBehaviour "AWARE";
-    _wpPatrol setWaypointSpeed "LIMITED";
-    _wpPatrol setWaypointCompletionRadius 15;
+        private _vehArray = [_spawnPos, _spawnPos getDir _basePos, _vehType, side _hvt] call BIS_fnc_spawnVehicle;
+        private _veh = _vehArray select 0;
+        private _vehGrp = _vehArray select 2;
+        
+        _vehGrp setBehaviour "CARELESS"; // Ignore players, focus on extraction
+        
+        // Direct Vehicle to land/drive to the compound
+        private _wpLZ = _vehGrp addWaypoint [_basePos, 0];
+        _wpLZ setWaypointType "LOAD";
+        _wpLZ setWaypointStatements ["true", "(vehicle this) land 'GET IN';"];
+        
+        // Direct HVT to board the Vehicle
+        _hvt setUnitPos "UP";
+        (group _hvt) setBehaviour "AWARE";
+        (group _hvt) setSpeedMode "FULL";
+        private _wpGetIn = (group _hvt) addWaypoint [_basePos, 0];
+        _wpGetIn setWaypointType "GETIN";
+        _wpGetIn waypointAttachVehicle _veh;
+        
+        // After pickup, vehicle flees towards the literal edge of the map [0,0,0]
+        private _wpFlee = _vehGrp addWaypoint [[0,0,0], 0];
+        _wpFlee setWaypointType "MOVE";
+        
+        // 120 Second Escape Timer (Starts when HVT boards the vehicle)
+        [_hvt, _veh, _taskID] spawn {
+            params ["_hvt", "_veh", "_taskID"];
+            waitUntil { sleep 2; vehicle _hvt == _veh || !alive _hvt };
+            if (!alive _hvt) exitWith {}; // Player killed him before he escaped
+            
+            sleep 120; // Allow exactly 2 minutes of dramatic chase time
+            
+            if (alive _hvt) then {
+                // HVT successfully escaped
+                [_taskID, 'FAILED', true] call BIS_fnc_taskSetState;
+                if (!isNil "A3M_ActiveTasks") then { A3M_ActiveTasks deleteAt _taskID; publicVariable "A3M_ActiveTasks"; };
+                
+                { deleteVehicle _x; } forEach crew _veh;
+                deleteVehicle _veh;
+            };
+        };
+    };
 };
-
-private _cycleWpIndex = _lastPatrolWpIndex + 1;
-private _wpCycle = _HVTGroup addWaypoint [_taskLocation, _cycleWpIndex - 1];
-_wpCycle setWaypointType "CYCLE";
 
 
 // --- *** Define Immersive Task Description Pool *** ---

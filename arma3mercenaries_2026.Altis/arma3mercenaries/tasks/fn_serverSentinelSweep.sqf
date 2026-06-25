@@ -25,7 +25,6 @@ if (_taskId select [0, 7] == "PLAYER_") then {
     };
     if (!isNull _hvtTarget && alive _hvtTarget) then {
         _exactPos = getPosATL _hvtTarget;
-        [_taskId, _exactPos] remoteExec ["BIS_fnc_taskSetDestination", 0, "JIP_id_" + _taskId];
     };
 };
 
@@ -47,8 +46,9 @@ private _grp = _vehArray select 2;
 createVehicleCrew _drone; // Ensure Arma 3 UAV AI is properly linked to the vehicle terminal
 
 // Equip Sentinel with 6x Scalpel AGMs so the Gunner can fire them directly! (Fixes the GBU release issue)
-_drone setPylonLoadOut [1, "PylonRack_3Rnd_LG_scalpel"];
-_drone setPylonLoadOut [2, "PylonRack_3Rnd_LG_scalpel"];
+// We use true, [0] to explicitly bind the pylons to the gunner turret (the player) rather than the AI pilot.
+_drone setPylonLoadOut [1, "PylonRack_3Rnd_LG_scalpel", true, [0]];
+_drone setPylonLoadOut [2, "PylonRack_3Rnd_LG_scalpel", true, [0]];
 
 // Configure AI to prioritize flying over engaging
 _grp setBehaviour "CARELESS";
