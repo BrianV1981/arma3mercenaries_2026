@@ -94,8 +94,10 @@ if (!_startOnGround) then {
 private _aircraftClass = selectRandom _aircraftArray;
 private _aircraftGroup = createGroup [_side, true];
 _aircraftGroup setVariable ["Vcm_Disable", true, true];
+_aircraftGroup setVariable ["ALIVE_profileIgnore", true, true];
 private _spawnMode = if (_startOnGround) then { "NONE" } else { "FLY" };
 private _aircraft = createVehicle [_aircraftClass, _spawnPos, [], 0, _spawnMode];
+_aircraft setVariable ["ALIVE_profileIgnore", true, true];
 
 if (_startOnGround) then {
     _aircraft setDir _spawnDir;
