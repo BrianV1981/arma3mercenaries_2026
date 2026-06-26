@@ -166,7 +166,7 @@ if (isClass (configFile >> "CfgPatches" >> "ace_medical")) then {
     {}, 
     {
         params ['_target', '_caller', '_actionId', '_arguments'];
-        _arguments params ['_fobPos', '_taskID', '_pilotAnnouncements', '_callsign'];
+        _arguments params ['_fobPos', '_taskID', '_pilotAnnouncements', '_callsign', '_prefix', '_extMarkerName'];
         _target setCaptive false;
         _target setUnitPos 'AUTO';
         { _target enableAI _x } forEach ['MOVE', 'FSM', 'TARGET', 'AUTOTARGET'];
@@ -179,15 +179,44 @@ if (isClass (configFile >> "CfgPatches" >> "ace_medical")) then {
             [[_target, _chatMsg], { (_this select 0) sideChat (_this select 1); }] remoteExec ["call", 0];
         };
         
-        private _msg = format ["<t color='#FF8C00' size='1.2'>RESCUE</t><br/><t size='0.8' color='#FFFFFF'>You have rescued %1! Escort him to the extraction zone.</t>", name _target];
+        private _msg = format ["<t color='#FF8C00' size='1.2'>RESCUE</t><br/><t size='0.8' color='#FFFFFF'>You have secured %1! Escort him to your extraction zone.</t>", name _target];
         [_msg, -1, 0.8, 5, 0.5, 0, 789] remoteExec ["BIS_fnc_dynamicText", side (group _caller)];
         _target setVariable ['A3M_Rescued', true, true];
         
-        // Update the Task Destination natively to point to the Extraction FOB
-        [_taskID, _fobPos] remoteExec ["BIS_fnc_taskSetDestination", 0, true];
+        // --- DYNAMIC EXTRACTION FLIP ---
+        private _rescuingSide = side (group _caller);
+        private _rescuePrefix = _prefix;
+        switch (_rescuingSide) do {
+            case east: { _rescuePrefix = "A3M_CSAR_F1"; };
+            case west: { _rescuePrefix = "A3M_CSAR_F2"; };
+            case independent: { _rescuePrefix = "A3M_CSAR_F3"; };
+        };
+        
+        private _dynamicFob = [];
+        private _cbaRawPos = missionNamespace getVariable [format ["%1_ExtractionPos", _rescuePrefix], ""];
+        private _cbaMarker = missionNamespace getVariable [format ["%1_ExtractionMarker", _rescuePrefix], ""];
+        
+        if (_cbaRawPos != "") then {
+            if ((_cbaRawPos find "[") == -1) then { _cbaRawPos = format ["[%1]", _cbaRawPos]; };
+            try { private _parsed = parseSimpleArray _cbaRawPos; if (_parsed isEqualType [] && {count _parsed >= 2}) then { _dynamicFob = _parsed; }; } catch {};
+        };
+        
+        if (_dynamicFob isEqualTo [] && {_cbaMarker != ""} && {getMarkerColor _cbaMarker != ""}) then { _dynamicFob = getMarkerPos _cbaMarker; };
+        if (_dynamicFob isEqualTo []) then {
+            private _taor = missionNamespace getVariable [format ["%1_FallbackTaor", _rescuePrefix], ""];
+            if (_taor != "" && {getMarkerColor _taor != ""}) then { _dynamicFob = getMarkerPos _taor; } else { _dynamicFob = _fobPos; };
+        };
+        
+        // Relocate the physical map marker and Task destination
+        _extMarkerName setMarkerPos _dynamicFob;
+        [_taskID, _dynamicFob] remoteExec ["BIS_fnc_taskSetDestination", 0, true];
+        
+        // Relocate the invisible physical extraction trigger that monitors success
+        private _trigger = _target getVariable ["A3M_CSAR_Trigger", objNull];
+        if (!isNull _trigger) then { _trigger setPos _dynamicFob; };
     },
     {},
-    [_fobPos, _taskID, _pilotAnnouncements, _callsign],
+    [_fobPos, _taskID, _pilotAnnouncements, _callsign, _prefix, _extMarkerName],
     3,
     10,
     true,
@@ -249,6 +278,7 @@ if (!isNil "A3M_ActiveTasks") then {
 
 // --- 6.5 Native Arma 3 Extraction Trigger (Restored from 0355) ---
 private _extTrigger = createTrigger ["EmptyDetector", _fobPos, false]; // Server-side only trigger
+_pilot setVariable ["A3M_CSAR_Trigger", _extTrigger, true]; // Expose to holdAction
 _extTrigger setTriggerArea [0, 0, 0, false];
 _extTrigger setTriggerActivation ["NONE", "PRESENT", false];
 _extTrigger setVariable ["A3M_CSAR_Pilot", _pilot];
