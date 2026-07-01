@@ -14,7 +14,7 @@ DESC_FILE="$MISSION_DIR/description.ext"
 SERVER_CFG="/home/brian-vasquez/arma3server/server_test.cfg"
 
 # 1. Extract the Master Version from the A.I.M. Root VERSION file
-VERSION_FILE="/home/brian-vasquez/aim-a3m/VERSION"
+VERSION_FILE="/home/brian-vasquez/aim-arma3/VERSION"
 if [ -f "$VERSION_FILE" ]; then
     MASTER_VERSION=$(cat "$VERSION_FILE")
 else
@@ -50,7 +50,7 @@ fi
 
 echo "Packing to $OUTPUT_PBO..."
 
-cd /home/brian-vasquez/aim-a3m/external-tools/arma3pbo && PYTHONPATH=src python3 -m arma3pbo.main build -p "$STAGING_DIR" -o "$OUTPUT_PBO"
+cd /home/brian-vasquez/aim-arma3/external-tools/arma3pbo && PYTHONPATH=src python3 -m arma3pbo.main build -p "$STAGING_DIR" -o "$OUTPUT_PBO"
 
 if [ $? -eq 0 ]; then
     echo "Successfully packed to $OUTPUT_PBO"

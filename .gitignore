@@ -2,7 +2,7 @@
 
 # 1. Personal Identity & Secrets (DYNAMICALLY GENERATED)
 .env
-core/CONFIG.json
+.aim_core/CONFIG.json
 core/MEMORY.md
 core/OPERATOR.md
 core/OPERATOR_PROFILE.md
@@ -53,7 +53,6 @@ workspace/aim-chalkboard/
 foundry/
 planning-artifacts/
 engrams/
-memory-wiki/
 workspace/aim_os/
 aim.wiki/
 
@@ -61,7 +60,12 @@ aim.wiki/
 memory_lance/
 memory_lance.bak/
 
-# 11. Arma 3 & HEMTT Artifacts
-arma3mercenaries_2026.Altis/.hemtt/out/
-*.pbo
-external-tools/
+# A.I.M Exoskeleton Isolation
+aim-agy_os/
+workspace/
+TOOLS.md
+AGENTS.md
+.github/
+docs/
+*.zip
+*.7z

@@ -1,0 +1,23 @@
+{
+  "project_name": "example_mirror",
+  "target_url": "https://example.com",
+  "domain_constraint": "example.com",
+  
+  "paths": {
+    "output_dir": "./mirror",
+    "map_file": "./master_map.json"
+  },
+  
+  "clawgle": {
+    "bin_path": "../clawgle/scripts/clawgle.mjs",
+    "cdp_port": 9222,
+    "state_file": "~/.cache/clawgle/ghost_state.json"
+  },
+  
+  "stealth": {
+    "min_dwell_time": 4.0,
+    "max_dwell_time": 10.0,
+    "human_actions_min": 1,
+    "human_actions_max": 3
+  }
+}

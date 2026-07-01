@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Find the Python virtual environment
+VENV_PYTHON="../../venv/bin/python3"
+if [ ! -f "$VENV_PYTHON" ]; then
+    echo "Error: Virtual environment python not found at $VENV_PYTHON"
+    exit 1
+fi
+
+COMMAND=${1:-}
+
+case "$COMMAND" in
+    "map")
+        echo "Starting Ghost-Archiver Discovery Phase..."
+        "$VENV_PYTHON" src/discovery.py
+        ;;
+    "mirror")
+        echo "Starting Ghost-Archiver Reconstruction Phase..."
+        "$VENV_PYTHON" src/archiver.py
+        ;;
+    *)
+        echo "Usage: ./ghost map | mirror"
+        echo "  map    : Crawls the target URL and builds master_map.json"
+        echo "  mirror : Rebuilds the site offline from master_map.json"
+        exit 1
+        ;;
+esac

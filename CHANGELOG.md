@@ -1,5 +1,16 @@
 # Changelog
 
+## [v2.0.1] - 2026-06-29
+- Fix: Corrected CAS vehicle classnames in ALiVE Combat Support (Closes #1)
+
+
+## [v2.0.0] - 2026-06-26
+### The Great Decoupling (Mission Sandbox Reset)
+- **Architecture**: Completely decoupled the Arma 3 mission codebase from the A.I.M. Exoskeleton OS.
+- **Architecture**: Established the "Embedded Engine" architecture. The OS now runs silently and invisibly in the git-ignored `aim-agy_os/` directory.
+- **Cleanup**: Purged all legacy wrapper scripts, python generators, and `@Vulture` mod clutter from the root directory.
+- **Scope**: The repository is now a 100% pure mission tracker for `arma3mercenaries_2026.Altis` (and future `.Tanoa` deployments).
+- **Note**: Version numbers previously became desynchronized between the OS and the mission (the wrapper reached v1.33.0 while the mission remained v1.31.9). This release marks a clean slate.
 ## [v1.33.0] - 2026-06-23
 - Feature: Added coordinate and radius sliders to CBA for markerless AOs and spawns
 
