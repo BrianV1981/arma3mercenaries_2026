@@ -8,17 +8,17 @@
 
 			class B_T_VTOL_01_infantry_F {
                 displayName = "5 Minute HALO/HAHO Solo Jump (Emergency)";
-                description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***When exiting the store, your map will automatically be opened after 5 minutes. If you left click on the map you will be HALO dropped at that location! You can save your HALO drop until the next time that you left click on the map! In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
+                description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***After 5 minutes, a HALO option will be added to your ACE Self-Interact menu. Use it to explicitly designate your drop coordinates. In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
                 price = 10000;
                 stock = 100;
-		code = "if (player == (_this select 0)) then {execVM 'scripts\MGI_HALOcustom_3.sqf'}";
+		code = "if (player == (_this select 0)) then { [] spawn { systemChat '[A3M] Emergency HALO Drop will be authorized in 5 minutes.'; sleep 300; player setVariable ['A3M_Halo_Solo', true, true]; systemChat '[A3M] HALO Drop Authorized. Use ACE Self-Interact to designate coordinates.'; }; };";
             };
 			class B_T_VTOL_01_vehicle_F {
                 displayName = "5 Minute Emergency HALO/HAHO AI Group Jump (Emergency)";
-                description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***When exiting the store, your map will automatically be opened after 5 minutes. If you left click on the map all grouped AI units and yourself will be HALO dropped at that location! You can save your group HALO drop until the next time that you left click on the map! In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
+                description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***After 5 minutes, a HALO option will be added to your ACE Self-Interact menu. Use it to explicitly designate your group's drop coordinates. In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
                 price = 30000;
                 stock = 100;
-		code = "if (player == (_this select 0)) then {execVM 'scripts\MGI_HALOcustom_4.sqf'}";
+		code = "if (player == (_this select 0)) then { [] spawn { systemChat '[A3M] Emergency Squad HALO Drop will be authorized in 5 minutes.'; sleep 300; player setVariable ['A3M_Halo_Squad', true, true]; systemChat '[A3M] Squad HALO Drop Authorized. Use ACE Self-Interact to designate coordinates.'; }; };";
             };
 	};
 };

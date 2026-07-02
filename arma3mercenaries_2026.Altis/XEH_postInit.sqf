@@ -157,3 +157,22 @@ private _actionVehicle = [
     [_x, 0, ["ACE_MainActions"], _actionVehicle, true] call ace_interact_menu_fnc_addActionToClass;
     [_x, 1, ["ACE_MainActions"], _actionVehicle, true] call ace_interact_menu_fnc_addActionToClass;
 } forEach ["landVehicle","air","ship","ReammoBox_F"];
+
+// A3M HALO Insertion ACE Self-Actions
+private _actionHaloSolo = [
+    "A3M_Halo_Action_Solo",
+    "HALO Insertion (Solo)",
+    "", 
+    { ["SOLO"] execVM "scripts\A3M_fnc_executeHALO.sqf"; },
+    { player getVariable ["A3M_Halo_Solo", false] }
+] call ace_interact_menu_fnc_createAction;
+["CAManBase", 1, ["ACE_SelfActions"], _actionHaloSolo, true] call ace_interact_menu_fnc_addActionToClass;
+
+private _actionHaloSquad = [
+    "A3M_Halo_Action_Squad",
+    "HALO Insertion (Squad)",
+    "",
+    { ["SQUAD"] execVM "scripts\A3M_fnc_executeHALO.sqf"; },
+    { player getVariable ["A3M_Halo_Squad", false] }
+] call ace_interact_menu_fnc_createAction;
+["CAManBase", 1, ["ACE_SelfActions"], _actionHaloSquad, true] call ace_interact_menu_fnc_addActionToClass;
