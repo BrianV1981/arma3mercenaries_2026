@@ -161,7 +161,11 @@ if(LootToVehicleExtended_PlayAnimation) then {
             _itemsTransferred = _itemsTransferred + 1;
         } else {
             if (isNull _overflowPile) then {
-                _overflowPile = createVehicle ["GroundWeaponHolder", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                _overflowPile = createVehicle ["B_supplyCrate_F", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                clearWeaponCargoGlobal _overflowPile;
+                clearMagazineCargoGlobal _overflowPile;
+                clearItemCargoGlobal _overflowPile;
+                clearBackpackCargoGlobal _overflowPile;
             };
             _overflowPile addItemCargoGlobal [_x, 1];
             _itemsOverflowed = _itemsOverflowed + 1;
@@ -175,7 +179,11 @@ if(LootToVehicleExtended_PlayAnimation) then {
             _itemsTransferred = _itemsTransferred + 1;
         } else {
             if (isNull _overflowPile) then {
-                _overflowPile = createVehicle ["GroundWeaponHolder", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                _overflowPile = createVehicle ["B_supplyCrate_F", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                clearWeaponCargoGlobal _overflowPile;
+                clearMagazineCargoGlobal _overflowPile;
+                clearItemCargoGlobal _overflowPile;
+                clearBackpackCargoGlobal _overflowPile;
             };
             _overflowPile addBackpackCargoGlobal [_x, 1];
             _itemsOverflowed = _itemsOverflowed + 1;
