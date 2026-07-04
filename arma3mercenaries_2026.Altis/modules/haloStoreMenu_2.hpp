@@ -11,14 +11,16 @@
                 description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***After 5 minutes, a HALO option will be added to your ACE Self-Interact menu. Use it to explicitly designate your drop coordinates. In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
                 price = 10000;
                 stock = 100;
-		code = "if (player == (_this select 0)) then { [] spawn { systemChat '[A3M] Emergency HALO Drop will be authorized in 5 minutes.'; sleep 300; player setVariable ['A3M_Halo_Solo', true, true]; systemChat '[A3M] HALO Drop Authorized. Use ACE Self-Interact to designate coordinates.'; }; };";
+                condition = "!(player getVariable ['A3M_Halo_Solo', false])";
+		code = "if (player == (_this select 0)) then { [] spawn { ['<t align=''left''><t size=''0.8'' color=''#FFaa00''>EMERGENCY HALO</t><br/><t size=''0.6'' color=''#FFFFFF''>Emergency HALO Drop will be authorized in 5 minutes.</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText; sleep 300; player setVariable ['A3M_Halo_Solo', true, true]; ['<t align=''left''><t size=''0.8'' color=''#00FF00''>HALO AUTHORIZED</t><br/><t size=''0.6'' color=''#FFFFFF''>Use ACE Self-Interact to designate coordinates.</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText; }; };";
             };
 			class B_T_VTOL_01_vehicle_F {
                 displayName = "5 Minute Emergency HALO/HAHO AI Group Jump (Emergency)";
                 description = "***WARNING***IT IS RECOMMENDED TO CARRY YOUR BACKPACK WITH ALiVE PLAYER LOGISTICS***After 5 minutes, a HALO option will be added to your ACE Self-Interact menu. Use it to explicitly designate your group's drop coordinates. In military operations, HALO is also used for delivering equipment, supplies, or personnel, while HAHO is generally used exclusively for personnel.";
                 price = 30000;
                 stock = 100;
-		code = "if (player == (_this select 0)) then { [] spawn { systemChat '[A3M] Emergency Squad HALO Drop will be authorized in 5 minutes.'; sleep 300; player setVariable ['A3M_Halo_Squad', true, true]; systemChat '[A3M] Squad HALO Drop Authorized. Use ACE Self-Interact to designate coordinates.'; }; };";
+                condition = "!(player getVariable ['A3M_Halo_Squad', false])";
+		code = "if (player == (_this select 0)) then { [] spawn { ['<t align=''left''><t size=''0.8'' color=''#FFaa00''>EMERGENCY SQUAD HALO</t><br/><t size=''0.6'' color=''#FFFFFF''>Emergency Squad HALO Drop will be authorized in 5 minutes.</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText; sleep 300; player setVariable ['A3M_Halo_Squad', true, true]; ['<t align=''left''><t size=''0.8'' color=''#00FF00''>SQUAD HALO AUTHORIZED</t><br/><t size=''0.6'' color=''#FFFFFF''>Use ACE Self-Interact to designate coordinates.</t></t>', 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText; }; };";
             };
 	};
 };

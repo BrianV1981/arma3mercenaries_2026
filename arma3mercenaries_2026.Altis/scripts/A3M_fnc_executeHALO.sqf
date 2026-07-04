@@ -1,10 +1,10 @@
 params [["_jumpType", "SOLO"]];
 
 if (!alive player || {player getVariable ["ACE_isUnconscious", false]}) exitWith {
-    systemChat "[A3M] HALO aborted. Operator is incapacitated.";
+    ["<t align='left'><t size='0.8' color='#FF0000'>HALO ABORTED</t><br/><t size='0.6' color='#FFFFFF'>Operator is incapacitated.</t></t>", 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
 };
 
-systemChat "[A3M] Select HALO Drop Coordinates on the map.";
+["<t align='left'><t size='0.8' color='#00FF00'>HALO READY</t><br/><t size='0.6' color='#FFFFFF'>Select insertion coordinates on the map.</t></t>", 0.0, 0.1, 8, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
 openMap [true, false];
 
 if (!isNil "A3M_HALO_MapClick_EH") then {
@@ -18,7 +18,7 @@ A3M_HALO_MapClick_EH = addMissionEventHandler ["MapSingleClick", {
         params ["_units", "_pos", "_alt", "_shift"];
         
         if (!alive player || {player getVariable ["ACE_isUnconscious", false]}) exitWith {
-            systemChat "[A3M] HALO aborted. Operator is incapacitated.";
+            ["<t align='left'><t size='0.8' color='#FF0000'>HALO ABORTED</t><br/><t size='0.6' color='#FFFFFF'>Operator is incapacitated.</t></t>", 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
             removeMissionEventHandler ["MapSingleClick", A3M_HALO_MapClick_EH];
             openMap [false, false];
         };
@@ -130,7 +130,7 @@ A3M_HALO_MapClick_EH = addMissionEventHandler ["MapSingleClick", {
             };
 
         } else {
-            systemChat "[A3M] HALO Drop Aborted. You can open map to try again.";
+            ["<t align='left'><t size='0.8' color='#FFaa00'>HALO CANCELLED</t><br/><t size='0.6' color='#FFFFFF'>Insertion coordinates aborted.</t></t>", 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
             removeMissionEventHandler ["MapSingleClick", A3M_HALO_MapClick_EH];
         };
     };
