@@ -1,5 +1,8 @@
 # Changelog
 
+## [v2.0.2] - 2026-07-04
+- Fix: Finalize HALO UI notifications and anti-spam duplicate purchases
+
 ## [v2.0.1] - 2026-06-29
 - Fix: Corrected CAS vehicle classnames in ALiVE Combat Support (Closes #1)
 
