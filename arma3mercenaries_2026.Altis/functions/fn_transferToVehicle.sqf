@@ -204,7 +204,13 @@ if(LootToVehicleExtended_PlayAnimation) then {
     } forEach _containerList;
 
     // Display the total mass of loot transferred.
-    systemChat format ["%1 items transferred to vehicle. %2 overflow items dropped on ground.", _itemsTransferred, _itemsOverflowed];
+    if (_itemsOverflowed > 0) then {
+        systemChat format ["%1 items transferred to vehicle. %2 overflow items placed in temporary supply crate.", _itemsTransferred, _itemsOverflowed];
+        systemChat "WARNING: The overflow crate is NOT persistent and will be lost on server restart!";
+        hint "WARNING:\n\nThe overflow crate is NOT persistent!\nMove items to a saved vehicle before restart.";
+    } else {
+        systemChat format ["%1 items transferred successfully.", _itemsTransferred];
+    };
 
     // Optionally delete the bodies after looting if the option is enabled.
     if (LootToVehicleExtended_DeleteBodies) then {
