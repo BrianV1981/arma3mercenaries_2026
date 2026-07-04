@@ -161,7 +161,7 @@ if(LootToVehicleExtended_PlayAnimation) then {
             _itemsTransferred = _itemsTransferred + 1;
         } else {
             if (isNull _overflowPile) then {
-                _overflowPile = createVehicle ["B_supplyCrate_F", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                _overflowPile = createVehicle ["Box_NATO_Wps_F", _vehicle getPos [5, random 360], [], 0, "NONE"];
                 clearWeaponCargoGlobal _overflowPile;
                 clearMagazineCargoGlobal _overflowPile;
                 clearItemCargoGlobal _overflowPile;
@@ -179,7 +179,7 @@ if(LootToVehicleExtended_PlayAnimation) then {
             _itemsTransferred = _itemsTransferred + 1;
         } else {
             if (isNull _overflowPile) then {
-                _overflowPile = createVehicle ["B_supplyCrate_F", getPos _vehicle, [], 0, "CAN_COLLIDE"];
+                _overflowPile = createVehicle ["Box_NATO_Wps_F", _vehicle getPos [5, random 360], [], 0, "NONE"];
                 clearWeaponCargoGlobal _overflowPile;
                 clearMagazineCargoGlobal _overflowPile;
                 clearItemCargoGlobal _overflowPile;
@@ -192,15 +192,17 @@ if(LootToVehicleExtended_PlayAnimation) then {
 
     // Loop through each container and clear its cargo after transfer
     {
-		removeAllAssignedItems _x;  // Remove all assigned items from the container.
-		removeAllWeapons _x;  // Remove all weapons from the container.
-		removeBackpackGlobal _x;  // Remove the backpack from the container.
-		if (LootToVehicleExtended_TransferUniform) then {removeUniform _x;};  // Remove uniform if the option is enabled.
-		removeVest _x;  // Remove the vest from the container.
-		clearItemCargoGlobal _x;  // Clear all item cargo from the container.
-		clearWeaponCargoGlobal _x;  // Clear all weapon cargo from the container.
-		clearMagazineCargoGlobal _x;  // Clear all magazine cargo from the container.
-		clearBackpackCargoGlobal _x;  // Clear all backpack cargo from the container.
+        if (_x isKindOf "CAManBase") then {
+            removeAllAssignedItems _x;
+            removeAllWeapons _x;
+            removeBackpackGlobal _x;
+            if (LootToVehicleExtended_TransferUniform) then {removeUniform _x;};
+            removeVest _x;
+        };
+        clearItemCargoGlobal _x;
+        clearWeaponCargoGlobal _x;
+        clearMagazineCargoGlobal _x;
+        clearBackpackCargoGlobal _x;
     } forEach _containerList;
 
     // Display the total mass of loot transferred.
