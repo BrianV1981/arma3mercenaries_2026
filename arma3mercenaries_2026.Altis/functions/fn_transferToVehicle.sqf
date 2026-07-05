@@ -154,6 +154,10 @@ if(LootToVehicleExtended_PlayAnimation) then {
     private _itemsTransferred = 0;
     private _itemsOverflowed = 0;
 
+    // Strip empty strings (like empty weapon accessory slots) to prevent false overflow and engine errors
+    _items = _items - [""];
+    _backpacks = _backpacks - [""];
+
     // Add all items to the vehicle's cargo
 	{
         if (_vehicle canAdd _x) then {
