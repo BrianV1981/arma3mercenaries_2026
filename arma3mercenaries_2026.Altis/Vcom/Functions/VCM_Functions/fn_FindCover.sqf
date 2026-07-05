@@ -113,7 +113,7 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 			if (missionNamespace getVariable ["A3M_VCM_TrenchSmokeCover", true]) then {
 				private _smokeThrown = 0;
 				{
-					if (_smokeThrown < 2 && _x != _leader) then {
+					if (_smokeThrown < 2 && _x != _leader && alive _x) then {
 						private _smokes = magazines _x select {["smoke", _x, false] call BIS_fnc_inString};
 						if (count _smokes > 0) then {
 							private _smokeMag = _smokes select 0;
@@ -147,7 +147,11 @@ if (_typeListFinal isEqualTo [] && _weakListFinal isEqualTo []) exitWith
 			private _coverType = missionNamespace getVariable ["A3M_VCM_EmergencyCoverType", "ACE_envelope_big"];
 			if (_coverType == "CUSTOM") then {
 				_coverType = missionNamespace getVariable ["A3M_VCM_EmergencyCoverCustom", "ACE_envelope_big"];
-				if (_coverType == "") then { _coverType = "ACE_envelope_big"; };
+			};
+			
+			// Safety check: Prevent engine "Bad vehicle type" errors if the custom classname is invalid
+			if (!isClass (configFile >> "CfgVehicles" >> _coverType)) then { 
+				_coverType = "ACE_envelope_big"; 
 			};
 			
 			private _trench = createVehicle [_coverType, _trenchPos, [], 0, "CAN_COLLIDE"];
