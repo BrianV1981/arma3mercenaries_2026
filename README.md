@@ -111,3 +111,4 @@ This acts as the handshake between the connecting client and the server:
 *   **HoverGuy Sync:** Executes `HG\Setup\fn_playerServerInitialization.sqf` to sync the connecting player's bank account and Garage data.
 
 *(Note: `description.ext` also acts as a pseudo-init by pre-compiling all the `grad-persistence`, `grad-moneyMenu`, and custom `A3M` dialogs before any of these scripts even run).*
+ 
