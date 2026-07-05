@@ -104,4 +104,16 @@ If you need instructions on how to use specific, complex tools, do not guess. Yo
 - **To Read:** The project's synthesized lore and architecture live in the `memory-wiki/` folder. Always start by reading `memory-wiki/index.md`.
 - **To Write:** DO NOT manually edit the wiki pages. If you learn a new "Eureka" moment or have a new document to add, write the raw text file into `memory-wiki/_ingest/` and execute `python3 .aim_core/aim_cli.py wiki process` to hand it off to the Subconscious Daemon.
 
+## 12. THE DEPLOYMENT PIPELINE (TEST CENTER FIRST)
+You are strictly forbidden from circumventing the Operator's validation pipeline. You must NEVER manually merge code directly into the `main` branch or push untested code directly to the Beta Server.
+1. **The PR Phase:** Once your bug fix or feature is complete on your isolated `fix/<id>` branch, you MUST use `python3 .aim_core/aim_cli.py push "Commit Message"` to push the branch and open a Pull Request.
+2. **The Test Center Phase:** You must then explicitly wait for the Operator (or execute it yourself if commanded) to run `scripts/pack_test_mission.sh` and boot the Test Center (`3_TEST_SERVER_START.sh`) to empirically test your branch in a live environment.
+3. **The Production Phase:** ONLY after the Operator has tested and explicitly authorized the code can it be merged to `main`, packed via `scripts/pack_mission.sh`, and deployed to the Beta server.
+
+## 13. THE A3M OPERATOR PANEL (EXTERNAL REPOSITORY)
+The A3M Operator Panel is a separate, dedicated repository located outside of the core project at `/home/brian-vasquez/arma3server/a3m-operator-panel`. It works directly in conjunction with our deployment pipeline and protocol.
+- **Purpose:** This panel handles the actual bootstrapping, process management, and live orchestration of the Arma 3 Dedicated Servers via `tmux`.
+- **Key Scripts:** It houses the execution shell scripts like `1_BETA_SERVER_START.sh`, `3_TEST_SERVER_START.sh`, and the live terminal viewing tools.
+- **Boundaries:** Do not attempt to modify server configuration files or operator panel scripts locally inside the `aim-arma3` repository. They live externally in the `arma3server` directory and dictate the final execution environment.
+
 
