@@ -211,11 +211,11 @@ if(LootToVehicleExtended_PlayAnimation) then {
 
     // Display the total mass of loot transferred.
     if (_itemsOverflowed > 0) then {
-        systemChat format ["%1 items transferred to vehicle. %2 overflow items placed in temporary supply crate.", _itemsTransferred, _itemsOverflowed];
-        systemChat "WARNING: The overflow crate is NOT persistent and will be lost on server restart!";
-        hint "WARNING:\n\nThe overflow crate is NOT persistent!\nMove items to a saved vehicle before restart.";
+        private _a3mMsg = format ["<t align='left'><t size='0.8' color='#FFaa00'>OVERFLOW WARNING</t><br/><t size='0.6' color='#FFFFFF'>%1 items transferred.<br/>%2 overflow items in temporary NATO crate.<br/><br/><t color='#FF0000'>WARNING:</t> Crate is NOT persistent.<br/>Move to saved vehicle before restart.</t></t>", _itemsTransferred, _itemsOverflowed];
+        [_a3mMsg, 0.0, 0.1, 8, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
     } else {
-        systemChat format ["%1 items transferred successfully.", _itemsTransferred];
+        private _a3mMsg = format ["<t align='left'><t size='0.8' color='#00FF00'>TRANSFER COMPLETE</t><br/><t size='0.6' color='#FFFFFF'>%1 items transferred successfully.</t></t>", _itemsTransferred];
+        [_a3mMsg, 0.0, 0.1, 5, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
     };
 
     // Optionally delete the bodies after looting if the option is enabled.
