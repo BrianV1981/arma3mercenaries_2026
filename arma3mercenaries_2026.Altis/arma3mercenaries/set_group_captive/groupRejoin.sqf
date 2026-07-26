@@ -43,12 +43,18 @@ player setVariable ["arma3mercenaries_groupID", _playerUID, true];
             private _uID = _unit getVariable ["arma3mercenaries_groupID", ""];
             // Support both new (raw UID) and legacy (prefixed) formats
             if (_uID == _playerUID || _uID == format ["arma3mercenaries_groupID_%1", _playerUID]) then {
-                // Join the player's group — this initiates locality transfer
-                [_unit] joinSilent group player;
                 _claimedUnits pushBack _unit;
             };
         };
     } forEach allUnits;
+
+    // --- A3M: Sort Claimed Units by A3M_SquadIndex to preserve tactical layout ---
+    _claimedUnits = [_claimedUnits, [], { _x getVariable ["A3M_SquadIndex", 999] }, "ASCEND"] call BIS_fnc_sortBy;
+
+    // Join the player's group sequentially to preserve F-key layout
+    {
+        [_x] joinSilent group player;
+    } forEach _claimedUnits;
 
     // For each claimed unit, wait for locality transfer, then apply ACE captive state
     {

@@ -269,7 +269,7 @@ if (_dbCount > -1) then {
         };
 
         [{!isNull (_this select 0)}, {
-            params ["_thisUnit", "_posASL", "_dir", "_damage", "_aiUnitID", "_groupID", "_loadout", "_vars"];
+            params ["_thisUnit", "_posASL", "_dir", "_damage", "_aiUnitID", "_groupID", "_loadout", "_vars", "_squadIndex"];
 
             _thisUnit setDir _dir;
             _thisUnit setPosASL _posASL;
@@ -278,6 +278,7 @@ if (_dbCount > -1) then {
             // Reapply the AI Unit ID and Group ID variables
             _thisUnit setVariable ["arma3mercenaries_aiUnit", _aiUnitID, true];
             _thisUnit setVariable ["arma3mercenaries_groupID", _groupID, true];
+            _thisUnit setVariable ["A3M_SquadIndex", _squadIndex, true];
 			_thisUnit setVariable ["ALiVE_disableDynamicSimulation", true, true];    
             _thisUnit setVariable ["Vcm_Disable", true, true];   
 
@@ -295,7 +296,7 @@ if (_dbCount > -1) then {
             _thisUnit setVariable ["A3M_AwaitingActivation", true, true];
 
             [_vars,_thisUnit] call FUNC(loadObjectVars);
-        }, [_thisUnit, _posASL, _dir, _damage, _aiUnitID, _groupID, _loadout, _vars]] call CBA_fnc_waitUntilAndExecute;
+        }, [_thisUnit, _posASL, _dir, _damage, _aiUnitID, _groupID, _loadout, _vars, _forEachIndex]] call CBA_fnc_waitUntilAndExecute;
 
     } forEach _thisGroupUnits;
 
