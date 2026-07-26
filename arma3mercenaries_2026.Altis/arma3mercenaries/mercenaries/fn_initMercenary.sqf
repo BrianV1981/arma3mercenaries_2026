@@ -103,30 +103,34 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         
         playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];
 
-        private _parachute = createVehicle ["Steerable_Parachute_F", [0, 0, 0], [], 0, "FLY"];
+        private _spawnPos = [getPosATL _buyer select 0, getPosATL _buyer select 1, (getPosATL _buyer select 2) + 100];
         
-        if (!isNull _parachute) then {
-            _parachute setPos (_buyer modelToWorld [0, 0, 50]);
-            private _playerUID = getPlayerUID _buyer;
-            private _uniqueUnitID = str (diag_tickTime + random 1000);
-            private _aiUnitID = format ["arma3mercenaries_aiUnit_%1_%2", _uniqueUnitID, _playerUID];
-            
-            // A3M Group Fix: We now use the raw UID instead of formatted string for grouping
-            private _groupID = _playerUID;
+        private _playerUID = getPlayerUID _buyer;
+        private _uniqueUnitID = str (diag_tickTime + random 1000);
+        private _aiUnitID = format ["arma3mercenaries_aiUnit_%1_%2", _uniqueUnitID, _playerUID];
+        private _groupID = _playerUID;
 
-            private _mercGroup = createGroup [side _buyer, true];
-            private _unit = _mercGroup createUnit [_unitClass, position _parachute, [], 0, "FORM"];
-            _unit moveInDriver _parachute;
+        // Create the unit exactly at the elevated position
+        private _mercGroup = createGroup [side _buyer, true];
+        private _unit = _mercGroup createUnit [_unitClass, _spawnPos, [], 0, "CAN_COLLIDE"];
+        _unit setPosATL _spawnPos;
+        
+        // Create the parachute exactly at the elevated position
+        private _parachute = createVehicle ["Steerable_Parachute_F", _spawnPos, [], 0, "FLY"];
+        _parachute setPosATL _spawnPos;
+        
+        // Force the unit into the parachute
+        _unit moveInDriver _parachute;
 
-            _unit setVariable ['arma3mercenaries_aiUnit', _aiUnitID, true];
-            _unit setVariable ['arma3mercenaries_groupID', _groupID, true];
-            _unit setVariable ['Vcm_Disable', true, true];
-            
-            waitUntil { isTouchingGround _unit || (getPos _unit select 2) < 1 };
-            [_unit] joinSilent (group _buyer);
+        _unit setVariable ['arma3mercenaries_aiUnit', _aiUnitID, true];
+        _unit setVariable ['arma3mercenaries_groupID', _groupID, true];
+        _unit setVariable ['Vcm_Disable', true, true];
+        
+        // Join the player's group IMMEDIATELY to prevent hanging waitUntil issues
+        [_unit] joinSilent (group _buyer);
 
-            // A3M: Phase 1 & 3 - Mercenary Profile Generation & Tracking
-            if (isServer) then {
+        // A3M: Phase 1 & 3 - Mercenary Profile Generation & Tracking
+        if (isServer) then {
                 private _mercProfile = createHashMapFromArray [
                     ["Name", name _unit],
                     ["Class", _unitClass],
@@ -174,7 +178,6 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
                 // Phase 4: PMC Speech Overhaul (Apply Audio Event Handlers on the client)
                 [_unit] remoteExec ["A3M_fnc_applyChatterEHs", _buyer];
             };
-        };
     };
 
     waitUntil { sleep 1; (_blackfish distance2D _buyer) < 250 || !alive _blackfish };
