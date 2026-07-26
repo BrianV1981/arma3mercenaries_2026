@@ -48,7 +48,7 @@ minPlayerDistance = 0;
 #include "arma3mercenaries\a3m_blackmarket\ui\a3m_quartermasterHub_dialog.hpp"
 #include "arma3mercenaries\economy\ui\a3m_economyAudit_dialog.hpp"
 #include "arma3mercenaries\tasks\a3m_hvtTracker_dialog.hpp"
-
+#include "arma3mercenaries\set_group_captive\a3m_squadReorganizer_dialog.hpp"
 ///https://github.com/Ghosto27/LootToVehicle/tree/master
 ///ace area loot start
 

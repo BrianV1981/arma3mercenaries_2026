@@ -78,6 +78,12 @@ private _actLocateHVT = ["A3M_LocateHVT", "Palantir Gotham (Intelligence and Tra
 private _actGrpReform = ["groupReform","Reform Squad (Resets Squad)","",{execVM "arma3mercenaries\set_group_captive\squadReform.sqf"},{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpReform] call ace_interact_menu_fnc_addActionToObject;
 
+private _actGrpReorg = ["groupReorganizer","Squad Reorganizer Interface","",{execVM "arma3mercenaries\set_group_captive\fn_openSquadReorganizer.sqf"},{true}] call ace_interact_menu_fnc_createAction;
+[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpReorg] call ace_interact_menu_fnc_addActionToObject;
+
+A3M_fnc_squadReorganizerMove = compileFinal (preprocessFileLineNumbers "arma3mercenaries\set_group_captive\fn_squadReorganizerMove.sqf");
+A3M_fnc_squadReorganizerApply = compileFinal (preprocessFileLineNumbers "arma3mercenaries\set_group_captive\fn_squadReorganizerApply.sqf");
+
 private _actGrpRecall = ["groupTeleport","Recall Squad (Group Teleport)","",{execVM "arma3mercenaries\group_teleport\groupTeleport.sqf"},{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpRecall] call ace_interact_menu_fnc_addActionToObject;
 
