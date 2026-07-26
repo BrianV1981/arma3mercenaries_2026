@@ -59,6 +59,7 @@ if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
 
     private _vtol = createVehicle [_vtolClass, _startPos, [], 0, "FLY"]; 
     _vtol allowDamage false; 
+    _vtol flyInHeight 75;
     
     try { _vtol animateDoor ['Door_1_source', 1]; } catch {};
 
@@ -68,19 +69,16 @@ if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
 
     private _pilot = _group createUnit [_pilotClass, _startPos, [], 0, "FORM"]; 
     _pilot moveInDriver _vtol; 
+    _pilot setVariable ["ALiVE_disableDynamicSimulation", true, true];    
+    _pilot setVariable ["Vcm_Disable", true, true];    
 
-    private _gunner1 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-    private _gunner2 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-    private _gunner3 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-
-    _gunner1 moveInTurret [_vtol, [0]];  
-    _gunner2 moveInTurret [_vtol, [1]];  
-    _gunner3 moveInTurret [_vtol, [2]];  
-
-    {    
-        _x setVariable ["ALiVE_disableDynamicSimulation", true, true];    
-        _x setVariable ["Vcm_Disable", true, true];    
-    } forEach [_pilot, _gunner1, _gunner2, _gunner3]; 
+    private _turrets = fullCrew [_vtol, "turret", true];
+    {
+        private _gunner = _group createUnit [_crewClass, _startPos, [], 0, "FORM"];
+        _gunner moveInTurret [_vtol, _x select 3];
+        _gunner setVariable ["ALiVE_disableDynamicSimulation", true, true];    
+        _gunner setVariable ["Vcm_Disable", true, true]; 
+    } forEach _turrets;
 
     private _endPos = _playerPos getPos [2000, _direction]; 
 

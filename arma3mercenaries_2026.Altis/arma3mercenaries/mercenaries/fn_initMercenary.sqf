@@ -59,6 +59,7 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
 
     private _blackfish = createVehicle [_vtolClass, _startPos, [], 0, "FLY"]; 
     _blackfish allowDamage false; 
+    _blackfish flyInHeight 75;
     
     try { _blackfish animateDoor ['Door_1_source', 1]; } catch {};
 
@@ -68,20 +69,16 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
 
     private _pilot = _group createUnit [_pilotClass, _startPos, [], 0, "FORM"]; 
     _pilot moveInDriver _blackfish; 
+    _pilot setVariable ["ALiVE_disableDynamicSimulation", true, true];    
+    _pilot setVariable ["Vcm_Disable", true, true];    
 
-    // VTOLs usually have 3 turrets/crew seats
-    private _gunner1 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-    private _gunner2 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-    private _gunner3 = _group createUnit [_crewClass, _startPos, [], 0, "FORM"]; 
-
-    _gunner1 moveInTurret [_blackfish, [0]];  
-    _gunner2 moveInTurret [_blackfish, [1]];  
-    _gunner3 moveInTurret [_blackfish, [2]];  
-
-    {    
-        _x setVariable ["ALiVE_disableDynamicSimulation", true, true];    
-        _x setVariable ["Vcm_Disable", true, true];    
-    } forEach [_pilot, _gunner1, _gunner2, _gunner3]; 
+    private _turrets = fullCrew [_blackfish, "turret", true];
+    {
+        private _gunner = _group createUnit [_crewClass, _startPos, [], 0, "FORM"];
+        _gunner moveInTurret [_blackfish, _x select 3];
+        _gunner setVariable ["ALiVE_disableDynamicSimulation", true, true];    
+        _gunner setVariable ["Vcm_Disable", true, true]; 
+    } forEach _turrets;
 
     private _endPos = _playerPos getPos [2000, _direction]; 
 
