@@ -100,7 +100,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.1, 0.3, 0.5, 1};
-            action = "execVM 'arma3mercenaries\group_teleport\groupTeleport.sqf'; closeDialog 0;";
+            action = "execVM 'arma3mercenaries\group_teleport\groupTeleport.sqf';";
         };
         class TxtRecall: HG_RscStructuredText {
             idc = -1;
@@ -120,7 +120,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.5, 0.1, 0.1, 1};
-            action = "execVM 'arma3mercenaries\set_group_captive\setGroupCaptive_proofOfConcept.sqf'; closeDialog 0;";
+            action = "execVM 'arma3mercenaries\set_group_captive\setGroupCaptive_proofOfConcept.sqf';";
         };
         class TxtStandDown: HG_RscStructuredText {
             idc = -1;
@@ -140,7 +140,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.1, 0.5, 0.1, 1};
-            action = "execVM 'arma3mercenaries\set_group_captive\groupRejoin_proofOfConcept.sqf'; closeDialog 0;";
+            action = "execVM 'arma3mercenaries\set_group_captive\groupRejoin_proofOfConcept.sqf';";
         };
         class TxtMobilize: HG_RscStructuredText {
             idc = -1;
@@ -160,7 +160,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.4, 0.4, 0.1, 1};
-            action = "[5] execVM 'arma3mercenaries\set_group_captive\groupMountTurrets.sqf'; closeDialog 0;";
+            action = "[5] execVM 'arma3mercenaries\set_group_captive\groupMountTurrets.sqf';";
         };
         class TxtQuickLoad: HG_RscStructuredText {
             idc = -1;
@@ -180,7 +180,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.4, 0.3, 0.1, 1};
-            action = "[50] execVM 'arma3mercenaries\set_group_captive\groupMountTurrets.sqf'; closeDialog 0;";
+            action = "[50] execVM 'arma3mercenaries\set_group_captive\groupMountTurrets.sqf';";
         };
         class TxtTurrets: HG_RscStructuredText {
             idc = -1;
@@ -200,7 +200,7 @@ class A3M_SquadReorganizerDialog {
             w = 0.16 * safezoneW;
             h = 0.04 * safezoneH;
             colorBackground[] = {0.4, 0.2, 0.6, 1};
-            action = "execVM 'arma3mercenaries\set_group_captive\squadReform.sqf'; closeDialog 0;";
+            action = "execVM 'arma3mercenaries\set_group_captive\squadReform.sqf';";
         };
         class TxtReform: HG_RscStructuredText {
             idc = -1;

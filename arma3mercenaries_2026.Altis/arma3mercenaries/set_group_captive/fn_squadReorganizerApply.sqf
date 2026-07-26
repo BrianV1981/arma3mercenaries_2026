@@ -1,8 +1,6 @@
 // File: arma3mercenaries\set_group_captive\fn_squadReorganizerApply.sqf
 
 disableSerialization;
-private _display = findDisplay 7050;
-if (!isNull _display) then { closeDialog 0; };
 
 private _player = player;
 private _oldGroup = group _player;
