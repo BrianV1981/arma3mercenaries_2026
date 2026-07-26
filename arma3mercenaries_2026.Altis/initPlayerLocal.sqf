@@ -75,32 +75,14 @@ private _actLocateHVT = ["A3M_LocateHVT", "Palantir Gotham (Intelligence and Tra
 // 4. Squad Controls -> [Squad Command]
 [] execVM "arma3mercenaries\set_group_captive\groupRejoin.sqf";
 
-private _actGrpReform = ["groupReform","Reform Squad (Resets Squad)","",{execVM "arma3mercenaries\set_group_captive\squadReform.sqf"},{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpReform] call ace_interact_menu_fnc_addActionToObject;
-
-private _actGrpReorg = ["groupReorganizer","Squad Reorganizer Interface","",{execVM "arma3mercenaries\set_group_captive\fn_openSquadReorganizer.sqf"},{true}] call ace_interact_menu_fnc_createAction;
+private _actGrpReorg = ["groupReorganizer","A3M Squad UI","",{execVM "arma3mercenaries\set_group_captive\fn_openSquadReorganizer.sqf"},{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpReorg] call ace_interact_menu_fnc_addActionToObject;
 
 A3M_fnc_squadReorganizerMove = compileFinal (preprocessFileLineNumbers "arma3mercenaries\set_group_captive\fn_squadReorganizerMove.sqf");
 A3M_fnc_squadReorganizerApply = compileFinal (preprocessFileLineNumbers "arma3mercenaries\set_group_captive\fn_squadReorganizerApply.sqf");
 
-private _actGrpRecall = ["groupTeleport","Recall Squad (Group Teleport)","",{execVM "arma3mercenaries\group_teleport\groupTeleport.sqf"},{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpRecall] call ace_interact_menu_fnc_addActionToObject;
-
-private _actGrpStandDown = ["groupSetCaptive","Stand Down (Deactivate)","",{execVM "arma3mercenaries\set_group_captive\setGroupCaptive_proofOfConcept.sqf"},{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpStandDown] call ace_interact_menu_fnc_addActionToObject;
-
-private _actGrpMobilize = ["groupRejoin","Mobilize (Reactivate)","",{execVM "arma3mercenaries\set_group_captive\groupRejoin_proofOfConcept.sqf"},{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMobilize] call ace_interact_menu_fnc_addActionToObject;
-
 private _actGrpMountTurrets5 = ["groupMountTurrets5","Quick Load (5m)","",{ [5] execVM "arma3mercenaries\set_group_captive\groupMountTurrets.sqf" },{true}] call ace_interact_menu_fnc_createAction;
 [player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMountTurrets5] call ace_interact_menu_fnc_addActionToObject;
-
-private _actGrpMountTurrets50 = ["groupMountTurrets50","Secure Base Turrets (50m)","",{ [50] execVM "arma3mercenaries\set_group_captive\groupMountTurrets.sqf" },{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpMountTurrets50] call ace_interact_menu_fnc_addActionToObject;
-
-private _actGrpAssemble = ["groupAssemble","Assemble Formations","",{execVM "arma3mercenaries\set_group_captive\groupRejoin.sqf"},{true}] call ace_interact_menu_fnc_createAction;
-[player, 1, ["ACE_SelfActions", "A3M_SquadCommand"], _actGrpAssemble] call ace_interact_menu_fnc_addActionToObject;
 
 
 // 4. Database Controls -> [Constellis Database]
