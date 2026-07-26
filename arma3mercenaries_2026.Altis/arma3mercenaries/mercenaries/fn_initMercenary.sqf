@@ -103,7 +103,12 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         
         playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];
 
-        private _spawnPos = [getPosATL _buyer select 0, getPosATL _buyer select 1, (getPosATL _buyer select 2) + 100];
+        // Calculate a safe drop position behind and below the aircraft to avoid collision
+        // modelToWorld [X, Y, Z] -> [Left/Right, Forward/Backward, Up/Down]
+        private _spawnPos = _blackfish modelToWorld [0, -30, -15];
+        
+        // Give the unit a slight push in the direction the plane is flying so it looks natural
+        private _vtolVel = velocity _blackfish;
         
         private _playerUID = getPlayerUID _buyer;
         private _uniqueUnitID = str (diag_tickTime + random 1000);
@@ -113,11 +118,14 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         // Create the unit exactly at the elevated position
         private _mercGroup = createGroup [side _buyer, true];
         private _unit = _mercGroup createUnit [_unitClass, _spawnPos, [], 0, "CAN_COLLIDE"];
-        _unit setPosATL _spawnPos;
+        _unit setPos _spawnPos;
         
         // Create the parachute exactly at the elevated position
         private _parachute = createVehicle ["Steerable_Parachute_F", _spawnPos, [], 0, "FLY"];
-        _parachute setPosATL _spawnPos;
+        _parachute setPos _spawnPos;
+        
+        // Match speed so they don't get violently ripped out of the sky
+        _parachute setVelocity [(_vtolVel select 0) * 0.5, (_vtolVel select 1) * 0.5, -5];
         
         // Force the unit into the parachute
         _unit moveInDriver _parachute;
