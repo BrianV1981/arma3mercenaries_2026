@@ -49,7 +49,17 @@ player setVariable ["arma3mercenaries_groupID", _playerUID, true];
     } forEach allUnits;
 
     // --- A3M: Sort Claimed Units by A3M_SquadIndex to preserve tactical layout ---
-    _claimedUnits = [_claimedUnits, [], { _x getVariable ["A3M_SquadIndex", 999] }, "ASCEND"] call BIS_fnc_sortBy;
+    private _sortArray = [];
+    {
+        _sortArray pushBack [_x getVariable ["A3M_SquadIndex", 999], _x];
+    } forEach _claimedUnits;
+    
+    _sortArray sort true; // Sorts ascending based on the first element (the index)
+    
+    _claimedUnits = [];
+    {
+        _claimedUnits pushBack (_x select 1);
+    } forEach _sortArray;
 
     // Join the player's group sequentially to preserve F-key layout
     {
