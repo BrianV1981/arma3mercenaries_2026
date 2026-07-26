@@ -21,7 +21,12 @@ private _units = units (group player);
 {
     private _name = name _x;
     private _role = getText (configFile >> "CfgVehicles" >> typeOf _x >> "displayName");
-    private _fKey = format ["F%1", _forEachIndex + 2]; // Player is F1
+    
+    // Arma 3 uses 9 AI per page (F2 to F10). 
+    private _page = floor (_forEachIndex / 9) + 1;
+    private _fNum = (_forEachIndex % 9) + 2;
+    private _fKey = format ["Pg%1-F%2", _page, _fNum];
+    
     private _index = _listbox lbAdd format ["[%1] %2 (%3)", _fKey, _name, _role];
     _listbox lbSetData [_index, str _forEachIndex];
 } forEach A3M_Reorganizer_Units;
