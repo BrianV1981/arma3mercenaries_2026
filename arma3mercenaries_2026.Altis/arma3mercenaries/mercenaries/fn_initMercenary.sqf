@@ -95,7 +95,7 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
     [_group, _unitClass, _buyer, _blackfish] spawn {
         params ["_group", "_unitClass", "_buyer", "_blackfish"]; 
 
-        waitUntil { sleep 0.5; (_blackfish distance2D _buyer) < 250 || !alive _blackfish };
+        waitUntil { sleep 0.5; (_blackfish distance2D _buyer) < 75 || !alive _blackfish };
         if (!alive _blackfish) exitWith {};
         
         playSound3D ["a3\dubbing_f\modules\supports\transport_accomplished.ogg", _buyer];

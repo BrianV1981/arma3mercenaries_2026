@@ -102,11 +102,20 @@ if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
         playSound3D ["a3\dubbing_f\modules\supports\drop_accomplished.ogg", _buyer];
 
         private _vtol = vehicle (leader _group);
-        private _dropPos = getPosATL _vtol;
-        _dropPos set [2, (_dropPos select 2) - 5]; // Drop slightly below the plane to avoid collision
+        
+        // Use modelToWorld to spawn it exactly behind and below the VTOL (bypassing Arma collision snap)
+        private _dropPos = _vtol modelToWorld [0, -30, -15];
 
         private _parachute = createVehicle ["B_Parachute_02_F", _dropPos, [], 0, "FLY"];
-        private _cargo = createVehicle [_cargoClass, _dropPos, [], 0, "NONE"];
+        _parachute setPos _dropPos;
+        
+        private _cargo = createVehicle [_cargoClass, _dropPos, [], 0, "CAN_COLLIDE"];
+        _cargo setPos _dropPos;
+        
+        // Apply VTOL velocity so the crate doesn't stop mid-air
+        private _vtolVel = velocity _vtol;
+        _parachute setVelocity [(_vtolVel select 0) * 0.5, (_vtolVel select 1) * 0.5, -5];
+        
         _cargo attachTo [_parachute, [0,0,0]];
 
         // Clear default cargo
