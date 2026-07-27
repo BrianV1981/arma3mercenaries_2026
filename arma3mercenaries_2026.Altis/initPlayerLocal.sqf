@@ -16,6 +16,21 @@ player setUnitTrait ["explosiveSpecialist",true];
 // A3M Client-Side Function Compilation
 A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_submitTicket.sqf");
 
+// --- A3M Invincibility Failsafe (Issue 162, 163, 164) ---
+// If a player manually un-cuffs a mercenary using the ACE interact menu instead of 
+// using the A3M "Mobilize" button, this clears the underlying allowDamage false.
+["ace_captives_setHandcuffed", {
+    params ["_unit", "_state"];
+    if (!_state && !isPlayer _unit && (_unit getVariable ["arma3mercenaries_aiUnit", ""] != "") && local _unit) then {
+        _unit setCaptive false;
+        _unit allowDamage true;
+        _unit setVariable ["ace_medical_allowDamage", true, true];
+        _unit enableAI "ALL";
+        _unit setVariable ["A3M_AwaitingActivation", nil, true];
+        diag_log format ["[A3M] Invincibility failsafe triggered for %1 — handcuffs removed manually.", name _unit];
+    };
+}] call CBA_fnc_addEventHandler;
+
 // -------------------------------------------------------------------------
 // --- A3M TICKETING SYSTEM: ESC Menu Injector (#70) ---
 // -------------------------------------------------------------------------
