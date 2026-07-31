@@ -99,12 +99,20 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
     {
         params ["_side", "_type", "_callsign", "_safePos", "_dir", "_classname", "_durationSecs", "_scriptId"];
         
+        if (isNil "A3M_CombatSupportCounter") then { A3M_CombatSupportCounter = 0; };
+        A3M_CombatSupportCounter = A3M_CombatSupportCounter + 1;
+        private _prefix = "";
+        if (A3M_CombatSupportCounter < 10) then { _prefix = format ["00%1", A3M_CombatSupportCounter]; }
+        else { if (A3M_CombatSupportCounter < 100) then { _prefix = format ["0%1", A3M_CombatSupportCounter]; }
+        else { _prefix = str A3M_CombatSupportCounter; };};
+        private _safeCallsign = format ["[%1] %2", _prefix, _callsign];
+
         private _supportData = [];
         if (_type == "ARTY") then {
             _supportData = [
                 _safePos,
                 _classname,
-                _callsign,
+                _safeCallsign,
                 1,
                 [
                     ["HE", 30],
@@ -124,7 +132,7 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
                 _safePos,
                 _dir,
                 _classname,
-                _callsign,
+                _safeCallsign,
                 "[(_this select 0)] call A3M_fnc_disableVcom;",
                 "0"
             ];
@@ -140,12 +148,12 @@ if (_safePos isEqualTo [0,0,0]) exitWith {
         
         [
             {
-                params ["_side", "_type", "_callsign", "_scriptId"];
-                [_side, _type, _callsign] call ALiVE_fnc_combatSupportRemove;
+                params ["_side", "_type", "_safeCallsign", "_scriptId", "_originalCallsign"];
+                [_side, _type, _safeCallsign] call ALiVE_fnc_combatSupportRemove;
                 A3M_ActiveCombatSupports set [_scriptId, false];
-                [format ["%1 has left the AO.", _callsign]] remoteExec ["systemChat", 0];
+                [format ["%1 has left the AO.", _originalCallsign]] remoteExec ["systemChat", 0];
             },
-            [_side, _type, _callsign, _scriptId],
+            [_side, _type, _safeCallsign, _scriptId, _callsign],
             _durationSecs
         ] call CBA_fnc_waitAndExecute;
     },
