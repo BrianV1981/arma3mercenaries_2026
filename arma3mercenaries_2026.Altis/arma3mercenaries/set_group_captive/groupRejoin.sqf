@@ -66,6 +66,9 @@ player setVariable ["arma3mercenaries_groupID", _playerUID, true];
         [_x] joinSilent group player;
     } forEach _claimedUnits;
 
+    // Shield the entire newly-assembled group from VCOM so it doesn't hijack them on spawn
+    [group player] call A3M_fnc_disableVcom;
+
     // For each claimed unit, wait for locality transfer, then apply ACE captive state
     {
         private _unit = _x;

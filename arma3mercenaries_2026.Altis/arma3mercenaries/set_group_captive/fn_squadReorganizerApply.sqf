@@ -22,6 +22,9 @@ _newGroup selectLeader _player;
     _x setVariable ["A3M_SquadIndex", _forEachIndex + 1, true]; // Sync new index
 } forEach A3M_Reorganizer_Units;
 
+// Re-shield the new group so VCOM doesn't hijack it
+[_newGroup] call A3M_fnc_disableVcom;
+
 // 4. Flush their AI brains by forcing them to stop, then return to formation
 {
     if (!isPlayer _x) then {

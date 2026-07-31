@@ -22,6 +22,9 @@ _newGroup selectLeader _player;
 // Step 3: Move all AI over to the new group instantly
 (_squadMembers - [_player]) joinSilent _newGroup;
 
+// Re-shield the new group so VCOM doesn't hijack it
+[_newGroup] call A3M_fnc_disableVcom;
+
 // Step 4: Flush their AI brains by forcing them to stop, then return to formation
 {
     if (!isPlayer _x) then {
