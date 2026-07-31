@@ -1,5 +1,8 @@
 # Changelog
 
+## [v2.0.9] - 2026-07-31
+- Fix: ALiVE combat support UI listbox indexing bug fixed by prefixing callsigns with chronological counter (Closes #173)
+
 ## [v2.0.2] - 2026-07-04
 - Fix: Finalize HALO UI notifications and anti-spam duplicate purchases
 
