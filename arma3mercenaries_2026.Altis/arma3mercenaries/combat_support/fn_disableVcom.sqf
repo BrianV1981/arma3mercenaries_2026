@@ -26,13 +26,11 @@ if (_target isEqualType objNull) then {
 if (!isNull _group) then {
     _group setVariable ["Vcm_Disable", true, true];
     _group setVariable ["ALiVE_disableDynamicSimulation", true, true];
-    _group allowFleeing 0;
     
     {
         _x setVariable ["Vcm_Disable", true, true];
         _x setVariable ["ALiVE_disableDynamicSimulation", true, true];
         _x disableAI "AUTOCOMBAT";
-        _x allowFleeing 0;
     } forEach (units _group);
 };
 
