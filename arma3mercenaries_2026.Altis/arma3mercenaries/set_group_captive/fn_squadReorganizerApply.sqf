@@ -11,10 +11,11 @@ private _oldGroup = group _player;
 private _startMsg = "<t align='left'><t size='0.8' color='#00aaff'>SQUAD REORGANIZED</t><br/><t size='0.6' color='#FFFFFF'>Applying new tactical layout...</t></t>";
 [_startMsg, 0.0, 0.1, 3, 0.5, 0, 789] spawn BIS_fnc_dynamicText;
 
-// 1. Create a brand new group. 
+// 1. Create a brand new group. The 'true' flag ensures it auto-deletes when empty
 private _newGroup = createGroup [side _player, true];
+_newGroup setVariable ["ALIVE_profileIgnore", true, true];
 
-// 2. Move the player into the new group and establish absolute leadership
+// 2. Move the player into the new group and re-assert leadership
 [_player] joinSilent _newGroup;
 _newGroup selectLeader _player;
 

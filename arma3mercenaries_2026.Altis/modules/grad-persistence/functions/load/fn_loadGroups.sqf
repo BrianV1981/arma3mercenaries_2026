@@ -193,6 +193,9 @@ if (_dbCount > -1) then {
     };
     
     private _thisGroup = createGroup _thisGroupSide;
+    _thisGroup setVariable ["ALIVE_profileIgnore", true, true];
+    _thisGroup setVariable ["Vcm_Disable", true, true];
+    _thisGroup setVariable ["ALiVE_disableDynamicSimulation", true, true];
 
     {
         // --- PHASE 10: FLAT ARRAY OVERHAUL ---
@@ -281,6 +284,7 @@ if (_dbCount > -1) then {
             _thisUnit setVariable ["A3M_SquadIndex", _squadIndex, true];
 			_thisUnit setVariable ["ALiVE_disableDynamicSimulation", true, true];    
             _thisUnit setVariable ["Vcm_Disable", true, true];   
+            _thisUnit setVariable ["ALIVE_profileIgnore", true, true];
 
             // Apply the saved loadout to the unit
             if (count _loadout > 0) then {

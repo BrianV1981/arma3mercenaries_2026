@@ -18,6 +18,7 @@
 // Forces the player into a brand new, clean squad upon login to prevent Arma 3 
 // from aggressively merging them into an abandoned squad (which would cause them to inherit another player's stranded AI).
 private _freshSquad = createGroup [side player, true];
+_freshSquad setVariable ["ALIVE_profileIgnore", true, true];
 [player] joinSilent _freshSquad;
 
 // Get the player's UID and tag the player

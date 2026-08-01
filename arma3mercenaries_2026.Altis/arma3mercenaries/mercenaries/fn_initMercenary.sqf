@@ -114,6 +114,7 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
 
         // Create the unit exactly at the elevated position
         private _mercGroup = createGroup [side _buyer, true];
+        _mercGroup setVariable ["ALIVE_profileIgnore", true, true];
         private _unit = _mercGroup createUnit [_unitClass, _spawnPos, [], 0, "CAN_COLLIDE"];
         _unit setPos _spawnPos;
         
@@ -130,6 +131,7 @@ _sideConfig params ["_vtolClass", "_pilotClass", "_crewClass"];
         _unit setVariable ['arma3mercenaries_aiUnit', _aiUnitID, true];
         _unit setVariable ['arma3mercenaries_groupID', _groupID, true];
         _unit setVariable ['Vcm_Disable', true, true];
+        _unit setVariable ['ALIVE_profileIgnore', true, true];
         
         // Join the player's group IMMEDIATELY to prevent hanging waitUntil issues
         [_unit] joinSilent (group _buyer);

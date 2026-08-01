@@ -26,11 +26,13 @@ if (_target isEqualType objNull) then {
 if (!isNull _group) then {
     _group setVariable ["Vcm_Disable", true, true];
     _group setVariable ["ALiVE_disableDynamicSimulation", true, true];
+    _group setVariable ["ALIVE_profileIgnore", true, true];
     
     {
         if (!isPlayer _x) then {
             _x setVariable ["Vcm_Disable", true, true];
             _x setVariable ["ALiVE_disableDynamicSimulation", true, true];
+            _x setVariable ["ALIVE_profileIgnore", true, true];
             _x allowFleeing 0;
         };
     } forEach (units _group);

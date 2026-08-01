@@ -14,6 +14,7 @@ private _startMsg = "<t align='left'><t size='0.8' color='#00aaff'>SQUAD REFORM<
 // Step 1: Create a brand new group. 
 // The 'true' flag ensures the group is automatically deleted by the engine when empty, saving group slots!
 private _newGroup = createGroup [side _player, true];
+_newGroup setVariable ["ALIVE_profileIgnore", true, true];
 
 // Step 2: Move the player into the new group and establish absolute leadership
 [_player] joinSilent _newGroup;
