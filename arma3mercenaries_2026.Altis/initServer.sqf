@@ -567,3 +567,38 @@ if (missionNamespace getVariable ["A3M_CSAR_F4_Enabled", false]) then {
 }] call CBA_fnc_addEventHandler;
 
 HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
+// --- A3M STORE CONTAINER RESET (Issue #178) ---
+// grad-persistence saves these containers to SQLite because they have owner tags,
+// which causes them to teleport away from the Quartermaster if players move them.
+// This script waits until grad-persistence finishes loading, then forces them back.
+[] spawn {
+    waitUntil { missionNamespace getVariable ["A3M_ServerLoaded", false] };
+    sleep 2; // Extra buffer to ensure physx has settled
+    
+    if (!isNil "container_1") then {
+        container_1 setpos [26640.445, 26640.445, 0];
+        container_1 setDir 309;
+        clearMagazineCargoGlobal container_1;
+        clearWeaponCargoGlobal container_1;
+        clearBackpackCargoGlobal container_1;
+        clearItemCargoGlobal container_1;
+    };
+    if (!isNil "cpu_1") then {
+        cpu_1 setpos [26642.445, 24546.69, 1.853];
+    };
+    
+    if (!isNil "container_2") then {
+        container_2 setpos [23232.299, 18394.148, 0];
+        container_2 setDir 270;
+        clearMagazineCargoGlobal container_2;
+        clearWeaponCargoGlobal container_2;
+        clearBackpackCargoGlobal container_2;
+        clearItemCargoGlobal container_2;
+    };
+    if (!isNil "cpu_3") then {
+        cpu_3 setpos [23227.754, 18402.428, 1.636];
+        cpu_3 setDir 270;
+    };
+    
+    diag_log "[A3M STORE] Cargo containers and CPUs successfully hard-reset to original coordinates.";
+};
