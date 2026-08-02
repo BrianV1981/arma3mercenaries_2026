@@ -102,7 +102,7 @@ if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
         playSound3D ["a3\dubbing_f\modules\supports\drop_accomplished.ogg", _buyer];
 
         // --- A3M BUGFIX #177: Supply Drop Warning UI (Style Guide Compliant) ---
-        private _a3mMsg = "<t align='left'><t font='RobotoCondensedBold' size='0.8' color='#FF8C00'>SUPPLY DROP DELIVERED</t><br/><t font='RobotoCondensed' size='0.6' color='#FFFFFF'>Please remember to check BOTH your standard inventory (I) and your<br/>Fortification inventory (U) to access all delivered items!</t></t>";
+        private _a3mMsg = "<t align='left'><t font='RobotoCondensedBold' size='0.8' color='#FF8C00'>SUPPLY DROP DELIVERED</t><br/><t font='RobotoCondensed' size='0.6' color='#FFFFFF'>Please remember to check BOTH your standard inventory and the container's<br/>Fortification inventory (via ACE Interaction) to access all delivered items!</t></t>";
         [_a3mMsg, 0.0, 0.1, 8, 0.5, 0, 789] remoteExec ["BIS_fnc_dynamicText", _buyer, false];
 
         private _vtol = vehicle (leader _group);
