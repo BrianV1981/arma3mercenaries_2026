@@ -101,6 +101,12 @@ if (_buyerUID != "" && !isNil "A3M_LiveProfiles") then {
         
         playSound3D ["a3\dubbing_f\modules\supports\drop_accomplished.ogg", _buyer];
 
+        // --- A3M BUGFIX #177: Supply Drop Warning UI ---
+        [
+            "<t align='center'><t font='RobotoCondensedBold' size='1.2' color='#ffaa00'>SUPPLY DROP DELIVERED</t><br/><br/><t font='RobotoCondensed' size='1.0' color='#FFFFFF'>Please remember to check BOTH your standard inventory (I) and your Fortification inventory (U) to access all delivered items!</t></t>",
+            { hint parseText _this; }
+        ] remoteExec ["call", _buyer, false];
+
         private _vtol = vehicle (leader _group);
         
         // Use modelToWorld to spawn it exactly behind and below the VTOL (bypassing Arma collision snap)
