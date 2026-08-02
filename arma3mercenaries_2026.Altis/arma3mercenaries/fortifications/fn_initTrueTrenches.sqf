@@ -50,8 +50,9 @@ private _onAction = {
     _previewObj setDir _dir;
     
     [
-        _digTime,
-        [_previewObj, _targetPos, _dir],
+        "Digging Trench...", // Title
+        _digTime,            // Total time
+        {true},              // Condition (runs every frame)
         {
             params ["_args"];
             _args params ["_previewObj", "_targetPos", "_dir"];
@@ -70,7 +71,7 @@ private _onAction = {
             deleteVehicle _previewObj;
             hint "Trench digging cancelled.";
         },
-        "Digging Trench..."
+        [_previewObj, _targetPos, _dir] // Arguments
     ] call CBA_fnc_progressBar;
 };
 
