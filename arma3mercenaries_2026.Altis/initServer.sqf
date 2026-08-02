@@ -609,37 +609,52 @@ HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
     sleep 5; // Wait for physics
     
     private _trenchesRestored = 0;
+    
+    private _fnc_restoreTrench = {
+        params ["_anchor", "_size"];
+        private _targetPos = getPos _anchor;
+        private _dir = getDir _anchor;
+        
+        private _aslCenter = (getPosASL _anchor) select 2;
+        
+        private _depth = 1.2;
+        private _radius = 1.5;
+        if (_size == "SMALL") then {
+            _depth = 0.6;
+            _radius = 0.8;
+        };
+        
+        private _points = [];
+        _points append [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
+        
+        private _leftPos = _targetPos getPos [_radius, _dir - 90];
+        _points append [_leftPos select 0, _leftPos select 1, _aslCenter - _depth];
+        
+        private _rightPos = _targetPos getPos [_radius, _dir + 90];
+        _points append [_rightPos select 0, _rightPos select 1, _aslCenter - _depth];
+        
+        private _frontPos = _targetPos getPos [_radius, _dir];
+        _points append [_frontPos select 0, _frontPos select 1, _aslCenter - _depth];
+        
+        private _backPos = _targetPos getPos [_radius, _dir + 180];
+        _points append [_backPos select 0, _backPos select 1, _aslCenter - _depth];
+        
+        setTerrainHeight [_points, true];
+        _anchor setVariable ["a3m_isTrenchAnchor", _size, true];
+        _trenchesRestored = _trenchesRestored + 1;
+    };
+    
+    // Large Foxholes (HelipadEmpty)
+    {
+        if (typeOf _x == "Land_HelipadEmpty_F" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
+            [_x, "LARGE"] call _fnc_restoreTrench;
+        };
+    } forEach (allMissionObjects "Land_HelipadEmpty_F");
+    
+    // Small Foxholes (ClutterCutter)
     {
         if (typeOf _x == "Land_ClutterCutter_small_F" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
-            private _targetPos = getPos _x;
-            private _dir = getDir _x;
-            
-            // We read the original ASL height of the trench model (which is the original surface level)
-            private _aslCenter = (getPosASL _x) select 2;
-            
-            private _depth = 1.2;
-            private _points = [];
-            
-            _points append [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
-            
-            private _leftPos = _targetPos getPos [1.5, _dir - 90];
-            _points append [_leftPos select 0, _leftPos select 1, _aslCenter - _depth];
-            
-            private _rightPos = _targetPos getPos [1.5, _dir + 90];
-            _points append [_rightPos select 0, _rightPos select 1, _aslCenter - _depth];
-            
-            private _frontPos = _targetPos getPos [1.5, _dir];
-            _points append [_frontPos select 0, _frontPos select 1, _aslCenter - _depth];
-            
-            private _backPos = _targetPos getPos [1.5, _dir + 180];
-            _points append [_backPos select 0, _backPos select 1, _aslCenter - _depth];
-            
-            setTerrainHeight [_points, true];
-            
-            // Re-apply a3m_isTrenchAnchor so live scripts know it's a true trench
-            _x setVariable ["a3m_isTrenchAnchor", true, true];
-            
-            _trenchesRestored = _trenchesRestored + 1;
+            [_x, "SMALL"] call _fnc_restoreTrench;
         };
     } forEach (allMissionObjects "Land_ClutterCutter_small_F");
     

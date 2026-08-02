@@ -32,21 +32,27 @@ private _condition = {
     "ACE_EntrenchingTool" in (items player)
 };
 
-private _onAction = {
-    // Calculate times
+private _fnc_digAction = {
+    params ["_target", "_player", "_params"];
+    _params params ["_size"];
+
     private _baseTime = missionNamespace getVariable ["A3M_Trench_BaseTime", 60];
     private _engineerBonus = missionNamespace getVariable ["A3M_Trench_EngineerBonus", 0.5];
     
     private _digTime = _baseTime;
+    if (_size == "SMALL") then {
+        _digTime = _digTime * 0.6; // Small is 40% faster
+    };
+    
     if (player getUnitTrait "engineer") then {
         _digTime = _digTime * _engineerBonus;
     };
     
-    // Spawn the preview dummy
     A3M_Trench_Dummy = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
     A3M_Trench_DigTime = _digTime;
+    A3M_Trench_Size = _size;
     
-    hint "Foxhole Placement: Look around to position. Press SPACE to Dig. Press ESC to Cancel.";
+    hint format ["%1 Foxhole Placement: Look around to position. Press SPACE to Dig. Press ESC to Cancel.", _size];
     
     // Render Loop
     A3M_Trench_DrawEH = addMissionEventHandler ["Draw3D", {
@@ -56,7 +62,7 @@ private _onAction = {
         A3M_Trench_Dummy setPosASL _pos;
         A3M_Trench_Dummy setDir (getDir player);
         
-        drawIcon3D ["", [1,0.5,0,1], _pos vectorAdd [0,0,0.5], 1, 1, 0, "Press SPACE to dig Foxhole", 1, 0.04, "RobotoCondensedBold"];
+        drawIcon3D ["", [1,0.5,0,1], _pos vectorAdd [0,0,0.5], 1, 1, 0, format ["Press SPACE to dig %1 Foxhole", A3M_Trench_Size], 1, 0.04, "RobotoCondensedBold"];
     }];
     
     // Keybind Intercept
@@ -70,25 +76,26 @@ private _onAction = {
             
             private _targetPos = getPos A3M_Trench_Dummy;
             private _dir = getDir A3M_Trench_Dummy;
+            private _sizeStr = A3M_Trench_Size;
             deleteVehicle A3M_Trench_Dummy;
             
             // Start CBA Progress Bar
             [
-                "Digging Foxhole...",
+                format ["Digging %1 Foxhole...", _sizeStr],
                 A3M_Trench_DigTime,
                 {true},
                 {
                     params ["_args"];
-                    _args params ["_targetPos", "_dir"];
+                    _args params ["_targetPos", "_dir", "_sizeStr"];
                     
                     // Execute the deformation on the server
-                    [[_targetPos, _dir, getPlayerUID player]] remoteExec ["A3M_fnc_serverDeformTerrain", 2, false];
-                    hint "Foxhole Digging Complete!";
+                    [[_targetPos, _dir, getPlayerUID player, _sizeStr]] remoteExec ["A3M_fnc_serverDeformTerrain", 2, false];
+                    hint format ["%1 Foxhole Digging Complete!", _sizeStr];
                 },
                 {
                     hint "Foxhole digging cancelled.";
                 },
-                [_targetPos, _dir]
+                [_targetPos, _dir, _sizeStr]
             ] call CBA_fnc_progressBar;
             
             true
@@ -107,12 +114,25 @@ private _onAction = {
     }];
 };
 
-private _action = [
-    "A3M_DigTrueTrench",
-    "Dig Foxhole (Deform Terrain)",
+private _actionLarge = [
+    "A3M_DigFoxholeLarge",
+    "Dig Large Foxhole",
     "", // icon
-    _onAction,
-    _condition
+    _fnc_digAction,
+    _condition,
+    {},
+    ["LARGE"]
 ] call ace_interact_menu_fnc_createAction;
 
-[player, 1, ["ACE_SelfActions", "ACE_Equipment"], _action] call ace_interact_menu_fnc_addActionToObject;
+private _actionSmall = [
+    "A3M_DigFoxholeSmall",
+    "Dig Small Foxhole",
+    "", // icon
+    _fnc_digAction,
+    _condition,
+    {},
+    ["SMALL"]
+] call ace_interact_menu_fnc_createAction;
+
+[player, 1, ["ACE_SelfActions", "ACE_Equipment"], _actionLarge] call ace_interact_menu_fnc_addActionToObject;
+[player, 1, ["ACE_SelfActions", "ACE_Equipment"], _actionSmall] call ace_interact_menu_fnc_addActionToObject;
