@@ -12,27 +12,27 @@ private _points = [];
 
 // Central point
 private _aslCenter = getTerrainHeightASL _targetPos;
-_points pushBack [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
+_points append [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
 
 // Left point
 private _leftPos = _targetPos getPos [1.5, _dir - 90];
 private _aslLeft = getTerrainHeightASL _leftPos;
-_points pushBack [_leftPos select 0, _leftPos select 1, _aslLeft - _depth];
+_points append [_leftPos select 0, _leftPos select 1, _aslLeft - _depth];
 
 // Right point
 private _rightPos = _targetPos getPos [1.5, _dir + 90];
 private _aslRight = getTerrainHeightASL _rightPos;
-_points pushBack [_rightPos select 0, _rightPos select 1, _aslRight - _depth];
+_points append [_rightPos select 0, _rightPos select 1, _aslRight - _depth];
 
 // Forward points
 private _frontPos = _targetPos getPos [1.5, _dir];
 private _aslFront = getTerrainHeightASL _frontPos;
-_points pushBack [_frontPos select 0, _frontPos select 1, _aslFront - _depth];
+_points append [_frontPos select 0, _frontPos select 1, _aslFront - _depth];
 
 // Back points
 private _backPos = _targetPos getPos [1.5, _dir + 180];
 private _aslBack = getTerrainHeightASL _backPos;
-_points pushBack [_backPos select 0, _backPos select 1, _aslBack - _depth];
+_points append [_backPos select 0, _backPos select 1, _aslBack - _depth];
 
 // Apply the deformation!
 setTerrainHeight [_points, true];
