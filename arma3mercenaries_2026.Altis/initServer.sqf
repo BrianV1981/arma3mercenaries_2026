@@ -602,3 +602,44 @@ HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
     
     diag_log "[A3M STORE] Cargo containers and CPUs successfully hard-reset to original coordinates.";
 };
+
+// --- A3M TRUE TRENCHES PERSISTENCE LOAD (Issue #127) ---
+[] spawn {
+    waitUntil { missionNamespace getVariable ["A3M_ServerLoaded", false] };
+    sleep 5; // Wait for physics
+    
+    private _trenchesRestored = 0;
+    {
+        if (typeOf _x == "Land_ClutterCutter_small_F" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
+            private _targetPos = getPos _x;
+            private _dir = getDir _x;
+            
+            private _depth = 1.2;
+            private _points = [];
+            
+            private _aslCenter = getTerrainHeightASL _targetPos;
+            _points pushBack [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
+            
+            private _leftPos = _targetPos getPos [1.5, _dir - 90];
+            private _aslLeft = getTerrainHeightASL _leftPos;
+            _points pushBack [_leftPos select 0, _leftPos select 1, _aslLeft - _depth];
+            
+            private _rightPos = _targetPos getPos [1.5, _dir + 90];
+            private _aslRight = getTerrainHeightASL _rightPos;
+            _points pushBack [_rightPos select 0, _rightPos select 1, _aslRight - _depth];
+            
+            private _frontPos = _targetPos getPos [1.5, _dir];
+            private _aslFront = getTerrainHeightASL _frontPos;
+            _points pushBack [_frontPos select 0, _frontPos select 1, _aslFront - _depth];
+            
+            private _backPos = _targetPos getPos [1.5, _dir + 180];
+            private _aslBack = getTerrainHeightASL _backPos;
+            _points pushBack [_backPos select 0, _backPos select 1, _aslBack - _depth];
+            
+            setTerrainHeight [_points, true];
+            _trenchesRestored = _trenchesRestored + 1;
+        };
+    } forEach (allMissionObjects "Land_ClutterCutter_small_F");
+    
+    diag_log format ["[A3M Trenches] Successfully restored %1 true terrain trenches from SQLite anchors.", _trenchesRestored];
+};

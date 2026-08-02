@@ -13,6 +13,9 @@ execVM "briefing.sqf";
 player setUnitTrait ["UAVHacker",true];
 player setUnitTrait ["explosiveSpecialist",true];
 
+// A3M True Terrain Trenches (Issue #127)
+[] call A3M_fnc_initTrueTrenches;
+
 // A3M Client-Side Function Compilation
 A3M_fnc_submitTicket = compileFinal (preprocessFileLineNumbers "arma3mercenaries\ticketing\fn_submitTicket.sqf");
 

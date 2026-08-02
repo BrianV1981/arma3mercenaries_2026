@@ -70,6 +70,7 @@ class CfgFunctions {
     #include "arma3mercenaries\salvage\cfgFunctions.hpp"
     #include "arma3mercenaries\a3m_drones\cfgFunctions.hpp"
     #include "arma3mercenaries\ticketing\cfgFunctions.hpp"
+    #include "arma3mercenaries\fortifications\cfgFunctions.hpp"
 }; // <-- The single closing brace for the entire CfgFunctions block
 
 /////////////////////////////////////GRAD FORTS AND HG///////////////////////////////////////////////////
