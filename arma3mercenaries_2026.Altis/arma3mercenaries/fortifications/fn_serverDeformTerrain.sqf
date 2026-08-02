@@ -37,12 +37,10 @@ _points append [_backPos select 0, _backPos select 1, _aslBack - _depth];
 // Apply the deformation!
 setTerrainHeight [_points, true];
 
-// Spawn the ACE trench object over the hole!
-// This also serves as the anchor for grad-persistence to save to SQLite.
-private _anchor = "ACE_trench" createVehicle [0,0,0];
+// Spawn the invisible anchor for grad-persistence to save to SQLite.
+private _anchor = "Land_ClutterCutter_small_F" createVehicle [0,0,0];
 
-// We set it to the original ground height (aslCenter) so the dirt mounds rest on the original surface
-// while the hole exists underneath it!
+// We set it to the original ground height (aslCenter)
 _anchor setPosASL [_targetPos select 0, _targetPos select 1, _aslCenter];
 _anchor setDir _dir;
 

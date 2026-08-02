@@ -610,7 +610,7 @@ HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
     
     private _trenchesRestored = 0;
     {
-        if (typeOf _x == "ACE_trench" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
+        if (typeOf _x == "Land_ClutterCutter_small_F" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
             private _targetPos = getPos _x;
             private _dir = getDir _x;
             
@@ -641,7 +641,7 @@ HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
             
             _trenchesRestored = _trenchesRestored + 1;
         };
-    } forEach (allMissionObjects "ACE_trench");
+    } forEach (allMissionObjects "Land_ClutterCutter_small_F");
     
     diag_log format ["[A3M Trenches] Successfully restored %1 true terrain trenches from SQLite anchors.", _trenchesRestored];
 };

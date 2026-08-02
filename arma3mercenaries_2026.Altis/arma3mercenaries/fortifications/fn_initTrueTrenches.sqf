@@ -46,7 +46,7 @@ private _onAction = {
     A3M_Trench_Dummy = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
     A3M_Trench_DigTime = _digTime;
     
-    hint "Trench Placement: Look around to position. Press SPACE to Dig. Press ESC to Cancel.";
+    hint "Foxhole Placement: Look around to position. Press SPACE to Dig. Press ESC to Cancel.";
     
     // Render Loop
     A3M_Trench_DrawEH = addMissionEventHandler ["Draw3D", {
@@ -56,7 +56,7 @@ private _onAction = {
         A3M_Trench_Dummy setPosASL _pos;
         A3M_Trench_Dummy setDir (getDir player);
         
-        drawIcon3D ["", [1,0.5,0,1], _pos vectorAdd [0,0,0.5], 1, 1, 0, "Press SPACE to dig Trench", 1, 0.04, "RobotoCondensedBold"];
+        drawIcon3D ["", [1,0.5,0,1], _pos vectorAdd [0,0,0.5], 1, 1, 0, "Press SPACE to dig Foxhole", 1, 0.04, "RobotoCondensedBold"];
     }];
     
     // Keybind Intercept
@@ -74,7 +74,7 @@ private _onAction = {
             
             // Start CBA Progress Bar
             [
-                "Digging Trench...",
+                "Digging Foxhole...",
                 A3M_Trench_DigTime,
                 {true},
                 {
@@ -83,10 +83,10 @@ private _onAction = {
                     
                     // Execute the deformation on the server
                     [[_targetPos, _dir, getPlayerUID player]] remoteExec ["A3M_fnc_serverDeformTerrain", 2, false];
-                    hint "Trench Digging Complete!";
+                    hint "Foxhole Digging Complete!";
                 },
                 {
-                    hint "Trench digging cancelled.";
+                    hint "Foxhole digging cancelled.";
                 },
                 [_targetPos, _dir]
             ] call CBA_fnc_progressBar;
@@ -99,7 +99,7 @@ private _onAction = {
             removeMissionEventHandler ["Draw3D", A3M_Trench_DrawEH];
             (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Trench_KeyEH];
             deleteVehicle A3M_Trench_Dummy;
-            hint "Trench placement cancelled.";
+            hint "Foxhole placement cancelled.";
             true
         };
         
@@ -109,7 +109,7 @@ private _onAction = {
 
 private _action = [
     "A3M_DigTrueTrench",
-    "Dig True Trench (Deform Terrain)",
+    "Dig Foxhole (Deform Terrain)",
     "", // icon
     _onAction,
     _condition
