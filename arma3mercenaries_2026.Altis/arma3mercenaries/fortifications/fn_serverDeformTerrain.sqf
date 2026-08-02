@@ -37,10 +37,12 @@ _points append [_backPos select 0, _backPos select 1, _aslBack - _depth];
 // Apply the deformation!
 setTerrainHeight [_points, true];
 
-// Spawn the invisible anchor for grad-persistence
-// We use a specific dummy object that grad-persistence WILL save (it saves static objects).
-// Land_ClutterCutter_small_F is naturally invisible in Arma, so it's a great anchor.
-private _anchor = "Land_ClutterCutter_small_F" createVehicle [0,0,0];
+// Spawn the ACE trench object over the hole!
+// This also serves as the anchor for grad-persistence to save to SQLite.
+private _anchor = "ACE_trench" createVehicle [0,0,0];
+
+// We set it to the original ground height (aslCenter) so the dirt mounds rest on the original surface
+// while the hole exists underneath it!
 _anchor setPosASL [_targetPos select 0, _targetPos select 1, _aslCenter];
 _anchor setDir _dir;
 
@@ -49,8 +51,7 @@ if (_ownerUID != "") then {
     _anchor setVariable ["grad_fortifications_fortOwner", _ownerUID, true];
 };
 
-// We also tag it with a unique variable so we know it's a trench on server reboot
-// We don't rely on this variable saving to SQLite; we just use the classname on reboot.
+// We also tag it with a unique variable so we know it's a true trench during live sessions
 _anchor setVariable ["a3m_isTrenchAnchor", true, true];
 
 diag_log format ["[A3M Trenches] Trench dug at %1 by UID %2. Anchor deployed.", _targetPos, _ownerUID];

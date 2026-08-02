@@ -610,36 +610,38 @@ HG_SAVING_EXTDB = false; // addresses extDB error from HG Simple Shops
     
     private _trenchesRestored = 0;
     {
-        if (typeOf _x == "Land_ClutterCutter_small_F" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
+        if (typeOf _x == "ACE_trench" && {!isNil {_x getVariable "grad_fortifications_fortOwner"}}) then {
             private _targetPos = getPos _x;
             private _dir = getDir _x;
+            
+            // We read the original ASL height of the trench model (which is the original surface level)
+            private _aslCenter = (getPosASL _x) select 2;
             
             private _depth = 1.2;
             private _points = [];
             
-            private _aslCenter = getTerrainHeightASL _targetPos;
             _points append [_targetPos select 0, _targetPos select 1, _aslCenter - _depth];
             
             private _leftPos = _targetPos getPos [1.5, _dir - 90];
-            private _aslLeft = getTerrainHeightASL _leftPos;
-            _points append [_leftPos select 0, _leftPos select 1, _aslLeft - _depth];
+            _points append [_leftPos select 0, _leftPos select 1, _aslCenter - _depth];
             
             private _rightPos = _targetPos getPos [1.5, _dir + 90];
-            private _aslRight = getTerrainHeightASL _rightPos;
-            _points append [_rightPos select 0, _rightPos select 1, _aslRight - _depth];
+            _points append [_rightPos select 0, _rightPos select 1, _aslCenter - _depth];
             
             private _frontPos = _targetPos getPos [1.5, _dir];
-            private _aslFront = getTerrainHeightASL _frontPos;
-            _points append [_frontPos select 0, _frontPos select 1, _aslFront - _depth];
+            _points append [_frontPos select 0, _frontPos select 1, _aslCenter - _depth];
             
             private _backPos = _targetPos getPos [1.5, _dir + 180];
-            private _aslBack = getTerrainHeightASL _backPos;
-            _points append [_backPos select 0, _backPos select 1, _aslBack - _depth];
+            _points append [_backPos select 0, _backPos select 1, _aslCenter - _depth];
             
             setTerrainHeight [_points, true];
+            
+            // Re-apply a3m_isTrenchAnchor so live scripts know it's a true trench
+            _x setVariable ["a3m_isTrenchAnchor", true, true];
+            
             _trenchesRestored = _trenchesRestored + 1;
         };
-    } forEach (allMissionObjects "Land_ClutterCutter_small_F");
+    } forEach (allMissionObjects "ACE_trench");
     
     diag_log format ["[A3M Trenches] Successfully restored %1 true terrain trenches from SQLite anchors.", _trenchesRestored];
 };
