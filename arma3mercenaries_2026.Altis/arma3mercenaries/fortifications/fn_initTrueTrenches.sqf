@@ -33,6 +33,7 @@ private _condition = {
 };
 
 private _onAction = {
+    // Calculate times
     private _baseTime = missionNamespace getVariable ["A3M_Trench_BaseTime", 60];
     private _engineerBonus = missionNamespace getVariable ["A3M_Trench_EngineerBonus", 0.5];
     
@@ -41,38 +42,69 @@ private _onAction = {
         _digTime = _digTime * _engineerBonus;
     };
     
-    // Calculate the target position (1.5m in front of player)
-    private _targetPos = player modelToWorld [0, 1.5, 0];
-    private _dir = getDir player;
-    
     // Spawn the preview dummy
-    private _previewObj = "Sign_Sphere10cm_F" createVehicleLocal _targetPos;
-    _previewObj setDir _dir;
+    A3M_Trench_Dummy = "Sign_Sphere10cm_F" createVehicleLocal [0,0,0];
+    A3M_Trench_DigTime = _digTime;
     
-    [
-        "Digging Trench...", // Title
-        _digTime,            // Total time
-        {true},              // Condition (runs every frame)
-        {
-            params ["_args"];
-            _args params ["_previewObj", "_targetPos", "_dir"];
+    hint "Trench Placement: Look around to position. Press SPACE to Dig. Press ESC to Cancel.";
+    
+    // Render Loop
+    A3M_Trench_DrawEH = addMissionEventHandler ["Draw3D", {
+        private _pos = player modelToWorld [0, 2, 0];
+        _pos set [2, getTerrainHeightASL _pos]; // Snap to ground
+        
+        A3M_Trench_Dummy setPosASL _pos;
+        A3M_Trench_Dummy setDir (getDir player);
+        
+        drawIcon3D ["", [1,0.5,0,1], _pos vectorAdd [0,0,0.5], 1, 1, 0, "Press SPACE to dig Trench", 1, 0.04, "RobotoCondensedBold"];
+    }];
+    
+    // Keybind Intercept
+    A3M_Trench_KeyEH = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+        params ["_display", "_key"];
+        
+        if (_key == 57) exitWith {
+            // Spacebar (Confirm)
+            removeMissionEventHandler ["Draw3D", A3M_Trench_DrawEH];
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Trench_KeyEH];
             
-            // Delete preview
-            deleteVehicle _previewObj;
+            private _targetPos = getPos A3M_Trench_Dummy;
+            private _dir = getDir A3M_Trench_Dummy;
+            deleteVehicle A3M_Trench_Dummy;
             
-            // Execute the deformation on the server so it can drop the anchor!
-            [[_targetPos, _dir, getPlayerUID player]] remoteExec ["A3M_fnc_serverDeformTerrain", 2, false];
+            // Start CBA Progress Bar
+            [
+                "Digging Trench...",
+                A3M_Trench_DigTime,
+                {true},
+                {
+                    params ["_args"];
+                    _args params ["_targetPos", "_dir"];
+                    
+                    // Execute the deformation on the server
+                    [[_targetPos, _dir, getPlayerUID player]] remoteExec ["A3M_fnc_serverDeformTerrain", 2, false];
+                    hint "Trench Digging Complete!";
+                },
+                {
+                    hint "Trench digging cancelled.";
+                },
+                [_targetPos, _dir]
+            ] call CBA_fnc_progressBar;
             
-            hint "Trench Digging Complete!";
-        },
-        {
-            params ["_args"];
-            _args params ["_previewObj"];
-            deleteVehicle _previewObj;
-            hint "Trench digging cancelled.";
-        },
-        [_previewObj, _targetPos, _dir] // Arguments
-    ] call CBA_fnc_progressBar;
+            true
+        };
+        
+        if (_key == 1) exitWith {
+            // Esc (Cancel)
+            removeMissionEventHandler ["Draw3D", A3M_Trench_DrawEH];
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", A3M_Trench_KeyEH];
+            deleteVehicle A3M_Trench_Dummy;
+            hint "Trench placement cancelled.";
+            true
+        };
+        
+        false
+    }];
 };
 
 private _action = [
